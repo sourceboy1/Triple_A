@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from .models import users, cart, CartItem, Category, Payment,PaymentDetail,PaymentMethod,Product,Review,ProductPromotion,Promotion,Order,OrderItem,ShippingAddress
+from .models import users, cart, CartItem, Category, Payment,PaymentDetail,PaymentMethod,Product,Review,ProductPromotion,Promotion,Order,OrderItem,ShippingAddress, ProductImage
+
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,7 +25,7 @@ class CartItemSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['category_id', 'name', 'description', 'created_at']
+        fields = [ 'name']
 
 class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -44,12 +46,42 @@ class PaymentMethodSerializer(serializers.ModelSerializer):
         model = PaymentMethod
         fields = ['payment_method_id', 'user', 'method_name', 'details', 'created_at']
 
+
+
+class ProductImageSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ProductImage
+        fields = ['id', 'image_url', 'description']
+
+    def get_image_url(self, obj):
+        request = self.context.get('request')
+        if obj.image:
+            return request.build_absolute_uri(obj.image.url)
+        return None
+
 class ProductSerializer(serializers.ModelSerializer):
-    category = CategorySerializer()
+    image_url = serializers.SerializerMethodField()
+    category_name = serializers.CharField(source='category.name', read_only=True)
+    additional_images = ProductImageSerializer(many=True, read_only=True)
 
     class Meta:
         model = Product
-        fields = ['product_id', 'name', 'description', 'price', 'stock', 'category', 'image_url', 'created_at']
+        fields = ['product_id', 'name', 'description', 'price', 'stock', 'category', 'category_name', 'image_url', 'additional_images', 'created_at']
+
+    def get_image_url(self, obj):
+        request = self.context.get('request')
+        if obj.image and request is not None:
+            return request.build_absolute_uri(obj.image.url)
+        return None
+
+class ProductImageUploadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = ['product', 'image', 'description']
+
+
 
 class PromotionSerializer(serializers.ModelSerializer):
     class Meta:

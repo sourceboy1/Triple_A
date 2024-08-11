@@ -1,5 +1,37 @@
 from django.contrib import admin
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+
+
+class UserManager(BaseUserManager):
+    def create_user(self, username, password=None, **extra_fields):
+        if not username:
+            raise ValueError('The Username field must be set')
+        user = self.model(username=username, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, username, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        return self.create_user(username, password, **extra_fields)
+
+class User(AbstractBaseUser):
+    username = models.CharField(max_length=255, unique=True)
+    email = models.EmailField(unique=True, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+
+    objects = UserManager()
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = []
+
+    def __str__(self):
+        return self.username
 
 
 
@@ -30,7 +62,7 @@ class Category(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'categories'
         verbose_name = 'Category'
         verbose_name_plural = 'Categories'
@@ -46,11 +78,11 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.IntegerField()
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, blank=True, null=True)
-    image_url = models.CharField(max_length=255, blank=True, null=True)
+    image =  models.ImageField(upload_to='products/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'products'
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
@@ -58,6 +90,18 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, related_name='additional_images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='products/additional/')
+    description = models.CharField(max_length=255, blank=True)
+
+    class Meta:
+        db_table = 'product_image'  # Specify the existing table name
+
+    def __str__(self):
+        return f"Image for {self.product.name}"
+    
 
 class Promotion(models.Model):
     DISCOUNT_TYPE_CHOICES = [

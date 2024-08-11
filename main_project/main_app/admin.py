@@ -1,8 +1,11 @@
 from django.contrib import admin
-from .models import users,ShippingAddress, cart, CartItem, Category, Product, Order, OrderItem, Payment, PaymentDetail, PaymentMethod, Review, ProductPromotion, Promotion
+from .models import users,ShippingAddress, cart, CartItem, Category, Product, Order, OrderItem, Payment, PaymentDetail, PaymentMethod, Review, ProductPromotion, Promotion,ProductImage
 
 # Register your models here.
 
+@admin.register(ProductImage)
+class ProductImageAdmin(admin.ModelAdmin):
+    list_display = ['product', 'image', 'description']
 
 @admin.register(users)
 class UserAdmin(admin.ModelAdmin):
