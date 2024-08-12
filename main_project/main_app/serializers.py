@@ -79,7 +79,7 @@ class ProductSerializer(serializers.ModelSerializer):
 class ProductImageUploadSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
-        fields = ['product', 'image', 'description']
+        fields = ['image', 'description', 'product']
 
 
 
