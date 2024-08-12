@@ -1,0 +1,90 @@
+/* Navbar styling */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: white;
+  z-index: 1000; /* Ensure the navbar is on top */
+}
+
+/* Signup form container */
+.signup-container {
+  width: 80%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  margin-top: 100px; /* Adjust this value to ensure it's below the navbar */
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-form label {
+  margin-bottom: 10px;
+}
+
+.signup-form input,
+.signup-form textarea,
+.signup-form select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.signup-form button {
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.signup-form button:hover {
+  background-color: #218838;
+}
+
+.login-prompt {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.login-prompt span {
+  font-size: 16px;
+}
+
+.login-link {
+  color: green;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login-link:hover {
+  text-decoration: none;
+}
+
+.password-container {
+  position: relative;
+}
+
+.password-container input {
+  width: calc(90% - 30px); /* Adjust the width to accommodate the eye icon */
+}
+
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  width: 25px;
+}
+
