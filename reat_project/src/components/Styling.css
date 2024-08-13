@@ -1,178 +1,259 @@
-/* Base styles for the navbar */
 .navbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   background-color: white;
-  padding: 30px;
-  padding-left: 70px;
+  padding: 10px 20px;
   position: fixed;
-  width: 100%;
   top: 0;
-  left: 0;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  z-index: 10;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Wrapper for navbar content */
 .navbar-content {
-  width: 100%;
-  max-width: 1200px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 }
 
-/* Container for the logo and company name */
 .navbar-left {
   display: flex;
   align-items: center;
 }
 
 .company-logo {
-  width: 50px;
-  height: auto;
+  height: 50px;
+  margin-right: 10px;
 }
 
 .company-name {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 1.5rem;
   color: green;
-  margin-left: 10px;
-}
-
-/* Navbar links and icons container */
-.navbar-links {
-  display: flex;
-  list-style-type: none;
-  gap: 20px;
-  margin: 0;
-  padding: 0;
-  justify-content: center;
-  flex-grow: 1;
-  font-weight: normal;
-  transition: font-weight 0.3s;
-}
-
-.navbar-links li {
-  position: relative;
   font-weight: bold;
 }
 
-.navbar-links li a {
-  color: green;
-  text-decoration: none;
-  font-weight: bold;
-  transition: transform 0.2s;
-}
-
-.navbar-links li a:hover {
-  text-decoration: none;
-  font-weight: bolder;
-  transform: scale(1.2);
-}
-
-/* Icons container */
-.navbar-right {
+.search-bar-container {
   display: flex;
-  gap: 10px;
   align-items: center;
+  width: 100%;
+  max-width: 600px; /* Adjust the width as needed */
 }
 
-.icon {
-  width: 55px;
-  height: 55px;
-  margin-left: 10px;
-  margin-right: 10px;
-  transition: transform 0.3s;
+.search-with-dropdown {
+  position: relative; /* Position relative to contain absolute dropdown */
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  margin-right: 20px;
 }
 
-.icon:hover {
-  transform: scale(1.4);
-}
-
-/* Dropdown menu styles */
-.dropdown {
-  position: relative;
-}
-
-.dropdown-content {
-  display: none;
+.all-dropdown {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
   position: absolute;
-  background-color: white;
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-  z-index: 1;
+  left: 10px; /* Position the dropdown inside the input field */
+  z-index: 1; /* Ensure it is above the input field */
+  background-color: transparent;
+  height: 100%; /* Match the height of the input */
+  
+}
+
+/* Container styles for the dropdown */
+.dropdown-content {
+  position: absolute;
   top: 100%;
   left: 0;
-  min-width: 160px;
-}
-
-.dropdown-content a {
-  color: green;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-.dropdown-content a:hover {
   background-color: white;
-  transform: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 0; /* Remove padding to ensure width fits content */
+  display: none;
+  z-index: 2; /* Ensure dropdown content is above the input field */
+  width: 100%; /* Ensure the dropdown content matches the width of the input */
+  white-space: nowrap; /* Prevent wrapping of text */
+  border-radius: 4px; /* Optional: rounded corners for better appearance */
+  padding-left: 1px;
+  
 }
 
+/* Show dropdown when active */
 .dropdown-content.show {
   display: block;
 }
 
-.arrow {
-  width: 12px;
-  height: 12px;
-  transition: transform 0.3s;
+/* Styles for individual items in the dropdown */
+.dropdown-content a {
+  display: block; /* Ensure each link takes up a full line */
+  padding: 10px 15px; /* Add padding for spacing */
+  color: black; /* Text color for the links */
+  text-decoration: none; /* Remove underline */
+  white-space: nowrap; /* Prevent wrapping of text */
+  background-color: white; /* Ensure background color is applied */
+  box-sizing: border-box; /* Ensure padding and border are included in width */
+  border-bottom: 1px solid #eee; /* Optional: Add a border between items */
+  padding-right: 200px;
+  margin-right: 10px;
 }
 
-.arrow.left {
-  transform: rotate(90deg);
+/* Remove the bottom border for the last item */
+.dropdown-content a:last-child {
+  border-bottom: none;
 }
 
-.arrow.down {
-  transform: rotate(0deg);
+/* Hover effect for links */
+.dropdown-content a:hover {
+  background-color: #f0f0f0; /* Background color on hover */
+}
+
+/* Ensure search-with-dropdown container is positioned properly */
+.search-with-dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-grow: 1; /* Ensure it takes up available space */
+  margin-right: 20px; /* Space between search and buttons */
+}
+
+/* Adjust input field to ensure padding is not affecting dropdown */
+.search-input {
+  width: 100%;
+  padding: 17px 50px 15px 80px; /* Add padding for the icon space */
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: transparent; /* Remove the background color */
+  outline: none;
+  position: relative;
+}
+
+
+
+.search-button {
+  position: absolute;
+  right: 10px; /* Adjust the position inside the input */
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  width: 40px;
+}
+
+.search-button img {
+  width: 45px; /* Adjust the size of the search icon */
+  height: 45px;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Space between the cart icon and buttons */
+  margin-right: 40px;
+}
+
+.cart-icon {
+  height: 50px;
+  margin-right: 10px;
+  position: relative;
+}
+
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
 }
 
 .button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 20px;
   background-color: green;
   color: white;
-  font-size: 14px;
-  font-weight: bold;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 25px; /* Add border radius */
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
-  text-align: center;
-  text-decoration: none;
-  padding-left: 30px;
-  padding-right: 30px;
-  margin-top: 10px;
-  padding-top: 10px;
-  margin-bottom: 10px;
+  font-size: 1rem;
 }
 
 .button:hover {
   background-color: darkgreen;
-  transform: scale(1.05);
 }
 
-/* Hamburger menu styles */
-.hamburger-button {
-  display: none;
-  background: none;
-  border: none;
+.scrolled {
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.arrow {
+  width: 12px; /* Adjust the size of the arrow */
+  height: 12px;
+  margin-left: 5px;
+  transition: transform 0.3s ease; /* Add transition for smooth rotation */
+}
+
+.arrow.down {
+  transform: rotate(90deg); /* Rotate 90 degrees to face down */
+}
+
+.arrow.left {
+  transform: rotate(0deg); /* Default position facing to the side */
+}
+
+.suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  max-height: 300px; /* Adjust as needed */
+  overflow-y: auto;
+}
+
+.suggestion-item {
+  padding: 10px;
   cursor: pointer;
 }
 
-.hamburger-icon {
-  width: 30px;
-  height: auto;
+.suggestion-item:hover {
+  background-color: #f0f0f0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* Add these lines to your global CSS file */
@@ -187,26 +268,28 @@
 
 
 
-/* src/components/Styling.css */
-.cart-icon {
-  position: relative;
+
+
+
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
 }
 
-.cart-count {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background-color: red;
+.quantity-control button {
+  background-color: #FB8F67;
+  border: none;
   color: white;
-  border-radius: 50%;
-  padding: 4px 8px;
-  font-size: 12px;
+  padding: 5px 10px;
+  cursor: pointer;
 }
 
-
-
-
-
+.quantity-control span {
+  margin: 0 10px;
+  font-size: 1.2em;
+}
 
 
 
@@ -225,7 +308,7 @@
 .home {
   width: 100%;
   max-width: 1300px;
-  margin-top: 100px;
+  margin-top: 55px;
   padding: 20px;
   position: relative;
   overflow: hidden; /* Hide overflow to ensure clean edges */
@@ -543,7 +626,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 105px;
+  margin-top: 55px;
 }
 
 /* Modal content styling */

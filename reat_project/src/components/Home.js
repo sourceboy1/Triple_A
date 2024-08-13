@@ -4,8 +4,8 @@ import slidingImage2 from '../pictures/sliding2.jpg';
 import axios from 'axios';
 import './Styling.css';
 import { useNavigate } from 'react-router-dom';
-import { TokenContext } from './TokenContext'; // Import TokenContext
-import { useCart } from '../contexts/CartContext'; // Import useCart hook
+import { TokenContext } from './TokenContext';
+import { useCart } from '../contexts/CartContext';
 
 const images = [slidingImage1, slidingImage2];
 
@@ -13,30 +13,28 @@ const Home = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
-  const accessToken = useContext(TokenContext); // Get the token from context
-  const { addItemToCart } = useCart(); // Destructure addItemToCart from useCart
+  const accessToken = useContext(TokenContext);
+  const { addItemToCart } = useCart();
 
   useEffect(() => {
-    // Fetch product data from the backend
     axios.get('http://localhost:8000/api/products/', {
       headers: {
-        Authorization: `Bearer ${accessToken}` // Use the token from context
+        Authorization: `Bearer ${accessToken}`
       }
     })
       .then(response => {
-        console.log(response.data);
         setProducts(response.data);
       })
       .catch(error => {
         console.error('There was an error fetching the products!', error);
       });
-    
+
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 5000); // Change image every 5 seconds
+    }, 5000);
 
     return () => clearInterval(interval);
-  }, [accessToken]); // Add accessToken as dependency
+  }, [accessToken]);
 
   const handleProductClick = (productId) => {
     navigate(`/product-details/${productId}`);
@@ -46,7 +44,6 @@ const Home = () => {
     console.log('Adding to cart:', product); // Log product details
     addItemToCart(product);
   };
-  ;
 
   return (
     <div className="home">
@@ -70,7 +67,7 @@ const Home = () => {
               <h2 className="product-title">{product.name}</h2>
               <p className="product-description">{product.description}</p>
               <p className="product-price">
-                #{parseFloat(product.price).toFixed(2)}
+                ₦{product.price ? new Intl.NumberFormat().format(product.price) : 'N/A'}
               </p>
             </div>
             <button
@@ -87,6 +84,8 @@ const Home = () => {
 };
 
 export default Home;
+
+
 
 
 

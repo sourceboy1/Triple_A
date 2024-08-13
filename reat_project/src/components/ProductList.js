@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Product from './Product';
-import { useParams } from 'react-router-dom';
 import Loading from './Loading';
 import { useCart } from '../contexts/CartContext'; // Import the custom hook
 
-const ProductList = () => {
-  const { category } = useParams();
+const ProductList = ({ category, searchQuery }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -16,7 +14,7 @@ const ProductList = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get('http://localhost:8000/api/products/', {
-          params: { category },
+          params: { category, searchQuery },
         });
         setProducts(response.data);
         setLoading(false);
@@ -28,7 +26,7 @@ const ProductList = () => {
     };
 
     fetchProducts();
-  }, [category]);
+  }, [category, searchQuery]); // Fetch products whenever category or searchQuery changes
 
   if (loading) return <Loading />;
   if (error) return <p>{error}</p>;
@@ -40,8 +38,12 @@ const ProductList = () => {
         {products.map((product) => (
           <Product
             key={product.product_id}
-            product={product}
-            addItemToCart={addItemToCart} // Pass addItemToCart to the Product component
+            product_id={product.product_id}
+            name={product.name}
+            description={product.description}
+            price={product.price}
+            image_url={product.image_url}
+            addItemToCart={addItemToCart} // Pass addItemToCart function
           />
         ))}
       </div>
@@ -50,6 +52,9 @@ const ProductList = () => {
 };
 
 export default ProductList;
+
+
+
 
 
 
