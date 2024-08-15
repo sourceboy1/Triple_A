@@ -1,0 +1,78 @@
+.search-results-page {
+    padding: 20px;
+    background-color: white;
+    width: 100vw; /* Use viewport width for full width */
+    margin: 0; /* Remove any default margin */
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+  
+  .search-results-page h1 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .results-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between items */
+  }
+  
+  .result-item {
+    display: flex;
+    align-items: center; /* Align items to the center vertically */
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    width: 80%; /* Set a max-width to prevent full width */
+    max-width: 1200px; /* Maximum width */
+    margin: 0 auto; /* Center the item horizontally */
+  }
+  
+  .result-item:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .product-image {
+    width: 150px; /* Set a fixed width for the image */
+    height: 150px; /* Set a fixed height for the image */
+    object-fit: cover;
+    flex-shrink: 0; /* Prevent image from shrinking */
+  }
+  
+  .result-info {
+    padding: 15px;
+    flex: 1; /* Allows the info to take up the remaining space */
+  }
+  
+  /* Remove underline from links */
+  .result-info a {
+    text-decoration: none;
+    color: inherit; /* Ensure the link color matches the surrounding text */
+  }
+  
+  .result-info h2 {
+    font-size: 1.2em;
+    margin: 0 0 10px;
+    color: #333;
+  }
+  
+  .result-info .description {
+    font-size: 0.9em;
+    color: #555;
+    margin: 0 0 10px;
+    line-height: 1.4em;
+  }
+  
+  .result-info .price {
+    font-size: 1.1em;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  
+  
+  
