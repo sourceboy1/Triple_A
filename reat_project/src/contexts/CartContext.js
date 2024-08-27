@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 // Create Cart Context
 const CartContext = createContext();
@@ -6,18 +6,26 @@ const CartContext = createContext();
 export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(() => {
+    // Load cart items from localStorage
+    const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+    return storedCart;
+  });
+
+  useEffect(() => {
+    // Save cart items to localStorage whenever cart updates
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
 
   const addItemToCart = (product) => {
     setCart((prevCart) => {
-      const existingProduct = prevCart.find(item => item.product_id === product.product_id);
-      if (existingProduct) {
-        return prevCart.map(item =>
-          item.product_id === product.product_id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
+      // Check if the product is already in the cart
+      const isProductInCart = prevCart.some(item => item.product_id === product.product_id);
+      if (isProductInCart) {
+        // If the product is already in the cart, don't add it again
+        return prevCart;
       }
+      // If the product is not in the cart, add it with a default quantity of 1
       return [...prevCart, { ...product, quantity: 1 }];
     });
   };
@@ -43,7 +51,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const getCartItemCount = () => {
-    return cart.reduce((total, item) => total + item.quantity, 0);
+    return cart.length; // Return the number of unique products
   };
 
   return (
@@ -52,14 +60,3 @@ export const CartProvider = ({ children }) => {
     </CartContext.Provider>
   );
 };
-
-
-
-
-
-
-
-
-
-
-
