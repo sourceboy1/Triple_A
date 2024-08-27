@@ -1,24 +1,31 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
+import { useUser } from '../contexts/UserContext'; // Correctly import UserContext
 import './Styling.css';
 import companyLogo from '../pictures/company logo.jpg';
 import searchIcon from '../pictures/search.jpg';
 import arrowIcon from '../pictures/arrow.jpg';
 import cartIcon from '../pictures/cart.jpg';
+import userIcon from '../icons/usericon.jpg';
 import axios from 'axios';
 
 const Navbar = () => {
   const [products, setProducts] = useState([]);
-  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [categoryDropdownVisible, setCategoryDropdownVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const dropdownRef = useRef(null);
-  const searchInputRef = useRef(null); // Reference for search input
+  const [userDropdownVisible, setUserDropdownVisible] = useState(false); // State for user dropdown
+  const categoryDropdownRef = useRef(null);
+  const userDropdownRef = useRef(null);
+  const searchInputRef = useRef(null);
   const navigate = useNavigate();
   const { getCartItemCount } = useCart();
   const cartCount = getCartItemCount();
+
+  // Use UserContext to access username and login status
+  const { isLoggedIn, username, signOut } = useUser();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -49,8 +56,19 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target) && !searchInputRef.current.contains(event.target)) {
-        setDropdownVisible(false);
+      if (
+        categoryDropdownRef.current &&
+        !categoryDropdownRef.current.contains(event.target) &&
+        !searchInputRef.current.contains(event.target)
+      ) {
+        setCategoryDropdownVisible(false);
+      }
+
+      if (
+        userDropdownRef.current &&
+        !userDropdownRef.current.contains(event.target)
+      ) {
+        setUserDropdownVisible(false);
       }
     };
 
@@ -60,13 +78,17 @@ const Navbar = () => {
     };
   }, []);
 
-  const toggleDropdown = () => {
-    setDropdownVisible(!dropdownVisible);
+  const toggleCategoryDropdown = () => {
+    setCategoryDropdownVisible(!categoryDropdownVisible);
+  };
+
+  const toggleUserDropdown = () => {
+    setUserDropdownVisible(!userDropdownVisible);
   };
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
-    setDropdownVisible(false);
+    setCategoryDropdownVisible(false);
   };
 
   const handleSearch = () => {
@@ -82,7 +104,7 @@ const Navbar = () => {
         product.name.toLowerCase().includes(query.toLowerCase())
       );
       setFilteredProducts(filtered);
-      setDropdownVisible(false); // Hide the category dropdown
+      setCategoryDropdownVisible(false);
     } else {
       setFilteredProducts([]);
     }
@@ -91,6 +113,18 @@ const Navbar = () => {
   const handleSuggestionClick = (product) => {
     navigate(`/search?query=${encodeURIComponent(product.name)}&category=${encodeURIComponent(selectedCategory)}`);
     setFilteredProducts([]);
+  };
+
+  const handleAccountClick = () => {
+    navigate('/account');
+  };
+
+  const handleSignOut = () => {
+    // Clear authentication data
+    signOut();
+    
+    // Redirect to homepage or login page
+    navigate('/');
   };
 
   return (
@@ -105,18 +139,18 @@ const Navbar = () => {
 
         <div className="search-bar-container">
           <div className="search-with-dropdown">
-            <div 
-              className="all-dropdown" 
-              onClick={toggleDropdown} 
-              ref={dropdownRef}
+            <div
+              className="all-dropdown"
+              onClick={toggleCategoryDropdown}
+              ref={categoryDropdownRef}
             >
               <span>{selectedCategory}</span>
               <img
                 src={arrowIcon}
                 alt="Arrow"
-                className={`arrow ${dropdownVisible ? 'down' : 'left'}`}
+                className={`arrow ${categoryDropdownVisible ? 'down' : 'left'}`}
               />
-              {dropdownVisible && (
+              {categoryDropdownVisible && (
                 <div className="dropdown-content show">
                   <a href="#" onClick={() => handleCategoryClick('All')}>All</a>
                   <a href="#" onClick={() => handleCategoryClick('Phones & Tablets')}>Phones & Tablets</a>
@@ -134,7 +168,7 @@ const Navbar = () => {
               className="search-input"
               value={searchQuery}
               onChange={handleSearchInputChange}
-              placeholder={`Search...`} // Placeholder text only
+              placeholder="Search..."
               ref={searchInputRef}
             />
             <button className="search-button" onClick={handleSearch}>
@@ -143,9 +177,9 @@ const Navbar = () => {
             {filteredProducts.length > 0 && (
               <div className="suggestions-dropdown">
                 {filteredProducts.map((product) => (
-                  <div 
-                    key={product.id} 
-                    className="suggestion-item" 
+                  <div
+                    key={product.id}
+                    className="suggestion-item"
                     onClick={() => handleSuggestionClick(product)}
                   >
                     {product.name}
@@ -157,12 +191,32 @@ const Navbar = () => {
         </div>
 
         <div className="navbar-right">
-          <a href="#" onClick={() => navigate('/cart')}>
+          <a href="#" onClick={() => navigate('/cart')} className="cart-link">
             <img src={cartIcon} alt="Cart" className="cart-icon" />
-            {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+            <span className="cart-count">{cartCount}</span>
           </a>
-          <button onClick={() => navigate('/signup')} className="button">Sign Up</button>
-          <button onClick={() => navigate('/login')} className="button">Log In</button>
+          <div className="user-info" onClick={toggleUserDropdown} ref={userDropdownRef}>
+            <img src={userIcon} alt="User Icon" className="user-icon" />
+            <div className="greeting">
+              <span className="hello">{isLoggedIn ? 'Hello' : 'Sign In' }</span>
+              <span className="username">{isLoggedIn ? username : 'Account'}</span>
+            </div>
+            {userDropdownVisible && (
+              <div className="account-dropdown">
+                {isLoggedIn ? (
+                  <>
+                    <a href="#" onClick={handleAccountClick}>Account</a>
+                    <a href="#" onClick={handleSignOut}>Sign Out</a>
+                  </>
+                ) : (
+                  <>
+                    <a href="#" onClick={() => navigate('/signin')}>Sign In</a>
+                    <a href="#" onClick={() => navigate('/signup')}>Register</a>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </nav>
@@ -170,15 +224,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-
-
-
-
-
-
-
-
-
-
-
