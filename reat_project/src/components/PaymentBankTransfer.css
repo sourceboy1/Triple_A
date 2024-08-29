@@ -1,0 +1,159 @@
+/* Transfer.css */
+
+.transfer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff; /* Ensures a white background */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    margin-top: 50px;
+}
+
+.order-section {
+    width: 100%;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.order-section h2 {
+    font-size: 1.6em; /* Slightly larger for emphasis */
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.order-section h3 {
+    font-size: 1.3em; /* Increased font size for prominence */
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.order-section p {
+    font-size: 1em;
+    color: #666;
+    margin: 8px 0; /* Increased margin for readability */
+}
+
+.customer-details h4 {
+    font-size: 1.3em; /* Increased font size for section header */
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.order-summary {
+    width: 100%;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-left: 2px;
+}
+
+.order-summary h2 {
+    font-size: 1.6em; /* Consistent with order section */
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.order-summary ul.order-summary-items {
+    list-style: none;
+    padding: 0;
+}
+
+.order-summary-item {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+.order-summary-item-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 15px;
+}
+
+.order-summary-item-details {
+    flex: 1;
+}
+
+.order-summary-item-details h3 {
+    font-size: 1.1em;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.order-summary-item-details p {
+    margin: 4px 0;
+}
+
+.total, .shipping-cost, .total-amount {
+    font-size: 1.1em;
+    color: #333;
+    margin: 10px 0;
+}
+
+.total span, .shipping-cost span, .total-amount span {
+    display: inline-block;
+    width: 150px;
+    font-weight: bold;
+}
+
+.payment-info-section {
+    width: 100%;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.payment-info-section p {
+    font-size: 1em;
+    color: #666;
+    margin: 8px 0;
+}
+
+@media (max-width: 768px) {
+    .transfer-container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    .order-summary-item-image {
+        width: 60px;
+        height: 60px;
+    }
+
+    .order-summary-item-details h3 {
+        font-size: 1em;
+    }
+
+    .total, .shipping-cost, .total-amount {
+        font-size: 1em;
+    }
+}
+
+.go-home-button {
+    background-color: #28a745; /* Green background */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.go-home-button:hover {
+    background-color: #218838; /* Darker green on hover */
+}

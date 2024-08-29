@@ -1,0 +1,50 @@
+.faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    margin-top: 50px;
+}
+
+.faq-item {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    background-color: #f9f9f9;
+}
+
+.faq-item h3 {
+    cursor: pointer;
+    position: relative;
+    padding-right: 30px;
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.faq-item h3::after {
+    content: '\25BC'; /* Down arrow */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.3s ease-in-out;
+}
+
+.faq-item.open h3::after {
+    transform: translateX(10px) rotate(90deg); /* Arrow moves to the side */
+}
+
+.faq-item p,
+.faq-item div {
+    margin-top: 15px;
+    font-size: 1em;
+    line-height: 1.5;
+    color: #333;
+}
+
+.faq-item.open p,
+.faq-item.open div {
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+}

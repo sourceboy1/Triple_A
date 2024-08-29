@@ -74,13 +74,27 @@ const ProductDetails = () => {
           {/* Additional images to select from */}
           <div className="product-detail-controls">
             {product.additional_images && product.additional_images.map((img, index) => (
-              <img
-                key={index}
-                src={img.image_url || ''}
-                alt={img.description}
-                className={`product-detail-controls img ${selectedImage === img.image_url ? 'active' : ''}`}
-                onClick={() => setSelectedImage(img.image_url)}  // Update selected image
-              />
+              <React.Fragment key={index}>
+                {/* Primary image */}
+                {img.image_url && (
+                  <img
+                    src={img.image_url}
+                    alt={img.description}
+                    className={`product-detail-controls img ${selectedImage === img.image_url ? 'active' : ''}`}
+                    onClick={() => setSelectedImage(img.image_url)}  // Update selected image
+                  />
+                )}
+
+                {/* Secondary image */}
+                {img.secondary_image_url && (
+                  <img
+                    src={img.secondary_image_url}
+                    alt={img.description}
+                    className={`product-detail-controls img ${selectedImage === img.secondary_image_url ? 'active' : ''}`}
+                    onClick={() => setSelectedImage(img.secondary_image_url)}  // Update selected image
+                  />
+                )}
+              </React.Fragment>
             ))}
           </div>
         </div>
@@ -109,23 +123,3 @@ const ProductDetails = () => {
 };
 
 export default ProductDetails;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
