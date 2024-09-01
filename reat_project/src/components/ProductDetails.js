@@ -4,43 +4,47 @@ import axios from 'axios';
 import { useCart } from '../contexts/CartContext';
 import './Styling.css';
 import cancelImg from '../pictures/cancel.jpg';
+import markImg from '../pictures/mark.jpg';
+import markedImg from '../pictures/markred.jpg';
 
 const ProductDetails = () => {
-  const { productId } = useParams();  // Get productId from URL
-  const navigate = useNavigate();  // Use navigate to go back to the previous page
+  const { productId } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState('');
   const [quantity, setQuantity] = useState(1);
   const { addItemToCart } = useCart();
 
   useEffect(() => {
-    // Fetch the product details based on the productId
-    axios.get(`http://localhost:8000/api/products/${productId}/`)
-      .then((response) => {
-        const data = response.data;
-        setProduct(data);
-        setSelectedImage(data.image_url || '');  // Set the initial selected image
-      })
-      .catch((error) => {
-        console.error('There was an error fetching the product!', error);
-      });
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/products/${productId}/`);
+        setProduct(response.data);
+        setSelectedImage(response.data.image_url || '');
+      } catch (error) {
+        console.error('Error fetching product:', error);
+      }
+    };
+
+    fetchProduct(); // Fetch product details on mount
+
+    const intervalId = setInterval(fetchProduct, 30000); // Poll every 30 seconds
+
+    return () => clearInterval(intervalId); // Clear interval on component unmount
   }, [productId]);
 
-  // Function to increase quantity
   const handleIncrease = () => {
     if (product && quantity < product.stock) {
       setQuantity(quantity + 1);
     }
   };
 
-  // Function to decrease quantity
   const handleDecrease = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
     }
   };
 
-  // Function to add the product to the cart
   const handleAddToCart = () => {
     if (product && quantity > 0 && quantity <= product.stock) {
       addItemToCart({ ...product, quantity });
@@ -49,49 +53,79 @@ const ProductDetails = () => {
     }
   };
 
-  // If the product is still loading
   if (!product) {
     return <div>Loading...</div>;
   }
 
-  // Format the price with commas for better readability
+  const handleBuyNowOnWhatsApp = () => {
+    const message = `Hello, I'm interested in buying ${product.name}. Please provide more details.`;
+    const whatsappUrl = `https://wa.me/2348034593459?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
   const formattedPrice = product.price ? new Intl.NumberFormat().format(product.price) : 'N/A';
+  const formattedOriginalPrice = product.original_price ? new Intl.NumberFormat().format(product.original_price) : 'N/A';
+  const formattedDiscount = product.discount ? new Intl.NumberFormat().format(product.discount) : 'N/A';
 
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        {/* Close button to navigate back */}
         <button className="close-button" onClick={() => navigate(-1)}>
           <img src={cancelImg} alt="Close" />
         </button>
 
-        {/* Product images */}
+        <div className="klb-single-stock">
+          {product.stock > 0 ? (
+            <div className="product-stock in-stock">
+              <img src={markImg} alt="In Stock" className="stock-image" />
+              In Stock
+            </div>
+          ) : (
+            <div className="product-stock out-of-stock">
+              <img src={markedImg} alt="Out of Stock" className="stock-image" />
+              Out of Stock
+            </div>
+          )}
+        </div>
+
         <div className="product-detail-images">
           {selectedImage && (
             <img src={selectedImage} alt={product.name} className="product-detail-image" />
           )}
 
-          {/* Additional images to select from */}
           <div className="product-detail-controls">
-            {product.additional_images && product.additional_images.map((img, index) => (
+            {product.additional_images && product.additional_images.length > 0 && product.additional_images.map((img, index) => (
               <React.Fragment key={index}>
-                {/* Primary image */}
                 {img.image_url && (
                   <img
                     src={img.image_url}
                     alt={img.description}
                     className={`product-detail-controls img ${selectedImage === img.image_url ? 'active' : ''}`}
-                    onClick={() => setSelectedImage(img.image_url)}  // Update selected image
+                    onClick={() => setSelectedImage(img.image_url)}
                   />
                 )}
-
-                {/* Secondary image */}
                 {img.secondary_image_url && (
                   <img
                     src={img.secondary_image_url}
                     alt={img.description}
                     className={`product-detail-controls img ${selectedImage === img.secondary_image_url ? 'active' : ''}`}
-                    onClick={() => setSelectedImage(img.secondary_image_url)}  // Update selected image
+                    onClick={() => setSelectedImage(img.secondary_image_url)}
+                  />
+                )}
+                {img.tertiary_image_url && (
+                  <img
+                    src={img.tertiary_image_url}
+                    alt={img.description}
+                    className={`product-detail-controls img ${selectedImage === img.tertiary_image_url ? 'active' : ''}`}
+                    onClick={() => setSelectedImage(img.tertiary_image_url)}
+                  />
+                )}
+                {img.quaternary_image_url && (
+                  <img
+                    src={img.quaternary_image_url}
+                    alt={img.description}
+                    className={`product-detail-controls img ${selectedImage === img.quaternary_image_url ? 'active' : ''}`}
+                    onClick={() => setSelectedImage(img.quaternary_image_url)}
                   />
                 )}
               </React.Fragment>
@@ -99,22 +133,32 @@ const ProductDetails = () => {
           </div>
         </div>
 
-        {/* Product information */}
         <div className="product-detail-info">
           <h2 className="product-title">{product.name}</h2>
           <p className="product-description">{product.description}</p>
-          <p className="product-price">Price: ₦{formattedPrice}</p>
+          <div className="product-price">
+            {product.discount ? (
+              <>
+                <span className="discounted-price">₦{formattedPrice}</span>
+                <span className="original-price">₦{formattedOriginalPrice}</span>
+              </>
+            ) : (
+              <p>Price: ₦{formattedPrice}</p>
+            )}
+          </div>
 
-          {/* Quantity control */}
           <div className="quantity-control">
             <button onClick={handleDecrease}>-</button>
             <span>{quantity}</span>
             <button onClick={handleIncrease}>+</button>
           </div>
 
-          {/* Add to Cart button */}
           <button onClick={handleAddToCart} className="button is-primary">
             Add to Cart
+          </button>
+
+          <button onClick={handleBuyNowOnWhatsApp} className="button is-primary" style={{ marginTop: '10px' }}>
+            Buy Now on WhatsApp
           </button>
         </div>
       </div>

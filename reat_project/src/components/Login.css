@@ -15,6 +15,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
+  
 }
 
 /* Form heading */
@@ -61,10 +62,10 @@
 }
 
 /* Error message */
-.login-form p {
+.login-form p.error-message {
   color: red;
   text-align: center;
-  margin-top: -15px;
+  margin-top: 15px;
   margin-bottom: 15px;
 }
 
@@ -83,5 +84,3 @@
 .forgot-password a:hover {
   text-decoration: underline;
 }
-
-  

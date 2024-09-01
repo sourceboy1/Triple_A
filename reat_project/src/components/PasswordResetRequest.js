@@ -1,50 +1,48 @@
 import React, { useState } from 'react';
-import './PasswordResetRequest.css'; // Import the CSS file
+import axios from 'axios';
+import './Password.css'; // Import the CSS file
 
-const PasswordResetRequest = () => {
+const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8000/request-password-reset/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      });
-
-      if (response.ok) {
-        setMessage('Password reset link sent to your email.');
-      } else {
-        const errorData = await response.json();
-        setMessage(errorData.error || 'Failed to send reset link.');
-      }
+      // Updated URL to include /api/ prefix
+      const response = await axios.post('http://localhost:8000/api/request-password-reset/', { email });
+      setMessage(response.data.message);
+      setError('');
     } catch (error) {
-      setMessage('Error occurred. Please try again.');
+      setError(error.response ? error.response.data.error : 'An error occurred');
+      setMessage('');
     }
   };
 
   return (
-    <div className="password-reset-container">
-      <h2>Forgot Password</h2>
-      <form className="password-reset-form" onSubmit={handleSubmit}>
-        <label>
-          Email:
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        <button type="submit">Send Reset Link</button>
-      </form>
-      {message && <p className="password-reset-message">{message}</p>}
+    <div className="form-container">
+      <div className="form-form">
+        <h2>Forgot Password</h2>
+        <form onSubmit={handleSubmit}>
+          <label>Email:
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </label>
+          <button type="submit">Send Password Reset Link</button>
+          {message && <p className="success-message">{message}</p>}
+          {error && <p className="error-message">{error}</p>}
+        </form>
+        <div className="forgot-password">
+          <a href="/signin">Back to Sign In</a>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default PasswordResetRequest;
+export default ForgotPassword;

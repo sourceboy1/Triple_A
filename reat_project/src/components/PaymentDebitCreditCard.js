@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import guaranteeIcon from '../icons/guarantee-icon.jpg';
 import fastShipIcon from '../icons/fast-ship-icon.jpg';
 import qualityAssuredIcon from '../icons/quality-assured-icon.jpg';
@@ -6,14 +7,26 @@ import customerServiceIcon from '../icons/customer-service-icon.jpg';
 import './PaymentDebitCreditCard.css'; // New CSS file
 
 const PaymentPage = () => {
+    const location = useLocation();
+    const { state } = location;
+    const { orderId, totalAmount } = state || {};
+
+    const formatPrice = (amount) => amount.toLocaleString();
+
+    const getCurrentDate = () => {
+        const date = new Date();
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return date.toLocaleDateString(undefined, options);
+    };
+
     return (
         <div className="payment-page-container">
             <div className="payment-info-section">
                 <div className="payment-info">
                     <h2>Complete your order</h2>
-                    <p><strong>Order number:</strong> 31045</p>
-                    <p><strong>Date:</strong> August 25, 2024</p>
-                    <p><strong>Total:</strong> ₦27,900.00</p>
+                    <p><strong>Order number:</strong> {orderId || 'N/A'}</p>
+                    <p><strong>Date:</strong> {getCurrentDate()}</p>
+                    <p><strong>Total:</strong> ₦{formatPrice(totalAmount || 0)}</p>
                     <p><strong>Payment method:</strong> Debit/Credit Cards</p>
                     <p>Thank you for your order, please click the button below to pay with Paystack.</p>
                 </div>

@@ -1,44 +1,53 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Login.css'; // Import the CSS file
-import eyeIcon from '../pictures/eye.jpg'; // Update path as needed
-import closedEyeIcon from '../pictures/eye-closed.jpg'; // Update path as needed
+import './Login.css';
+import eyeIcon from '../pictures/eye.jpg';
+import closedEyeIcon from '../pictures/eye-closed.jpg';
+import { useUser } from '../contexts/UserContext';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordVisible, setPasswordVisible] = useState(false); // State for password visibility
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState('');
-  const [userData, setUserData] = useState(null); // Store user data if needed
   const navigate = useNavigate();
+  const { signIn } = useUser();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch('http://localhost:8000/login/', {
+      const response = await fetch('http://localhost:8000/api/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username: identifier, password }),
       });
-
+  
+      const data = await response.json();
+  
       if (response.ok) {
-        const data = await response.json();
-        // Store tokens (for example, in localStorage)
-        localStorage.setItem('access_token', data.access);
-        localStorage.setItem('refresh_token', data.refresh);
+        if (data.token && data.user_id && data.username) {
+          const fullName = data.fullName || ''; // Get full name from response
 
-        // Store user data if needed
-        setUserData({
-          username: data.username,
-          email: data.email,
-        });
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('userId', data.user_id);
+          localStorage.setItem('loggedIn', 'true');
+          localStorage.setItem('username', data.username);
+          localStorage.setItem('fullName', fullName); // Store full name
 
-        navigate('/dashboard'); // Redirect to your dashboard or home route
+          signIn({
+            username: data.username,
+            userId: data.user_id,
+            fullName: fullName, // Pass full name
+          });
+
+          navigate('/');
+        } else {
+          setError('Unexpected response format. Please try again.');
+        }
       } else {
-        const data = await response.json();
-        setError(data.error || 'Login failed');
+        setError(data.error || 'Username, email, or password incorrect');
       }
     } catch (error) {
       setError('An error occurred. Please try again.');
@@ -54,21 +63,25 @@ const Login = () => {
       <form className="login-form" onSubmit={handleSubmit}>
         <h2>Login</h2>
         <div>
-          <label>Username:</label>
+          <label htmlFor="identifier">Username or Email:</label>
           <input
+            id="identifier"
             type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
             required
+            aria-label="Username or Email"
           />
         </div>
         <div className="password-container">
-          <label>Password:</label>
+          <label htmlFor="password">Password:</label>
           <input
+            id="password"
             type={passwordVisible ? 'text' : 'password'}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            aria-label="Password"
           />
           <img
             src={passwordVisible ? closedEyeIcon : eyeIcon}
@@ -79,12 +92,6 @@ const Login = () => {
         </div>
         <button type="submit">Login</button>
         {error && <p className="error-message">{error}</p>}
-        {userData && (
-          <div>
-            <h3>Welcome, {userData.username}!</h3>
-            <p>Email: {userData.email}</p>
-          </div>
-        )}
         <div className="forgot-password">
           <a href="/request-password-reset">Forgot Password?</a>
         </div>
@@ -94,7 +101,3 @@ const Login = () => {
 };
 
 export default Login;
-
-
-
-

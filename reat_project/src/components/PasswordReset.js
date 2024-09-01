@@ -1,69 +1,92 @@
 import React, { useState } from 'react';
-import './PasswordReset.css'; // Import the CSS file
+import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
+import './Password.css'; // Import the CSS file
+import eyeIcon from '../pictures/eye.jpg';
+import closedEyeIcon from '../pictures/eye-closed.jpg';
 
-const PasswordReset = ({ match }) => {
-  const [newPassword, setNewPassword] = useState('');
+const ResetPassword = () => {
+  const { uid, token } = useParams();
+  const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // State for password visibility
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State for confirm password visibility
+  const navigate = useNavigate();
 
-  const { uid, token } = match.params;
+  const handlePasswordToggle = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleConfirmPasswordToggle = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (newPassword !== confirmPassword) {
-      setMessage('Passwords do not match.');
+    
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      setMessage('');
       return;
     }
-
+    
     try {
-      const response = await fetch(`http://localhost:8000/reset-password/${uid}/${token}/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ new_password: newPassword }),
-      });
-
-      if (response.ok) {
-        setMessage('Password has been reset successfully.');
-      } else {
-        const errorData = await response.json();
-        setMessage(errorData.error || 'Failed to reset password.');
-      }
+      const response = await axios.post('http://localhost:8000/api/reset-password/', { uid, token, password });
+      setMessage(response.data.message);
+      setError('');
+      navigate('/signin'); // Redirect to login page after successful reset
     } catch (error) {
-      setMessage('Error occurred. Please try again.');
+      setError(error.response ? error.response.data.error : 'An error occurred');
+      setMessage('');
     }
   };
 
   return (
-    <div className="password-reset-container">
-      <h2>Reset Password</h2>
-      <form className="password-reset-form" onSubmit={handleSubmit}>
-        <label>
-          New Password:
-          <input
-            type="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Confirm Password:
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-        </label>
-        <button type="submit">Reset Password</button>
-      </form>
-      {message && <p className="password-reset-message">{message}</p>}
+    <div className="form-container">
+      <div className="form-form">
+        <h2>Reset Password</h2>
+        <form onSubmit={handleSubmit}>
+          <label>New Password:
+            <div className="password-input-container">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <img
+                src={showPassword ? eyeIcon : closedEyeIcon}
+                alt="Toggle Visibility"
+                onClick={handlePasswordToggle}
+                className="password-eye-icon"
+              />
+            </div>
+          </label>
+          <label>Confirm Password:
+            <div className="password-input-container">
+              <input
+                type={showConfirmPassword ? 'text' : 'password'}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+              <img
+                src={showConfirmPassword ? eyeIcon : closedEyeIcon}
+                alt="Toggle Visibility"
+                onClick={handleConfirmPasswordToggle}
+                className="password-eye-icon"
+              />
+            </div>
+          </label>
+          <button type="submit">Reset Password</button>
+          {message && <p className="success-message">{message}</p>}
+          {error && <p className="error-message">{error}</p>}
+        </form>
+      </div>
     </div>
   );
 };
 
-export default PasswordReset;
-
-
+export default ResetPassword;

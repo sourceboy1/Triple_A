@@ -600,13 +600,117 @@
   position: absolute;
   top: -4px;
   right: -6px;
-  background-color: darkgreen; /* Changed background color to dark green */
+  background-color: green; /* Changed background color to dark green */
   color: white;
   border-radius: 50%;
   padding: 4px 8px; /* Increased padding for better visibility */
   font-size: 14px; /* Increased font size */
   font-weight: bold;
+  
 }
+.wishlist-link {
+  position: relative;
+}
+
+.wishlist-icon {
+  width: 30px; /* Adjust size as needed */
+  height: 30px;
+  cursor: pointer;
+}
+
+/* Additional styles for hover or focus states */
+.wishlist-link:hover .wishlist-icon {
+  filter: brightness(1.2); /* Slightly brighten on hover */
+}
+
+
+
+
+
+.product-card .wishlist-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px; /* Adjust the size as needed */
+  height: 30px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.product-card {
+  position: relative;
+  /* Other styling properties for the product card */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.wishlist-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-wishlist-icon {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+
+}
+
+.wishlist-count {
+  background-color: green;
+  color: white;
+  border-radius: 50%;
+  padding: 4px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  margin-right: 2px;
+  margin-bottom: 35px;
+
+}
+
+.wishlist-dropdown {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.wishlist-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.wishlist-item-image {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.wishlist-item-details {
+  display: flex;
+  flex-direction: column;
+}
+
+
 
 
 

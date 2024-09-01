@@ -1,16 +1,30 @@
 from django.contrib import admin
-from .models import users,ShippingAddress, cart, CartItem, Category, Product, Order, OrderItem, Payment, PaymentDetail, PaymentMethod, Review, ProductPromotion, Promotion,ProductImage
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth import get_user_model
+from .models import ShippingAddress, Cart, CartItem, Category, Product, Order, OrderItem, Payment, PaymentDetail, PaymentMethod, Review, ProductPromotion, Promotion, ProductImage
 
-# Register your models here.
+# Get the user model
+CustomUser = get_user_model()
 
-@admin.register(ProductImage)
-class ProductImageAdmin(admin.ModelAdmin):
-    list_display = ['product', 'image', 'description']
-
-@admin.register(users)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'username', 'email', 'first_name', 'last_name', 'created_at')
+@admin.register(CustomUser)
+class CustomUserAdmin(BaseUserAdmin):
+    list_display = ('id', 'username', 'email', 'first_name', 'last_name', 'date_joined')
     search_fields = ('username', 'email', 'first_name', 'last_name')
+    fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'email', 'address', 'phone')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'user_permissions')}),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'email', 'password1', 'password2'),
+        }),
+    )
+    ordering = ('username',)
+
+
 
  
 @admin.register(ShippingAddress)
@@ -18,9 +32,9 @@ class ShippingAddressAdmin(admin.ModelAdmin):
     list_display = ('user', 'address_line1', 'city', 'state', 'postal_code', 'country', 'created_at')
     search_fields = ('user__username', 'address_line1', 'city', 'state', 'postal_code', 'country')
 
-@admin.register(cart)
+@admin.register(Cart)
 class CartAdmin(admin.ModelAdmin):
-    list_display = ('user', 'created_at')
+    list_display = ('user', 'created_at', 'product', 'quantity')
     search_fields = ('user__username',)
 
 @admin.register(CartItem)
@@ -35,14 +49,35 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'stock', 'category', 'created_at')
-    search_fields = ('name', 'category__name')
-    list_filter = ('category',)
+    list_display = ('product_id', 'name', 'price', 'original_price', 'discount', 'stock', 'category', 'created_at', 'image')
+    search_fields = ('name', 'description', 'category__name')
+    list_filter = ('category', 'created_at')
+    fields = ('name', 'description', 'price', 'original_price', 'discount', 'stock', 'category', 'image')
 
-@admin.register(Order)
+@admin.register(ProductImage)
+class ProductImageAdmin(admin.ModelAdmin):
+    list_display = ('product', 'image', 'secondary_image', 'tertiary_image', 'quaternary_image', 'description')
+    search_fields = ('product__name', 'description')
+    list_filter = ('product',)
+
+
+
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('user', 'total', 'status', 'created_at')
-    search_fields = ('user__username', 'status')
+    list_display = (
+        'order_id', 'user_id', 'total_amount', 'created_at', 'first_name',
+        'last_name', 'address', 'city', 'state', 'postal_code',
+        'country', 'phone', 'shipping_method', 'order_note', 'payment_method', 'shipping_cost'
+    )
+
+    list_filter = (
+        'created_at', 'shipping_method', 'payment_method'
+    )
+
+    search_fields = (
+        'order_id', 'first_name', 'last_name', 'address', 'city', 'state', 'country', 'phone', 'payment_method'
+    )
+
+admin.site.register(Order, OrderAdmin)
 
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
@@ -61,15 +96,13 @@ class PaymentAdmin(admin.ModelAdmin):
     # Add search fields if necessary
     search_fields = ('order__id', 'payment_method__method_name', 'amount', 'status')
 
-@admin.register(PaymentDetail)
-class PaymentDetailAdmin(admin.ModelAdmin):
-    list_display = ('payment', 'transaction_id', 'amount', 'status', 'details')
-    search_fields = ('payment__order__id', 'transaction_id', 'status')
+
 
 @admin.register(PaymentMethod)
 class PaymentMethodAdmin(admin.ModelAdmin):
-    list_display = ('user', 'method_name', 'created_at')
-    search_fields = ('user__username', 'method_name')
+    list_display = ('payment_method_id', 'method_name', 'user', 'created_at')
+
+
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):

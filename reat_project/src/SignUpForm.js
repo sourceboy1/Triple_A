@@ -1,23 +1,27 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './SignUpForm.css'; // Ensure this file exists for styling
+import './SignUpForm.css';
 import eyeIcon from './pictures/eye.jpg';
 import closedEyeIcon from './pictures/eye-closed.jpg';
 import PhoneInputComponent from './PhoneInput';
+import { useNavigate } from 'react-router-dom';
+import { useUser } from './contexts/UserContext';
 
 const SignUpForm = () => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
     email: '',
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     address: '',
     phone: '',
   });
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const navigate = useNavigate();
+  const { signIn } = useUser();
 
   const handlePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -37,40 +41,55 @@ const SignUpForm = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSignup = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/signup/', formData);
+      const response = await axios.post('http://localhost:8000/api/signup/', formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
       if (response.status === 201) {
-        setSuccessMessage('User registered successfully!');
-        setFormData({
-          username: '',
-          password: '',
-          email: '',
-          firstName: '',
-          lastName: '',
-          address: '',
-          phone: '',
-        });
-        setError('');
+        const data = response.data;
+
+        if (data.token && data.user_id) {
+          const fullName = `${formData.first_name} ${formData.last_name}`;
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('userId', data.user_id);
+          localStorage.setItem('loggedIn', 'true');
+          localStorage.setItem('username', formData.username);
+          localStorage.setItem('fullName', fullName); // Save full name
+
+          signIn({
+            username: formData.username,
+            userId: data.user_id,
+            fullName: fullName // Pass full name
+          });
+
+          setSuccessMessage('User created successfully!');
+          setTimeout(() => navigate('/'), 2000);
+        } else {
+          setError('Unexpected response format. Please try again.');
+        }
       } else {
         setError('Error creating user. Please try again.');
-        setSuccessMessage('');
       }
     } catch (error) {
-      if (error.response && error.response.data) {
-        setError(error.response.data.error || 'Error creating user. Please try again.');
-      } else {
-        setError('An unexpected error occurred. Please try again.');
-      }
-      setSuccessMessage('');
+      console.error('Signup error:', error.response ? error.response.data : error.message);
+      setError('Error creating user: ' + (error.response ? error.response.data.error : error.message));
     }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    handleSignup();
   };
 
   return (
     <div className="signup-container">
       <h1>Register</h1>
       <form onSubmit={handleSubmit} className="signup-form">
+        {/* Form fields */}
         <label>
           Username:
           <input
@@ -113,8 +132,8 @@ const SignUpForm = () => {
           First Name:
           <input
             type="text"
-            name="firstName"
-            value={formData.firstName}
+            name="first_name"
+            value={formData.first_name}
             onChange={handleChange}
           />
         </label>
@@ -122,8 +141,8 @@ const SignUpForm = () => {
           Last Name:
           <input
             type="text"
-            name="lastName"
-            value={formData.lastName}
+            name="last_name"
+            value={formData.last_name}
             onChange={handleChange}
           />
         </label>
@@ -148,15 +167,10 @@ const SignUpForm = () => {
       </form>
       <div className="login-prompt">
         <span>Already have an account?</span>
-        <a href="/login" className="login-link">Log in here</a>
+        <a href="/signin" className="login-link">Log in here</a>
       </div>
     </div>
   );
 };
 
 export default SignUpForm;
-
-
-
-
-

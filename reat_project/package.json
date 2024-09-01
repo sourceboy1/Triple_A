@@ -11,8 +11,10 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-modal": "^3.16.1",
+    "react-phone-number-input": "^3.4.5",
     "react-router-dom": "^6.26.0",
     "react-scripts": "5.0.1",
+    "react-select-country-list": "^2.2.3",
     "stream-browserify": "^3.0.0",
     "url": "^0.11.4",
     "web-vitals": "^2.1.4"

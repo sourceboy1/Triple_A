@@ -17,6 +17,7 @@
     background-color: #ffffff; /* White background */
     border-radius: 5px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding-top: 50px;
 }
 
 .checkout-form input,
@@ -27,43 +28,90 @@
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 16px;
+    margin-bottom: 20px;
+}
+
+/* Phone input with country code styling */
+.phone-container {
+    display: flex;
+    align-items: center;
+    width: 70%;
+    margin-bottom: 20px;
+}
+
+.phone-container select {
+    width: 25%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px 0 0 5px; /* Rounded corners for the left side */
+    font-size: 16px;
+}
+
+.phone-container input[type="text"] {
+    width: 75%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 0 5px 5px 0; /* Rounded corners for the right side */
+    font-size: 16px;
+    margin-left: -1px; /* Removes the space between the select and input */
+}
+
+/* Terms and conditions section */
+.terms-and-conditions {
+    align-items: center;
+    margin-top: 10px;
+}
+
+.terms-and-conditions input {
+    width: 6%;
+    background-color: darkgreen;
+}
+
+.terms-label {
+    align-items: center;
+    font-size: 14px;
+}
+
+.terms-content {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+
+.terms-text {
+    max-height: 300px; /* Adjust height as needed */
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.checkbox-style {
+    width: 50px;
+    height: 16px;
 }
 
 /* Button styling */
 .checkout-form button {
     padding: 15px;
-    background-color: #f0c14b;
+    background-color: darkgreen;
     color: #111;
-    border: 1px solid #a88734;
+    border: 1px solid;
     border-radius: 5px;
     font-size: 18px;
     cursor: pointer;
-    width: 100%;
-    display: block; /* Ensures button is on its own line in its container */
+    width: 60%;
+    margin-left: 60px;
 }
 
 .checkout-form button:hover {
-    background-color: #ddb347;
+    background-color: green;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Order summary section */
 .order-summary {
-    flex: 1; /* Adjusted flex value */
+    flex: 3; /* Adjusted flex value */
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 8px;
@@ -89,6 +137,39 @@
     margin-top: 10px;
 }
 
+/* Order summary item styling */
+.order-summary-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.order-summary-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.order-summary-item-image {
+    width: 80px; /* Adjust the width as needed */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: 15px;
+}
+
+.order-summary-item-details {
+    flex: 1;
+}
+
+.order-summary-item-details h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.order-summary-item-details p {
+    margin: 5px 0;
+}
+
 /* Footer styling */
 footer {
     margin-top: 50px;
@@ -108,6 +189,220 @@ footer {
         margin-top: 30px;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Shipping Method Container */
+.shipping-method-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Shipping Method Label */
+.shipping-method-container label {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Price and Text Container */
+.shipping-method-container .price-text-container {
+    display: flex;
+    align-items: center;
+    width: 100%; /* Ensure it takes the full width of the label */
+}
+
+/* Price Styling */
+.shipping-method-container .price {
+    font-size: 0.9em; /* Smaller font size for the price */
+    margin-right: 20px; /* More space between price and text */
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* Shipping Method Text Styling */
+.shipping-method-container .text {
+    font-size: 0.9em; /* Smaller font size for the text */
+    color: #333;
+}
+
+/* Shipping Method Input */
+.shipping-method-container input[type="radio"] {
+    margin-right: 10px;
+    accent-color: #008000; /* Optional: Changes the color of the radio button */
+    width: 20px;
+}
+
+/* On hover, change background color and border color */
+.shipping-method-container label:hover {
+    background-color: #e0e0e0;
+    border-color: #bbb;
+}
+
+/* Checked radio button */
+.shipping-method-container input[type="radio"]:checked + .price-text-container .text {
+    font-weight: bold;
+    color: #333;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.payment-method-container {
+    margin-top: 20px;
+}
+
+.payment-method {
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.3s ease;
+}
+
+.payment-method:hover {
+    border-color: #008000; /* Green color on hover */
+}
+
+.payment-method input[type="radio"] {
+    margin-right: 10px;
+    accent-color: #008000; /* Optional: Changes the color of the radio button */
+    width: 20px;
+}
+
+.payment-instructions {
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.privacy-policy-text {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #666;
+}
+.payment-icon {
+    width: 150px; /* Adjust size of the payment icon */
+    margin-left: 110px;
+    margin-top: 1px;
+    padding-top: 15px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.total,
+.shipping-cost,
+.total-amount {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.additional-info {
+    margin-top: 20px;
+}
+
+.info-item {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.info-item img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.additional-info a {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    
+}
+
+.additional-info a:hover {
+    color: #0056b3;
+    text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Section under order summary */
 .additional-info {
@@ -143,3 +438,5 @@ footer {
     margin: 0;
     color: #333;
 }
+
+
