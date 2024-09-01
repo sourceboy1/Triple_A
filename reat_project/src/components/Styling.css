@@ -323,6 +323,60 @@
 
 
 
+.phone-icon-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease-in-out;
+  margin-bottom: 65px;
+  margin-right: 20px;
+}
+
+.phone-icon {
+  width: 50px;
+  height: 50px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.phone-icon:hover {
+  transform: translateY(-10px);
+  animation: bounce 0.5s;
+}
+
+.phone-label {
+  margin-right: 10px; /* Move the label to the left of the icon */
+  opacity: 0;
+  visibility: hidden;
+  color: green;
+  font-family: Arial, sans-serif;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.phone-icon-container:hover .phone-label {
+  opacity: 1;
+  visibility: visible;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-10px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -408,11 +462,22 @@
   width: 100%; /* Ensure the slider container is full width */
   max-width: 1300px; /* Set to match the width of slidingImage1 */
   margin: 0 auto; /* Center align the slider */
+  overflow: hidden; /* Hide overflow to ensure clean edges */
+  height: 600px; /* Set a fixed height if needed */
 }
 
 .slide-image {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%; /* Ensure image fills the slider container */
-  height: auto; /* Maintain aspect ratio */
+  height: 100%; /* Ensure image covers the height */
+  opacity: 0; /* Hide all images initially */
+  transition: opacity 4s ease-in-out; /* Smooth transition for opacity */
+}
+
+.slide-image.active {
+  opacity: 1; /* Show the active image */
 }
 
 .slider-caption {
@@ -437,18 +502,20 @@
   background-color: green;
   color: white;
   border: none;
-  padding: 15px 30px; /* Increase padding for a bigger button */
-  font-size: 1.5rem; /* Increase font size */
+  padding: 15px 30px;
+  font-size: 1.5rem;
   cursor: pointer;
   border-radius: 20px;
   transition: background-color 0.3s, transform 0.3s;
   margin-left: 80px;
+  margin-left: 20px;
 }
 
 .shop-button:hover {
   background-color: darkgreen;
   transform: scale(1.05);
 }
+
 
 
 
@@ -512,6 +579,8 @@
   padding: 10px;
   cursor: pointer;
   border-radius: 5px;
+  margin-right: 26px;
+  padding-right: 10px;
 }
 
 
@@ -671,34 +740,31 @@
   margin: 20px auto;
   padding: 20px;
   background: #fff;
-  border: 2px solid #ccc; /* Adding a good border */
-  border-radius: 12px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adding a shadow for depth */
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Content wrapper for product details */
 .product-detail-content {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* Container for images within product details */
 .product-detail-images {
   display: flex;
-  justify-content: center; /* Center the image horizontally */
-  margin: 20px 0; /* Add some margin around the image section */
+  justify-content: center;
+  margin: 20px 0;
 }
 
 .product-detail-image {
-  width: 60%; /* Reduce the width to make the image smaller */
-  max-width: 250px; /* Set a maximum width to keep it consistent */
+  width: 60%;
+  max-width: 250px;
   height: auto;
   margin-bottom: 10px;
-  border: 2px solid #ccc; /* Optional: add a border to the image */
-  border-radius: 10px; /* Optional: rounded corners */
+  border: 2px solid #ccc;
+  border-radius: 10px;
 }
-
 
 .product-detail-controls {
   display: flex;
@@ -706,29 +772,25 @@
   margin-top: 10px;
 }
 
-/* Images within product detail controls */
 .product-detail-controls img {
-  width: 80px; /* Thumbnail size */
-  height: 80px; /* Thumbnail size */
+  width: 80px;
+  height: 80px;
   object-fit: cover;
   margin: 0 5px;
   cursor: pointer;
-  border: 2px solid transparent; /* Default border */
+  border: 2px solid transparent;
   border-radius: 5px;
 }
 
-/* Active image border styling */
 .product-detail-controls img.active {
-  border: 2px solid green; /* Active image border */
+  border: 2px solid green;
 }
 
-/* Text alignment and margins for product detail information */
 .product-detail-info {
   text-align: center;
   margin-top: 20px;
 }
 
-/* Quantity control container */
 .quantity-control {
   display: flex;
   align-items: center;
@@ -736,7 +798,6 @@
   margin: 20px 0;
 }
 
-/* Buttons within quantity control */
 .quantity-control button {
   background-color: green;
   color: white;
@@ -747,12 +808,10 @@
   margin: 0 10px;
 }
 
-/* Span within quantity control */
 .quantity-control span {
   font-size: 1.2em;
 }
 
-/* Close button styling */
 .close-button {
   position: absolute;
   top: 10px;
@@ -761,17 +820,15 @@
   border: none;
   padding: 10px;
   cursor: pointer;
-  z-index: 1; 
+  z-index: 1;
   background-color: white;
 }
 
-/* Close button image styling */
 .close-button img {
   width: 24px;
   height: 24px;
 }
 
-/* Overlay for the modal */
 .modal-overlay {
   background: rgba(0, 0, 0, 0.5);
   position: fixed;
@@ -785,63 +842,22 @@
   margin-top: 55px;
 }
 
-/* Modal content styling */
 .modal-content {
-  width: 90%; /* Increase width for larger display */
-  max-width: 1200px; /* Maximum width for the modal */
-  height: 90%; /* Increase height for better coverage */
-  max-height: 90vh; /* Ensure modal does not exceed viewport height */
+  width: 90%;
+  max-width: 1200px;
+  height: 90%;
+  max-height: 90vh;
   margin: auto;
   padding: 20px;
   background: #fff;
   border-radius: 12px;
   position: relative;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow-y: auto; /* Enable vertical scrolling if needed */
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
 
-/* Modal slider styling */
-.modal-slider {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-/* Main image within the modal */
-.modal-image {
-  width: 100%;
-  max-width: 80px; /* Ensure the main image width does not exceed 80px */
-  height: auto;
-  border-radius: 8px;
-}
-
-/* Controls for images within the modal */
-.modal-controls {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
-
-/* Thumbnails for modal controls */
-.modal-controls img {
-  width: 80px; /* Thumbnail size */
-  height: 80px; /* Thumbnail size */
-  object-fit: cover;
-  margin: 0 5px;
-  cursor: pointer;
-  border: 2px solid transparent; /* Default border */
-  border-radius: 5px;
-}
-
-/* Active thumbnail border styling */
-.modal-controls img.active {
-  border: 2px solid green; /* Active thumbnail border */
-}
-
-/* Button for adding to cart */
 .button.is-primary {
   background-color: green;
   color: white;
@@ -850,7 +866,62 @@
   font-size: 1em;
   cursor: pointer;
   border-radius: 5px;
+  margin-left: 20px;
 }
+
+.klb-single-stock {
+    display: flex;
+    justify-content: center; /* Center the content */
+    margin-bottom: 10px;
+    margin-right: 1050px;
+}
+
+.product-stock.in-stock {
+    display: flex;
+    align-items: center;
+    border: 1px solid green; /* Add a border to the stock status */
+    padding: 5px 10px;
+    border-radius: 4px;
+    color: green;
+    background-color: #f9f9f9; /* Optional: Add a background color */
+}
+
+.stock-image {
+    width: 20px; /* Adjust the width of the image as needed */
+    height: 20px;
+    margin-right: 5px; /* Space between the image and the text */
+}
+.product-stock.out-of-stock {
+  display: flex;
+  align-items: center;
+  border: 1px solid red; /* Add a border to indicate out of stock */
+  padding: 5px 10px;
+  border-radius: 4px;
+  color: red;
+  background-color: #f9f9f9; /* Optional: Add a background color */
+}
+
+
+.product-price {
+  font-size: 1.5em;
+  color: #333;
+  margin-right: 10px;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #888;
+  margin-right: 10px;
+  
+}
+
+.discounted-price{
+  margin-right: 25px;
+}
+
+
+
+
 
 
 

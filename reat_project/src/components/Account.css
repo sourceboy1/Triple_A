@@ -1,0 +1,73 @@
+/* Account.css */
+
+.account-container {
+    display: flex;
+    min-height: 80vh;
+    background-color: #f9fbf2;
+    margin: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 85px;
+}
+
+.sidebar {
+    min-width: 200px;
+    background-color: #fbfef9;
+    border-right: 2px solid green;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.account-options {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.option-item {
+    padding: 10px 15px;
+    margin: 5px 0;
+    border: 1px solid green;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 4px;
+    text-align: left;
+}
+
+.option-item:hover,
+.option-item.active {
+    background-color: darkgreen;
+    color: white;
+}
+
+.content-section {
+    flex: 1;
+    padding: 20px;
+    border-top: 2px solid green;
+    border-left: 2px solid green;
+}
+
+.content-section > div {
+    font-family: Arial, sans-serif;
+    font-size: 19px; /* Reduced text size */
+    color: #52534f;
+}
+
+.not-you {
+    font-size: 25px; /* Slightly smaller text for the additional note */
+    color: rgb(78, 76, 76);
+}
+
+.logout-link {
+    color: green;
+    text-decoration: none;
+}
+
+.logout-link:hover {
+    text-decoration: underline;
+}
+
+.dashboard{
+    font-size: 28px;
+}
