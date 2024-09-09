@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
-import { useUser } from '../contexts/UserContext'; // Import useUser from your UserContext
+import { useNavigate } from 'react-router-dom';
+import { useUser } from '../contexts/UserContext';
+import Wishlist from './Wishlist';
+import AccountDetails from './AccountDetails';
 import './Account.css';
 
 const Account = () => {
-  const { fullName = 'Guest', signOut } = useUser(); // Provide default value for fullName
+  const { fullName, signOut } = useUser();
   const [selectedOption, setSelectedOption] = useState('Dashboard');
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
-  // Handle sign out
   const handleSignOut = () => {
-    signOut(); // Use signOut from context
-    navigate('/'); // Redirect to homepage or login page
+    signOut();
+    navigate('/');
   };
 
-  // Render different components based on the selected option
+  const handleNavigateToDetails = () => {
+    navigate('/account/details');
+  };
+
   const renderContent = () => {
     switch (selectedOption) {
       case 'Dashboard':
@@ -25,18 +29,10 @@ const Account = () => {
             </h2>
             <p>
               From your account dashboard you can view your{' '}
-              <a href="#">
-                recent orders
-              </a>
-              ,<br/> manage your{' '}
-              <a href="#">
-                shipping and billing addresses
-              </a>
-              , and{' '}
-              <a href="#">
-                edit your password and account details
-              </a>
-              .
+              <a href="#">recent orders</a>,<br />
+              manage your{' '}
+              <a href="#">shipping and billing addresses</a>, and{' '}
+              <a href="#" onClick={handleNavigateToDetails}>edit your password and account details</a>.
             </p>
           </div>
         );
@@ -47,11 +43,9 @@ const Account = () => {
       case 'Payment methods':
         return <div>Manage your Payment Methods.</div>;
       case 'Account details':
-        return <div>View and update your Account Details.</div>;
-      case 'Communication':
-        return <div>Manage your Communication Preferences.</div>;
+        return <AccountDetails />; // No need to pass `onUpdateMessage` anymore
       case 'Wishlist':
-        return <div>View your Wishlist.</div>;
+        return <Wishlist />;
       default:
         return <div>Select an option from the sidebar.</div>;
     }
@@ -61,21 +55,13 @@ const Account = () => {
     <div className="account-container">
       <div className="sidebar">
         <ul className="account-options">
-          {[
-            'Dashboard',
-            'Orders',
-            'Addresses',
-            'Payment methods',
-            'Account details',
-            'Communication',
-            'Wishlist',
-          ].map((option) => (
+          {['Dashboard', 'Orders', 'Addresses', 'Payment methods', 'Account details', 'Wishlist'].map((option) => (
             <li
               key={option}
               className={`option-item ${selectedOption === option ? 'active' : ''}`}
               onClick={() => {
                 if (option === 'Log out') {
-                  handleSignOut(); // Call handleSignOut when Log out is clicked
+                  handleSignOut();
                 } else {
                   setSelectedOption(option);
                 }
@@ -86,7 +72,9 @@ const Account = () => {
           ))}
         </ul>
       </div>
-      <div className="content-section">{renderContent()}</div>
+      <div className="content-section">
+        {renderContent()}
+      </div>
     </div>
   );
 };
