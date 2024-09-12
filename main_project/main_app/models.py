@@ -3,7 +3,9 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser,BaseUserManager
 from django.conf import settings
 from django.utils import timezone
+from datetime import timedelta
 import datetime
+from django.utils.timezone import now
 
 
 
@@ -24,6 +26,10 @@ class CustomUserManager(BaseUserManager):
 
 
 
+
+
+
+
 class CustomUser(AbstractUser):
     address = models.TextField(blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
@@ -34,7 +40,13 @@ class CustomUser(AbstractUser):
         ordering = ['username']
         verbose_name = 'User'
         verbose_name_plural = 'Users'
+
+
+
     
+
+
+
 
 class PasswordResetToken(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -44,6 +56,7 @@ class PasswordResetToken(models.Model):
     def is_expired(self):
         # Tokens expire after 1 hour
         return self.created_at < timezone.now() - datetime.timedelta(hours=1)   
+
 
 
 class Category(models.Model):
@@ -259,6 +272,14 @@ class Review(models.Model):
         return f"Review {self.review_id} for Product {self.product.name} by {self.user.username}"
     
 class Order(models.Model):
+    ORDER_STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('processing', 'Processing'),
+        ('shipped', 'Shipped'),
+        ('delivered', 'Delivered'),
+        ('cancelled', 'Cancelled'),
+    ]
+
     order_id = models.AutoField(primary_key=True)
     user_id = models.IntegerField(null=True, blank=True)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -275,9 +296,11 @@ class Order(models.Model):
     order_note = models.TextField(null=True, blank=True)
     payment_method = models.ForeignKey('main_app.PaymentMethod', on_delete=models.SET_DEFAULT, default=1)
     shipping_cost = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=10, choices=ORDER_STATUS_CHOICES, default='pending')
 
     class Meta:
         db_table = 'orders'
+
 
 
 

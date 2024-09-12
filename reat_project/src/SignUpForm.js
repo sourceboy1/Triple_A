@@ -46,24 +46,22 @@ const SignUpForm = () => {
       const response = await axios.post('http://localhost:8000/api/signup/', formData, {
         headers: {
           'Content-Type': 'application/json',
-        }
+        },
       });
 
-      if (response.status === 201) {
-        const data = response.data;
+      const data = response.data;
 
+      if (response.status === 201) {
         if (data.token && data.user_id) {
           const fullName = `${formData.first_name} ${formData.last_name}`;
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('userId', data.user_id);
-          localStorage.setItem('loggedIn', 'true');
-          localStorage.setItem('username', formData.username);
-          localStorage.setItem('fullName', fullName); // Save full name
 
           signIn({
             username: formData.username,
             userId: data.user_id,
-            fullName: fullName // Pass full name
+            firstName: formData.first_name,
+            lastName: formData.last_name,
+            email: formData.email,
+            token: data.token
           });
 
           setSuccessMessage('User created successfully!');
@@ -80,7 +78,7 @@ const SignUpForm = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     handleSignup();
   };
@@ -89,7 +87,6 @@ const SignUpForm = () => {
     <div className="signup-container">
       <h1>Register</h1>
       <form onSubmit={handleSubmit} className="signup-form">
-        {/* Form fields */}
         <label>
           Username:
           <input

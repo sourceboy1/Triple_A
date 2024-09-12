@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../contexts/UserContext';
 import Wishlist from './Wishlist';
 import AccountDetails from './AccountDetails';
+import UserOrders from './UserOrders';
 import './Account.css';
 
 const Account = () => {
@@ -15,9 +16,7 @@ const Account = () => {
     navigate('/');
   };
 
-  const handleNavigateToDetails = () => {
-    navigate('/account/details');
-  };
+  
 
   const renderContent = () => {
     switch (selectedOption) {
@@ -32,24 +31,25 @@ const Account = () => {
               <a href="#">recent orders</a>,<br />
               manage your{' '}
               <a href="#">shipping and billing addresses</a>, and{' '}
-              <a href="#" onClick={handleNavigateToDetails}>edit your password and account details</a>.
+              <a href="#">edit your password and account details</a>.
             </p>
           </div>
         );
       case 'Orders':
-        return <div>Here are your Orders.</div>;
+        return <UserOrders />; // Render UserOrders component here
       case 'Addresses':
         return <div>Manage your Addresses here.</div>;
       case 'Payment methods':
         return <div>Manage your Payment Methods.</div>;
       case 'Account details':
-        return <AccountDetails />; // No need to pass `onUpdateMessage` anymore
+        return <AccountDetails />;
       case 'Wishlist':
         return <Wishlist />;
       default:
         return <div>Select an option from the sidebar.</div>;
     }
   };
+  
 
   return (
     <div className="account-container">

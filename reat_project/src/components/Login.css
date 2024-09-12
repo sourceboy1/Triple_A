@@ -84,3 +84,6 @@
 .forgot-password a:hover {
   text-decoration: underline;
 }
+.password-container{
+  padding-bottom: 25px;
+}

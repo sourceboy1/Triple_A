@@ -20,45 +20,48 @@ import SearchResults from './components/SearchResults';
 import ReturnRefundPolicy from './components/ReturnRefundPolicy'; 
 import FAQ from './components/FAQ';
 import PrivacyPolicy from './components/PrivacyPolicy'; 
-import PaymentDebitCreditCard from './components/PaymentDebitCreditCard'
-import PaymentBankTransfer from './components/PaymentBankTransfer'
+import PaymentDebitCreditCard from './components/PaymentDebitCreditCard';
+import PaymentBankTransfer from './components/PaymentBankTransfer';
 import Account from './components/Account';
 import { WishlistProvider } from './contexts/WishlistContext';
 import Wishlist from './components/Wishlist';
+import AccountDetails from './components/AccountDetails';
+
 
 const App = () => {
   return (
     <UserProvider> {/* Wrap the app with UserProvider */}
       <TokenProvider>
         <CartProvider>
-        <WishlistProvider>
-          <Router>
-            <div>
-              <Navbar />
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/signup" element={<SignUpForm />} />
-                <Route path="/signin" element={<SignIn />} />
-                <Route path="/request-password-reset" element={<PasswordResetRequest />} />
-                <Route path="/reset-password/:uid/:token" element={<PasswordReset />} />
-                <Route path="/product-details/:productId" element={<ProductDetails />} />
-                <Route path="/products" element={<ProductList />} />
-                <Route path="/shop/:categoryName" element={<CategoryProducts />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/search" element={<SearchResults />} /> 
-                <Route path="/return-refund-policy" element={<ReturnRefundPolicy />} />
-                <Route path="/faq" element={<FAQ />} />
-                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                <Route path="/payment/debit-credit-card" element={<PaymentDebitCreditCard />} />
-                <Route path="/payment/bank-transfer" element={<PaymentBankTransfer />} />
-                <Route path="/account" element={<Account />} />
-                <Route path="/wishlist" element={<Wishlist />} />
-              </Routes>
-            </div>
-          </Router>
+          <WishlistProvider>
+            <Router>
+              <div>
+                <Navbar />
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/signup" element={<SignUpForm />} />
+                  <Route path="/signin" element={<SignIn />} />
+                  <Route path="/request-password-reset" element={<PasswordResetRequest />} />
+                  <Route path="/reset-password/:uid/:token" element={<PasswordReset />} />
+                  <Route path="/product-details/:productId" element={<ProductDetails />} />
+                  <Route path="/products" element={<ProductList />} />
+                  <Route path="/shop/:categoryName" element={<CategoryProducts />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/checkout" element={<Checkout />} />
+                  <Route path="/search" element={<SearchResults />} /> 
+                  <Route path="/return-refund-policy" element={<ReturnRefundPolicy />} />
+                  <Route path="/faq" element={<FAQ />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="/payment/debit-credit-card" element={<PaymentDebitCreditCard />} />
+                  <Route path="/payment/bank-transfer" element={<PaymentBankTransfer />} />
+                  <Route path="/account" element={<Account />} />
+                  <Route path="/wishlist" element={<Wishlist />} />
+                  <Route path="/account/details" element={<AccountDetails />} />
+                </Routes>
+              </div>
+            </Router>
           </WishlistProvider>
         </CartProvider>
       </TokenProvider>

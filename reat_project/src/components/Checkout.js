@@ -85,7 +85,7 @@ const Checkout = () => {
         const total = subtotal + shippingCost;
     
         const orderData = {
-            user_id: userId,
+            user_id: userId, 
             email: email,
             first_name: firstName,
             last_name: lastName,
@@ -113,22 +113,11 @@ const Checkout = () => {
                     'Authorization': `Token ${token}`,
                 }
             });
-            console.log('API Response:', response.data);
-    
-            localStorage.setItem('orderDetails', JSON.stringify({
-                orderId: response.data.order_id,
-                subtotal: subtotal,
-                shippingCost: shippingCost,
-                total: total,
-                email: email,
-                phone: phone,
-                address: fullAddress,
-                products: cart
-            }));
     
             alert('Order placed successfully!');
             localStorage.removeItem('cartData');
     
+            // Redirect based on payment method
             if (paymentMethod === 'debit_credit_cards') {
                 navigate('/payment/debit-credit-card', { state: { orderId: response.data.order_id, totalAmount: total } });
             } else if (paymentMethod === 'bank_transfer') {
@@ -136,13 +125,11 @@ const Checkout = () => {
             }
         } catch (error) {
             console.error('API Error Response:', error.response);
-            if (error.response && error.response.data) {
-                alert(`Error: ${JSON.stringify(error.response.data)}`);
-            } else {
-                alert('There was an error placing your order. Please try again.');
-            }
+            alert('There was an error placing your order. Please try again.');
         }
     };
+    
+    
     
 
     const formatPrice = (price) => {

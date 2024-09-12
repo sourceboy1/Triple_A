@@ -71,3 +71,36 @@
 .dashboard{
     font-size: 28px;
 }
+
+
+.account-details-form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    gap: 15px;
+  }
+  
+  .account-details-form label {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .account-details-form input {
+    padding: 8px;
+    font-size: 14px;
+  }
+  
+  .save-account-details {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    align-self: flex-start;
+  }
+  
+  .save-account-details:hover {
+    background-color: #218838;
+  }
+  

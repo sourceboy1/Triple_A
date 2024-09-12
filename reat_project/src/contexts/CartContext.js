@@ -51,7 +51,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const getCartItemCount = () => {
-    return cart.length; // Return the number of unique products
+    return cart.length; 
   };
 
   return (

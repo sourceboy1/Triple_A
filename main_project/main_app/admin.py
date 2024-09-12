@@ -66,20 +66,23 @@ class ProductImageAdmin(admin.ModelAdmin):
 
 
 
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    extra = 1
+
 class OrderAdmin(admin.ModelAdmin):
     list_display = (
         'order_id', 'user_id', 'total_amount', 'created_at', 'first_name',
         'last_name', 'address', 'city', 'state', 'postal_code',
         'country', 'phone', 'shipping_method', 'order_note', 'payment_method', 'shipping_cost'
     )
-
     list_filter = (
         'created_at', 'shipping_method', 'payment_method'
     )
-
     search_fields = (
         'order_id', 'first_name', 'last_name', 'address', 'city', 'state', 'country', 'phone', 'payment_method'
     )
+    inlines = [OrderItemInline]  # Add OrderItemInline to view related items
 
 admin.site.register(Order, OrderAdmin)
 
@@ -87,6 +90,9 @@ admin.site.register(Order, OrderAdmin)
 class OrderItemAdmin(admin.ModelAdmin):
     list_display = ('order', 'product', 'quantity', 'price')
     search_fields = ('order__user__username', 'product__name')
+
+
+    
 
 class PaymentAdmin(admin.ModelAdmin):
     list_display = ('order_id', 'payment_method_name', 'amount', 'payment_date', 'status')

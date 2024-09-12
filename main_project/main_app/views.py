@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from rest_framework import status
 from .models import CustomUser, Cart ,CartItem, Category,Payment,PaymentDetail,PaymentMethod,Product,Review,Promotion,ProductPromotion,Order,OrderItem,ShippingAddress,ProductImage
 from .serializers import UserSerializer, CartSerializer ,CartItemSerializer,CategorySerializer,PaymentSerializer,PaymentDetailSerializer,PaymentMethodSerializer,ProductSerializer,ReviewSerializer,PromotionSerializer,ProductPromotionSerializer,OrderSerializer,OrderItemSerializer,ShippingAddressSerializer,ProductImageSerializer
@@ -10,7 +10,7 @@ from rest_framework.decorators import api_view,permission_classes
 from rest_framework.response import Response
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
-import json  
+from django.contrib.auth import update_session_auth_hash 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from django.core.mail import send_mail
@@ -22,13 +22,12 @@ from django.views import View
 from django.db.models import Q
 import logging
 from django.contrib.auth import get_user_model
-from django.contrib.auth.hashers import make_password
 import logging
 from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
-from django.utils.crypto import get_random_string
 from django.core.mail import send_mail
-from django.shortcuts import get_object_or_404
+
+
 
 
 
@@ -180,15 +179,84 @@ class SignupView(APIView):
 
     
 class PlaceOrderView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        # Your order placement logic here
-        return Response({'message': 'Order placed successfully!'}, status=status.HTTP_200_OK)
+        # Get the authenticated user's ID
+        user_id = request.user.id
+        payment_method_id = request.data.get('payment_method')
+
+        # Check if payment method exists
+        payment_method = PaymentMethod.objects.filter(payment_method_id=payment_method_id).first()
+        if not payment_method:
+            return Response({'error': 'Invalid payment method'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Update the request data with user_id and payment_method_id
+        data = {
+            'user': user_id,
+            'payment_method': payment_method.payment_method_id,
+            **request.data
+        }
+
+        serializer = OrderSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Order placed successfully!', 'order': serializer.data}, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
-logger = logging.getLogger(__name__)
+
+
+
+class CancelOrderView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, order_id):
+        try:
+            order = Order.objects.get(order_id=order_id, user_id=request.user.id)
+            if order.status != 'Cancelled':
+                order.status = 'Cancelled'
+                order.save()
+                return Response({'message': 'Order cancelled successfully!'}, status=status.HTTP_200_OK)
+            else:
+                return Response({'message': 'Order is already cancelled.'}, status=status.HTTP_400_BAD_REQUEST)
+        except Order.DoesNotExist:
+            logger.error(f'Order with ID {order_id} not found for user {request.user.id}')
+            return Response({'message': 'Order not found.'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            logger.error(f'Error cancelling order: {str(e)}')
+            return Response({'message': 'Error cancelling order.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+
+class UserOrdersView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user_id = request.query_params.get('user_id')
+        
+        # Validate the user_id is provided and is an integer
+        if not user_id or not user_id.isdigit():
+            return Response({'error': 'Invalid or missing user_id'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        user = CustomUser.objects.filter(id=user_id).first()
+        
+        if not user:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        orders = Order.objects.filter(user=user)
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
+
+
+
+
+
+        
+
 
 
 class LoginView(APIView):
@@ -215,11 +283,65 @@ class LoginView(APIView):
             token, created = Token.objects.get_or_create(user=user)
             return Response({
                 'token': token.key,
-                'user_id': user.pk,
-                'username': user.username
+                'user_id': user.id,
+                'username': user.username,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email
             }, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+
+
+logger = logging.getLogger(__name__)
+
+class UpdateProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request):
+        user = request.user
+        current_password = request.data.get('current_password')
+        new_password = request.data.get('new_password')
+
+        # Validate current password
+        if not user.check_password(current_password):
+            return Response({'detail': 'Current password is incorrect'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Update user information
+        user.first_name = request.data.get('first_name', user.first_name)
+        user.last_name = request.data.get('last_name', user.last_name)
+        user.email = request.data.get('email', user.email)
+
+        # Update password if a new one is provided
+        if new_password:
+            user.set_password(new_password)
+            user.save()  # Save user after setting new password
+
+            # Delete old token
+            Token.objects.filter(user=user).delete()
+
+            # Create new token
+            new_token = Token.objects.create(user=user)
+        else:
+            new_token = Token.objects.get(user=user)
+
+        update_session_auth_hash(request, user)  # Keep the user logged in with the new password
+
+        response_data = {
+            'user_id': user.id,
+            'username': user.username,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'email': user.email,
+            'token': new_token.key if new_password else None
+        }
+
+        return Response(response_data, status=status.HTTP_200_OK)
+
+
+
 
 
 
@@ -306,30 +428,6 @@ class ReviewViewSet(viewsets.ModelViewSet):
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-
-
-class OrderCreateView(APIView):
-    def post(self, request):
-        user_id = request.data.get('user')
-        payment_method_id = request.data.get('payment_method')
-
-        # Check if user and payment method exist
-        user = CustomUser.objects.filter(id=user_id).first()
-        payment_method = PaymentMethod.objects.filter(payment_method_id=payment_method_id).first()
-
-        if not user or not payment_method:
-            return Response({'error': 'Invalid user or payment method'}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Update the request data with IDs
-        request.data['user_id'] = user.id
-        request.data['payment_method'] = payment_method.payment_method_id
-
-        serializer = OrderSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 

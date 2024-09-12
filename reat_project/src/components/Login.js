@@ -13,8 +13,9 @@ const Login = () => {
   const navigate = useNavigate();
   const { signIn } = useUser();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
     try {
       const response = await fetch('http://localhost:8000/api/login/', {
         method: 'POST',
@@ -25,34 +26,34 @@ const Login = () => {
       });
   
       const data = await response.json();
+      console.log('Login response:', data); // Log the response for debugging
   
       if (response.ok) {
-        if (data.token && data.user_id && data.username) {
-          const fullName = data.fullName || ''; // Get full name from response
-
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('userId', data.user_id);
-          localStorage.setItem('loggedIn', 'true');
-          localStorage.setItem('username', data.username);
-          localStorage.setItem('fullName', fullName); // Store full name
-
+        if (data.token && data.user_id) {
+          // Call signIn function to store token and user data in context
           signIn({
             username: data.username,
             userId: data.user_id,
-            fullName: fullName, // Pass full name
+            firstName: data.first_name,
+            lastName: data.last_name,
+            email: data.email,
+            token: data.token,
           });
-
+  
           navigate('/');
         } else {
-          setError('Unexpected response format. Please try again.');
+          setError('Unexpected response format.');
         }
       } else {
-        setError(data.error || 'Username, email, or password incorrect');
+        setError(data.error || 'Invalid credentials.');
       }
     } catch (error) {
-      setError('An error occurred. Please try again.');
+      setError('Error logging in: ' + error.message);
     }
   };
+  
+  
+  
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);

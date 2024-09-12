@@ -1,0 +1,132 @@
+/* UserOrders.css */
+
+.orders-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.orders-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.orders-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.orders-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    background-color: #f4f4f4;
+    padding: 10px;
+    font-weight: bold;
+    color: #555;
+}
+
+.orders-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.orders-row:last-child {
+    border-bottom: none;
+}
+
+.order-details {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.order-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.order-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.order-actions button {
+    background-color: #FB8F67;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.order-actions button:hover {
+    background-color: #1E2019;
+}
+
+.product-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.product-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #fff;
+}
+
+.product-item img {
+    max-width: 100%;
+    height: auto;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.product-item div {
+    font-size: 14px;
+    color: #333;
+}
+
+.product-item div:first-child {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.product-item div:last-child {
+    color: #FB8F67;
+}
+
+@media (max-width: 768px) {
+    .orders-header, .orders-row {
+        grid-template-columns: 1fr;
+    }
+
+    .order-info {
+        grid-template-columns: 1fr;
+    }
+
+    .product-details {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+}

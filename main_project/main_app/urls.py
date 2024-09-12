@@ -1,12 +1,13 @@
-from django.urls import path,include
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
     UserViewSet, CartViewSet, CartItemViewSet, CategoryViewSet, PaymentViewSet,
     PaymentDetailViewSet, PaymentMethodViewSet, ProductViewSet, ReviewViewSet,
     OrderViewSet, OrderItemViewSet, ProductListView, ProductDetailView,
-    ShippingAddressViewSet, LoginView, SignupView,PlaceOrderView,
-   
+    ShippingAddressViewSet, LoginView, SignupView, PlaceOrderView, UpdateProfileView,
+    CancelOrderView,UserOrdersView,
 )
+
 from . import views
 
 router = DefaultRouter()
@@ -32,5 +33,7 @@ urlpatterns = [
     path('api/orders/', PlaceOrderView.as_view(), name='place_order'),
     path('request-password-reset/', views.request_password_reset, name='request_password_reset'),
     path('reset-password/', views.reset_password, name='reset_password'),
-    
+    path('update-profile/', UpdateProfileView.as_view(), name='update-profile'),
+    path('api/cancel-order/<int:order_id>/', CancelOrderView.as_view(), name='cancel_order'),
+    path('api/user/orders/', UserOrdersView.as_view(), name='user_orders'),
 ]

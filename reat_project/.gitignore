@@ -25,3 +25,8 @@ yarn-error.log*
 .node_modules/
 .package-lock.json
 .package.json
+
+__pycache__/
+*.pyc
+node_modules/
+*.sql
