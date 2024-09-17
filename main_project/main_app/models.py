@@ -271,17 +271,17 @@ class Review(models.Model):
     def __str__(self):
         return f"Review {self.review_id} for Product {self.product.name} by {self.user.username}"
     
-class Order(models.Model):
+class Order(models.Model): 
     ORDER_STATUS_CHOICES = [
         ('pending', 'Pending'),
-        ('processing', 'Processing'),
         ('shipped', 'Shipped'),
         ('delivered', 'Delivered'),
         ('cancelled', 'Cancelled'),
     ]
 
     order_id = models.AutoField(primary_key=True)
-    user_id = models.IntegerField(null=True, blank=True)
+    user_id = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
+    email = models.EmailField(default="noemail@example.com")
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     first_name = models.CharField(max_length=50, default='DefaultFirstName')
@@ -294,7 +294,7 @@ class Order(models.Model):
     phone = models.CharField(max_length=20, default='0000000000')
     shipping_method = models.CharField(max_length=50, default="standard")
     order_note = models.TextField(null=True, blank=True)
-    payment_method = models.ForeignKey('main_app.PaymentMethod', on_delete=models.SET_DEFAULT, default=1)
+    payment_method = models.ForeignKey(PaymentMethod, on_delete=models.SET_NULL, null=True, blank=True)
     shipping_cost = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=10, choices=ORDER_STATUS_CHOICES, default='pending')
 
@@ -306,7 +306,7 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     order_item_id = models.AutoField(primary_key=True)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, default=1)
+    order = models.ForeignKey(Order, related_name='cart_items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, default=1)
     quantity = models.IntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)

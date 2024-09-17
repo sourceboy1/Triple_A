@@ -1,70 +1,94 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';  
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Loading from './Loading';
 import './UserOrders.css';
 
 const UserOrders = () => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isCanceling, setIsCanceling] = useState(false);
+    const [cancelOrderId, setCancelOrderId] = useState(null);
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('user_id'); // Assuming user_id is stored in local storage
 
-    useEffect(() => {
-        const fetchUserOrders = async () => {
-            try {
-                const response = await axios.get('http://localhost:8000/api/user/orders/', {
-                    headers: {
-                        'Authorization': `Token ${token}`,
-                    },
-                    params: {
-                        user_id: userId, // Pass user_id as a query parameter
-                    },
-                });
-                setOrders(response.data);
-            } catch (error) {
-                setError('Error fetching user orders.');
-                console.error('Error fetching user orders:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        if (token && userId) {
-            fetchUserOrders();
-        }
-    }, [token, userId]);
-
-    const handleViewOrder = (orderId) => {
-        navigate(`/order/${orderId}`);
-    };
-
-    const handleCancelOrder = async (orderId) => {
+    const fetchUserOrders = async () => {
         try {
-            await axios.post(`/api/cancel-order/${orderId}/`, {}, {
+            const response = await axios.get('http://localhost:8000/api/orders/', {
                 headers: {
-                    Authorization: `Token ${token}`,
+                    'Authorization': `Token ${token}`,
                 },
             });
-            // Update the order status to "Cancelled" in the UI
-            setOrders(orders.map(order => 
-                order.order_id === orderId ? { ...order, status: 'Cancelled' } : order
-            ));
+
+            if (Array.isArray(response.data)) {
+                const ordersWithNumericPrices = response.data.map(order => ({
+                    order_id: order.order_id,
+                    created_at: order.created_at,
+                    status: order.status.charAt(0).toUpperCase() + order.status.slice(1),
+                    total_amount: Number(order.total_amount),
+                    items: (order.cart_items || []).map(item => ({
+                        product_id: item.product,
+                        name: item.product_name,
+                        price: Number(item.price),
+                        quantity: item.quantity,
+                        image_url: item.product_image
+                    })),
+                }));
+
+                setOrders(ordersWithNumericPrices);
+            } else {
+                setError('Unexpected API response format.');
+            }
         } catch (error) {
-            setError('Error cancelling order.');
-            console.error('Error cancelling order:', error);
+            setError('Error fetching user orders.');
+            console.error('Error fetching user orders:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (token) {
+            fetchUserOrders();
+        } else {
+            setError('User not authenticated.');
+            setLoading(false);
+        }
+    }, [token]);
+
+    const confirmCancelOrder = async (orderId) => {
+        try {
+            await axios.post(`http://localhost:8000/api/orders/${orderId}/cancel/`, {}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${token}`,
+                }
+            });
+
+            fetchUserOrders();
+            setIsCanceling(false);
+        } catch (error) {
+            console.error('Error canceling order:', error);
         }
     };
 
     const formatPrice = (price) => {
-        return price.toFixed(2); // Format price to 2 decimal places
+        const numericPrice = Number(price);
+        if (isNaN(numericPrice)) {
+            return 'Invalid Price'; 
+        }
+        return numericPrice.toLocaleString('en-NG', { style: 'currency', currency: 'NGN' });
+    };
+
+    const viewOrderDetails = (orderId) => {
+        navigate(`/account/orders/${orderId}`);
     };
 
     return (
         <div className="orders-container">
             <h2>Your Orders</h2>
-            {loading && <p>Loading orders...</p>}
+            {loading && <Loading />}
             {error && <p>{error}</p>}
             {!loading && orders.length === 0 && <p>No orders found.</p>}
             <div className="orders-table">
@@ -80,12 +104,15 @@ const UserOrders = () => {
                             <div>Order #{order.order_id}</div>
                             <div>{new Date(order.created_at).toLocaleDateString()}</div>
                             <div>{order.status}</div>
-                            <div>₦{formatPrice(order.total_amount)}</div>
+                            <div>{formatPrice(order.total_amount)}</div>
                         </div>
-                        <div className="order-actions">
-                            <button onClick={() => handleViewOrder(order.order_id)}>View</button>
-                            {order.status !== 'Cancelled' && (
-                                <button onClick={() => handleCancelOrder(order.order_id)}>Cancel Request</button>
+                        <div className={`order-actions ${order.status === 'cancelled' ? 'centered' : ''}`}>
+                            <button onClick={() => viewOrderDetails(order.order_id)}>View</button>
+                            {order.status !== 'Cancelled' && order.status !== 'Delivered' && (
+                                <button onClick={() => {
+                                    setCancelOrderId(order.order_id);
+                                    setIsCanceling(true);
+                                }}>Cancel Request</button>
                             )}
                         </div>
                         <div className="order-summary">
@@ -93,12 +120,16 @@ const UserOrders = () => {
                             <ul className="order-summary-items">
                                 {order.items.map((item) => (
                                     <li key={item.product_id} className="order-summary-item">
-                                        <img src={item.image_url || '/path/to/default-image.jpg'} alt={item.name} className="order-summary-item-image" />
+                                        <img 
+                                            src={item.image_url || '/path/to/default-image.jpg'} 
+                                            alt={item.name} 
+                                            className="order-summary-item-image" 
+                                        />
                                         <div className="order-summary-item-details">
                                             <h3>{item.name}</h3>
-                                            <p>Price: ₦{formatPrice(item.price)}</p>
+                                            <p>Price: {formatPrice(item.price)}</p>
                                             <p>Quantity: {item.quantity}</p>
-                                            <p>Total: ₦{formatPrice(item.price * item.quantity)}</p>
+                                            <p>Total: {formatPrice(item.price * item.quantity)}</p>
                                         </div>
                                     </li>
                                 ))}
@@ -107,6 +138,16 @@ const UserOrders = () => {
                     </div>
                 ))}
             </div>
+
+            {isCanceling && (
+                <div className="cancel-dialog-overlay">
+                    <div className="cancel-dialog">
+                        <p>Are you sure you want to cancel this order?</p>
+                        <button onClick={() => confirmCancelOrder(cancelOrderId)} className="dialog-confirm-button">Yes, Cancel Order</button>
+                        <button onClick={() => setIsCanceling(false)} className="dialog-cancel-button">No, Keep Order</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

@@ -157,3 +157,68 @@
 .go-home-button:hover {
     background-color: #218838; /* Darker green on hover */
 }
+
+.cancel-order-button{
+    background-color: #28a745; /* Green background */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-left: 25px;
+}
+
+.cancel-order-button:hover{
+    background-color: #218838;
+}
+
+.cancel-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ffffff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    text-align: center;
+}
+
+.cancel-dialog p {
+    font-size: 1em;
+    color: #666;
+    margin: 8px 0;
+}
+
+.cancel-dialog button {
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: Arial, sans-serif;
+}
+
+.dialog-confirm-button {
+    background-color: #dc3545; /* Red background for cancel */
+    color: white;
+}
+
+.dialog-confirm-button:hover {
+    background-color: #c82333; /* Darker red on hover */
+}
+
+.dialog-cancel-button {
+    background-color: #007bff; /* Blue background for keep order */
+    color: white;
+}
+
+.dialog-cancel-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+

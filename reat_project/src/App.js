@@ -28,6 +28,7 @@ import Wishlist from './components/Wishlist';
 import AccountDetails from './components/AccountDetails';
 
 
+
 const App = () => {
   return (
     <UserProvider> {/* Wrap the app with UserProvider */}
@@ -58,7 +59,7 @@ const App = () => {
                   <Route path="/payment/bank-transfer" element={<PaymentBankTransfer />} />
                   <Route path="/account" element={<Account />} />
                   <Route path="/wishlist" element={<Wishlist />} />
-                  <Route path="/account/details" element={<AccountDetails />} />
+                  <Route path="/account/details" element={<AccountDetails />} /> 
                 </Routes>
               </div>
             </Router>

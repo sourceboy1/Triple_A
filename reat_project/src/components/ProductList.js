@@ -53,17 +53,3 @@ const ProductList = ({ category, searchQuery }) => {
 
 export default ProductList;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -73,24 +73,51 @@ class OrderItemInline(admin.TabularInline):
 class OrderAdmin(admin.ModelAdmin):
     list_display = (
         'order_id', 'user_id', 'total_amount', 'created_at', 'first_name',
-        'last_name', 'address', 'city', 'state', 'postal_code',
-        'country', 'phone', 'shipping_method', 'order_note', 'payment_method', 'shipping_cost'
+        'last_name', 'address', 'city', 'state', 'postal_code','email',
+        'country', 'phone', 'shipping_method', 'order_note', 'payment_method_id', 'shipping_cost',
+        'status',
+    )
+    fields = (
+        'order_id', 'user_id', 'email', 'first_name', 'last_name', 'address',
+        'city', 'state', 'postal_code', 'country', 'phone', 'shipping_method','email'
+        'order_note', 'payment_method', 'shipping_cost', 'total_amount', 'status', 'created_at'
     )
     list_filter = (
-        'created_at', 'shipping_method', 'payment_method'
+        'created_at', 'shipping_method', 'payment_method_id', 'status',
     )
     search_fields = (
-        'order_id', 'first_name', 'last_name', 'address', 'city', 'state', 'country', 'phone', 'payment_method'
+        'order_id', 'first_name', 'last_name', 'address', 'city', 'state', 'country', 'phone', 'payment_method__method_name'
     )
-    inlines = [OrderItemInline]  # Add OrderItemInline to view related items
+    list_editable = ('status',)
+    inlines = [OrderItemInline]
+
+    actions = ['mark_as_shipped', 'mark_as_delivered', 'mark_as_cancelled']
+
+    # Mark actions
+    def mark_as_shipped(self, request, queryset):
+        queryset.update(status='shipped')
+        self.message_user(request, "Selected orders have been marked as shipped.")
+
+    def mark_as_delivered(self, request, queryset):
+        queryset.update(status='delivered')
+        self.message_user(request, "Selected orders have been marked as delivered.")
+    
+    def mark_as_cancelled(self, request, queryset):
+        queryset.update(status='cancelled')
+        self.message_user(request, "Selected orders have been marked as cancelled.")
+
+    mark_as_shipped.short_description = "Mark selected orders as Shipped"
+    mark_as_delivered.short_description = "Mark selected orders as Delivered"
+    mark_as_cancelled.short_description = "Mark selected orders as Cancelled"
 
 admin.site.register(Order, OrderAdmin)
+
+
 
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
     list_display = ('order', 'product', 'quantity', 'price')
     search_fields = ('order__user__username', 'product__name')
-
 
     
 

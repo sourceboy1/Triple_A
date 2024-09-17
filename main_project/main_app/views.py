@@ -25,7 +25,7 @@ from django.contrib.auth import get_user_model
 import logging
 from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
-from django.core.mail import send_mail
+
 
 
 
@@ -182,80 +182,37 @@ class PlaceOrderView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        # Get the authenticated user's ID
-        user_id = request.user.id
-        payment_method_id = request.data.get('payment_method')
-
-        # Check if payment method exists
-        payment_method = PaymentMethod.objects.filter(payment_method_id=payment_method_id).first()
-        if not payment_method:
-            return Response({'error': 'Invalid payment method'}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Update the request data with user_id and payment_method_id
-        data = {
-            'user': user_id,
-            'payment_method': payment_method.payment_method_id,
-            **request.data
-        }
-
-        serializer = OrderSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'message': 'Order placed successfully!', 'order': serializer.data}, status=status.HTTP_201_CREATED)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-
-
-class CancelOrderView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request, order_id):
-        try:
-            order = Order.objects.get(order_id=order_id, user_id=request.user.id)
-            if order.status != 'Cancelled':
-                order.status = 'Cancelled'
-                order.save()
-                return Response({'message': 'Order cancelled successfully!'}, status=status.HTTP_200_OK)
-            else:
-                return Response({'message': 'Order is already cancelled.'}, status=status.HTTP_400_BAD_REQUEST)
-        except Order.DoesNotExist:
-            logger.error(f'Order with ID {order_id} not found for user {request.user.id}')
-            return Response({'message': 'Order not found.'}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            logger.error(f'Error cancelling order: {str(e)}')
-            return Response({'message': 'Error cancelling order.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-
-
-class UserOrdersView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        user_id = request.query_params.get('user_id')
+        user_id = request.data.get('user_id')
+        payment_method_id = request.data.get('payment_method_id')
         
-        # Validate the user_id is provided and is an integer
-        if not user_id or not user_id.isdigit():
-            return Response({'error': 'Invalid or missing user_id'}, status=status.HTTP_400_BAD_REQUEST)
-        
+        # Check if user and payment method exist
         user = CustomUser.objects.filter(id=user_id).first()
+        payment_method = PaymentMethod.objects.filter(id=payment_method_id).first()
+
+        if not user or not payment_method:
+            return Response({'error': 'Invalid user or payment method'}, status=status.HTTP_400_BAD_REQUEST)
         
-        if not user:
-            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-        
-        orders = Order.objects.filter(user=user)
-        serializer = OrderSerializer(orders, many=True)
-        return Response(serializer.data)
+        # Update request data with IDs (optional)
+        request.data['user_id'] = user.id
+        request.data['payment_method'] = payment_method.id
+
+        # Serialize the order data
+        serializer = OrderSerializer(data=request.data)
+
+        if serializer.is_valid():
+            order = serializer.save()
+
+            return Response({
+                'message': 'Order placed successfully!',
+                'order_id': order.id,
+                'order': serializer.data
+            }, status=status.HTTP_201_CREATED)
+        else:
+            print("Serializer errors:", serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
-
-
-        
 
 
 
@@ -405,12 +362,12 @@ class ProductViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
 
     def get_queryset(self):
-        queryset = Product.objects.all()
+        queryset = super().get_queryset()
         query = self.request.query_params.get('query', None)
         if query:
-            # Filter products where name contains the search query (case-insensitive)
             queryset = queryset.filter(name__icontains=query)
         return queryset
+
     
 
 class PromotionViewSet(viewsets.ModelViewSet):
@@ -425,9 +382,45 @@ class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
 
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import status
+
+
+
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Order.objects.filter(user_id=user.id)
+
+    @action(detail=True, methods=['post'])
+    def cancel(self, request, pk=None):
+        Order = self.get_object()
+        if request.user.id != Order.user_id_id:
+            return Response({"message": "Not authorized to cancel this order."}, status=status.HTTP_403_FORBIDDEN)
+        
+        # Logic to cancel the order
+        Order.status = 'cancelled'  # Make sure this status matches your model
+        Order.save()
+        return Response({"message": "Order canceled successfully."}, status=status.HTTP_200_OK)
+
+
+
+
+class UserOrdersView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        orders = Order.objects.filter(user_id=user.id)
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
 
 
 

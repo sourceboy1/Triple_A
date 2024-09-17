@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Added useNavigate import
+import { Link, useNavigate } from 'react-router-dom';
 import './Checkout.css';
 import guaranteeIcon from '../icons/guarantee-icon.jpg';
 import fastShipIcon from '../icons/fast-ship-icon.jpg';
@@ -8,11 +8,13 @@ import customerServiceIcon from '../icons/customer-service-icon.jpg';
 import debitcardImage from '../pictures/debitcard.jpg';
 import PhoneInputComponent from '../PhoneInput'; // Import PhoneInputComponent
 import { useUser } from '../contexts/UserContext';
+import { useCart } from '../contexts/CartContext';
 import countryList from 'react-select-country-list';
 import axios from 'axios';
 
 const Checkout = () => {
     const [email, setEmail] = useState('');
+    const [emailError, setEmailError] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [addressLine1, setAddressLine1] = useState('');
@@ -20,33 +22,28 @@ const Checkout = () => {
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
     const [postalCode, setPostalCode] = useState('');
-    const [country, setCountry] = useState('NG'); // Default to Nigeria
+    const [country, setCountry] = useState('NG');
     const [phone, setPhone] = useState('');
     const [shippingMethod, setShippingMethod] = useState('');
     const [orderNote, setOrderNote] = useState('');
     const [paymentMethod, setPaymentMethod] = useState('bank_transfer');
     const [termsAgreed, setTermsAgreed] = useState(false);
-    const [cart, setCart] = useState([]);
+    const { cart, clearCart } = useCart();
     const [showTerms, setShowTerms] = useState(false);
-    const { user, isLoggedIn } = useUser();
+    const { isLoggedIn, firstName: userFirstName, lastName: userLastName, email: userEmail } = useUser();
     const token = localStorage.getItem('token');
-    const navigate = useNavigate(); // Initialize useNavigate
-    const options = countryList().getData(); // Get all countries
+    const navigate = useNavigate();
+    const options = countryList().getData();
 
-    useEffect(() => {
-        const storedCart = localStorage.getItem('cartData');
-        if (storedCart) {
-            setCart(JSON.parse(storedCart));
-        }
+     useEffect(() => {
+         if (isLoggedIn) {
+             setEmail(userEmail || '');
+             setFirstName(userFirstName || '');
+             setLastName(userLastName || '');
+         }
+     }, [isLoggedIn, userEmail, userFirstName, userLastName]);
+    
 
-        if (isLoggedIn && user) {
-            setEmail(user.email || '');
-            setFirstName(user.firstName || '');
-            setLastName(user.lastName || '');
-        } else if (!user) {
-            console.log('User data is not available.');
-        }
-    }, [isLoggedIn, user]);
 
     const paymentMethodIds = {
         bank_transfer: 4,
@@ -54,38 +51,54 @@ const Checkout = () => {
     };
 
     const handlePlaceOrder = async () => {
+        setEmailError('');
+    
         if (!termsAgreed) {
-            alert('You must agree to the terms and conditions before placing the order.');
+            setEmailError('You must agree to the terms and conditions before placing the order.');
             return;
         }
     
         if (!email || !firstName || !lastName || !addressLine1 || !city || !state || !postalCode || !country || !phone) {
-            alert('Please fill in all required fields.');
+            setEmailError('Please fill in all required fields.');
             return;
         }
     
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            setEmailError('Please enter a valid email address.');
+            return;
+        }
+    
+        if (phone.length < 10) {
+            setEmailError('Please enter a valid phone number.');
+            return;
+        }
+    
+        if (postalCode.length < 5) {
+            setEmailError('Please enter a valid postal code.');
+            return;
+        }
+    
+        // Full address formatting
         const fullAddress = `${addressLine1}${addressLine2 ? ', ' + addressLine2 : ''}`;
         const userId = parseInt(localStorage.getItem('userId'), 10);
-        const token = localStorage.getItem('token');
     
         if (!token) {
-            alert('Authentication token is missing. Please log in again.');
+            setEmailError('Authentication token is missing. Please log in again.');
             return;
         }
     
         if (isNaN(userId)) {
-            alert('There was an issue with your login session. Please log in again.');
+            setEmailError('There was an issue with your login session. Please log in again.');
             return;
         }
     
-        const paymentMethodId = paymentMethodIds[paymentMethod] || 1;
-    
-        const shippingCost = getShippingCost();
+        const paymentMethodId = paymentMethodIds[paymentMethod] || 1;  // Map payment methods
+        const shippingCost = getShippingCost();  // Assume this function calculates shipping cost
         const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
         const total = subtotal + shippingCost;
     
         const orderData = {
-            user_id: userId, 
+            user_id: userId,
             email: email,
             first_name: firstName,
             last_name: lastName,
@@ -97,16 +110,21 @@ const Checkout = () => {
             phone: phone,
             shipping_method: shippingMethod,
             order_note: orderNote,
-            payment_method: paymentMethodId,
+            payment_method_id: paymentMethodId,
             cart_items: cart.map(item => ({
-                product_id: item.product_id,
+                product: item.product_id,
+                name: item.name,          // Include product name
+                image_url: item.image_url, // Include product image URL
                 quantity: item.quantity,
+                price: item.price
             })),
             shipping_cost: shippingCost,
             total_amount: total,
         };
+        
     
         try {
+            console.log('Order data being sent:', orderData);
             const response = await axios.post('http://localhost:8000/api/orders/', orderData, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -114,18 +132,22 @@ const Checkout = () => {
                 }
             });
     
-            alert('Order placed successfully!');
-            localStorage.removeItem('cartData');
+            clearCart();
     
-            // Redirect based on payment method
-            if (paymentMethod === 'debit_credit_cards') {
-                navigate('/payment/debit-credit-card', { state: { orderId: response.data.order_id, totalAmount: total } });
-            } else if (paymentMethod === 'bank_transfer') {
-                navigate('/payment/bank-transfer', { state: { orderId: response.data.order_id, subtotal: subtotal, shippingCost: shippingCost, total: total } });
-            }
+            const redirectPath = paymentMethod === 'debit_credit_cards' ? '/payment/debit-credit-card' : '/payment/bank-transfer';
+            navigate(redirectPath, { state: { 
+                orderId: response.data.order_id, 
+                email, 
+                phone, 
+                address: fullAddress, 
+                subtotal, 
+                shippingCost, 
+                total, 
+                products: cart 
+            }});
         } catch (error) {
-            console.error('API Error Response:', error.response);
-            alert('There was an error placing your order. Please try again.');
+            console.error('Error placing the order:', error);
+            setEmailError('There was an error placing your order. Please try again.');
         }
     };
     
@@ -176,8 +198,8 @@ const Checkout = () => {
                         placeholder="Email *"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                       
                     />
+                    {emailError && <p className="error-message">{emailError}</p>} {/* Display email error message */}
                 </div>
 
                 <div>

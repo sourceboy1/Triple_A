@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import './PaymentBankTransfer.css'; // Ensure this file styles the component appropriately
+import axios from 'axios';
+import './PaymentBankTransfer.css';
 
 const Transfer = () => {
     const location = useLocation();
-    const navigate = useNavigate(); // Add this line to use the navigate function
+    const navigate = useNavigate();
+    const [isCanceling, setIsCanceling] = useState(false);
     const { state } = location;
+    const token = localStorage.getItem('token');
 
-    // Destructure order details from the state with default values
     const {
         orderId = 'N/A',
         email = 'N/A',
@@ -16,16 +18,47 @@ const Transfer = () => {
         subtotal = 0,
         shippingCost = 0,
         total = 0,
-        products = [] // Expecting an array of product objects
+        products = []
     } = state || {};
 
-    // Helper function to format currency
     const formatPrice = (amount) => amount.toLocaleString();
 
-    // Function to handle Go Home button click
-    const handleGoHome = () => {
-        navigate('/'); // Navigates to the homepage
+    const handleCancelOrder = () => {
+        setIsCanceling(true);
     };
+
+    const confirmCancelOrder = async () => {
+        try {
+    
+            const response = await axios.post(`http://localhost:8000/api/orders/${orderId}/cancel/`, {}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${token}`,  // Use the same token authentication as in your checkout process
+                }
+            });
+    
+            navigate('/');
+        } catch (error) {
+            
+    
+            if (error.response && error.response.data && error.response.data.message) {
+                
+            } else {
+                
+            }
+        }
+    };
+    
+    
+    
+
+    const cancelOrderDialog = (
+        <div className="cancel-dialog">
+            <p>Are you sure you want to cancel this order?</p>
+            <button onClick={confirmCancelOrder} className="dialog-confirm-button">Yes, Cancel Order</button>
+            <button onClick={() => setIsCanceling(false)} className="dialog-cancel-button">No, Keep Order</button>
+        </div>
+    );
 
     return (
         <div className="transfer-container">
@@ -57,7 +90,7 @@ const Transfer = () => {
                         products.map((item) => (
                             <li key={item.product_id} className="order-summary-item">
                                 <img
-                                    src={item.image_url} 
+                                    src={item.image_url}
                                     alt={item.name}
                                     className="order-summary-item-image"
                                 />
@@ -91,9 +124,11 @@ const Transfer = () => {
                 <p><strong>Account Number:</strong> 0273759604</p>
                 <p><strong>Account Name:</strong> Triple A's Technology</p>
             </div>
-            <div>
-                <button className="go-home-button" onClick={handleGoHome}>Go Home</button>
+            <div className="action-buttons">
+                <button className="go-home-button" onClick={() => navigate('/')}>Go Home</button>
+                <button className="cancel-order-button" onClick={handleCancelOrder}>Cancel Order</button>
             </div>
+            {isCanceling && cancelOrderDialog}
         </div>
     );
 };

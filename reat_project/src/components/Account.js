@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useUser } from '../contexts/UserContext';
 import Wishlist from './Wishlist';
 import AccountDetails from './AccountDetails';
 import UserOrders from './UserOrders';
+import OrderDetails from './OrderDetails';
 import './Account.css';
 
 const Account = () => {
@@ -15,8 +16,6 @@ const Account = () => {
     signOut();
     navigate('/');
   };
-
-  
 
   const renderContent = () => {
     switch (selectedOption) {
@@ -36,7 +35,13 @@ const Account = () => {
           </div>
         );
       case 'Orders':
-        return <UserOrders />; // Render UserOrders component here
+        return (
+          // Nested routes for orders and order details
+          <Routes>
+            <Route path="/" element={<UserOrders />} />
+            <Route path=":orderId" element={<OrderDetails />} />
+          </Routes>
+        );
       case 'Addresses':
         return <div>Manage your Addresses here.</div>;
       case 'Payment methods':
@@ -49,7 +54,6 @@ const Account = () => {
         return <div>Select an option from the sidebar.</div>;
     }
   };
-  
 
   return (
     <div className="account-container">

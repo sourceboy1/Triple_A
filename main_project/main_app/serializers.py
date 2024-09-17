@@ -53,6 +53,7 @@ class PaymentSerializer(serializers.ModelSerializer):
         model = Payment
         fields = ['payment_id', 'order_id', 'payment_method_id', 'amount', 'payment_date', 'status']
 
+
 class PaymentDetailSerializer(serializers.ModelSerializer):
     payment = PaymentSerializer()
 
@@ -152,34 +153,68 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = ['review_id', 'product', 'user', 'rating', 'comment', 'created_at']
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    product = ProductSerializer()
-    order = serializers.PrimaryKeyRelatedField(queryset=Order.objects.all())
+    product_name = serializers.CharField(source='product.name', read_only=True)
+    product_image = serializers.SerializerMethodField()
 
     class Meta:
         model = OrderItem
-        fields = ['order_item_id', 'order', 'product', 'quantity', 'price']
+        fields = ['product', 'product_name', 'product_image', 'quantity', 'price']
+
+    def get_product_image(self, obj):
+        request = self.context.get('request')
+        if obj.product.image:
+            return request.build_absolute_uri(obj.product.image.url)
+        return None
+
+
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    items = OrderItemSerializer(many=True, read_only=True)
-    user = serializers.StringRelatedField()  # Display user as string
-
+    user_id = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+    payment_method_id = serializers.PrimaryKeyRelatedField(
+        queryset=PaymentMethod.objects.all(),
+        source='payment_method'
+    )
+    cart_items = OrderItemSerializer(many=True)
+    shipping_address = serializers.SerializerMethodField()
+    billing_address = serializers.SerializerMethodField()
+    
     class Meta:
         model = Order
         fields = [
-            'order_id', 'user', 'total_amount', 'created_at', 
-            'first_name', 'last_name', 'address', 'city', 
-            'state', 'postal_code', 'country', 'phone', 
-            'shipping_method', 'order_note', 'payment_method', 
-            'shipping_cost', 'items'
+            'order_id', 'user_id', 'email', 'total_amount', 'created_at',
+            'first_name', 'last_name', 'address', 'city', 'state', 'postal_code',
+            'country', 'phone', 'shipping_method', 'order_note', 'payment_method_id',
+            'shipping_cost', 'status', 'cart_items', 'shipping_address', 'billing_address'
         ]
 
-        def create(self, validated_data):
-            items_data = validated_data.pop('items')
-            order = Order.objects.create(**validated_data)
-            for item_data in items_data:
-                OrderItem.objects.create(order=order, **item_data)
-            return order
+    def get_shipping_address(self, obj):
+        return f"{obj.first_name} {obj.last_name}\n{obj.address}\n{obj.city}, {obj.state}\n{obj.phone}"
+
+    def get_billing_address(self, obj):
+        return self.get_shipping_address(obj)
+
+    def create(self, validated_data):
+        cart_items_data = validated_data.pop('cart_items', [])
+        user = validated_data.pop('user_id')
+        payment_method = validated_data.pop('payment_method')  # Extract payment_method
+        order = Order.objects.create(user_id=user, payment_method=payment_method, **validated_data)
+
+        for item_data in cart_items_data:
+            OrderItem.objects.create(order=order, **item_data)
+
+        return order
+
+
+
+
+
+
+
+
+
+
+
 
 
 class PaymentMethodSerializer(serializers.ModelSerializer):

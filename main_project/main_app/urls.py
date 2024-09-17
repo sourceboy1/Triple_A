@@ -5,7 +5,7 @@ from .views import (
     PaymentDetailViewSet, PaymentMethodViewSet, ProductViewSet, ReviewViewSet,
     OrderViewSet, OrderItemViewSet, ProductListView, ProductDetailView,
     ShippingAddressViewSet, LoginView, SignupView, PlaceOrderView, UpdateProfileView,
-    CancelOrderView,UserOrdersView,
+    UserOrdersView,
 )
 
 from . import views
@@ -25,7 +25,6 @@ router.register(r'order_items', OrderItemViewSet)
 router.register(r'shipping-addresses', ShippingAddressViewSet, basename='shippingaddress')
 
 urlpatterns = [
-    path('', include(router.urls)),
     path('signup/', SignupView.as_view(), name='signup'),
     path('login/', LoginView.as_view(), name='login'),
     path('products/<int:product_id>/', ProductDetailView.as_view(), name='product-detail'),
@@ -34,6 +33,6 @@ urlpatterns = [
     path('request-password-reset/', views.request_password_reset, name='request_password_reset'),
     path('reset-password/', views.reset_password, name='reset_password'),
     path('update-profile/', UpdateProfileView.as_view(), name='update-profile'),
-    path('api/cancel-order/<int:order_id>/', CancelOrderView.as_view(), name='cancel_order'),
     path('api/user/orders/', UserOrdersView.as_view(), name='user_orders'),
+    path('', include(router.urls)),
 ]

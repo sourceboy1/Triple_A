@@ -18,17 +18,25 @@ export const CartProvider = ({ children }) => {
   }, [cart]);
 
   const addItemToCart = (product) => {
+    console.log('Adding to cart:', product); // Log the product data
+
+    // Ensure product has necessary fields
+    if (!product.product_id || !product.name || !product.image_url || !product.price) {
+        console.error('Product data is incomplete:', product);
+        return;
+    }
+
     setCart((prevCart) => {
-      // Check if the product is already in the cart
-      const isProductInCart = prevCart.some(item => item.product_id === product.product_id);
-      if (isProductInCart) {
-        // If the product is already in the cart, don't add it again
-        return prevCart;
-      }
-      // If the product is not in the cart, add it with a default quantity of 1
-      return [...prevCart, { ...product, quantity: 1 }];
+        const existingProductIndex = prevCart.findIndex(item => item.product_id === product.product_id);
+        if (existingProductIndex !== -1) {
+            const updatedCart = [...prevCart];
+            updatedCart[existingProductIndex].quantity += 1;
+            return updatedCart;
+        }
+        return [...prevCart, { ...product, quantity: 1 }];
     });
-  };
+};
+
 
   const removeItemFromCart = (productId) => {
     setCart((prevCart) => prevCart.filter(item => item.product_id !== productId));
@@ -51,11 +59,15 @@ export const CartProvider = ({ children }) => {
   };
 
   const getCartItemCount = () => {
-    return cart.length; 
+    return cart.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  const clearCart = () => {
+    setCart([]);
   };
 
   return (
-    <CartContext.Provider value={{ cart, addItemToCart, removeItemFromCart, increaseQuantity, decreaseQuantity, getCartItemCount }}>
+    <CartContext.Provider value={{ cart, addItemToCart, removeItemFromCart, increaseQuantity, decreaseQuantity, getCartItemCount, clearCart }}>
       {children}
     </CartContext.Provider>
   );

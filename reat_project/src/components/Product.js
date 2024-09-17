@@ -5,6 +5,8 @@ import './Styling.css';
 const Product = ({ product_id, name, description, price, image_url }) => {
   const { addItemToCart } = useCart();
 
+  console.log('Product props:', { product_id, name, description, price, image_url });
+
   // Format the price with commas
   const formattedPrice = price ? new Intl.NumberFormat().format(price) : 'N/A';
 
@@ -29,6 +31,7 @@ const Product = ({ product_id, name, description, price, image_url }) => {
     </div>
   );
 };
+
 
 export default Product;
 

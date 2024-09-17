@@ -1,15 +1,11 @@
-/* UserOrders.css */
-
 .orders-container {
     width: 90%;
-    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     font-family: Arial, sans-serif;
 }
 
 .orders-container h2 {
-    text-align: center;
     margin-bottom: 20px;
     color: #333;
 }
@@ -22,111 +18,150 @@
 .orders-header {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 10px;
     background-color: #f4f4f4;
     padding: 10px;
+    border-bottom: 2px solid #ddd;
     font-weight: bold;
-    color: #555;
+    color: #333;
 }
 
 .orders-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 10px;
-    padding: 10px;
     border-bottom: 1px solid #ddd;
-}
-
-.orders-row:last-child {
-    border-bottom: none;
-}
-
-.order-details {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
+    padding: 10px 0;
+    position: relative;
 }
 
 .order-info {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 10px;
-    background-color: #fff;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    align-items: center;
 }
 
 .order-actions {
     display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 10px; /* Adds space between the buttons */
+    margin-top: 10px;
 }
 
 .order-actions button {
-    background-color: #FB8F67;
+    background-color: green;
     color: white;
     border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
+    padding: 12px 18px;
     cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
+    border-radius: 4px;
+    flex: 1; /* Ensures buttons take equal width */
+    margin-left: 120px;
+    margin-right: 120px;
+    margin-top: 25px;
+    margin-bottom: 10px;
+
 }
 
 .order-actions button:hover {
-    background-color: #1E2019;
+    background-color: darkgreen;
 }
 
-.product-details {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 15px;
-}
-
-.product-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.order-actions button:only-child {
+    padding: 12px 18px; /* Smaller padding for single button */
+    margin-left: auto;
+    margin-right: auto;
+    width: auto;
+    max-width: 220px; /* Ensure the button is not too wide */
     text-align: center;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+}
+
+.order-summary {
+    margin-top: 20px;
     padding: 10px;
-    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    margin-bottom: 40px;
 }
 
-.product-item img {
-    max-width: 100%;
-    height: auto;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 10px;
-}
-
-.product-item div {
-    font-size: 14px;
+.order-summary h2 {
+    margin-bottom: 15px;
     color: #333;
 }
 
-.product-item div:first-child {
-    font-weight: bold;
-    margin-bottom: 5px;
+.order-summary-items {
+    list-style: none;
+    padding: 0;
 }
 
-.product-item div:last-child {
-    color: #FB8F67;
+.order-summary-item {
+    display: flex;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
 }
 
-@media (max-width: 768px) {
-    .orders-header, .orders-row {
-        grid-template-columns: 1fr;
-    }
-
-    .order-info {
-        grid-template-columns: 1fr;
-    }
-
-    .product-details {
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    }
+.order-summary-item:last-child {
+    border-bottom: none;
 }
+
+.order-summary-item-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 15px;
+    border-radius: 4px;
+}
+
+.order-summary-item-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.order-summary-item-details h3 {
+    margin: 0;
+    color: green;
+}
+
+.order-summary-item-details p {
+    margin: 5px 0;
+    color: hsl(0, 0%, 33%);
+}
+
+.cancel-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.cancel-dialog {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dialog-confirm-button, .dialog-cancel-button {
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.dialog-confirm-button {
+    background-color: green;
+    color: white;
+}
+
+.dialog-cancel-button {
+    background-color: darkgreen;
+    color: white;
+}
+
+
+
