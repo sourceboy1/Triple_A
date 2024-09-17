@@ -36,11 +36,13 @@ const Account = () => {
         );
       case 'Orders':
         return (
-          // Nested routes for orders and order details
-          <Routes>
-            <Route path="/" element={<UserOrders />} />
-            <Route path=":orderId" element={<OrderDetails />} />
-          </Routes>
+          // Render UserOrders and OrderDetails within the same view
+          <div>
+            <Routes>
+              <Route path="/" element={<UserOrders />} />
+              <Route path=":orderId" element={<OrderDetails />} />
+            </Routes>
+          </div>
         );
       case 'Addresses':
         return <div>Manage your Addresses here.</div>;

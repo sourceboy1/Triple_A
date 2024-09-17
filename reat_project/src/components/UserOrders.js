@@ -82,8 +82,9 @@ const UserOrders = () => {
     };
 
     const viewOrderDetails = (orderId) => {
-        navigate(`/account/orders/${orderId}`);
+        navigate(`orders/${orderId}`); // Use relative path
     };
+    
 
     return (
         <div className="orders-container">
