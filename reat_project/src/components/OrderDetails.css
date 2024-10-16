@@ -1,8 +1,9 @@
 .order-details-container {
     margin: 20px;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: hsl(0, 0%, 98%);
     border-radius: 10px;
+    margin-top: 35px;
 }
 
 h2, h3 {
@@ -24,6 +25,27 @@ th, td {
     text-align: left;
 }
 
-.order-summary p {
+.order-summary-table {
+    width: 50%;
+    margin-bottom: 30px;
+}
+
+.order-summary-table td {
+    padding: 8px;
     font-weight: bold;
+}
+
+/* Billing and Shipping Addresses */
+.address-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.address-box {
+    width: 48%; /* Adjust the width to allow two sections side by side */
+    padding: 10px;
+    background-color: hsl(0, 0%, 100%);
+    border: 1px solid #ddd;
+    border-radius: 8px;
 }

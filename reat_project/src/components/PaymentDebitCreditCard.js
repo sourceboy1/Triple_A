@@ -74,7 +74,7 @@ const PaymentPage = () => {
             <div className="payment-info-section">
                 <div className="payment-info">
                     <h2>Complete your order</h2>
-                    <p><strong>Order number:</strong> {orderId || 'N/A'}</p>
+                    <p><strong>Order number:</strong> #{orderId || 'N/A'}</p>
                     <p><strong>Date:</strong> {getCurrentDate()}</p>
                     <p><strong>Total:</strong> ₦{formatPrice(totalAmount)}</p>
                     <p><strong>Payment method:</strong> Debit/Credit Cards</p>

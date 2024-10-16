@@ -49,6 +49,7 @@ const Checkout = () => {
         bank_transfer: 4,
         debit_credit_cards: 3,
     };
+    
 
     const handlePlaceOrder = async () => {
         setEmailError('');
@@ -150,6 +151,7 @@ const Checkout = () => {
             setEmailError('There was an error placing your order. Please try again.');
         }
     };
+    
     
     
     

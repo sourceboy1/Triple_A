@@ -60,7 +60,7 @@ class PasswordResetToken(models.Model):
 
 
 class Category(models.Model):
-    category_id = models.AutoField(primary_key=True)
+    category_id = models.AutoField(primary_key=True)  # Use this as the primary key
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -86,6 +86,9 @@ class Product(models.Model):
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, blank=True, null=True)
     image = models.ImageField(upload_to='products/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    is_deal_of_the_day = models.BooleanField(default=False)
+    is_featured = models.BooleanField(default=False)
+    is_new = models.BooleanField(default=False)
 
     class Meta:
         managed = True
@@ -96,6 +99,7 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
 
 
 class ProductImage(models.Model):
@@ -270,7 +274,26 @@ class Review(models.Model):
 
     def __str__(self):
         return f"Review {self.review_id} for Product {self.product.name} by {self.user.username}"
-    
+
+class ShippingAddress(models.Model):
+    user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, default=1)  # Assuming 1 is a valid user ID
+    address = models.TextField(default='Default Address')
+    city = models.CharField(max_length=50, default='default_city')
+    state = models.CharField(max_length=50, default='default_state')
+    postal_code = models.CharField(max_length=10, default="00000")
+    country = models.CharField(max_length=100, default='Unknown')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'shipping_addresses'
+        verbose_name = 'Shipping Address'
+        verbose_name_plural = 'Shipping Addresses'
+
+    def __str__(self):
+        return f"{self.address}, {self.city}, {self.country}"
+
+
+
 class Order(models.Model): 
     ORDER_STATUS_CHOICES = [
         ('pending', 'Pending'),
@@ -294,14 +317,17 @@ class Order(models.Model):
     phone = models.CharField(max_length=20, default='0000000000')
     shipping_method = models.CharField(max_length=50, default="standard")
     order_note = models.TextField(null=True, blank=True)
-    payment_method = models.ForeignKey(PaymentMethod, on_delete=models.SET_NULL, null=True, blank=True)
+    payment_method_id = models.ForeignKey(PaymentMethod, on_delete=models.SET_NULL, null=True, blank=True)
     shipping_cost = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=10, choices=ORDER_STATUS_CHOICES, default='pending')
 
     class Meta:
         db_table = 'orders'
 
+    def __str__(self):
+        return f"Order {self.order_id} for User {self.user_id.username}"
 
+    
 
 
 class OrderItem(models.Model):
@@ -322,21 +348,3 @@ class OrderItem(models.Model):
 
 
 
-class ShippingAddress(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    address_line1 = models.CharField(max_length=255)
-    address_line2 = models.CharField(max_length=255, blank=True, null=True)
-    city = models.CharField(max_length=100)
-    state = models.CharField(max_length=100)
-    postal_code = models.CharField(max_length=20)
-    country = models.CharField(max_length=100)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        managed = False
-        db_table = 'shipping_addresses'
-        verbose_name = 'Shipping Address'
-        verbose_name_plural = 'Shipping Addresses'
-
-    def __str__(self):
-        return f"{self.address_line1}, {self.city}, {self.country}"

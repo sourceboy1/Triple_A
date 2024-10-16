@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './SearchResults.css';
@@ -7,21 +7,21 @@ const SearchResults = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
+  
+  // Get 'category_id' and 'query' from the URL search params
+  const categoryId = new URLSearchParams(location.search).get('category_id');
   const query = new URLSearchParams(location.search).get('query');
-  const category = new URLSearchParams(location.search).get('category');
-  const navigate = useNavigate();
-
+  
   useEffect(() => {
     const fetchResults = async () => {
       setLoading(true);
       try {
-        // Fetch filtered results based on the query parameter
-        const response = await axios.get('http://localhost:8000/api/products/', {
-          params: {
-            query,
-            category
-          }
-        });
+        // If categoryId is present, filter by category
+        const params = categoryId 
+          ? { category_id: categoryId }  // Only send the category_id if it's present
+          : { query };  // Otherwise, use the search query
+        
+        const response = await axios.get('http://localhost:8000/api/products/', { params });
         setResults(response.data);
       } catch (error) {
         console.error('Error fetching search results:', error);
@@ -30,13 +30,17 @@ const SearchResults = () => {
     };
 
     fetchResults();
-  }, [query, category]);
+  }, [categoryId, query]);
 
   return (
     <div className="search-results-page">
       <h1>Results</h1>
       <p>Check each product page for other buying options.</p>
-      <h2>Search Results for "{query}"</h2>
+      {categoryId ? (
+        <h2>Products in Selected Category</h2>
+      ) : (
+        <h2>Search Results for "{query}"</h2>
+      )}
       {loading ? (
         <div>Loading...</div>
       ) : (
@@ -64,15 +68,3 @@ const SearchResults = () => {
 };
 
 export default SearchResults;
-
-
-
-
-
-
-
-
-
-
-
-

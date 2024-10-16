@@ -2,24 +2,38 @@ import React, { useState, useEffect, useContext } from 'react';
 import slidingImage1 from '../pictures/sliding1.jpg';
 import slidingImage2 from '../pictures/sliding2.jpg';
 import slidingImage5 from '../pictures/sliding5.jpg';
-import wishlistIcon from '../pictures/wishlist.jpg'; // Import your wishlist image
-import wishlistIconActive from '../pictures/wishlist-active.jpg'; // Import your wishlist active image
+import wishlistIcon from '../pictures/wishlist.jpg';
+import wishlistIconActive from '../pictures/wishlist-active.jpg';
 import axios from 'axios';
-import './Styling.css';
+import './Home.css';
 import { useNavigate } from 'react-router-dom';
 import { TokenContext } from './TokenContext';
 import { useCart } from '../contexts/CartContext';
 import { useWishlist } from '../contexts/WishlistContext';
+import CategoryDisplay from './CategoryDisplay'; // Import CategoryDisplay
+import FeatureDisplay from './FeatureDisplay'; // Import the FeatureDisplay component
+import DealsOfTheDay from './Deals_of_the_Day'; // Import DealsOfTheDay component
+import PowerBankDisplay from './PowerBanksSlider'; // Import PowerBankDisplay component
 
+// Images, captions, and button text
 const images = [slidingImage1, slidingImage2, slidingImage5];
+const captions = [
+  "Discover the latest smartphones!",
+  "Exclusive deals on gadgets!",
+  "Upgrade your tech today!"
+];
+const buttonTexts = [
+  "Shop Smartphones",
+  "Grab the Deals",
+  "Upgrade Now"
+];
 
 const Home = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [products, setProducts] = useState([]);
-  const [wishlist, setWishlist] = useState([]); // State to keep track of wishlist items
+  const [products, setProducts] = useState([]); // Still fetch products but don't display them
   const navigate = useNavigate();
   const accessToken = useContext(TokenContext);
-  const { addItemToCart } = useCart();
+  const { cart, addItemToCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
   useEffect(() => {
@@ -37,25 +51,20 @@ const Home = () => {
 
     const interval = setInterval(() => {
       setCurrentIndex(prevIndex => (prevIndex + 1) % images.length);
-    }, 5000); // Change slide every 5 seconds
+    }, 20000); // Change interval to 20 seconds
 
     return () => clearInterval(interval);
   }, [accessToken]);
-
-  useEffect(() => {
-    const sliderImages = document.querySelectorAll('.slide-image');
-    sliderImages.forEach((img, index) => {
-      img.classList.toggle('active', index === currentIndex);
-    });
-  }, [currentIndex]);
 
   const handleProductClick = (productId) => {
     navigate(`/product-details/${productId}`);
   };
 
   const handleAddToCart = (product) => {
-    console.log('Adding to cart:', product); // Log product details
-    addItemToCart(product);
+    const isProductInCart = cart.some(item => item.product_id === product.product_id);
+    if (!isProductInCart) {
+      addItemToCart(product);
+    }
   };
 
   const handleWishlistClick = (product) => {
@@ -70,20 +79,45 @@ const Home = () => {
     <div className="home">
       <div className="slider">
         {images.map((image, index) => (
-          <img
-            key={index}
-            src={image}
-            alt={`Slide ${index + 1}`}
-            className={`slide-image ${index === currentIndex ? 'active' : ''}`}
-          />
+          <div key={index} className={`slide-container ${index === currentIndex ? 'active' : ''}`}>
+            <img
+              src={image}
+              alt={`Slide ${index + 1}`}
+              className={`slide-image ${index === currentIndex ? 'active' : ''}`}
+            />
+            {index === currentIndex && (
+              <div className="slider-caption fade-in">
+                <h2 className="slider-text">{captions[index]}</h2>
+                <button className="shop-button">{buttonTexts[index]}</button>
+              </div>
+            )}
+          </div>
         ))}
-        <div className="slider-caption">
-          <h2 className="slider-text">All New Phones<br />up to 25% Flat Sale</h2>
-          <button className="shop-button">Shop Now</button>
+        <div className="slider-dots">
+          {images.map((_, index) => (
+            <span
+              key={index}
+              className={`dot ${index === currentIndex ? 'active' : ''}`}
+              onClick={() => setCurrentIndex(index)}
+            ></span>
+          ))}
         </div>
       </div>
 
-      <div className="product-list">
+      {/* Feature Display Component */}
+      <FeatureDisplay /> {/* Added FeatureDisplay above CategoryDisplay */}
+
+      {/* Deals of the Day Component */}
+      <DealsOfTheDay /> {/* Added DealsOfTheDay below the slider */}
+
+      {/* Category Display Component */}
+      <CategoryDisplay /> {/* Add the CategoryDisplay component here */}
+
+      {/* Power Bank Display Component */}
+      <PowerBankDisplay /> {/* Added PowerBankDisplay below CategoryDisplay */}
+       
+      {/* Commented out the product list */}
+      {/* <div className="product-list">
         {products.map((product) => (
           <div key={product.product_id} className="product-card">
             <div onClick={() => handleProductClick(product.product_id)}>
@@ -112,7 +146,7 @@ const Home = () => {
             </button>
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

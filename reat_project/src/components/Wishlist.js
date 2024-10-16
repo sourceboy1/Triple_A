@@ -3,8 +3,8 @@ import { useWishlist } from '../contexts/WishlistContext';
 import { useCart } from '../contexts/CartContext';
 import { useNavigate } from 'react-router-dom';
 import emptyWishlistImage from '../pictures/emptywishlist.jpg';
-import markImg from '../pictures/mark.jpg';
-import markedImg from '../pictures/markred.jpg';
+import markImg from '../pictures/mark.jpg'; // In stock icon
+import markedImg from '../pictures/markred.jpg'; // Out of stock icon
 import './Wishlist.css';
 import axios from 'axios';
 
@@ -27,7 +27,7 @@ const Wishlist = () => {
   };
 
   const handleProductClick = (productId) => {
-    navigate(`/product-details/${productId}`); // Corrected path to match routing setup
+    navigate(`/product-details/${productId}`); // Navigate to product details page
   };
 
   useEffect(() => {
@@ -63,7 +63,7 @@ const Wishlist = () => {
         </div>
       ) : (
         <div className="wishlist-grid">
-          {wishlist.map((item) => (
+          {updatedWishlist.map((item) => (
             <div 
               key={item.product_id} 
               className="wishlist-item"
@@ -74,18 +74,21 @@ const Wishlist = () => {
                 <div className="wishlist-item-info">
                   <h2 className="wishlist-item-name">{item.name}</h2>
                   <p className="wishlist-item-price">{formatPrice(item.price)}</p>
-                  <p className="wishlist-item-date">{item.date}</p>
                   <div className="wishlist-item-stock-container">
+                    {/* Show in-stock or out-of-stock image */}
                     <img
                       src={item.stock > 0 ? markImg : markedImg}
                       alt={item.stock > 0 ? 'In Stock' : 'Out of Stock'}
                       className="wishlist-item-stock-image"
                     />
+                    {/* Show in-stock or out-of-stock label */}
                     <div className={`wishlist-item-stock ${item.stock > 0 ? 'in-stock' : 'out-of-stock'}`}>
                       {item.stock > 0 ? 'In Stock' : 'Out of Stock'}
                     </div>
                   </div>
-                  {item.stock > 0 && (
+
+                  {/* Show "Add to Cart" button only if item is in stock */}
+                  {item.stock > 0 ? (
                     <button
                       className="wishlist-item-add-to-cart"
                       onClick={(e) => {
@@ -95,7 +98,13 @@ const Wishlist = () => {
                     >
                       Add to Cart
                     </button>
+                  ) : (
+                    <button className="wishlist-item-add-to-cart" disabled>
+                      Out of Stock
+                    </button>
                   )}
+
+                  {/* Remove from wishlist */}
                   <button
                     className="wishlist-item-remove"
                     onClick={(e) => {

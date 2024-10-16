@@ -1,0 +1,52 @@
+.powerbank-container {
+    text-align: start;
+    margin: 20px auto;
+    max-width: 1200px; /* Limit the width for better layout */
+}
+
+h2 {
+    margin-bottom: 20px;
+    font-size: 2em; /* Increase font size for the heading */
+    color: var(--main-accent-color); /* Using your defined color variable */
+}
+
+.powerbank-display {
+    overflow: hidden; /* Hide the overflowing items */
+    position: relative; /* Set position for inner slider */
+}
+
+.powerbank-slider {
+    display: flex;
+    transition: transform 0.5s ease; /* Smooth transition */
+    width: 100%; /* Ensure it takes full width */
+}
+
+.powerbank-item {
+    width: 150px; /* Adjust as needed */
+    margin: 15px; /* Slightly increase margin for spacing */
+    display: flex;
+    flex-direction: column;
+    border: 2px solid var(--main-accent-color); /* Add a border */
+    border-radius: 10px; /* Round the corners */
+    padding: 10px; /* Add padding for space inside the border */
+    transition: transform 0.3s, box-shadow 0.3s; /* Smooth hover effect */
+    background-color: white; /* Set background color */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.powerbank-item:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+.powerbank-image {
+    width: 100%; /* Ensures image takes full width */
+    height: auto;
+    border-radius: 5px; /* Round the corners of the image */
+}
+
+.powerbank-name {
+    margin-top: 10px;
+    font-size: 1em;
+    color: #333; /* Set a nice color for the text */
+}

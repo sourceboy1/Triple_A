@@ -1,0 +1,29 @@
+/* .order-details {
+    padding: 20px;
+}
+
+.address-section {
+    display: flex;
+    justify-content: space-between;
+}
+
+.address-box {
+    border: 1px solid #ddd;
+    padding: 15px;
+    width: 48%;
+}
+
+.address-box h3 {
+    margin-top: 0;
+}
+
+@media (max-width: 768px) {
+    .address-section {
+        flex-direction: column;
+    }
+
+    .address-box {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+} */

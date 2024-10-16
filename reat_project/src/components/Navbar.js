@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 import { useUser } from '../contexts/UserContext';
@@ -19,17 +19,14 @@ const Navbar = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [userDropdownVisible, setUserDropdownVisible] = useState(false);
-
+  const [searchWidth, setSearchWidth] = useState('50%');
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 425); 
   const categoryDropdownRef = useRef(null);
-  const userDropdownRef = useRef(null);
   const searchInputRef = useRef(null);
   const navigate = useNavigate();
-  
   const { getCartItemCount } = useCart();
   const cartCount = getCartItemCount();
-  
-  const { isLoggedIn, username, signOut } = useUser();
+  const { isLoggedIn, username } = useUser();
   const { wishlist } = useWishlist();
 
   useEffect(() => {
@@ -60,26 +57,13 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        categoryDropdownRef.current &&
-        !categoryDropdownRef.current.contains(event.target) &&
-        !searchInputRef.current.contains(event.target)
-      ) {
-        setCategoryDropdownVisible(false);
-      }
-
-      if (
-        userDropdownRef.current &&
-        !userDropdownRef.current.contains(event.target)
-      ) {
-        setUserDropdownVisible(false);
-      }
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 425);
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    window.addEventListener('resize', handleResize);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
@@ -87,16 +71,16 @@ const Navbar = () => {
     setCategoryDropdownVisible(!categoryDropdownVisible);
   };
 
-  const toggleUserDropdown = () => {
-    setUserDropdownVisible(!userDropdownVisible);
-  };
-
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
     setCategoryDropdownVisible(false);
+    setSearchWidth(category === 'All' ? '100%' : '50%');
   };
 
   const handleSearch = () => {
+    if (!searchQuery.trim()) {
+      return;
+    }
     navigate(`/search?query=${encodeURIComponent(searchQuery)}&category=${encodeURIComponent(selectedCategory)}`);
   };
 
@@ -116,7 +100,7 @@ const Navbar = () => {
   };
 
   const handlePhoneClick = () => {
-    window.location.href = 'tel:+1234567890'; // Replace with your phone number
+    window.location.href = 'tel:+23434593459'; 
   };
 
   const handleSuggestionClick = (product) => {
@@ -124,13 +108,13 @@ const Navbar = () => {
     setFilteredProducts([]);
   };
 
+  // Updated handleAccountClick function
   const handleAccountClick = () => {
-    navigate('/account');
-  };
-
-  const handleSignOut = () => {
-    signOut();
-    navigate('/');
+    if (isLoggedIn) {
+      navigate('/account');
+    } else {
+      navigate('/signin');
+    }
   };
 
   const handleWishlistClick = () => {
@@ -138,17 +122,40 @@ const Navbar = () => {
   };
 
   return (
-  <nav className="navbar">
-    <div className="navbar-content">
-      <div className="navbar-left">
-        <a href="/">
-          <img src={companyLogo} alt="Company Logo" className="company-logo" />
-        </a>
-        <div className="company-name">Triple A's Technology</div>
+    <nav className="navbar">
+      <div className="navbar-content">
+        <div className="navbar-left">
+          <a href="/">
+            <img src={companyLogo} alt="Company Logo" className="company-logo" />
+          </a>
+          <div className="company-name">Triple A's Technology</div>
+        </div>
+
+        <div className="navbar-right">
+          <div className="wishlist-container" onClick={handleWishlistClick}>
+            <img
+              src={wishlistIcon}
+              alt="Wishlist"
+              className="wishlist-icon"
+            />
+            <span className="wishlist-count">{wishlist.length}</span>
+          </div>
+          <div onClick={() => navigate('/cart')} className="cart-link">
+            <img src={cartIcon} alt="Cart" className="cart-icon" />
+            <span className="cart-count">{cartCount}</span>
+          </div>
+          <div className="user-info" onClick={handleAccountClick}>
+            <img src={userIcon} alt="User Icon" className="user-icon" />
+            <div className="greeting">
+              <span className="hello">{isLoggedIn ? 'Hello' : 'Sign In' }</span>
+              <span className="username">{isLoggedIn ? username : 'Account'}</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="search-bar-container">
-        <div className="search-with-dropdown">
+        <div className="search-with-dropdown" style={{ width: searchWidth }}>
           <div
             className="all-dropdown"
             onClick={toggleCategoryDropdown}
@@ -162,14 +169,11 @@ const Navbar = () => {
             />
             {categoryDropdownVisible && (
               <div className="dropdown-content show">
-                <a href="#" onClick={() => handleCategoryClick('All')}>All</a>
-                <a href="#" onClick={() => handleCategoryClick('Phones & Tablets')}>Phones & Tablets</a>
-                <a href="#" onClick={() => handleCategoryClick('AirPods')}>AirPods</a>
-                <a href="#" onClick={() => handleCategoryClick('Laptops')}>Laptops</a>
-                <a href="#" onClick={() => handleCategoryClick('Pouches & Screen Guides')}>Pouches & Screen Guides</a>
-                <a href="#" onClick={() => handleCategoryClick('Powerbanks')}>Powerbanks</a>
-                <a href="#" onClick={() => handleCategoryClick('Watches')}>Watches</a>
-                <a href="#" onClick={() => handleCategoryClick('Games')}>Games</a>
+                {["All", 'Phones & Tablets', 'Headsets & AirPods', 'Laptops', 'Pouches & Guide', 'Powerbanks', 'Watches', 'Games','Accessories'].map((cat) => (
+                  <a href="#" key={cat} onClick={() => handleCategoryClick(cat)}>
+                    {cat}
+                  </a>
+                ))}
               </div>
             )}
           </div>
@@ -200,55 +204,16 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="navbar-right">
-        <div className="wishlist-container">
-          <img
-            src={wishlistIcon}
-            alt="Wishlist"
-            className="wishlist-icon"
-            onClick={handleWishlistClick}
-          />
-          <span className="wishlist-count">{wishlist.length}</span>
-        </div>
-        <a href="#" onClick={() => navigate('/cart')} className="cart-link">
-          <img src={cartIcon} alt="Cart" className="cart-icon" />
-          <span className="cart-count">{cartCount}</span>
-        </a>
-        <div className="user-info" onClick={toggleUserDropdown} ref={userDropdownRef}>
-          <img src={userIcon} alt="User Icon" className="user-icon" />
-          <div className="greeting">
-            <span className="hello">{isLoggedIn ? 'Hello' : 'Sign In' }</span>
-            <span className="username">{isLoggedIn ? username : 'Account'}</span>
-          </div>
-          {userDropdownVisible && (
-            <div className="account-dropdown">
-              {isLoggedIn ? (
-                <>
-                  <a href="#" onClick={handleAccountClick}>Account</a>
-                  <a href="#" onClick={handleSignOut}>Sign Out</a>
-                </>
-              ) : (
-                <>
-                  <a href="#" onClick={() => navigate('/signin')}>Sign In</a>
-                  <a href="#" onClick={() => navigate('/signup')}>Register</a>
-                </>
-              )}
-            </div>
-          )}
-        </div>
+      <div className="phone-icon-container" onClick={handlePhoneClick}>
+        <span className="phone-label">Phone</span>
+        <img 
+          src={phoneIcon} 
+          alt="Call Us" 
+          className="phone-icon" 
+        />
       </div>
-    </div>
-
-    <div className="phone-icon-container" onClick={handlePhoneClick}>
-      <span className="phone-label">Phone</span>
-      <img 
-        src={phoneIcon} 
-        alt="Call Us" 
-        className="phone-icon" 
-      />
-    </div>
-  </nav>
-);
+    </nav>
+  );
 };
 
 export default Navbar;

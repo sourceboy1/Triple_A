@@ -26,7 +26,8 @@ import Account from './components/Account';
 import { WishlistProvider } from './contexts/WishlistContext';
 import Wishlist from './components/Wishlist';
 import AccountDetails from './components/AccountDetails';
-
+import OrderDetails from './components/OrderDetails';
+import PowerBankDisplay from './components/PowerBanksSlider';
 
 
 const App = () => {
@@ -60,6 +61,8 @@ const App = () => {
                   <Route path="/account" element={<Account />} />
                   <Route path="/wishlist" element={<Wishlist />} />
                   <Route path="/account/details" element={<AccountDetails />} /> 
+                  <Route path="/order/:orderId" element={<OrderDetails />} />
+                  <Route path="/" element={<PowerBankDisplay />} />
                 </Routes>
               </div>
             </Router>

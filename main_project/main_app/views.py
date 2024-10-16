@@ -31,6 +31,45 @@ from django.contrib.auth.tokens import default_token_generator
 
 
 
+import random
+from datetime import datetime, timedelta
+from django.core.management.base import BaseCommand
+
+
+class Command(BaseCommand):
+    help = "Select 'Deals of the Day' every 7 days"
+
+    def handle(self, *args, **kwargs):
+        today = datetime.today()
+        seven_days_ago = today - timedelta(days=7)
+
+        # Reset the previous deals
+        Product.objects.filter(is_deal_of_the_day=True).update(is_deal_of_the_day=False)
+
+        # Select new random products for deal of the day
+        products = Product.objects.filter(created_at__gte=seven_days_ago)
+
+        if products.exists():
+            # Select random products as deal of the day (you can change how many are chosen)
+            deals_of_the_day = random.sample(list(products), k=min(len(products), 5))  # Change '5' to the number of products you want
+
+            for product in deals_of_the_day:
+                product.is_deal_of_the_day = True
+                product.save()
+
+        self.stdout.write(self.style.SUCCESS(f"Successfully updated 'Deals of the Day'"))
+
+
+
+class DealOfTheDayView(APIView):
+    def get(self, request):
+        deals = Product.objects.filter(is_deal_of_the_day=True)
+        serializer = ProductSerializer(deals, many=True, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+
 
 CustomUser = get_user_model()
 
@@ -143,6 +182,8 @@ class SignupView(APIView):
         first_name = request.data.get('first_name')
         last_name = request.data.get('last_name')
         password = request.data.get('password')
+        address = request.data.get('address', '')
+        phone = request.data.get('phone', '')
 
         # Check if username or email already exists
         if CustomUser.objects.filter(username=username).exists():
@@ -151,16 +192,18 @@ class SignupView(APIView):
             return Response({"error": "Email already registered"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Use the serializer to create the user
-        serializer = UserSerializer(data=request.data)
+        serializer = UserSerializer(data={
+            'username': username,
+            'email': email,
+            'first_name': first_name,
+            'last_name': last_name,
+            'password': password,
+            'address': address,
+            'phone': phone
+        })
+
         if serializer.is_valid():
-            # Create the user using the custom manager
-            user = CustomUser.objects.create_user(
-                username=username,
-                email=email,
-                password=password,  # `create_user` handles hashing
-                first_name=first_name,
-                last_name=last_name
-            )
+            user = serializer.save()  # Save user with address and phone
 
             # Generate an authentication token for the new user
             token, _ = Token.objects.get_or_create(user=user)
@@ -174,6 +217,7 @@ class SignupView(APIView):
         
         logger.error(f"Serializer errors: {serializer.errors}")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
     
 
@@ -192,9 +236,9 @@ class PlaceOrderView(APIView):
         if not user or not payment_method:
             return Response({'error': 'Invalid user or payment method'}, status=status.HTTP_400_BAD_REQUEST)
         
-        # Update request data with IDs (optional)
+        # Update request data with IDs
         request.data['user_id'] = user.id
-        request.data['payment_method'] = payment_method.id
+        request.data['payment_method_id'] = payment_method.id
 
         # Serialize the order data
         serializer = OrderSerializer(data=request.data)
@@ -204,12 +248,43 @@ class PlaceOrderView(APIView):
 
             return Response({
                 'message': 'Order placed successfully!',
-                'order_id': order.id,
+                'order_id': order.order_id,
                 'order': serializer.data
             }, status=status.HTTP_201_CREATED)
         else:
             print("Serializer errors:", serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
+
+class OrderDetailView(APIView):
+    def get(self, request, *args, **kwargs):
+        order_id = kwargs.get('order_id')
+        try:
+            order = Order.objects.get(order_id=order_id)
+        except Order.DoesNotExist:
+            return Response({'detail': 'Order not found.'}, status=404)
+
+        # Extract the address details
+        address_details = {
+            'first_name': order.first_name,
+            'last_name': order.last_name,
+            'address': order.address,
+            'city': order.city,
+            'state': order.state,
+            'postal_code': order.postal_code,
+            'country': order.country,
+            'phone': order.phone,
+        }
+
+        return Response(address_details)
+
+
 
 
 
@@ -302,19 +377,18 @@ class UpdateProfileView(APIView):
 
 
 
+
 class ProductListView(generics.ListAPIView):
     serializer_class = ProductSerializer
 
     def get_queryset(self):
         queryset = Product.objects.all()
-        category_name = self.request.query_params.get('category', None)
-        if category_name:
-            queryset = queryset.filter(category__name__iexact=category_name)
+        category_id = self.request.query_params.get('category_id', None)
+        if category_id:
+            queryset = queryset.filter(category__id=category_id)
         return queryset
 
 
-class YourModelViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
 
     
 class UserViewSet(viewsets.ModelViewSet):
@@ -356,17 +430,29 @@ class PaymentMethodViewSet(viewsets.ModelViewSet):
     queryset = PaymentMethod.objects.all()
     serializer_class = PaymentMethodSerializer
 
+
+
 class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all()
+    queryset = Product.objects.all()  # Ensure queryset is defined
     serializer_class = ProductSerializer
     permission_classes = [AllowAny]
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        
+        # Get the category_id from query parameters
+        category_id = self.request.query_params.get('category_id', None)
+        if category_id:
+            # Filter the products based on category_id
+            queryset = queryset.filter(category_id=category_id)
+        
+        # Optional: add search functionality
         query = self.request.query_params.get('query', None)
         if query:
             queryset = queryset.filter(name__icontains=query)
+        
         return queryset
+
 
     
 

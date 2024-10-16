@@ -8,8 +8,8 @@ CustomUser = get_user_model()
 
 @admin.register(CustomUser)
 class CustomUserAdmin(BaseUserAdmin):
-    list_display = ('id', 'username', 'email', 'first_name', 'last_name', 'date_joined')
-    search_fields = ('username', 'email', 'first_name', 'last_name')
+    list_display = ('id', 'username', 'email', 'first_name', 'last_name', 'address', 'phone', 'date_joined')
+    search_fields = ('username', 'email', 'first_name', 'last_name', 'address', 'phone')
 
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
@@ -21,7 +21,7 @@ class CustomUserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'password1', 'password2'),
+            'fields': ('username', 'email', 'password1', 'password2', 'address', 'phone'),
         }),
     )
 
@@ -33,8 +33,8 @@ class CustomUserAdmin(BaseUserAdmin):
  
 @admin.register(ShippingAddress)
 class ShippingAddressAdmin(admin.ModelAdmin):
-    list_display = ('user', 'address_line1', 'city', 'state', 'postal_code', 'country', 'created_at')
-    search_fields = ('user__username', 'address_line1', 'city', 'state', 'postal_code', 'country')
+    list_display = ('user_id', 'address', 'city', 'state', 'postal_code', 'country', 'created_at')
+    search_fields = ('user_id', 'address', 'city', 'state', 'postal_code', 'country')
 
 @admin.register(Cart)
 class CartAdmin(admin.ModelAdmin):
@@ -48,15 +48,16 @@ class CartItemAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description', 'created_at')
+    list_display = ('category_id', 'name', 'description', 'created_at')  
     search_fields = ('name',)
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('product_id', 'name', 'price', 'original_price', 'discount', 'stock', 'category', 'created_at', 'image')
+    list_display = ('product_id', 'name', 'price', 'original_price', 'discount', 'stock', 'category', 'is_deal_of_the_day', 'created_at', 'image')
     search_fields = ('name', 'description', 'category__name')
-    list_filter = ('category', 'created_at')
-    fields = ('name', 'description', 'price', 'original_price', 'discount', 'stock', 'category', 'image')
+    list_filter = ('category', 'created_at', 'is_deal_of_the_day')  # Add filter for deals
+    fields = ('name', 'description', 'price', 'original_price', 'discount', 'stock', 'category', 'image', 'is_deal_of_the_day')  # Add to fields
+
 
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
@@ -70,28 +71,39 @@ class OrderItemInline(admin.TabularInline):
     model = OrderItem
     extra = 1
 
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    extra = 1
+
 class OrderAdmin(admin.ModelAdmin):
     list_display = (
         'order_id', 'user_id', 'total_amount', 'created_at', 'first_name',
-        'last_name', 'address', 'city', 'state', 'postal_code','email',
-        'country', 'phone', 'shipping_method', 'order_note', 'payment_method_id', 'shipping_cost',
-        'status',
+        'last_name', 'email', 'phone', 'shipping_method', 'order_note',
+        'payment_method_id', 'shipping_cost', 'status',
     )
     fields = (
-        'order_id', 'user_id', 'email', 'first_name', 'last_name', 'address',
-        'city', 'state', 'postal_code', 'country', 'phone', 'shipping_method','email'
-        'order_note', 'payment_method', 'shipping_cost', 'total_amount', 'status', 'created_at'
+        'order_id', 'user_id', 'email', 'first_name', 'last_name',
+        'phone', 'shipping_method', 'order_note', 'payment_method_id',
+        'shipping_cost', 'total_amount', 'status', 'created_at'
     )
     list_filter = (
         'created_at', 'shipping_method', 'payment_method_id', 'status',
     )
     search_fields = (
-        'order_id', 'first_name', 'last_name', 'address', 'city', 'state', 'country', 'phone', 'payment_method__method_name'
+        'order_id', 'first_name', 'last_name', 'phone', 'payment_method__method_name'
     )
     list_editable = ('status',)
     inlines = [OrderItemInline]
 
     actions = ['mark_as_shipped', 'mark_as_delivered', 'mark_as_cancelled']
+
+    # Custom method to display shipping address details
+    def get_shipping_address(self, obj):
+        if obj.shipping_address:
+            return f"{obj.shipping_address.address}, {obj.shipping_address.city}, {obj.shipping_address.state}, {obj.shipping_address.postal_code}, {obj.shipping_address.country}"
+        return "No address provided"
+    
+    get_shipping_address.short_description = 'Shipping Address'
 
     # Mark actions
     def mark_as_shipped(self, request, queryset):
@@ -111,6 +123,7 @@ class OrderAdmin(admin.ModelAdmin):
     mark_as_cancelled.short_description = "Mark selected orders as Cancelled"
 
 admin.site.register(Order, OrderAdmin)
+
 
 
 

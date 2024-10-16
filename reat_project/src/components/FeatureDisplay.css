@@ -1,0 +1,91 @@
+.feature-container {
+    display: flex;
+    flex-direction: row;  /* Align items in a row */
+    justify-content: space-between;  /* Distribute space between items */
+    border: 1px solid #ddd;  /* Adjusted border to 1px */
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    max-width: 100%;  /* Use full width */
+    margin: 0 auto;  /* Center the container horizontally */
+    flex-wrap: wrap;  /* Allow wrapping */
+    margin-top: 30px;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;  /* Align items horizontally in the center */
+    margin: 10px;
+    flex: 1;  /* Default behavior, allow items to grow */
+}
+
+/* Default styles for larger screens */
+.feature-icon {
+    width: 50px;  /* Set the image width */
+    height: 50px;
+    margin-right: 15px;  /* Space between the icon and text */
+    border-radius: 5px;  /* Slight rounding for images */
+}
+
+.feature-text h4 {
+    font-size: 18px;
+    color: #333;
+    margin: 0;
+    font-weight: bold;
+}
+
+.feature-text p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #555;
+}
+
+/* Media Queries */
+
+/* For screen sizes 769px and below (3 items per row) */
+@media (max-width: 769px) {
+    .feature-item {
+        flex: 0 0 30%;  /* Each item takes up approximately 30% of the row */
+        max-width: 30%;  /* Set max-width to 30% to maintain 3 items in a row */
+    }
+
+    .feature-text h4 {
+        font-size: 16px;  /* Slightly smaller text size */
+    }
+
+    .feature-text p {
+        font-size: 12px;  /* Slightly smaller text size */
+    }
+}
+
+/* For screen sizes 425px and below (2 items per row) */
+@media (max-width: 425px) {
+    .feature-item {
+        flex: 0 0 45%;  /* Each item takes up approximately 45% of the row */
+        max-width: 45%;  /* Set max-width to 45% to maintain 2 items in a row */
+    }
+
+    .feature-text h4 {
+        font-size: 14px;  /* Smaller text size */
+    }
+
+    .feature-text p {
+        font-size: 10px;  /* Smaller text size */
+    }
+}
+
+/* For screen sizes 320px and below (1 item per row) */
+@media (max-width: 320px) {
+    .feature-item {
+        flex: 0 0 100%;  /* Each item takes full width */
+        max-width: 100%;  /* Set max-width to 100% to maintain 1 item in a row */
+    }
+
+    .feature-text h4 {
+        font-size: 12px;  /* Smaller text size */
+    }
+
+    .feature-text p {
+        font-size: 8px;  /* Smaller text size */
+    }
+}

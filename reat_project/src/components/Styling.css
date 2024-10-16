@@ -1,16 +1,19 @@
+/* Navbar container */
 .navbar {
   display: flex;
+  flex-direction: column; /* Stack the content vertically */
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start; /* Align items to the start for better space management */
   background-color: white;
   padding: 10px 20px;
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: 10;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+/* Navbar content with logo and icons */
 .navbar-content {
   display: flex;
   align-items: center;
@@ -18,144 +21,148 @@
   width: 100%;
 }
 
-.navbar-left {
-  display: flex;
-  align-items: center;
-}
-
+/* Company Logo */
 .company-logo {
   height: 50px;
   margin-right: 10px;
 }
 
+/* Company Name */
 .company-name {
   font-size: 1.5rem;
   color: green;
   font-weight: bold;
-
 }
 
-.company-name a{
-  text-decoration: none;
+/* Left and Right Navbar Sections */
+.navbar-left {
+  display: flex;
+  align-items: center;
+  flex: 1; /* Allow left section to grow */
 }
 
+.navbar-right {
+  display: flex;
+  align-items: center;
+  margin-right: 65px; /* Reduced margin for better spacing */
+  gap: 20px;
+}
+
+/* Wishlist and Cart Links */
+.wishlist-container,
+.cart-link {
+  position: relative;
+}
+
+/* Search bar container */
 .search-bar-container {
+  margin-top: -55px; /* Adjust this value to move the search container up */
+  width: 100%;
+  max-width: 1100px; /* Increase the width of the search container */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center the search bar horizontally */
+}
+
+/* Search bar with dropdown */
+.search-with-dropdown {
+  position: relative; /* Necessary for absolute positioning of the search button */
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 600px; /* Adjust the width as needed */
 }
 
-.search-with-dropdown {
-  position: relative; /* Position relative to contain absolute dropdown */
-  display: flex;
-  align-items: center;
-  flex-grow: 1;
-  margin-right: 20px;
+/* Search Input */
+.search-input {
+  width: 100%;
+  padding: 19px 40px 14px 20px; /* Adjust padding to create space for the icon */
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  box-sizing: border-box; /* Ensure padding doesn't affect the input's overall width */
 }
 
+/* Search Button */
+.search-button {
+  position: absolute; /* Positioning inside the search input */
+  right: 10px; /* Position the search icon at the end */
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* Dropdown button styles */
 .all-dropdown {
   display: flex;
   align-items: center;
+  padding: 14px 8px;
   cursor: pointer;
-  position: absolute;
-  left: 10px; /* Position the dropdown inside the input field */
-  z-index: 1; /* Ensure it is above the input field */
-  background-color: transparent;
-  height: 100%; /* Match the height of the input */
-  
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+  white-space: nowrap; /* Prevent text from wrapping to a new line */
+  flex-grow: 1; /* Allow the dropdown to expand and take up available space */
+  min-width: 120px; /* Set a minimum width for the dropdown */
+  max-width: 300px; /* Set a maximum width to prevent it from growing too large */
+  overflow: hidden; /* Hide overflowing text */
+  text-overflow: ellipsis; /* Display ellipsis (...) for overflowing text */
 }
 
-/* Container styles for the dropdown */
+
+
+
+.search-button img {
+  width: 41px; /* Adjust the size of the search icon */
+  height: 41px;
+  margin-right: 10px;
+}
+
+
+
+/* Dropdown content styling */
 .dropdown-content {
   position: absolute;
   top: 100%;
   left: 0;
   background-color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  padding: 0; /* Remove padding to ensure width fits content */
-  display: none;
-  z-index: 2; /* Ensure dropdown content is above the input field */
-  width: 100%; /* Ensure the dropdown content matches the width of the input */
-  white-space: nowrap; /* Prevent wrapping of text */
-  border-radius: 4px; /* Optional: rounded corners for better appearance */
-  padding-left: 1px;
-  
+  width: 200px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  z-index: 2;
 }
 
-/* Show dropdown when active */
-.dropdown-content.show {
-  display: block;
-}
-
-/* Styles for individual items in the dropdown */
 .dropdown-content a {
-  display: block; /* Ensure each link takes up a full line */
-  padding: 10px 15px; /* Add padding for spacing */
-  color: black; /* Text color for the links */
-  text-decoration: none; /* Remove underline */
-  white-space: nowrap; /* Prevent wrapping of text */
-  background-color: white; /* Ensure background color is applied */
-  box-sizing: border-box; /* Ensure padding and border are included in width */
-  border-bottom: 1px solid #eee; /* Optional: Add a border between items */
-  padding-right: 200px;
-  margin-right: 10px;
+  display: block;
+  padding: 10px 15px;
+  color: black;
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 1px solid #eee;
 }
 
-/* Remove the bottom border for the last item */
 .dropdown-content a:last-child {
   border-bottom: none;
 }
 
-/* Hover effect for links */
 .dropdown-content a:hover {
-  background-color: #f0f0f0; /* Background color on hover */
-}
-
-/* Ensure search-with-dropdown container is positioned properly */
-.search-with-dropdown {
-  position: relative;
-  display: flex;
-  align-items: center;
-  flex-grow: 1; /* Ensure it takes up available space */
-  margin-right: 20px; /* Space between search and buttons */
-}
-
-/* Adjust input field to ensure padding is not affecting dropdown */
-.search-input {
-  width: 100%;
-  padding: 17px 50px 15px 80px; /* Add padding for the icon space */
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: transparent; /* Remove the background color */
-  outline: none;
-  position: relative;
+  background-color: #f0f0f0;
 }
 
 
 
-.search-button {
-  position: absolute;
-  right: 10px; /* Adjust the position inside the input */
-  border: none;
-  background: none;
-  padding: 0;
-  cursor: pointer;
-  width: 40px;
-}
 
-.search-button img {
-  width: 45px; /* Adjust the size of the search icon */
-  height: 45px;
-}
 
-.navbar-right {
-  display: flex;
-  align-items: center;
-  gap: 20px; /* Space between the cart icon and buttons */
-  margin-right: 40px;
-}
+
+
+
+
+
 
 .button {
   background-color: green;
@@ -213,12 +220,12 @@
   background-color: #f0f0f0;
 }
 
-.navbar-right {
-  display: flex;
-  align-items: center;
-  gap: 20px; /* Space between icons and buttons */
-  margin-right: 70px;
-}
+
+
+
+
+
+
 
 .user-icon-container {
   display: flex;
@@ -241,29 +248,7 @@
   color: #333;
 }
 
-.user-dropdown {
-  display: none; /* Hide dropdown by default */
-  position: absolute;
-  top: 60px; /* Adjust based on your user icon size */
-  right: 0;
-  background-color: white;
-  border: 1px solid #ddd;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  width: 150px; /* Adjust width as needed */
-  z-index: 1000;
-}
 
-.user-dropdown a {
-  display: block;
-  padding: 10px 15px;
-  color: #333;
-  text-decoration: none;
-}
-
-.user-dropdown a:hover {
-  background-color: #f0f0f0;
-}
 
 .user-icon-container:hover .user-dropdown {
   display: block; /* Show dropdown on hover */
@@ -387,34 +372,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-/* Add these lines to your global CSS file */
-@import "~slick-carousel/slick/slick.css";
-@import "~slick-carousel/slick/slick-theme.css";
-
-
-
-
-
-
-
-
-
-
-
-
-
 .quantity-control {
   display: flex;
   align-items: center;
@@ -435,86 +392,6 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-/* sliding images */
-
-.home {
-  width: 100%;
-  max-width: 1300px;
-  margin-top: 55px;
-  padding: 20px;
-  position: relative;
-  overflow: hidden; /* Hide overflow to ensure clean edges */
-}
-
-.slider {
-  position: relative;
-  width: 100%; /* Ensure the slider container is full width */
-  max-width: 1300px; /* Set to match the width of slidingImage1 */
-  margin: 0 auto; /* Center align the slider */
-  overflow: hidden; /* Hide overflow to ensure clean edges */
-  height: 600px; /* Set a fixed height if needed */
-}
-
-.slide-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%; /* Ensure image fills the slider container */
-  height: 100%; /* Ensure image covers the height */
-  opacity: 0; /* Hide all images initially */
-  transition: opacity 4s ease-in-out; /* Smooth transition for opacity */
-}
-
-.slide-image.active {
-  opacity: 1; /* Show the active image */
-}
-
-.slider-caption {
-  position: absolute;
-  top: 50%;
-  left: 20px;
-  transform: translateY(-50%);
-  color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-  margin-left: 80px;
-}
-
-.slider-text {
-  font-size: 4.5rem;
-  font-weight: bolder;
-  margin-bottom: 20px;
-  color: rgb(101, 162, 241);
-  padding-bottom: 30px;
-}
-
-.shop-button {
-  background-color: green;
-  color: white;
-  border: none;
-  padding: 15px 30px;
-  font-size: 1.5rem;
-  cursor: pointer;
-  border-radius: 20px;
-  transition: background-color 0.3s, transform 0.3s;
-  margin-left: 80px;
-  margin-left: 20px;
-}
-
-.shop-button:hover {
-  background-color: darkgreen;
-  transform: scale(1.05);
-}
 
 
 
@@ -734,12 +611,12 @@
 /* Overall styling for the product list */
 .product-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(5, 1fr); /* Ensure 5 products per row */
+  gap: 20px; /* Adjust gap between products */
   margin-top: 20px;
   padding: 20px;
   background-color: white;
-  width: 100vw;
+  width: 100%; /* Make sure it fits within the container */
   box-sizing: border-box;
 }
 
@@ -755,6 +632,7 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease, transform 0.3s ease;
   cursor: pointer;
+  padding-top: 35px;
 }
 
 /* Hover effect on the product card */
@@ -766,21 +644,19 @@
 /* Styling for product images */
 .product-image {
   width: 100%;
-  height: 150px;
-  object-fit: cover; /* Ensures the image covers the area without distortion */
+  height: 200px; /* Adjust to a smaller height */
+  object-fit: cover;
   transition: transform 0.3s ease, filter 0.3s ease;
-  will-change: transform; /* Optimizes the rendering for smooth scaling */
 }
 
 /* Zoom effect on the product image */
 .product-card:hover .product-image {
-  transform: scale(1.1); /* Scales the image smoothly */
-  filter: none; /* Ensures no filter is applied during the zoom */
+  transform: scale(1.1);
 }
 
 /* Styling for product titles */
 .product-title {
-  font-size: 1.2em;
+  font-size: 1.2em; /* Adjust font size */
   margin: 10px 0;
   color: #333;
 }
@@ -798,6 +674,7 @@
   font-size: 1.1em;
   color: #333;
   font-weight: bold;
+  margin-bottom: 10px;
 }
 
 /* Styling for primary buttons (e.g., Add to Cart) */
@@ -834,6 +711,46 @@
 
 
 
+/* Product Image Zoom Effect */
+.zoomable-image {
+  width: 60%;
+  max-width: 250px;
+  height: auto;
+  margin-bottom: 10px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  transition: transform 0.3s ease-in-out; /* Smooth zoom effect */
+}
+
+.zoomable-image:hover {
+  transform: scale(1.5); /* Zooms the image by 20% */
+}
+
+/* Additional styles remain unchanged */
+.product-detail-controls img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin: 0 5px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 5px;
+}
+
+.product-detail-controls img.active {
+  border: 2px solid green;
+}
+
+.quantity-control button {
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 0 10px;
+}
+
 
 
 
@@ -855,6 +772,8 @@
   align-items: center;
 }
 
+
+
 .product-detail-images {
   display: flex;
   justify-content: center;
@@ -869,6 +788,8 @@
   border: 2px solid #ccc;
   border-radius: 10px;
 }
+
+
 
 .product-detail-controls {
   display: flex;
@@ -892,7 +813,16 @@
 
 .product-detail-info {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 10px;
+}
+
+.product-detail-info h2{
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.product-detail-info p{
+  font-size: 18px;
 }
 
 .quantity-control {
@@ -1028,117 +958,229 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Mobile styles */
-@media (max-width: 768px) {
+/* Tablet (1024px and below) */
+@media (max-width: 1024px) {
   .navbar {
-    padding: 10px 20px;
+    padding: 10px 12px; /* Adjust padding for tablets */
   }
 
+  /* Stack the logo, name, and icons in a single row with space between */
   .navbar-content {
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
   }
 
-  .navbar-links {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-    padding: 0;
-    display: none;
-  }
-
-  .navbar-links.show {
-    display: flex;
-  }
-
-  .navbar-links li {
-    width: 100%;
-  }
-
-  .navbar-links a {
-    display: block;
-    width: 100%;
-    padding: 10px 0;
-  }
-
-  .navbar-right {
-    display: none;
-  }
-
-  .hamburger-button {
-    display: block;
+  .company-logo {
+    height: 45px; /* Adjust logo size */
   }
 
   .company-name {
-    font-size: 18px;
-    margin-left: 0;
-  }
-}
-
-/* Laptop screen styles */
-@media (min-width: 1485px) {
-  .navbar-links {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    justify-content: center;
-  }
-
-  .hamburger-button {
-    display: none;
+    font-size: 1.3rem; /* Adjust font size */
   }
 
   .navbar-right {
-    display: flex;
+    margin-right: 15px;
+    gap: 12px; /* Adjust gap for navbar items */
+  }
+
+  /* Search bar below the navbar content */
+  .search-bar-container {
+    margin-top: 6px; /* Adjust margin for search bar */
+    width: 120%; /* Fit to tablet screen */
+  }
+
+  .search-input {
+    font-size: 14px; /* Increase input font size */
+    padding: 15px 35px 10px 15px; /* Adjust padding for tablets */
+  }
+
+  .search-button img {
+    width: 28px; /* Adjust search icon size */
+    height: 28px;
+  }
+
+  .all-dropdown {
+    padding: 10px 5px; /* Adjust dropdown padding */
+    min-width: 100px; /* Adjust minimum width */
+    max-width: 180px; /* Adjust maximum width */
+    font-size: 13px; /* Adjust font size */
   }
 }
 
 
 
+@media (max-width: 768px) {
+  .navbar {
+    padding: 8px 10px;
+  }
 
+  /* Stack the logo, name, and icons in a single row with space between */
+  .navbar-content {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .company-logo {
+    height: 40px; /* Reduce the logo size */
+  }
+
+  .company-name {
+    font-size: 1.2rem;
+  }
+
+  .navbar-right {
+    margin-right: 20px;
+    gap: 10px;
+  }
+
+  /* Search bar below the navbar content */
+  .search-bar-container {
+    margin-top: 8px;
+    width: 150%; /* Fit to smaller screen */
+  }
+
+  .search-input {
+    font-size: 12px;
+    padding: 17px 40px 12px 20px; /* Adjust padding for smaller screens */
+  }
+
+  .search-button img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .all-dropdown {
+    padding: 12px 6px; /* Adjust padding for dropdown */
+    min-width: 100px; /* Adjust minimum width */
+    max-width: 200px; /* Adjust maximum width */
+    font-size: 14px; /* Adjust font size */
+  }
+}
+
+/* Mobile Large (425px and below) */
+@media (max-width: 425px) {
+  .navbar {
+    padding: 6px 8px;
+  }
+
+  /* Adjust company logo and name */
+  .company-logo {
+    height: 35px; /* Further reduce the logo size */
+  }
+
+  .company-name {
+    font-size: 1rem; /* Reduce font size */
+  }
+
+  .navbar-right {
+    margin-right: 15px;
+    gap: 8px;
+  }
+
+  /* Search bar below the navbar content */
+  .search-bar-container {
+    margin-top: 5px;
+    width: 150%; /* Narrow the search bar */
+  }
+
+  .search-input {
+    font-size: 12px; /* Adjust input font size */
+    padding: 12px 40px 10px 15px; /* Adjust padding for smaller screen */
+  }
+
+  .search-button img {
+    width: 25px; /* Adjust size of search icon */
+    height: 25px;
+  }
+
+  .all-dropdown {
+    padding: 10px 5px; /* Adjust padding for dropdown */
+    min-width: 80px; /* Reduce minimum width */
+    max-width: 120px; /* Reduce maximum width */
+    font-size: 12px; /* Adjust font size */
+  }
+
+  /* Adjust cart and wishlist icon sizes */
+  .cart-icon {
+    width: 40px; /* Smaller size for mobile */
+    height: 40px;
+  }
+   
+   .wishlist-icon{
+    width: 25px;
+    height: 25px;
+    margin-left: 10px;
+   }
+
+  /* Adjust the count badge size and position for cart and wishlist */
+  .cart-count, .wishlist-count {
+    top: -2px;
+    right: -4px;
+    padding: 2px 6px; /* Smaller padding */
+    font-size: 12px; /* Smaller font size */
+  }
+}
+
+/* Mobile Extra Small (320px and below) */
+@media (max-width: 320px) {
+  .navbar {
+    padding: 4px 6px;
+  }
+
+  .company-logo {
+    height: 30px; /* Further reduce logo size */
+  }
+
+  .company-name {
+    font-size: 0.9rem; /* Further reduce font size */
+  }
+
+  .navbar-right {
+    margin-right: 10px;
+    gap: 5px;
+  }
+
+  /* Search bar below the navbar content */
+  .search-bar-container {
+    margin-top: 4px;
+    width: 145%; /* Narrow the search bar */
+  }
+
+  .search-input {
+    font-size: 10px; /* Smaller font size for the input */
+    padding: 11px 40px 8px 10px; /* Adjust padding for smaller input */
+  }
+
+  .search-button img {
+    width: 20px; /* Smallest search icon */
+    height: 20px;
+  }
+
+  .all-dropdown {
+    padding: 8px 3px; /* Reduce padding for dropdown */
+    min-width: 60px; /* Further reduce min width */
+    max-width: 100px; /* Further reduce max width */
+    font-size: 10px; /* Smaller font size */
+  }
+
+  /* Further adjust cart and wishlist icon sizes */
+  .cart-icon{
+    width: 38px; /* Smaller size for extra small screens */
+    height: 38px;
+  }
+
+  .wishlist-icon{
+    width: 25px; /* Smaller size for extra small screens */
+    height: 25px;
+    margin-left: 15px;
+  }
+
+  /* Further adjust the count badge size and position for cart and wishlist */
+  .cart-count, .wishlist-count {
+    top: -2px;
+    right: -3px;
+    padding: 1px 5px; /* Even smaller padding */
+    font-size: 10px; /* Smaller font size */
+  }
+}
 

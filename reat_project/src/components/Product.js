@@ -1,11 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; // Import Link
 import { useCart } from '../contexts/CartContext';
 import './Styling.css';
 
 const Product = ({ product_id, name, description, price, image_url }) => {
   const { addItemToCart } = useCart();
-
-  console.log('Product props:', { product_id, name, description, price, image_url });
 
   // Format the price with commas
   const formattedPrice = price ? new Intl.NumberFormat().format(price) : 'N/A';
@@ -22,7 +21,9 @@ const Product = ({ product_id, name, description, price, image_url }) => {
       ) : (
         <p>No image available</p>
       )}
-      <h2 className="product-title">{name}</h2>
+      <h2 className="product-title">
+        <Link to={`/product-details/${product_id}`}>{name}</Link>
+      </h2>
       <p className="product-description">{description}</p>
       <p className="product-price">₦{formattedPrice}</p>
       <button className="button is-primary" onClick={handleAddToCart}>
@@ -32,13 +33,7 @@ const Product = ({ product_id, name, description, price, image_url }) => {
   );
 };
 
-
 export default Product;
-
-
-
-
-
 
 
 

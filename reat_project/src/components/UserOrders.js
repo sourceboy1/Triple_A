@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';  
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Loading from './Loading';
 import './UserOrders.css';
 
-const UserOrders = () => {
+const UserOrders = ({ onViewOrder }) => {  // Added onViewOrder prop
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isCanceling, setIsCanceling] = useState(false);
     const [cancelOrderId, setCancelOrderId] = useState(null);
-    const navigate = useNavigate();
     const token = localStorage.getItem('token');
 
     const fetchUserOrders = async () => {
@@ -20,7 +18,7 @@ const UserOrders = () => {
                     'Authorization': `Token ${token}`,
                 },
             });
-
+    
             if (Array.isArray(response.data)) {
                 const ordersWithNumericPrices = response.data.map(order => ({
                     order_id: order.order_id,
@@ -35,8 +33,11 @@ const UserOrders = () => {
                         image_url: item.product_image
                     })),
                 }));
-
-                setOrders(ordersWithNumericPrices);
+    
+                // Sort orders by created_at in descending order (most recent first)
+                const sortedOrders = ordersWithNumericPrices.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    
+                setOrders(sortedOrders);
             } else {
                 setError('Unexpected API response format.');
             }
@@ -47,6 +48,7 @@ const UserOrders = () => {
             setLoading(false);
         }
     };
+    
 
     useEffect(() => {
         if (token) {
@@ -81,11 +83,6 @@ const UserOrders = () => {
         return numericPrice.toLocaleString('en-NG', { style: 'currency', currency: 'NGN' });
     };
 
-    const viewOrderDetails = (orderId) => {
-        navigate(`orders/${orderId}`); // Use relative path
-    };
-    
-
     return (
         <div className="orders-container">
             <h2>Your Orders</h2>
@@ -108,7 +105,7 @@ const UserOrders = () => {
                             <div>{formatPrice(order.total_amount)}</div>
                         </div>
                         <div className={`order-actions ${order.status === 'cancelled' ? 'centered' : ''}`}>
-                            <button onClick={() => viewOrderDetails(order.order_id)}>View</button>
+                            <button onClick={() => onViewOrder(order.order_id)}>View</button> {/* Trigger viewOrderDetails */}
                             {order.status !== 'Cancelled' && order.status !== 'Delivered' && (
                                 <button onClick={() => {
                                     setCancelOrderId(order.order_id);

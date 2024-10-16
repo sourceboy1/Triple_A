@@ -4,8 +4,6 @@ from django.contrib.auth import get_user_model
 from django.utils import timezone
 
 
-CustomUser = get_user_model()
-
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=False)
 
@@ -25,6 +23,14 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+    def create(self, validated_data):
+        password = validated_data.pop('password', None)
+        user = CustomUser.objects.create(**validated_data)
+        if password:
+            user.set_password(password)
+        user.save()
+        return user
+
 
 
 
@@ -43,10 +49,7 @@ class CartItemSerializer(serializers.ModelSerializer):
         model = CartItem
         fields = ['cart_item_id', 'cart', 'product_id', 'quantity']
 
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = [ 'name']
+
 
 class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -105,18 +108,19 @@ class ProductImageSerializer(serializers.ModelSerializer):
     
 
 class ProductSerializer(serializers.ModelSerializer):
-    image_url = serializers.SerializerMethodField()
-    category_name = serializers.CharField(source='category.name', read_only=True)
-    additional_images = ProductImageSerializer(many=True, read_only=True)
+    image_url = serializers.SerializerMethodField()  # Dynamically get image URL
+    category_id = serializers.IntegerField(source='category.id', read_only=True)  # Get category ID
+    additional_images = ProductImageSerializer(many=True, read_only=True)  # Assuming additional images are linked to Product
 
     class Meta:
         model = Product
         fields = [
-            'product_id', 'name', 'description', 'price', 'original_price', 
-            'discount', 'stock', 'category', 'category_name', 'image_url', 
+            'product_id', 'name', 'description', 'price', 'original_price',
+            'discount', 'stock', 'category', 'category_id', 'image_url',
             'additional_images', 'created_at'
         ]
 
+    # Method to get the full image URL
     def get_image_url(self, obj):
         request = self.context.get('request')
         if obj.image:
@@ -124,11 +128,10 @@ class ProductSerializer(serializers.ModelSerializer):
         return None
 
 
-
-
-
-
-
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['category_id', 'name']
 
 
 class PromotionSerializer(serializers.ModelSerializer):
@@ -166,6 +169,10 @@ class OrderItemSerializer(serializers.ModelSerializer):
             return request.build_absolute_uri(obj.product.image.url)
         return None
 
+class ShippingAddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShippingAddress
+        fields = ['address', 'city', 'state', 'postal_code', 'country']
 
 
 
@@ -173,11 +180,9 @@ class OrderSerializer(serializers.ModelSerializer):
     user_id = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
     payment_method_id = serializers.PrimaryKeyRelatedField(
         queryset=PaymentMethod.objects.all(),
-        source='payment_method'
     )
     cart_items = OrderItemSerializer(many=True)
-    shipping_address = serializers.SerializerMethodField()
-    billing_address = serializers.SerializerMethodField()
+    
     
     class Meta:
         model = Order
@@ -185,20 +190,18 @@ class OrderSerializer(serializers.ModelSerializer):
             'order_id', 'user_id', 'email', 'total_amount', 'created_at',
             'first_name', 'last_name', 'address', 'city', 'state', 'postal_code',
             'country', 'phone', 'shipping_method', 'order_note', 'payment_method_id',
-            'shipping_cost', 'status', 'cart_items', 'shipping_address', 'billing_address'
+            'shipping_cost', 'status', 'cart_items'
         ]
 
-    def get_shipping_address(self, obj):
-        return f"{obj.first_name} {obj.last_name}\n{obj.address}\n{obj.city}, {obj.state}\n{obj.phone}"
 
-    def get_billing_address(self, obj):
-        return self.get_shipping_address(obj)
 
     def create(self, validated_data):
         cart_items_data = validated_data.pop('cart_items', [])
         user = validated_data.pop('user_id')
-        payment_method = validated_data.pop('payment_method')  # Extract payment_method
-        order = Order.objects.create(user_id=user, payment_method=payment_method, **validated_data)
+        payment_method_id = validated_data.pop('payment_method_id')  # Extract payment_method
+
+        # Correct the field name to payment_method_id
+        order = Order.objects.create(user_id=user, payment_method_id=payment_method_id, **validated_data)
 
         for item_data in cart_items_data:
             OrderItem.objects.create(order=order, **item_data)
@@ -217,27 +220,13 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 
+
+
+
+
+
 class PaymentMethodSerializer(serializers.ModelSerializer):
     class Meta:
         model = PaymentMethod
         fields = ['payment_method_id', 'user', 'method_name', 'created_at']
 
-    
-    
-
-
-
-
-
-class ShippingAddressSerializer(serializers.ModelSerializer):
-    # Use PrimaryKeyRelatedField for user to accept user ID
-    user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all(), required=False)
-
-    class Meta:
-        model = ShippingAddress
-        fields = ['id', 'user', 'address_line1', 'address_line2', 'city', 'state', 'postal_code', 'country', 'created_at']
-
-    def create(self, validated_data):
-        user = self.context['request'].user  # Get the logged-in user
-        validated_data['user'] = user
-        return super().create(validated_data)

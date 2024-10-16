@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import eyeIcon from '../pictures/eye.jpg';
@@ -15,7 +15,6 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
     try {
       const response = await fetch('http://localhost:8000/api/login/', {
         method: 'POST',
@@ -30,7 +29,6 @@ const Login = () => {
   
       if (response.ok) {
         if (data.token && data.user_id) {
-          // Call signIn function to store token and user data in context
           signIn({
             username: data.username,
             userId: data.user_id,
@@ -51,18 +49,23 @@ const Login = () => {
       setError('Error logging in: ' + error.message);
     }
   };
-  
-  
-  
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
 
+  const handleRegisterClick = () => {
+    navigate('/signup'); // Navigate to the signup page
+  };
+
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
-        <h2>Login</h2>
+        <h2>Login 
+          <span style={{ marginLeft: '10px', cursor: 'pointer', color: 'blue' }} onClick={handleRegisterClick}>
+            Register
+          </span>
+        </h2>
         <div>
           <label htmlFor="identifier">Username or Email:</label>
           <input

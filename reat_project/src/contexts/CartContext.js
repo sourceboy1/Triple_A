@@ -19,35 +19,40 @@ export const CartProvider = ({ children }) => {
 
   const addItemToCart = (product) => {
     console.log('Adding to cart:', product); // Log the product data
-
+  
     // Ensure product has necessary fields
-    if (!product.product_id || !product.name || !product.image_url || !product.price) {
-        console.error('Product data is incomplete:', product);
-        return;
+    if (!product.product_id || !product.name || !product.image_url || !product.price || !product.stock) {
+      console.error('Product data is incomplete:', product);
+      return;
     }
-
+  
     setCart((prevCart) => {
-        const existingProductIndex = prevCart.findIndex(item => item.product_id === product.product_id);
-        if (existingProductIndex !== -1) {
-            const updatedCart = [...prevCart];
-            updatedCart[existingProductIndex].quantity += 1;
-            return updatedCart;
-        }
-        return [...prevCart, { ...product, quantity: 1 }];
+      const existingProduct = prevCart.find(item => item.product_id === product.product_id);
+      if (existingProduct) {
+        console.log('Product already in cart:', product);
+        return prevCart; // Return the previous cart without any changes if the product is already in the cart
+      }
+      return [...prevCart, { ...product, quantity: 1 }];  // Add stock to cart item
     });
-};
-
+  };
 
   const removeItemFromCart = (productId) => {
     setCart((prevCart) => prevCart.filter(item => item.product_id !== productId));
   };
 
   const increaseQuantity = (productId) => {
-    setCart((prevCart) => prevCart.map(item =>
-      item.product_id === productId
-        ? { ...item, quantity: item.quantity + 1 }
-        : item
-    ));
+    setCart((prevCart) => prevCart.map(item => {
+      if (item.product_id === productId) {
+        // Check if the current quantity is less than the available stock
+        if (item.quantity < item.stock) {
+          return { ...item, quantity: item.quantity + 1 };
+        } else {
+          console.log('Cannot add more. Stock limit reached.');
+          return item; // Return the item unchanged if stock limit is reached
+        }
+      }
+      return item;
+    }));
   };
 
   const decreaseQuantity = (productId) => {
@@ -59,7 +64,8 @@ export const CartProvider = ({ children }) => {
   };
 
   const getCartItemCount = () => {
-    return cart.reduce((total, item) => total + item.quantity, 0);
+    // Return the count of unique items in the cart, not quantity
+    return cart.length;
   };
 
   const clearCart = () => {
