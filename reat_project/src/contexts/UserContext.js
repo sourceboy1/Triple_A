@@ -31,14 +31,6 @@ export const UserProvider = ({ children }) => {
     setToken(storedToken);
 }, []);
 
-console.log("User context after sign-in:", {
-  username,
-  userId,
-  firstName,
-  lastName,
-  email,
-  token,
-});
 
 const signIn = ({ username, userId, firstName, lastName, email, token }) => {
   localStorage.setItem('loggedIn', 'true');

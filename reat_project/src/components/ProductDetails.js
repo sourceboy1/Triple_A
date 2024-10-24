@@ -21,22 +21,33 @@ const ProductDetails = () => {
                 console.error('No productId provided');
                 return;
             }
-
+    
             try {
                 const response = await axios.get(`http://localhost:8000/api/products/${productId}/`);
-                setProduct(response.data);
-                setSelectedImage(response.data.image_url || '');
+                const productData = response.data;
+                setProduct(productData);
+                setSelectedImage(productData.image_url || '');
+    
+                // Save product to localStorage
+                const viewedProducts = JSON.parse(localStorage.getItem('viewedProducts')) || [];
+                const productExists = viewedProducts.some(p => p.product_id === productData.product_id);
+    
+                if (!productExists) {
+                    const updatedViewedProducts = [...viewedProducts, productData];
+                    localStorage.setItem('viewedProducts', JSON.stringify(updatedViewedProducts));
+                }
             } catch (error) {
                 console.error('Error fetching product:', error);
             }
         };
-
+    
         fetchProduct();
-
+    
         const intervalId = setInterval(fetchProduct, 30000); // Poll every 30 seconds
-
+    
         return () => clearInterval(intervalId); // Clear interval on component unmount
     }, [productId]);
+    
 
     const handleIncrease = () => {
         if (product && quantity < product.stock) {

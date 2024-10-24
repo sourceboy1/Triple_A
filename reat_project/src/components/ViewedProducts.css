@@ -1,0 +1,98 @@
+.viewed-products-container {
+    padding-top: 30px;
+    text-align: center;
+    /* margin-bottom: 10px; */
+}
+
+.viewed-products-container h2 {
+    color: green;
+    margin-bottom: 20px;
+}
+
+.viewed-products-container p {
+    color: black;
+}
+
+/* Viewed Products List */
+.viewed-products-list {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap onto the next line */
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Viewed Product Item Styling */
+.viewed-product-item {
+    width: calc(12.5% - 20px); /* Default for 8 products per row, will be overridden by media queries */
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.viewed-product-item:hover {
+    transform: scale(1.05);
+}
+
+.viewed-product-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+/* Pagination Controls Styling */
+.pagination-controls {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.arrow-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.arrow-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.arrow-icon {
+    width: 40px;
+    height: 40px;
+    transition: transform 0.3s ease;
+}
+
+.arrow-btn:hover .arrow-icon {
+    transform: scale(1.1);
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 375px) {
+    .viewed-product-item {
+        width: calc(50% - 20px); /* 2 items per row */
+    }
+}
+
+@media (min-width: 376px) and (max-width: 425px) {
+    .viewed-product-item {
+        width: calc(25% - 20px); /* 4 items per row */
+    }
+}
+
+@media (min-width: 426px) and (max-width: 768px) {
+    .viewed-product-item {
+        width: calc(20% - 20px); /* 5 items per row */
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .viewed-product-item {
+        width: calc(16.67% - 20px); /* 6 items per row */
+    }
+}

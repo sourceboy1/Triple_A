@@ -1,52 +1,89 @@
+/* Container styling */
 .powerbank-container {
-    text-align: start;
-    margin: 20px auto;
-    max-width: 1200px; /* Limit the width for better layout */
+  text-align: start;
+  margin: 20px auto;
+  max-width: 1200px;
 }
 
 h2 {
-    margin-bottom: 20px;
-    font-size: 2em; /* Increase font size for the heading */
-    color: var(--main-accent-color); /* Using your defined color variable */
+  margin-bottom: 20px;
+  font-size: 2em;
+  color: var(--main-accent-color);
 }
 
 .powerbank-display {
-    overflow: hidden; /* Hide the overflowing items */
-    position: relative; /* Set position for inner slider */
+  overflow: hidden; /* Hide extra items */
+  position: relative;
 }
 
 .powerbank-slider {
-    display: flex;
-    transition: transform 0.5s ease; /* Smooth transition */
-    width: 100%; /* Ensure it takes full width */
+  display: flex; /* Use flexbox to keep items on the same row */
+  transition: transform 0.5s ease;
+  width: fit-content; /* Only take space for visible items */
 }
 
 .powerbank-item {
-    width: 150px; /* Adjust as needed */
-    margin: 15px; /* Slightly increase margin for spacing */
-    display: flex;
-    flex-direction: column;
-    border: 2px solid var(--main-accent-color); /* Add a border */
-    border-radius: 10px; /* Round the corners */
-    padding: 10px; /* Add padding for space inside the border */
-    transition: transform 0.3s, box-shadow 0.3s; /* Smooth hover effect */
-    background-color: white; /* Set background color */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  flex: 0 0 auto; /* Prevent items from shrinking */
+  width: 150px;
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--main-accent-color);
+  border-radius: 10px;
+  padding: 10px;
+  background-color: white;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .powerbank-item:hover {
-    transform: translateY(-5px); /* Lift effect on hover */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+  transform: translateY(-5px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .powerbank-image {
-    width: 100%; /* Ensures image takes full width */
-    height: auto;
-    border-radius: 5px; /* Round the corners of the image */
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.powerbank-item:hover .powerbank-image {
+  transform: scale(1.05);
 }
 
 .powerbank-name {
-    margin-top: 10px;
-    font-size: 1em;
-    color: #333; /* Set a nice color for the text */
+  margin-top: 10px;
+  font-size: 1em;
+  color: #333;
+}
+
+/* Responsive Media Queries */
+
+/* 320px and 375px - 2 items visible */
+@media (max-width: 375px) {
+  .powerbank-display {
+    width: calc(2 * 150px + 2 * 15px); /* Adjust width to show only 2 items */
+  }
+}
+
+/* 425px - 3 items visible */
+@media (min-width: 376px) and (max-width: 425px) {
+  .powerbank-display {
+    width: calc(3 * 150px + 3 * 15px); /* Adjust width to show 3 items */
+  }
+}
+
+/* 769px - 5 items visible */
+@media (min-width: 426px) and (max-width: 769px) {
+  .powerbank-display {
+    width: calc(5 * 150px + 5 * 15px); /* Adjust width to show 5 items */
+  }
+}
+
+/* 1024px - 6 items visible */
+@media (min-width: 770px) and (max-width: 1024px) {
+  .powerbank-display {
+    width: calc(6 * 150px + 6 * 15px); /* Adjust width to show 6 items */
+  }
 }

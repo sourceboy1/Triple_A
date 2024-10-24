@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react'; 
 import axios from 'axios';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import './SearchResults.css';
+import Loading from './Loading';
 
 const SearchResults = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);  // State for current page
+  const [resultsPerPage] = useState(10);  // Set the number of results per page
   const location = useLocation();
+  
   
   // Get 'category_id' and 'query' from the URL search params
   const categoryId = new URLSearchParams(location.search).get('category_id');
@@ -32,6 +36,17 @@ const SearchResults = () => {
     fetchResults();
   }, [categoryId, query]);
 
+  // Calculate the current products to show
+  const indexOfLastResult = currentPage * resultsPerPage;
+  const indexOfFirstResult = indexOfLastResult - resultsPerPage;
+  const currentResults = results.slice(indexOfFirstResult, indexOfLastResult);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Calculate the total number of pages
+  const totalPages = Math.ceil(results.length / resultsPerPage);
+
   return (
     <div className="search-results-page">
       <h1>Results</h1>
@@ -42,11 +57,11 @@ const SearchResults = () => {
         <h2>Search Results for "{query}"</h2>
       )}
       {loading ? (
-        <div>Loading...</div>
+        <Loading />
       ) : (
         <div className="results-container">
-          {results.length > 0 ? (
-            results.map(product => (
+          {currentResults.length > 0 ? (
+            currentResults.map(product => (
               <div key={product.product_id} className="result-item">
                 <img src={product.image_url} alt={product.name} className="product-image" />
                 <div className="result-info">
@@ -63,6 +78,19 @@ const SearchResults = () => {
           )}
         </div>
       )}
+
+      {/* Pagination */}
+      <div className="pagination">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index + 1}
+            onClick={() => paginate(index + 1)}
+            className={currentPage === index + 1 ? 'active' : ''}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };

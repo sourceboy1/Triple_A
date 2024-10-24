@@ -9,9 +9,11 @@ import arrowLeft from '../icons/Arrow_Left.jpg';
 import { useCart } from '../contexts/CartContext';
 import { useWishlist } from '../contexts/WishlistContext';
 import { useNavigate } from 'react-router-dom';
+import Loading from './Loading'; // Import the Loading component
 
 const DealsOfTheDay = () => {
   const [deals, setDeals] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
   const [currentIndex, setCurrentIndex] = useState(0);
   const { addItemToCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
@@ -21,9 +23,11 @@ const DealsOfTheDay = () => {
     axios.get('http://localhost:8000/api/deals_of_the_day/')
       .then(response => {
         setDeals(response.data);
+        setLoading(false); // Stop loading once data is fetched
       })
       .catch(error => {
         console.error('Error fetching the deals of the day:', error);
+        setLoading(false); // Stop loading if there is an error
       });
   }, []);
 
@@ -61,43 +65,44 @@ const DealsOfTheDay = () => {
     navigate(`/product-details/${product_id}`);
   };
 
-  // Function to slide right continuously
   const slideRight = () => {
     setCurrentIndex((prevIndex) => {
       if (prevIndex === deals.length - 1) {
-        return 0; // Reset to the first deal
+        return 0;
       }
       return prevIndex + 1;
     });
   };
 
-  // Function to slide left continuously
   const slideLeft = () => {
     setCurrentIndex((prevIndex) => {
       if (prevIndex === 0) {
-        return deals.length - 1; // Go to the last deal
+        return deals.length - 1;
       }
       return prevIndex - 1;
     });
   };
 
-  // Clone deals for a seamless effect
-  const displayedDeals = [...deals, ...deals]; // Duplicate the deals
+  const displayedDeals = [...deals, ...deals];
 
   return (
     <div className="deals-container">
       <h2>Deals of the Day</h2>
-      <div className="deals-slider">
-        <div className="arrow-container left-arrow" onClick={slideLeft}>
-          <img src={arrowLeft} alt="Left Arrow" className="deal-arrow" />
-        </div>
-        <div className="deals-list" style={{ transform: `translateX(-${(currentIndex * 100) / displayedDeals.length}%)` }}>
-          {displayedDeals.length > 0 ? (
-            displayedDeals.map((deal, index) => (
+      {loading ? (
+        <Loading /> // Display loading spinner if loading is true
+      ) : (
+        <div className="deals-slider">
+          <div className="arrow-container left-arrow" onClick={slideLeft}>
+            <img src={arrowLeft} alt="Left Arrow" className="deal-arrow" />
+          </div>
+          <div className="deals-list" style={{ transform: `translateX(-${(currentIndex * 100) / displayedDeals.length}%)` }}>
+            {displayedDeals.map((deal, index) => (
               <div
                 key={index}
                 className="deal-item"
                 onClick={() => handleProductClick(deal.product_id)}
+                onMouseEnter={(e) => e.currentTarget.querySelector('img').src = deal.secondary_image_url}
+                onMouseLeave={(e) => e.currentTarget.querySelector('img').src = deal.image_url}
               >
                 <img src={deal.image_url} alt={deal.name} />
                 <div className="icon-container">
@@ -130,13 +135,13 @@ const DealsOfTheDay = () => {
                   <p><strong>Discount: </strong>{Math.floor(deal.discount)}% off</p>
                 )}
               </div>
-            ))
-          ) : <p>No deals available right now.</p>}
+            ))}
+          </div>
+          <div className="arrow-container right-arrow" onClick={slideRight}>
+            <img src={arrowRight} alt="Right Arrow" className="deal-arrow" />
+          </div>
         </div>
-        <div className="arrow-container right-arrow" onClick={slideRight}>
-          <img src={arrowRight} alt="Right Arrow" className="deal-arrow" />
-        </div>
-      </div>
+      )}
     </div>
   );
 };

@@ -1,0 +1,94 @@
+/* Container styling */
+.phones-tablets-container {
+    text-align: start;
+    margin: 20px auto;
+    max-width: 1200px;
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+    font-size: 2em;
+    color: green;
+  }
+  
+  .phones-tablets-display {
+    overflow: hidden; /* Hide the overflowing items */
+    position: relative; /* Set position for inner slider */
+  }
+  
+  .phones-tablets-slider {
+    display: flex; /* Make it a horizontal slider */
+    transition: transform 0.5s ease; /* Smooth sliding transition */
+    width: max-content; /* Fit to content for sliding */
+  }
+  
+  .phones-tablets-item {
+    width: 150px; /* Fixed width for each item */
+    margin: 15px; /* Slightly increase margin for spacing */
+    display: flex;
+    flex-direction: column;
+    border: 2px solid var(--main-accent-color); /* Add a border */
+    border-radius: 10px; /* Round the corners */
+    padding: 10px; /* Add padding for space inside the border */
+    background-color: white; /* Set background color */
+    transition: transform 0.3s, box-shadow 0.3s; /* Smooth hover effect */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  }
+  
+  .phones-tablets-item:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+  }
+  
+  .phones-tablets-image {
+    width: 100%; /* Ensures image takes full width */
+    height: auto;
+    border-radius: 5px; /* Round the corners of the image */
+    transition: transform 0.3s ease-in-out; /* Smooth transition */
+  }
+  
+  .phones-tablets-item:hover .phones-tablets-image {
+    transform: scale(1.05); /* Slight zoom effect on hover */
+  }
+  
+  .phones-tablets-name {
+    margin-top: 10px;
+    font-size: 1em;
+    color: #333;
+  }
+  
+  .phones-tablets-price {
+    color: var(--main-accent-color);
+    font-weight: bold;
+  }
+  
+  /* Responsive Media Queries */
+  
+  /* 320px and 375px - Show 2 items per row, slide others */
+  @media (max-width: 375px) {
+    .phones-tablets-display {
+      width: calc(2 * 150px + 2 * 15px); /* Width for 2 items and margins */
+    }
+  }
+  
+  /* 425px - Show 3 items per row, slide others */
+  @media (min-width: 376px) and (max-width: 425px) {
+    .phones-tablets-display {
+      width: calc(3 * 150px + 3 * 15px); /* Width for 3 items and margins */
+    }
+  }
+  
+  /* 769px - Show 5 items per row, slide others */
+  @media (min-width: 426px) and (max-width: 769px) {
+    .phones-tablets-display {
+      width: calc(5 * 150px + 5 * 15px); /* Width for 5 items and margins */
+    }
+  }
+  
+  /* 1024px - Show 6 items per row, slide others */
+  @media (min-width: 770px) and (max-width: 1024px) {
+    .phones-tablets-display {
+      width: calc(6 * 150px + 6 * 15px); /* Width for 6 items and margins */
+    }
+  }
+  

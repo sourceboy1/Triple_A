@@ -1,0 +1,65 @@
+.footer-container {
+    background-color: #f9f9f9; /* Light background color */
+    padding: 20px; /* Space around the footer */
+    text-align: center; /* Center align text for the main container */
+    padding-top: 50px; /* Additional space at the top */
+    margin-bottom: 10px; /* Space below the footer */
+}
+
+.footer-content {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space items evenly */
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+}
+
+.footer-section {
+    flex: 1; /* Each section takes equal space */
+    padding: 10px; /* Space within each section */
+    min-width: 200px; /* Minimum width for each section */
+}
+
+.footer-section h3 {
+    color: green; /* Color for section headings */
+    margin-bottom: 10px; /* Space below headings */
+    text-align: left; /* Align headings to the start */
+}
+
+.footer-section p {
+    color: black; /* Color for paragraph text */
+    margin: 5px 0; /* Space above and below paragraphs */
+    text-align: left; /* Align text under headings to the start */
+}
+
+/* Social Media Icons Styling */
+.footer-social-media {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-start; /* Align icons to the start */
+    gap: 10px; /* Space between icons */
+}
+
+.social-icon {
+    width: 30px; /* Smaller size for the icons */
+    height: 30px; /* Ensure height matches */
+    border-radius: 50%; /* Make icons circular */
+    border: 2px solid green; /* Circular border around icons */
+    padding: 5px; /* Space inside the border */
+    background-color: #fff; /* Background color for the icons */
+    transition: transform 0.3s ease; /* Smooth scaling effect */
+}
+
+.social-icon:hover {
+    transform: scale(1.2); /* Increase size slightly on hover */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column; /* Stack sections on smaller screens */
+        align-items: center; /* Center align sections */
+    }
+
+    .footer-social-media {
+        flex-direction: row; /* Keep icons in a row on smaller screens */
+    }
+}

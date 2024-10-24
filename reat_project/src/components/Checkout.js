@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Checkout.css';
 import guaranteeIcon from '../icons/guarantee-icon.jpg';
@@ -35,7 +35,18 @@ const Checkout = () => {
     const navigate = useNavigate();
     const options = countryList().getData();
 
+    // Refs for scrolling
+    const emailRef = useRef(null);
+    const firstNameRef = useRef(null);
+    const lastNameRef = useRef(null);
+    const addressRef = useRef(null);
+    const cityRef = useRef(null);
+    const stateRef = useRef(null);
+    const postalCodeRef = useRef(null);
+    const phoneRef = useRef(null);
+
      useEffect(() => {
+        window.scrollTo(0, 0);
          if (isLoggedIn) {
              setEmail(userEmail || '');
              setFirstName(userFirstName || '');
@@ -53,29 +64,78 @@ const Checkout = () => {
 
     const handlePlaceOrder = async () => {
         setEmailError('');
+
+        const scrollToError = (ref) => {
+            if (ref && ref.current) {
+                ref.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                ref.current.focus();
+            }
+        };
     
         if (!termsAgreed) {
             setEmailError('You must agree to the terms and conditions before placing the order.');
             return;
         }
     
-        if (!email || !firstName || !lastName || !addressLine1 || !city || !state || !postalCode || !country || !phone) {
-            setEmailError('Please fill in all required fields.');
-            return;
-        }
+        
     
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             setEmailError('Please enter a valid email address.');
+            scrollToError(emailRef);
             return;
         }
     
+        if (!firstName) {
+            setEmailError('Please fill in your first name.');
+            scrollToError(firstNameRef);
+            return;
+        }
+
+        if (!lastName) {
+            setEmailError('Please fill in your last name.');
+            scrollToError(lastNameRef);
+            return;
+        }
+
+        if (!addressLine1) {
+            setEmailError('Please fill in your address.');
+            scrollToError(addressRef);
+            return;
+        }
+
+        if (!city) {
+            setEmailError('Please fill in your city.');
+            scrollToError(cityRef);
+            return;
+        }
+
+        if (!state) {
+            setEmailError('Please fill in your state.');
+            scrollToError(stateRef);
+            return;
+        }
+
+        if (!postalCode) {
+            setEmailError('Please fill in your postal code.');
+            scrollToError(postalCodeRef);
+            return;
+        }
+
+        if (!phone) {
+            setEmailError('Please fill in your phone number.');
+            scrollToError(phoneRef);
+            return;
+        }
+
         if (phone.length < 10) {
             setEmailError('Please enter a valid phone number.');
+            scrollToError(phoneRef);
             return;
         }
-    
+
         if (postalCode.length < 5) {
             setEmailError('Please enter a valid postal code.');
+            scrollToError(postalCodeRef);
             return;
         }
     
@@ -90,6 +150,10 @@ const Checkout = () => {
     
         if (isNaN(userId)) {
             setEmailError('There was an issue with your login session. Please log in again.');
+            return;
+        }
+        if (!email || !firstName || !lastName || !addressLine1 || !city || !state || !postalCode || !country || !phone) {
+            setEmailError('Please fill in all required fields.');
             return;
         }
     
@@ -193,25 +257,26 @@ const Checkout = () => {
                 {!isLoggedIn && (
                     <p>Returning customer? <a href="/signin">Click here to login</a></p>
                 )}
-                <div>
+                 <div>
                     <h2>Contact Information</h2>
                     <input
+                        ref={emailRef}  // Attach ref
                         type="email"
                         placeholder="Email *"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
-                    {emailError && <p className="error-message">{emailError}</p>} {/* Display email error message */}
+                    {emailError && <p className="error-message">{emailError}</p>}
                 </div>
 
                 <div>
                     <h2>Shipping Address</h2>
-                    <input type="text" placeholder="First name *" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-                    <input type="text" placeholder="Last name *" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                    <input type="text" placeholder="Address *" value={addressLine1} onChange={(e) => setAddressLine1(e.target.value)} />
-                    <input type="text" placeholder="City *" value={city} onChange={(e) => setCity(e.target.value)} />
-                    <input type="text" placeholder="State *" value={state} onChange={(e) => setState(e.target.value)} />
-                    <input type="text" placeholder="Postal code *" value={postalCode} onChange={(e) => setPostalCode(e.target.value)} />
+                    <input ref={firstNameRef} type="text" placeholder="First name *" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                    <input ref={lastNameRef} type="text" placeholder="Last name *" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                    <input ref={addressRef} type="text" placeholder="Address *" value={addressLine1} onChange={(e) => setAddressLine1(e.target.value)} />
+                    <input ref={cityRef} type="text" placeholder="City *" value={city} onChange={(e) => setCity(e.target.value)} />
+                    <input ref={stateRef} type="text" placeholder="State *" value={state} onChange={(e) => setState(e.target.value)} />
+                    <input ref={postalCodeRef} type="text" placeholder="Postal code *" value={postalCode} onChange={(e) => setPostalCode(e.target.value)} />
                     <select
                         value={country}
                         onChange={(e) => setCountry(e.target.value)}
@@ -222,7 +287,7 @@ const Checkout = () => {
                             </option>
                         ))}
                     </select>
-                    <PhoneInputComponent value={phone} onChange={setPhone} />
+                    <PhoneInputComponent ref={phoneRef} value={phone} onChange={setPhone} />
                 </div>
 
                 <div>

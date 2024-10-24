@@ -1,0 +1,54 @@
+/* src/components/Newsletter.css */
+.newsletter-container {
+    background-color: #f9f9f9; /* Light background color */
+    padding: 20px; /* Space around the newsletter */
+    border: 1px solid #ddd; /* Optional: add a border */
+    border-radius: 5px; /* Optional: round corners */
+    margin-bottom: 20px; /* Space below the newsletter section */
+}
+
+.newsletter-content {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space items evenly */
+    align-items: center; /* Center align items vertically */
+}
+
+.newsletter-container h3 {
+    color: green; /* Heading color */
+    margin-bottom: 10px; /* Space below heading */
+    align-items: start; /* Center align items vertically */
+    margin-right: 280px;
+    font-size: 28px;
+}
+
+.newsletter-container p {
+    color: black; /* Text color */
+    margin-bottom: 20px; /* Space below paragraph */
+}
+
+.newsletter-form {
+    display: flex; /* Use flexbox for layout */
+    justify-content: flex-end; /* Align items to the end */
+    align-items: center; /* Center align items vertically */
+}
+
+.newsletter-input {
+    padding: 16px; /* Increased space inside input */
+    border: 1px solid #ccc; /* Border for input */
+    border-radius: 5px; /* Round corners for input */
+    margin-right: 10px; /* Space between input and button */
+    width: 450px; /* Increase the width to 400px */
+}
+
+.newsletter-button {
+    padding: 16px 21px; /* Space inside button */
+    background-color: green; /* Button background color */
+    color: white; /* Button text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Round corners for button */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+.newsletter-button:hover {
+    background-color: darkgreen; /* Darker green on hover */
+}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useLocation, useNavigate,Link } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { PaystackButton } from 'react-paystack';
 import axios from 'axios';
 import guaranteeIcon from '../icons/guarantee-icon.jpg';
 import fastShipIcon from '../icons/fast-ship-icon.jpg';
@@ -19,12 +20,27 @@ const PaymentPage = () => {
     } = state || {};
     const token = localStorage.getItem('token');
 
-    // Function to calculate total amount from products
-    const calculateTotalAmount = () => {
-        return products.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-    };
+    // Paystack Public Key and other configurations
+    const publicKey = "pk_live_465faeaf26bb124923dde0c51f9f2b6a1b9ee006"; // Your Paystack public key
+    const email = "useremail@example.com"; // You may need to get this dynamically from the user's info
+    const totalAmount = products.reduce((acc, item) => acc + (item.price * item.quantity), 0) * 100; // Paystack uses kobo, so multiply amount by 100
+    const currency = 'NGN';
 
-    const totalAmount = calculateTotalAmount();
+    // Paystack props configuration
+    const componentProps = {
+        email,
+        amount: totalAmount,
+        publicKey,
+        text: "Pay with Paystack",
+        onSuccess: (response) => {
+            console.log("Payment Successful!", response);
+            // You can handle post-payment logic here, such as updating the order status or redirecting to a success page
+            navigate('/payment-success', { state: { reference: response.reference } });
+        },
+        onClose: () => {
+            console.log("Payment popup closed");
+        }
+    };
 
     const formatPrice = (amount) => {
         const numAmount = Number(amount) || 0;
@@ -76,7 +92,7 @@ const PaymentPage = () => {
                     <h2>Complete your order</h2>
                     <p><strong>Order number:</strong> #{orderId || 'N/A'}</p>
                     <p><strong>Date:</strong> {getCurrentDate()}</p>
-                    <p><strong>Total:</strong> ₦{formatPrice(totalAmount)}</p>
+                    <p><strong>Total:</strong> ₦{formatPrice(totalAmount / 100)}</p>
                     <p><strong>Payment method:</strong> Debit/Credit Cards</p>
                     <p>Thank you for your order, please click the button below to pay with Paystack.</p>
                 </div>
@@ -145,10 +161,10 @@ const PaymentPage = () => {
             </div>
 
             <div className="payment-buttons">
-                <button>Pay with Paystack</button>
+                <PaystackButton {...componentProps} /> 
                 <button onClick={handleCancelOrder}>Cancel order & return home</button>
             </div>
-            
+
             {/* Show cancellation dialog if canceling */}
             {isCanceling && cancelOrderDialog}
         </div>

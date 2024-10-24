@@ -1,0 +1,19 @@
+.footer-section-container {
+    border: 1px solid #ddd; /* Add border to the container */
+    padding: 10px; /* Padding for spacing */
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space between text and image */
+    align-items: center; /* Center align items vertically */
+    margin-top: 20px; /* Space above the footer section */
+}
+
+.footer-section-container p {
+    margin: 0; /* Remove default margin */
+    color: black; /* Text color */
+}
+
+.footer-debit-card {
+    width: 250px; /* Adjust width as needed */
+    height: auto; /* Maintain aspect ratio */
+    margin-left: 10px; /* Space between text and image */
+}

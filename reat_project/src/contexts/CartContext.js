@@ -18,7 +18,6 @@ export const CartProvider = ({ children }) => {
   }, [cart]);
 
   const addItemToCart = (product) => {
-    console.log('Adding to cart:', product); // Log the product data
   
     // Ensure product has necessary fields
     if (!product.product_id || !product.name || !product.image_url || !product.price || !product.stock) {
@@ -29,7 +28,6 @@ export const CartProvider = ({ children }) => {
     setCart((prevCart) => {
       const existingProduct = prevCart.find(item => item.product_id === product.product_id);
       if (existingProduct) {
-        console.log('Product already in cart:', product);
         return prevCart; // Return the previous cart without any changes if the product is already in the cart
       }
       return [...prevCart, { ...product, quantity: 1 }];  // Add stock to cart item
@@ -47,7 +45,6 @@ export const CartProvider = ({ children }) => {
         if (item.quantity < item.stock) {
           return { ...item, quantity: item.quantity + 1 };
         } else {
-          console.log('Cannot add more. Stock limit reached.');
           return item; // Return the item unchanged if stock limit is reached
         }
       }

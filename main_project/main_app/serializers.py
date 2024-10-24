@@ -109,6 +109,7 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     image_url = serializers.SerializerMethodField()  # Dynamically get image URL
+    secondary_image_url = serializers.SerializerMethodField()  # Dynamically get secondary image URL
     category_id = serializers.IntegerField(source='category.id', read_only=True)  # Get category ID
     additional_images = ProductImageSerializer(many=True, read_only=True)  # Assuming additional images are linked to Product
 
@@ -117,7 +118,7 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = [
             'product_id', 'name', 'description', 'price', 'original_price',
             'discount', 'stock', 'category', 'category_id', 'image_url',
-            'additional_images', 'created_at'
+            'secondary_image_url', 'additional_images', 'created_at'
         ]
 
     # Method to get the full image URL
@@ -126,6 +127,16 @@ class ProductSerializer(serializers.ModelSerializer):
         if obj.image:
             return request.build_absolute_uri(obj.image.url)
         return None
+
+    # Method to get the secondary image URL
+    def get_secondary_image_url(self, obj):
+        request = self.context.get('request')
+        # Assuming `additional_images` is linked correctly, and the secondary image is stored there
+        first_additional_image = obj.additional_images.first()  # Get the first additional image (can adjust this logic as needed)
+        if first_additional_image and first_additional_image.secondary_image:
+            return request.build_absolute_uri(first_additional_image.secondary_image.url)
+        return None
+
 
 
 class CategorySerializer(serializers.ModelSerializer):

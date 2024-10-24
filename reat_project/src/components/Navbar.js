@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'; 
+import React, { useState, useRef, useEffect } from 'react';  
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 import { useUser } from '../contexts/UserContext';
@@ -67,6 +67,10 @@ const Navbar = () => {
     };
   }, []);
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const toggleCategoryDropdown = () => {
     setCategoryDropdownVisible(!categoryDropdownVisible);
   };
@@ -75,13 +79,16 @@ const Navbar = () => {
     setSelectedCategory(category);
     setCategoryDropdownVisible(false);
     setSearchWidth(category === 'All' ? '100%' : '50%');
+    scrollToTop();  // Scroll to top when a category is clicked
   };
 
   const handleSearch = () => {
     if (!searchQuery.trim()) {
       return;
     }
+    setFilteredProducts([]); // Clear suggestions when search is initiated
     navigate(`/search?query=${encodeURIComponent(searchQuery)}&category=${encodeURIComponent(selectedCategory)}`);
+    scrollToTop();  // Scroll to top when search is triggered
   };
 
   const handleSearchInputChange = (event) => {
@@ -101,31 +108,34 @@ const Navbar = () => {
 
   const handlePhoneClick = () => {
     window.location.href = 'tel:+23434593459'; 
+    scrollToTop();  // Scroll to top when phone link is clicked
   };
 
   const handleSuggestionClick = (product) => {
     navigate(`/search?query=${encodeURIComponent(product.name)}&category=${encodeURIComponent(selectedCategory)}`);
-    setFilteredProducts([]);
+    setFilteredProducts([]); // Clear suggestions when a suggestion is clicked
+    scrollToTop();  // Scroll to top when a suggestion is clicked
   };
 
-  // Updated handleAccountClick function
   const handleAccountClick = () => {
     if (isLoggedIn) {
       navigate('/account');
     } else {
       navigate('/signin');
     }
+    scrollToTop();  // Scroll to top when account is clicked
   };
 
   const handleWishlistClick = () => {
     navigate('/wishlist');
+    scrollToTop();  // Scroll to top when wishlist is clicked
   };
 
   return (
     <nav className="navbar">
       <div className="navbar-content">
         <div className="navbar-left">
-          <a href="/">
+          <a href="/" onClick={scrollToTop}>
             <img src={companyLogo} alt="Company Logo" className="company-logo" />
           </a>
           <div className="company-name">Triple A's Technology</div>
@@ -133,14 +143,10 @@ const Navbar = () => {
 
         <div className="navbar-right">
           <div className="wishlist-container" onClick={handleWishlistClick}>
-            <img
-              src={wishlistIcon}
-              alt="Wishlist"
-              className="wishlist-icon"
-            />
+            <img src={wishlistIcon} alt="Wishlist" className="wishlist-icon" />
             <span className="wishlist-count">{wishlist.length}</span>
           </div>
-          <div onClick={() => navigate('/cart')} className="cart-link">
+          <div onClick={() => { navigate('/cart'); scrollToTop(); }} className="cart-link">
             <img src={cartIcon} alt="Cart" className="cart-icon" />
             <span className="cart-count">{cartCount}</span>
           </div>
@@ -169,7 +175,7 @@ const Navbar = () => {
             />
             {categoryDropdownVisible && (
               <div className="dropdown-content show">
-                {["All", 'Phones & Tablets', 'Headsets & AirPods', 'Laptops', 'Pouches & Guide', 'Powerbanks', 'Watches', 'Games','Accessories'].map((cat) => (
+                {["AII", 'Phones & Tablets', 'Headsets & AirPods', 'Laptops', 'Pouches & Guide', 'Powerbanks', 'Watches', 'Games', 'Accessories'].map((cat) => (
                   <a href="#" key={cat} onClick={() => handleCategoryClick(cat)}>
                     {cat}
                   </a>

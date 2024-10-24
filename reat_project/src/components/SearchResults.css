@@ -74,5 +74,35 @@
   }
   
   
-  
+  .pagination {
+    display: flex;
+    justify-content: center; /* Center the pagination */
+    margin-top: 20px; /* Space above the pagination */
+}
+
+.pagination button {
+    background-color: green; /* Button color */
+    color: white; /* Text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 15px; /* Padding inside the button */
+    margin: 0 5px; /* Space between buttons */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.pagination button:hover {
+    background-color: #1E2019; /* Darker shade on hover */
+}
+
+.pagination button.active {
+    background-color: #1E2019; /* Active button color */
+    font-weight: bold; /* Make active button text bold */
+}
+
+.pagination button:disabled {
+    background-color: #cccccc; /* Disabled button color */
+    cursor: not-allowed; /* Not-allowed cursor for disabled */
+}
+
   

@@ -3,6 +3,10 @@
   margin-bottom: 60px;
 }
 
+.deals-container h2{
+  color: green;
+}
+
 .deals-list {
   display: flex;
   flex-wrap: wrap;
@@ -124,4 +128,8 @@
 /* Hide overflow on slider */
 .deals-slider {
   overflow-x: hidden;
+}
+
+.deal-item img {
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }

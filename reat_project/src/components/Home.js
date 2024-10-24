@@ -14,6 +14,9 @@ import CategoryDisplay from './CategoryDisplay'; // Import CategoryDisplay
 import FeatureDisplay from './FeatureDisplay'; // Import the FeatureDisplay component
 import DealsOfTheDay from './Deals_of_the_Day'; // Import DealsOfTheDay component
 import PowerBankDisplay from './PowerBanksSlider'; // Import PowerBankDisplay component
+import LaptopDisplay from './LaptopSlider';
+import ViewedProducts from './ViewedProducts';
+import PhonesTabletsDisplay from './PhonesTabletsDisplay';
 
 // Images, captions, and button text
 const images = [slidingImage1, slidingImage2, slidingImage5];
@@ -116,6 +119,17 @@ const Home = () => {
       {/* Power Bank Display Component */}
       <PowerBankDisplay /> {/* Added PowerBankDisplay below CategoryDisplay */}
        
+      {/* Laptop Display Component */}
+      <LaptopDisplay />
+      
+      {/* Viewed products Display Component */}  
+      <PhonesTabletsDisplay />
+
+      {/* Viewed products Display Component */}   
+      <ViewedProducts />
+      
+      
+
       {/* Commented out the product list */}
       {/* <div className="product-list">
         {products.map((product) => (
