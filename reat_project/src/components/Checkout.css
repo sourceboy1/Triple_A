@@ -450,4 +450,62 @@ footer {
     color: #333;
 }
 
+@media (max-width: 425px) {
+    .checkout-form input,
+    .checkout-form select,
+    .checkout-form textarea {
+        width: 70%; /* Adjust width for smaller screens */
+        font-size: 14px; /* Reduce font size */
+    }
+
+    .phone-container {
+        width: 70%; /* Adjust phone container width */
+    }
+
+    .phone-container select,
+    .phone-container input[type="text"] {
+        font-size: 14px; /* Reduce font size for phone input */
+    }
+
+    .checkout-form button {
+        width: 80%; /* Adjust button width */
+        font-size: 16px; /* Reduce button font size */
+    }
+}
+
+@media (max-width: 375px) {
+    .checkout-form input,
+    .checkout-form select,
+    .checkout-form textarea {
+        width: 75%; /* Wider input fields */
+        font-size: 12px; /* Further reduce font size */
+    }
+
+    .phone-container {
+        width: 75%; /* Adjust phone container width */
+    }
+
+    .checkout-form button {
+        width: 90%; /* Adjust button width */
+        font-size: 14px; /* Reduce button font size */
+    }
+}
+
+@media (max-width: 320px) {
+    .checkout-form input,
+    .checkout-form select,
+    .checkout-form textarea {
+        width: 80%; /* Full width input fields */
+        font-size: 10px; /* Further reduce font size */
+    }
+
+    .phone-container {
+        width: 80%; /* Adjust phone container width */
+    }
+
+    .checkout-form button {
+        width: 95%; /* Adjust button width */
+        font-size: 12px; /* Reduce button font size */
+    }
+}
 

@@ -44,9 +44,7 @@ const Account = () => {
           </div>
         );
       case 'Orders':
-        return <UserOrders onViewOrder={handleViewOrderDetails} />; // Pass the callback to view order details
-      // case 'Addresses':
-      //   return <Addresses />;
+        return <UserOrders onViewOrder={handleViewOrderDetails} />; 
       case 'Account details':
         return <AccountDetails />;
       case 'Wishlist':

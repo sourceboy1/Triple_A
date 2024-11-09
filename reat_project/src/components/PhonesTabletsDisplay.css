@@ -59,7 +59,7 @@
   
   .phones-tablets-price {
     color: var(--main-accent-color);
-    font-weight: bold;
+    
   }
   
   /* Responsive Media Queries */
@@ -92,3 +92,14 @@
     }
   }
   
+  /* Add smooth scrolling */
+.phones-tablets-slider {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.phones-tablets-slider {
+  display: flex;
+  transition: transform 0.3s ease-in-out; /* Smooth transition for sliding */
+  overflow: hidden; /* Prevents overflow of items */
+}

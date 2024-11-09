@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LaptopSlider.css'; // Assuming you create a separate CSS file for laptops
 
@@ -9,6 +9,8 @@ const LaptopDisplay = () => {
   const displayCount = 6; // Number of laptops to display at a time
   const fetchCount = 30; // Number of laptops to fetch from the API
   const navigate = useNavigate();
+  const sliderRef = useRef(null);
+  let intervalRef = useRef(null); // Reference for interval
 
   // Function to shuffle laptops array randomly
   const shuffleArray = (array) => {
@@ -19,7 +21,7 @@ const LaptopDisplay = () => {
     return array;
   };
 
-  const formatPrice = (price) => { 
+  const formatPrice = (price) => {
     if (isNaN(price)) return 'N/A'; // Return 'N/A' if the price is not a valid number
     return new Intl.NumberFormat('en-NG', { // Use 'en-NG' for Nigerian English
       style: 'currency',
@@ -47,7 +49,7 @@ const LaptopDisplay = () => {
     fetchLaptops();
 
     // Set up an interval to rotate laptops
-    const interval = setInterval(() => {
+    intervalRef.current = setInterval(() => {
       setLaptops((prev) => {
         const firstItem = prev[0];
         const newItems = prev.slice(1).concat(firstItem); // Move the first item to the back
@@ -55,7 +57,9 @@ const LaptopDisplay = () => {
       });
     }, 12000); // Change every 12 seconds
 
-    return () => clearInterval(interval); // Cleanup interval on unmount
+    return () => {
+      clearInterval(intervalRef.current); // Cleanup interval on unmount
+    };
   }, []);
 
   const handleProductClick = (product_id) => {
@@ -72,10 +76,44 @@ const LaptopDisplay = () => {
     setHoveredIndex(null);
   };
 
+  // Function to handle touch start
+  const handleTouchStart = (e) => {
+    const touchStartX = e.touches[0].clientX;
+
+    const handleTouchMove = (e) => {
+      const touchEndX = e.touches[0].clientX;
+      const diff = touchStartX - touchEndX;
+
+      // Swipe left to slide
+      if (diff > 30) {
+        setLaptops((prev) => {
+          const firstItem = prev[0];
+          const newItems = prev.slice(1).concat(firstItem);
+          return newItems;
+        });
+        clearInterval(intervalRef.current); // Clear interval on user interaction
+      }
+
+      // Swipe right to slide back (optional)
+      if (diff < -30) {
+        setLaptops((prev) => {
+          const lastItem = prev[prev.length - 1];
+          const newItems = [lastItem].concat(prev.slice(0, prev.length - 1));
+          return newItems;
+        });
+        clearInterval(intervalRef.current); // Clear interval on user interaction
+      }
+
+      sliderRef.current.removeEventListener('touchmove', handleTouchMove); // Cleanup
+    };
+
+    sliderRef.current.addEventListener('touchmove', handleTouchMove);
+  };
+
   return (
     <div className="laptop-container">
       <h2>Featured Laptops</h2>
-      <div className="laptop-display">
+      <div className="laptop-display" ref={sliderRef} onTouchStart={handleTouchStart}>
         {loading ? ( // Show loading message or spinner while loading
           <p>Loading laptops...</p>
         ) : (

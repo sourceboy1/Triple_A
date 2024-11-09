@@ -30,6 +30,7 @@ import OrderDetails from './components/OrderDetails';
 import PowerBankDisplay from './components/PowerBanksSlider';
 import Footer from './components/Footer';
 import UserOrders from './components/UserOrders';
+import FloatingNav from './components/FloatingNav';
 
 const App = () => {
   return (
@@ -64,8 +65,9 @@ const App = () => {
                   <Route path="/account/details" element={<AccountDetails />} /> 
                   <Route path="/order/:orderId" element={<OrderDetails />} />
                   <Route path="/" element={<PowerBankDisplay />} />
-                  <Route path="/user/orders" element={<UserOrders />} />
+                  <Route path="user/orders" element={<UserOrders />} />
                 </Routes>
+                <FloatingNav />
                 <Footer />
               </div>
             </Router>

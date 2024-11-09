@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './PhonesTabletsDisplay.css'; // Assuming you have a separate CSS file
 
@@ -9,6 +9,9 @@ const PhonesTabletsDisplay = () => {
   const displayCount = 6; // Number of products to display at a time
   const fetchCount = 30; // Number of products to fetch from the API
   const navigate = useNavigate();
+  const sliderRef = useRef(null); // Reference to the slider div
+  const [startX, setStartX] = useState(0); // Start position of touch
+  const [currentTranslate, setCurrentTranslate] = useState(0); // Current translate value for sliding
 
   // Function to shuffle the array randomly
   const shuffleArray = (array) => {
@@ -73,6 +76,35 @@ const PhonesTabletsDisplay = () => {
     }).format(price);
   };
 
+  // Touch event handlers
+  const handleTouchStart = (event) => {
+    setStartX(event.touches[0].clientX);
+    setCurrentTranslate(0); // Reset current translate on touch start
+  };
+
+  const handleTouchMove = (event) => {
+    const currentX = event.touches[0].clientX;
+    const diffX = currentX - startX;
+    setCurrentTranslate(diffX); // Update translate based on touch movement
+  };
+
+  const handleTouchEnd = () => {
+    if (currentTranslate > 50) {
+      // Swipe right
+      setProducts((prev) => {
+        const firstItem = prev[0];
+        return [...prev.slice(1), firstItem]; // Move the first item to the back
+      });
+    } else if (currentTranslate < -50) {
+      // Swipe left
+      setProducts((prev) => {
+        const lastItem = prev[prev.length - 1];
+        return [lastItem, ...prev.slice(0, -1)]; // Move the last item to the front
+      });
+    }
+    setCurrentTranslate(0); // Reset current translate
+  };
+
   return (
     <div className="phones-tablets-container">
       <h2>Featured Phones & Tablets</h2>
@@ -80,7 +112,14 @@ const PhonesTabletsDisplay = () => {
         {loading ? (
           <p>Loading phones and tablets...</p>
         ) : (
-          <div className="phones-tablets-slider">
+          <div
+            className="phones-tablets-slider"
+            ref={sliderRef}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            style={{ transform: `translateX(${currentTranslate}px)`, transition: 'transform 0.3s ease-in-out' }} // Apply translation for sliding effect
+          >
             {products.slice(0, displayCount).map((product, index) => (
               <div
                 className="phones-tablets-item"

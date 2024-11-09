@@ -1,3 +1,11 @@
+
+
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
 .orders-container {
     width: 90%;
     margin: 0 auto;
@@ -51,11 +59,8 @@
     cursor: pointer;
     border-radius: 4px;
     flex: 1; /* Ensures buttons take equal width */
-    margin-left: 120px;
-    margin-right: 120px;
     margin-top: 25px;
     margin-bottom: 10px;
-
 }
 
 .order-actions button:hover {
@@ -163,5 +168,137 @@
     color: white;
 }
 
+/* Mobile responsiveness for screens up to 768px */
+@media screen and (max-width: 768px) {
+    .orders-container {
+        width: 100%; /* Full width on smaller screens */
+        padding: 10px; /* Reduced padding */
+        margin-top: 65px;
+    }
 
+    .orders-header {
+        grid-template-columns: 1fr 1fr; /* Two columns for smaller screens */
+    }
 
+    .order-info {
+        grid-template-columns: 1fr 1fr; /* Two columns for smaller screens */
+    }
+
+    .order-actions {
+        flex-direction: column; /* Stack buttons vertically */
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    .order-actions button {
+        margin: 5px 0; /* Adjust button margin */
+        margin-left: 0; /* Remove margin-left */
+        margin-right: 0; /* Remove margin-right */
+        width: 100%; /* Make buttons full-width */
+        max-width: none; /* Remove max-width limit */
+    }
+
+    .order-summary {
+        margin-top: 15px;
+        margin-bottom: 20px;
+    }
+
+    .order-summary-item {
+        flex-direction: column; /* Stack items vertically */
+        align-items: flex-start; /* Align to the left */
+        margin-bottom: 10px; /* Reduced space between items */
+    }
+
+    .order-summary-item-image {
+        width: 80px; /* Smaller image size */
+        height: 80px;
+        margin-bottom: 10px; /* Space below the image */
+    }
+
+    .order-summary-item-details h3 {
+        font-size: 1.2em; /* Adjust heading font size */
+    }
+
+    .order-summary-item-details p {
+        font-size: 0.9em; /* Smaller text for better readability */
+    }
+
+    .cancel-dialog {
+        width: 90%; /* Make dialog width responsive */
+        max-width: 400px; /* Limit max-width */
+    }
+
+    .dialog-confirm-button, .dialog-cancel-button {
+        width: 100%; /* Make buttons full width */
+        max-width: none; /* Remove max-width limit */
+    }
+}
+
+/* Mobile responsiveness for screens up to 480px */
+@media screen and (max-width: 480px) {
+    .orders-container {
+        width: 95%; /* Slightly smaller width for tiny screens */
+        padding: 8px; /* Less padding */
+    }
+
+    .orders-header {
+        grid-template-columns: 1fr 1fr; /* Two columns */
+        font-size: 0.9em; /* Smaller font size for headers */
+    }
+
+    .order-info {
+        grid-template-columns: 1fr 1fr; /* Two columns */
+    }
+
+    .order-actions {
+        flex-direction: column; /* Stack actions vertically */
+        margin-top: 12px;
+    }
+
+    .order-actions button {
+        width: 100%; /* Full width for buttons */
+        margin: 5px 0;
+        padding: 10px 15px; /* Adjust padding for smaller buttons */
+    }
+
+    .order-summary {
+        margin-top: 12px;
+        margin-bottom: 15px;
+        margin-right: 90px; /* Reduced right margin */
+        padding: 8px; /* Reduced padding */
+        font-size: 0.9em; /* Smaller font size for order summary */
+    }
+
+    .order-summary h2 {
+        font-size: 1.2em; /* Smaller title size */
+    }
+
+    .order-summary-item {
+        flex-direction: column; /* Stack vertically */
+        align-items: flex-start;
+    }
+
+    .order-summary-item-image {
+        width: 60px; /* Smaller image size */
+        height: 60px;
+        margin-bottom: 8px; /* Adjust spacing */
+    }
+
+    .order-summary-item-details h3 {
+        font-size: 1em; /* Smaller heading size */
+    }
+
+    .order-summary-item-details p {
+        font-size: 0.8em; /* Even smaller text */
+    }
+
+    .cancel-dialog {
+        width: 85%; /* More compact dialog box */
+        max-width: 350px; /* Limit max width */
+    }
+
+    .dialog-confirm-button, .dialog-cancel-button {
+        padding: 8px 16px; /* Smaller button size */
+        width: 100%;
+    }
+}

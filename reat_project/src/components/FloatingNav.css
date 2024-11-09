@@ -1,0 +1,20 @@
+/* FloatingNav.css */
+.floating-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+  }
+  
+  .nav-icon {
+    width: 24px;
+    height: 24px;
+  }
+  

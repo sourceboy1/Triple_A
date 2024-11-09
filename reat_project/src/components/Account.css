@@ -9,6 +9,7 @@
     border-radius: 10px;
     overflow: hidden;
     margin-top: 85px;
+    flex-wrap: wrap; /* Allow flex items to wrap */
 }
 
 .sidebar {
@@ -46,6 +47,7 @@
     padding: 20px;
     border-top: 2px solid green;
     border-left: 2px solid green;
+    min-width: 200px; /* Prevents content from shrinking too much */
 }
 
 .content-section > div {
@@ -68,29 +70,28 @@
     text-decoration: underline;
 }
 
-.dashboard{
+.dashboard {
     font-size: 28px;
 }
-
 
 .account-details-form {
     display: flex;
     flex-direction: column;
     width: 300px;
     gap: 15px;
-  }
-  
-  .account-details-form label {
+}
+
+.account-details-form label {
     display: flex;
     flex-direction: column;
-  }
-  
-  .account-details-form input {
+}
+
+.account-details-form input {
     padding: 8px;
     font-size: 14px;
-  }
-  
-  .save-account-details {
+}
+
+.save-account-details {
     background-color: #28a745;
     color: white;
     padding: 10px 15px;
@@ -98,9 +99,70 @@
     cursor: pointer;
     border-radius: 3px;
     align-self: flex-start;
-  }
-  
-  .save-account-details:hover {
+}
+
+.save-account-details:hover {
     background-color: #218838;
-  }
-  
+}
+
+/* Mobile responsiveness for screens up to 768px */
+@media screen and (max-width: 768px) {
+    .account-container {
+        flex-direction: column; /* Stack sidebar and content section vertically */
+        margin: 10px; /* Reduce margin */
+        margin-top: 125px;
+    }
+
+    .sidebar {
+        min-width: 100%;
+        border-right: none; /* Remove right border for better layout */
+        margin-bottom: 20px; /* Add space below sidebar */
+    }
+
+    .content-section {
+        min-width: 100%; /* Ensure content section takes full width */
+        border-left: none; /* Remove left border on smaller screens */
+        padding: 15px; /* Adjust padding for mobile screens */
+    }
+
+    .account-details-form {
+        width: 100%; /* Make form take full width on smaller screens */
+        gap: 10px; /* Reduced gap between form elements */
+    }
+
+    .account-details-form input {
+        font-size: 16px; /* Increase input font size for better readability */
+    }
+
+    .save-account-details {
+        width: 100%; /* Make the button full-width */
+    }
+}
+
+/* Mobile responsiveness for screens up to 480px */
+@media screen and (max-width: 480px) {
+    .account-container {
+        margin: 5px; /* Smaller margin for very small screens */
+        margin-top: 100px;
+    }
+
+    .sidebar {
+        padding: 15px; /* Less padding */
+    }
+
+    .content-section {
+        padding: 10px; /* Less padding for small screens */
+    }
+
+    .account-details-form {
+        width: 100%; /* Ensure form takes up the full width */
+    }
+
+    .account-details-form input {
+        font-size: 15px; /* Smaller input font size */
+    }
+
+    .save-account-details {
+        padding: 8px 12px; /* Smaller button size */
+    }
+}

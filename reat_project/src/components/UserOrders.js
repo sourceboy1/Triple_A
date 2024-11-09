@@ -1,15 +1,22 @@
-import React, { useEffect, useState } from 'react';  
+import React, { useEffect, useState } from 'react'; 
+import { useNavigate } from 'react-router-dom';  // Import useNavigate
 import axios from 'axios';
 import Loading from './Loading';
 import './UserOrders.css';
 
-const UserOrders = ({ onViewOrder }) => {  // Added onViewOrder prop
+const UserOrders = () => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isCanceling, setIsCanceling] = useState(false);
     const [cancelOrderId, setCancelOrderId] = useState(null);
     const token = localStorage.getItem('token');
+    const navigate = useNavigate();  // Initialize useNavigate
+
+    // Scroll to top when the page is navigated to
+    useEffect(() => {
+        window.scrollTo(0, 0); // Scrolls to the top of the page
+    }, []);  // Empty dependency array ensures this only runs when the component mounts
 
     const fetchUserOrders = async () => {
         try {
@@ -18,7 +25,7 @@ const UserOrders = ({ onViewOrder }) => {  // Added onViewOrder prop
                     'Authorization': `Token ${token}`,
                 },
             });
-    
+
             if (Array.isArray(response.data)) {
                 const ordersWithNumericPrices = response.data.map(order => ({
                     order_id: order.order_id,
@@ -33,10 +40,8 @@ const UserOrders = ({ onViewOrder }) => {  // Added onViewOrder prop
                         image_url: item.product_image
                     })),
                 }));
-    
-                // Sort orders by created_at in descending order (most recent first)
+
                 const sortedOrders = ordersWithNumericPrices.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-    
                 setOrders(sortedOrders);
             } else {
                 setError('Unexpected API response format.');
@@ -48,7 +53,6 @@ const UserOrders = ({ onViewOrder }) => {  // Added onViewOrder prop
             setLoading(false);
         }
     };
-    
 
     useEffect(() => {
         if (token) {
@@ -105,7 +109,7 @@ const UserOrders = ({ onViewOrder }) => {  // Added onViewOrder prop
                             <div>{formatPrice(order.total_amount)}</div>
                         </div>
                         <div className={`order-actions ${order.status === 'cancelled' ? 'centered' : ''}`}>
-                            <button onClick={() => onViewOrder(order.order_id)}>View</button> {/* Trigger viewOrderDetails */}
+                            <button onClick={() => navigate(`/order/${order.order_id}`)}>View</button> {/* Navigate to order details */}
                             {order.status !== 'Cancelled' && order.status !== 'Delivered' && (
                                 <button onClick={() => {
                                     setCancelOrderId(order.order_id);

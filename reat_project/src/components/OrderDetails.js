@@ -1,6 +1,5 @@
-// OrderDetails.js
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Loading from './Loading';
 import './OrderDetails.css';
@@ -11,6 +10,12 @@ const OrderDetails = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const token = localStorage.getItem('token');
+    const navigate = useNavigate();
+
+    // Scroll to the top of the page whenever the component is loaded
+    useEffect(() => {
+        window.scrollTo(0, 0);  // Scroll to top (0, 0) position
+    }, []);
 
     useEffect(() => {
         const fetchOrderDetails = async () => {
@@ -46,20 +51,14 @@ const OrderDetails = () => {
         }
     };
 
-    if (loading) {
-        return <Loading />;
-    }
-
-    if (error) {
-        return <p>{error}</p>;
-    }
-
-    if (!order) {
-        return <p>No order details found.</p>;
-    }
+    if (loading) return <Loading />;
+    if (error) return <p>{error}</p>;
+    if (!order) return <p>No order details found.</p>;
 
     return (
         <div className="order-details-container">
+            <button onClick={() => navigate(-1)} className="back-button">Back to Orders</button>
+
             <h2>Order #{order.order_id} was placed on {new Date(order.created_at).toLocaleDateString()} and is currently {order.status}.</h2>
 
             <h3>Products</h3>
@@ -74,17 +73,14 @@ const OrderDetails = () => {
                 {order.cart_items.map(item => (
                     <tr key={item.product_id}>
                         <td>
-                        
                             {item.product_name ? `${item.product_name} × ${item.quantity}` : `Product Name Missing × ${item.quantity}`}
-                        
                         </td>
                         <td>{formatPrice(item.price * item.quantity)}</td>
                     </tr>
                 ))}
-            </tbody>
+                </tbody>
             </table>
 
-            {/* Order summary table */}
             <h3>Order Summary</h3>
             <table className="order-summary-table">
                 <tbody>
@@ -111,7 +107,6 @@ const OrderDetails = () => {
                 </tbody>
             </table>
 
-            {/* Billing and shipping addresses side by side */}
             <div className="address-section">
                 <div className="address-box">
                     <h3>Billing Address</h3>

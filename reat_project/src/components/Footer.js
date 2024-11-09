@@ -2,8 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Import Link for navigation
 import './Footer.css';
 import { useUser } from '../contexts/UserContext'; // Import the UserContext
-
-// Import the social media images
+import UserOrders from './UserOrders';
 import TwitterIcon from '../pictures/twitter.jpg';
 import FacebookIcon from '../pictures/facebook.jpg';
 import InstagramIcon from '../pictures/instagram.jpg';

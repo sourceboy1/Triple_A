@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect } from 'react';  
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import './SearchResults.css';
@@ -7,24 +7,18 @@ import Loading from './Loading';
 const SearchResults = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);  // State for current page
-  const [resultsPerPage] = useState(10);  // Set the number of results per page
+  const [currentPage, setCurrentPage] = useState(1);
+  const [resultsPerPage] = useState(10);
   const location = useLocation();
-  
-  
-  // Get 'category_id' and 'query' from the URL search params
+
   const categoryId = new URLSearchParams(location.search).get('category_id');
   const query = new URLSearchParams(location.search).get('query');
-  
+
   useEffect(() => {
     const fetchResults = async () => {
       setLoading(true);
       try {
-        // If categoryId is present, filter by category
-        const params = categoryId 
-          ? { category_id: categoryId }  // Only send the category_id if it's present
-          : { query };  // Otherwise, use the search query
-        
+        const params = categoryId ? { category_id: categoryId } : { query };
         const response = await axios.get('http://localhost:8000/api/products/', { params });
         setResults(response.data);
       } catch (error) {
@@ -34,18 +28,23 @@ const SearchResults = () => {
     };
 
     fetchResults();
-  }, [categoryId, query]);
+  }, [categoryId, query, location.search]);
 
-  // Calculate the current products to show
+  // Scroll to the top whenever currentPage changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentPage]);
+
   const indexOfLastResult = currentPage * resultsPerPage;
   const indexOfFirstResult = indexOfLastResult - resultsPerPage;
   const currentResults = results.slice(indexOfFirstResult, indexOfLastResult);
-
-  // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  // Calculate the total number of pages
   const totalPages = Math.ceil(results.length / resultsPerPage);
+
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
 
   return (
     <div className="search-results-page">
@@ -81,15 +80,19 @@ const SearchResults = () => {
 
       {/* Pagination */}
       <div className="pagination">
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index + 1}
-            onClick={() => paginate(index + 1)}
-            className={currentPage === index + 1 ? 'active' : ''}
-          >
-            {index + 1}
-          </button>
-        ))}
+        <button 
+          onClick={() => handlePageChange(currentPage - 1)} 
+          disabled={currentPage === 1}
+        >
+          &lt; Prev
+        </button>
+        <span> Page {currentPage} of {totalPages} </span>
+        <button 
+          onClick={() => handlePageChange(currentPage + 1)} 
+          disabled={currentPage === totalPages}
+        >
+          Next &gt;
+        </button>
       </div>
     </div>
   );

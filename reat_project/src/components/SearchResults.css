@@ -105,4 +105,64 @@
     cursor: not-allowed; /* Not-allowed cursor for disabled */
 }
 
+/* Tablet Responsiveness */
+@media (max-width: 768px) {
+  .search-results-page h1 {
+      font-size: 1.0em;
+      margin-top: 35px;
+  }
+  .result-item {
+      flex-direction: column;
+      align-items: flex-start;
+      width: 90%;
+  }
+  .product-image {
+      width: 100%;
+      height: auto;
+  }
+  .result-info {
+      padding: 10px;
+  }
+  .pagination button {
+      padding: 8px 12px;
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 480px) {
+  .search-results-page h1 {
+      font-size: 1.2em;
+      text-align: center;
+  }
+  .results-container {
+      gap: 15px;
+  }
+  .result-item {
+      flex-direction: column;
+      align-items: center;
+      width: 95%;
+  }
+  .product-image {
+      width: 100%;
+      max-width: 200px;
+      height: auto;
+  }
+  .result-info {
+      text-align: center;
+      padding: 10px;
+  }
+  .result-info h3 {
+      font-size: 1.1em;
+  }
+  .result-info .description {
+      font-size: 0.85em;
+  }
+  .result-info .price {
+      font-size: 1em;
+  }
+  .pagination button {
+      padding: 6px 10px;
+      font-size: 0.9em;
+  }
+}
   

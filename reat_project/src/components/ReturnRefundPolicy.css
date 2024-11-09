@@ -35,3 +35,9 @@
 .return-refund-container a:hover {
     text-decoration: underline;
 }
+
+@media (max-width: 768px) {
+    .return-refund-container{
+        margin-top: 75px;
+    }
+}

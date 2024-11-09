@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react'; 
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './CategoryDisplay.css'; // Ensure you have this CSS file
+import './CategoryDisplay.css';
 import { TokenContext } from './TokenContext';
 
-// Updated to use category IDs
 const categories = [
   { id: 8, name: "Accessories", apiUrl: "http://localhost:8000/api/products/?category_id=8" },
   { id: 1, name: "Games", apiUrl: "http://localhost:8000/api/products/?category_id=1" },
@@ -12,7 +11,6 @@ const categories = [
   { id: 6, name: "Watches", apiUrl: "http://localhost:8000/api/products/?category_id=6" },
 ];
 
-// Function to shuffle the products array
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -39,8 +37,8 @@ const CategoryDisplay = () => {
           )
         );
         const productsData = responses.map(response => {
-          const shuffledProducts = shuffleArray(response.data);  // Shuffle the products
-          return shuffledProducts.slice(0, 4);  // Get 4 random products
+          const shuffledProducts = shuffleArray(response.data);
+          return shuffledProducts.slice(0, 4);
         });
         const productsObject = categories.reduce((acc, category, index) => {
           acc[category.name] = productsData[index];
@@ -64,30 +62,59 @@ const CategoryDisplay = () => {
 
   return (
     <div className="category-display">
-      {categories.map(category => (
-        <div key={category.name} className="category-container">
-          <h3 className="category-title">{category.name}</h3>
-          <div className="product-grid">
-            {products[category.name] && products[category.name].map(product => (
-              <div 
-                key={product.product_id} 
-                className="product-card" 
-                onClick={() => handleProductClick(product.product_id)} // Navigate on click
-              >
-                {product.image_url ? (
-                  <img src={product.image_url} alt={product.name} className="product-image" />
-                ) : (
-                  <p>No image available</p>
-                )}
-                <h4 className="product-title">{product.name}</h4>
-              </div>
-            ))}
+      <div className="category-row">
+        {["Accessories", "Games"].map(categoryName => (
+          <div key={categoryName} className="category-container">
+            <h3 className="category-title">{categoryName}</h3>
+            <div className="product-grid">
+              {products[categoryName] && products[categoryName].map(product => (
+                <div 
+                  key={product.product_id} 
+                  className="product-card" 
+                  onClick={() => handleProductClick(product.product_id)}
+                >
+                  {product.image_url ? (
+                    <img src={product.image_url} alt={product.name} className="product-image" />
+                  ) : (
+                    <p>No image available</p>
+                  )}
+                  <h4 className="product-title">{product.name}</h4>
+                </div>
+              ))}
+            </div>
+            <div className="see-more-link" onClick={() => handleViewAll(categories.find(c => c.name === categoryName).id)}>  
+              See More
+            </div>
           </div>
-          <div className="see-more-link" onClick={() => handleViewAll(category.id)}>  
-            See More
+        ))}
+      </div>
+
+      <div className="category-row">
+        {["Headphones & Airpods", "Watches"].map(categoryName => (
+          <div key={categoryName} className="category-container">
+            <h3 className="category-title">{categoryName}</h3>
+            <div className="product-grid">
+              {products[categoryName] && products[categoryName].map(product => (
+                <div 
+                  key={product.product_id} 
+                  className="product-card" 
+                  onClick={() => handleProductClick(product.product_id)}
+                >
+                  {product.image_url ? (
+                    <img src={product.image_url} alt={product.name} className="product-image" />
+                  ) : (
+                    <p>No image available</p>
+                  )}
+                  <h4 className="product-title">{product.name}</h4>
+                </div>
+              ))}
+            </div>
+            <div className="see-more-link" onClick={() => handleViewAll(categories.find(c => c.name === categoryName).id)}>  
+              See More
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

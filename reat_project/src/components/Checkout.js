@@ -287,7 +287,7 @@ const Checkout = () => {
                             </option>
                         ))}
                     </select>
-                    <PhoneInputComponent ref={phoneRef} value={phone} onChange={setPhone} />
+                    <PhoneInputComponent value={phone} onChange={setPhone} />
                 </div>
 
                 <div>

@@ -3,7 +3,7 @@
     padding: 20px;
     background-color: hsl(0, 0%, 98%);
     border-radius: 10px;
-    margin-top: 35px;
+    margin-top: 70px;
 }
 
 h2, h3 {
@@ -48,4 +48,63 @@ th, td {
     background-color: hsl(0, 0%, 100%);
     border: 1px solid #ddd;
     border-radius: 8px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .order-details-container {
+        padding: 15px; /* Less padding for smaller screens */
+        margin-top: 130px;
+    }
+
+    .order-summary-table {
+        width: 100%; /* Make order summary table full-width on smaller screens */
+    }
+
+    .address-section {
+        flex-direction: column; /* Stack billing and shipping addresses vertically */
+        align-items: center;
+    }
+
+    .address-box {
+        width: 100%; /* Make address boxes full width */
+        margin-bottom: 15px; /* Space between address boxes */
+    }
+
+    h2 {
+        font-size: 1.5rem; /* Adjust the font size for headings */
+    }
+
+    h3 {
+        font-size: 1.2rem; /* Adjust the font size for sub-headings */
+    }
+
+    table th, table td {
+        padding: 8px; /* Reduce padding for smaller screens */
+    }
+}
+
+
+
+@media (max-width: 480px) {
+    .order-details-container {
+        padding: 15px; /* Less padding for smaller screens */
+        margin-top: 100px;
+    }
+
+    h2 {
+        font-size: 1.3rem; /* Adjust font size for very small screens */
+    }
+
+    h3 {
+        font-size: 1.1rem; /* Adjust font size for very small screens */
+    }
+
+    .order-summary-table {
+        width: 100%; /* Ensure the summary table is full-width */
+    }
+
+    .address-box {
+        padding: 8px; /* Reduce padding inside address boxes */
+    }
 }

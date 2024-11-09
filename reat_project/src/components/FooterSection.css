@@ -17,3 +17,18 @@
     height: auto; /* Maintain aspect ratio */
     margin-left: 10px; /* Space between text and image */
 }
+
+/* Mobile responsiveness */
+@media screen and (max-width: 768px) {
+    .footer-section-container {
+        flex-direction: column; /* Stack items vertically on small screens */
+        align-items: flex-start; /* Align items to the left */
+        margin-bottom: 35px;
+        padding-top: 5px;
+    }
+
+    .footer-debit-card {
+        margin-left: 0; /* Remove left margin */
+        margin-top: 10px; /* Add some space above the image */
+    }
+}
