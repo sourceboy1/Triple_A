@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react'; // Updated import
 import { useUser } from '../contexts/UserContext';
 import axios from 'axios';
 import eyeIcon from '../pictures/eye.jpg';
@@ -7,6 +7,11 @@ import './AccountDetails.css';
 import Loading from './Loading.js';
 
 const AccountDetails = () => {
+  // Scroll to top on component mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const { firstName, lastName, email, token, userId, signIn } = useUser();
   const [editFirstName, setEditFirstName] = useState(firstName);
   const [editLastName, setEditLastName] = useState(lastName);

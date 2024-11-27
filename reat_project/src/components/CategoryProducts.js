@@ -33,7 +33,7 @@ const CategoryProducts = () => {
     fetchProducts();
   }, [categoryName, accessToken]);
 
-  if (loading) return <Loading />;
+  
   if (error) return <p>{error}</p>;
 
   return (

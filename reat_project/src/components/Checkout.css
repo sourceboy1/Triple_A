@@ -1,223 +1,230 @@
+/* General container styling */
 .checkout-container {
     display: flex;
     justify-content: space-between;
-    width: 90%;
-    margin: 50px auto;
+    padding: 2rem;
+    background-color: #f9fbf2; /* Soft background */
     font-family: Arial, sans-serif;
     color: #333;
+    
 }
 
-/* Checkout form section */
+/* Left section (form) */
 .checkout-form {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 20px;
-    flex: 3; /* Adjusted flex value */
-    padding: 20px;
-    background-color: #ffffff; /* White background */
-    border-radius: 5px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    padding-top: 50px;
+    width: 60%;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.checkout-form input,
+.checkout-form h1,
+.checkout-form h2 {
+    margin-bottom: 1rem;
+    color: #1e2019;
+}
+
+.checkout-form input[type="text"],
+.checkout-form input[type="email"],
 .checkout-form select,
 .checkout-form textarea {
-    width: 70%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-    margin-bottom: 20px;
+    width: 80%;
+    padding: 0.8rem;
+    margin: 0.5rem 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 50px;
+    
 }
 
-/* Phone input with country code styling */
-.phone-container {
+.checkout-form .error-message {
+    color: #ff4d4d;
+    font-size: 0.9rem;
+}
+
+.shipping-method-container,
+.payment-method-container {
+    margin-top: 1rem;
+}
+
+.shipping-method-container label,
+.payment-method-container label {
+    display: block;
+    padding: 0.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+}
+
+.shipping-method-container label input,
+.payment-method-container label input {
+    margin-right: 10px;
+}
+
+/* Checkbox */
+.terms-and-conditions {
+    margin-top: 1rem;
+}
+
+.terms-and-conditions label {
     display: flex;
     align-items: center;
-    width: 70%;
-    margin-bottom: 20px;
+    font-size: 0.9rem;
+    margin-bottom: 18px;
 }
 
-.phone-container select {
-    width: 25%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 5px 0 0 5px; /* Rounded corners for the left side */
-    font-size: 16px;
-}
-
-.phone-container input[type="text"] {
-    width: 75%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 0 5px 5px 0; /* Rounded corners for the right side */
-    font-size: 16px;
-    margin-left: -1px; /* Removes the space between the select and input */
-}
-
-/* Terms and conditions section */
-.terms-and-conditions {
-    align-items: center;
-    margin-top: 10px;
-}
-
-.terms-and-conditions input {
-    width: 6%;
-    background-color: darkgreen;
-}
-
-.terms-label {
-    align-items: center;
-    font-size: 14px;
-}
-
-.terms-content {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 10px;
-    background-color: #f9f9f9;
-}
-
-.terms-text {
-    max-height: 300px; /* Adjust height as needed */
-    overflow-y: auto;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #fff;
-}
-
-.checkbox-style {
-    width: 50px;
-    height: 16px;
-}
-
-/* Button styling */
+/* Place order button */
 .checkout-form button {
-    padding: 15px;
-    background-color: darkgreen;
-    color: #111;
-    border: 1px solid;
-    border-radius: 5px;
-    font-size: 18px;
+    width: 100%;
+    padding: 1rem;
+    background-color: green;
+    color: white;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
-    width: 60%;
-    margin-left: 60px;
+    transition: background-color 0.3s;
 }
 
 .checkout-form button:hover {
-    background-color: green;
+    background-color: darkgreen;
 }
 
+/* Right section (order summary) */
 .order-summary {
-    flex: 3; /* Adjusted flex value */
-    padding: 20px;
-    background-color: #f9f9f9;
+    width: 35%;
+    padding: 2rem;
+    background-color: #fbfef9;
     border-radius: 8px;
-    margin-left: 20px;
-    padding-right: 140px; /* Add margin to create space between the sections */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .order-summary h2 {
-    margin-bottom: 20px;
-    font-size: 24px;
-    color: #333;
+    margin-bottom: 1rem;
 }
 
-.order-summary p {
-    font-size: 16px;
-    margin-bottom: 10px;
-    line-height: 1.5;
-}
-
-.order-summary .total {
-    font-weight: bold;
-    font-size: 18px;
-    margin-top: 10px;
-}
-
-/* Order summary item styling */
 .order-summary-items {
     list-style: none;
     padding: 0;
-    margin: 0;
 }
 
 .order-summary-item {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 1rem;
 }
 
-.order-summary-item-image {
-    width: 80px; /* Adjust the width as needed */
-    height: auto; /* Maintain aspect ratio */
-    margin-right: 15px;
+.order-summary-item img {
+    width: 80px;
+    height: 80px;
+    margin-right: 1rem;
+    border-radius: 8px;
 }
 
-.order-summary-item-details {
-    flex: 1;
+.total,
+.shipping-cost,
+.total-amount {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    font-size: 1.1rem;
 }
 
-.order-summary-item-details h3 {
-    margin: 0;
-    font-size: 18px;
-    color: #333;
+/* Additional info (icons section) */
+.additional-info .info-item {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
 }
 
-.order-summary-item-details p {
-    margin: 5px 0;
+.additional-info .info-item img {
+    width: 50px;
+    margin-right: 1rem;
 }
 
-.error {
-    border: 2px solid red;
+.additional-info h3 {
+    margin: 0 0 0.5rem;
 }
 
-.error-message {
-    color: red;
-    font-size: 14px;
-    margin-top: 5px;
-}
-
-
-/* Footer styling */
-footer {
-    margin-top: 50px;
-    text-align: center;
-    font-size: 14px;
-    color: #777;
-}
-
-/* Responsive adjustments */
+/* Responsive design */
 @media (max-width: 768px) {
     .checkout-container {
         flex-direction: column;
+        margin-top: 70px;
     }
 
+    .checkout-form,
     .order-summary {
-        margin-left: 0;
-        margin-top: 30px;
+        width: 100%;
+    }
+
+    .checkout-form {
+        margin-bottom: 2rem;
     }
 }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* Mobile responsiveness */
+@media (max-width: 425px) {
+    .checkout-container {
+        padding-top: 65px;
+        margin-top: 10px;
+    }
+  
+    .checkout-form input,
+    .checkout-form select,
+    .checkout-form textarea {
+      padding: 10px;
+    }
+  
+    .checkout-form button {
+      padding: 10px;
+    }
+  
+    .info-item {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .order-summary-item img {
+      width: 50px;
+      height: 50px;
+    }
+  
+    .order-summary-item-details h3 {
+      font-size: 12px;
+    }
+  }
+  
+  @media (max-width: 375px) {
+    .checkout-container{
+        padding-top: 80px;
+    }
+    
+    .checkout-form h1, 
+    .checkout-form h2 {
+      font-size: 18px;
+    }
+  
+    .checkout-form button {
+      font-size: 14px;
+    }
+  
+    .order-summary {
+      padding: 10px;
+    }
+  
+    .order-summary-item img {
+      width: 45px;
+      height: 45px;
+    }
+  
+    .additional-info h3 {
+      font-size: 14px;
+    }
+  }
 
 
 
@@ -450,62 +457,70 @@ footer {
     color: #333;
 }
 
+
+
+
+@media (max-width: 768px) {
+    .checkout-container {
+        flex-direction: column;
+    }
+
+    .checkout-form {
+        width: 100%; /* Ensure form takes full width on small screens */
+        padding: 10px;
+    }
+
+    .checkout-form input,
+    .checkout-form select,
+    .checkout-form textarea {
+        width: 100%; /* Ensure inputs take full width */
+        margin-bottom: 15px; /* Adjust margin for smaller screens */
+    }
+
+    .order-summary {
+        margin-left: 0;
+        margin-top: 30px;
+    }
+
+    .checkout-form button {
+        width: 100%; /* Button should take full width on mobile */
+        margin-left: 0; /* Remove left margin */
+    }
+}
+
 @media (max-width: 425px) {
+    .checkout-container {
+        flex-direction: column; /* Stack elements vertically */
+        margin: 20px auto;
+    }
+
+    .checkout-form {
+        width: 100%; /* Make the form take full width */
+        padding: 10px;
+        font-size: 14px; /* Reduce font size for smaller screens */
+    }
+
     .checkout-form input,
     .checkout-form select,
     .checkout-form textarea {
-        width: 70%; /* Adjust width for smaller screens */
+        padding: 10px; /* Reduce padding for smaller screens */
         font-size: 14px; /* Reduce font size */
+        max-width: 100%; /* Remove max-width to ensure the input takes full width */
+        margin-bottom: 10px; /* Reduce margin */
     }
 
     .phone-container {
-        width: 70%; /* Adjust phone container width */
+        margin-bottom: 10px; /* Reduce space between phone input and next field */
     }
 
-    .phone-container select,
-    .phone-container input[type="text"] {
-        font-size: 14px; /* Reduce font size for phone input */
-    }
-
-    .checkout-form button {
-        width: 80%; /* Adjust button width */
-        font-size: 16px; /* Reduce button font size */
-    }
-}
-
-@media (max-width: 375px) {
-    .checkout-form input,
-    .checkout-form select,
-    .checkout-form textarea {
-        width: 75%; /* Wider input fields */
-        font-size: 12px; /* Further reduce font size */
-    }
-
-    .phone-container {
-        width: 75%; /* Adjust phone container width */
+    .order-summary {
+        margin-left: 0;
+        margin-top: 20px;
+        width: 100%;
     }
 
     .checkout-form button {
-        width: 90%; /* Adjust button width */
-        font-size: 14px; /* Reduce button font size */
+        width: 100%; /* Make button full width on small screens */
+        margin-left: 0;
     }
 }
-
-@media (max-width: 320px) {
-    .checkout-form input,
-    .checkout-form select,
-    .checkout-form textarea {
-        width: 80%; /* Full width input fields */
-        font-size: 10px; /* Further reduce font size */
-    }
-
-    .phone-container {
-        width: 80%; /* Adjust phone container width */
-    }
-
-    .checkout-form button {
-        width: 95%; /* Adjust button width */
-        font-size: 12px; /* Reduce button font size */
-    }
-}
-

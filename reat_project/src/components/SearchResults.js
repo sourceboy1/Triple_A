@@ -55,9 +55,7 @@ const SearchResults = () => {
       ) : (
         <h2>Search Results for "{query}"</h2>
       )}
-      {loading ? (
-        <Loading />
-      ) : (
+      { (
         <div className="results-container">
           {currentResults.length > 0 ? (
             currentResults.map(product => (

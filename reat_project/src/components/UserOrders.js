@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'; 
 import { useNavigate } from 'react-router-dom';  // Import useNavigate
 import axios from 'axios';
-import Loading from './Loading';
 import './UserOrders.css';
 
 const UserOrders = () => {
@@ -90,7 +89,7 @@ const UserOrders = () => {
     return (
         <div className="orders-container">
             <h2>Your Orders</h2>
-            {loading && <Loading />}
+            
             {error && <p>{error}</p>}
             {!loading && orders.length === 0 && <p>No orders found.</p>}
             <div className="orders-table">

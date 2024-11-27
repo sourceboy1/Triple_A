@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Product from './Product';
-import Loading from './Loading';
 import { useCart } from '../contexts/CartContext'; // Import the custom hook
 
 const ProductList = ({ category, searchQuery }) => {
@@ -28,7 +27,7 @@ const ProductList = ({ category, searchQuery }) => {
     fetchProducts();
   }, [category, searchQuery]); // Fetch products whenever category or searchQuery changes
 
-  if (loading) return <Loading />;
+  
   if (error) return <p>{error}</p>;
 
   return (

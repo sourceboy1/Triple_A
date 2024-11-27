@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Loading from './Loading';
 import './OrderDetails.css';
 
 const OrderDetails = () => {
@@ -51,7 +50,6 @@ const OrderDetails = () => {
         }
     };
 
-    if (loading) return <Loading />;
     if (error) return <p>{error}</p>;
     if (!order) return <p>No order details found.</p>;
 

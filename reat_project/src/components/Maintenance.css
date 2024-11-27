@@ -1,0 +1,22 @@
+/* src/components/Maintenance.css */
+.maintenance-container {
+    text-align: center;
+    padding: 50px;
+  }
+  
+  .maintenance-container h1 {
+    font-size: 2em;
+    color: #333;
+  }
+  
+  .maintenance-container p {
+    font-size: 1.2em;
+    color: #666;
+  }
+  
+  .maintenance-gif {
+    width: 60%;
+    max-width: 500px;
+    margin-top: 20px;
+  }
+  

@@ -28,7 +28,7 @@ export const TokenProvider = ({ children }) => {
     fetchToken();
   }, []);
 
-  if (loading) return <Loading />;
+  
   if (error) return <div>Error: {error}</div>;
 
   return (

@@ -152,7 +152,7 @@
 @media screen and (max-width: 768px) {
   .cart-container {
     padding: 10px;
-    margin-top: 70px;
+    margin-top: 100px;
   }
 
   .cart-content {
@@ -217,7 +217,7 @@
 @media screen and (max-width: 375px) {
   .cart-container {
     padding: 5px;
-    margin-top: 70px;
+    margin-top: 90px;
   }
 
   .cart-item-image {

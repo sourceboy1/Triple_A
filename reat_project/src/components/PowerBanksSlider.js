@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './PowerBanksSlider.css';
-import Loading from './Loading'; // Import the Loading component
+
 
 const PowerBankDisplay = () => {
   const [powerBanks, setPowerBanks] = useState([]);
@@ -78,9 +78,7 @@ const PowerBankDisplay = () => {
     <div className="powerbank-container">
       <h2>Featured Power Banks</h2>
       <div className="powerbank-display">
-        {loading ? (
-          <Loading /> // Show Loading component while data is being fetched
-        ) : (
+        {  (
           <div className="powerbank-slider">
             {/* Display only the first 'displayCount' number of power banks */}
             {powerBanks.slice(0, displayCount).map((powerBank, index) => (

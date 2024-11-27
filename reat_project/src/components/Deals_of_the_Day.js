@@ -88,9 +88,7 @@ const DealsOfTheDay = () => {
   return (
     <div className="deals-container">
       <h2>Deals of the Day</h2>
-      {loading ? (
-        <Loading /> // Display loading spinner if loading is true
-      ) : (
+      { (
         <div className="deals-slider">
           <div className="arrow-container left-arrow" onClick={slideLeft}>
             <img src={arrowLeft} alt="Left Arrow" className="deal-arrow" />
