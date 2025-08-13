@@ -125,12 +125,12 @@ DEFAULT_FROM_EMAIL = 'Triple A,s Support <support.royeane@yahoo.com>'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'my_ecommerce_db',
-        'USER': 'root',
-        'PASSWORD': 'oluwaseun123$',  # Replace with actual password
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('PGDATABASE'),
+        'USER': os.environ.get('PGUSER'),
+        'PASSWORD': os.environ.get('PGPASSWORD'),
+        'HOST': os.environ.get('PGHOST'),
+        'PORT': os.environ.get('PGPORT', '5432'),
     }
 }
 
