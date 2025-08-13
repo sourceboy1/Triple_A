@@ -1,5 +1,20 @@
-Django>=5.0
-djangorestframework
-Pillow
+# Django core framework
+Django>=5.0,<6.0
+
+# Gunicorn: production WSGI server
 gunicorn
+
+# PostgreSQL adapter for Django
 psycopg2-binary
+
+# Django Rest Framework (if you're building APIs)
+djangorestframework
+
+# Pillow: image processing
+Pillow
+
+# Whitenoise: serve static files in production
+whitenoise
+
+# dotenv: load environment variables from .env
+python-dotenv
