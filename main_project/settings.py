@@ -18,6 +18,8 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -93,11 +95,12 @@ LOGIN_REDIRECT_URL = '/'
 
 
 ROOT_URLCONF = 'main_project.urls'
+FRONTEND_DIR = os.path.join(BASE_DIR, 'frontend', 'build')
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [FRONTEND_DIR],  # <-- React build directory here
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
