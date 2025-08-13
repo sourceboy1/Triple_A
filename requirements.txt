@@ -1,24 +1,15 @@
-# Core Django
-django>=4.2,<5.0
-
-# REST API
-djangorestframework
-
-# CORS support
-django-cors-headers
-
-# Static files in production
-whitenoise
-
-# Env variables
-python-dotenv
-
-# Image/file handling
-Pillow
-
-# Database drivers (choose based on what DB you use)
-mysqlclient          # if using MySQL
-psycopg2-binary      # if using PostgreSQL
-
-# Production WSGI server
-gunicorn
+asgiref==3.8.1
+Django==5.1.7
+django-cors-headers==4.7.0
+djangorestframework==3.16.1
+djangorestframework_simplejwt==5.5.1
+gunicorn==23.0.0
+mysqlclient==2.2.7
+packaging==25.0
+pillow==11.3.0
+psycopg2-binary==2.9.10
+PyJWT==2.10.1
+PyMySQL==1.1.1
+sqlparse==0.5.3
+tzdata==2025.2
+whitenoise==6.9.0
