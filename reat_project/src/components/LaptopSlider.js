@@ -1,18 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './LaptopSlider.css'; // Assuming you create a separate CSS file for laptops
+import './LaptopSlider.css';
 
 const LaptopDisplay = () => {
   const [laptops, setLaptops] = useState([]);
-  const [hoveredIndex, setHoveredIndex] = useState(null); // Track which product is being hovered
-  const [loading, setLoading] = useState(true); // State for loading
-  const displayCount = 6; // Number of laptops to display at a time
-  const fetchCount = 30; // Number of laptops to fetch from the API
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const displayCount = 6;
+  const fetchCount = 30;
   const navigate = useNavigate();
   const sliderRef = useRef(null);
-  let intervalRef = useRef(null); // Reference for interval
+  const intervalRef = useRef(null);
 
-  // Function to shuffle laptops array randomly
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -22,61 +21,56 @@ const LaptopDisplay = () => {
   };
 
   const formatPrice = (price) => {
-    if (isNaN(price)) return 'N/A'; // Return 'N/A' if the price is not a valid number
-    return new Intl.NumberFormat('en-NG', { // Use 'en-NG' for Nigerian English
+    if (isNaN(price)) return 'N/A';
+    return new Intl.NumberFormat('en-NG', {
       style: 'currency',
-      currency: 'NGN', // Specify currency as Naira
+      currency: 'NGN',
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
-    }).format(price); // Format the price
+    }).format(price);
   };
 
   useEffect(() => {
     const fetchLaptops = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/products/?category_id=5');
+        const response = await fetch('http://localhost:8000/api/products/?category_id=3');
         const data = await response.json();
-        // Fetch and shuffle laptops
+
+        if (!Array.isArray(data)) {
+          console.error('Unexpected API response:', data);
+          setLoading(false);
+          return;
+        }
+
         const shuffledLaptops = shuffleArray(data.slice(0, fetchCount));
         setLaptops(shuffledLaptops);
-        setLoading(false); // Set loading to false after fetching the laptops
       } catch (error) {
         console.error('Error fetching laptops:', error);
-        setLoading(false); // Set loading to false in case of an error
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchLaptops();
 
-    // Set up an interval to rotate laptops
     intervalRef.current = setInterval(() => {
       setLaptops((prev) => {
+        if (prev.length === 0) return prev;
         const firstItem = prev[0];
-        const newItems = prev.slice(1).concat(firstItem); // Move the first item to the back
-        return newItems;
+        return prev.slice(1).concat(firstItem);
       });
-    }, 12000); // Change every 12 seconds
+    }, 12000);
 
-    return () => {
-      clearInterval(intervalRef.current); // Cleanup interval on unmount
-    };
+    return () => clearInterval(intervalRef.current);
   }, []);
 
   const handleProductClick = (product_id) => {
     navigate(`/product-details/${product_id}`);
   };
 
-  // Handle mouse enter event to set hovered index
-  const handleMouseEnter = (index) => {
-    setHoveredIndex(index);
-  };
+  const handleMouseEnter = (index) => setHoveredIndex(index);
+  const handleMouseLeave = () => setHoveredIndex(null);
 
-  // Handle mouse leave event to unset hovered index
-  const handleMouseLeave = () => {
-    setHoveredIndex(null);
-  };
-
-  // Function to handle touch start
   const handleTouchStart = (e) => {
     const touchStartX = e.touches[0].clientX;
 
@@ -84,27 +78,25 @@ const LaptopDisplay = () => {
       const touchEndX = e.touches[0].clientX;
       const diff = touchStartX - touchEndX;
 
-      // Swipe left to slide
       if (diff > 30) {
         setLaptops((prev) => {
+          if (prev.length === 0) return prev;
           const firstItem = prev[0];
-          const newItems = prev.slice(1).concat(firstItem);
-          return newItems;
+          return prev.slice(1).concat(firstItem);
         });
-        clearInterval(intervalRef.current); // Clear interval on user interaction
+        clearInterval(intervalRef.current);
       }
 
-      // Swipe right to slide back (optional)
       if (diff < -30) {
         setLaptops((prev) => {
+          if (prev.length === 0) return prev;
           const lastItem = prev[prev.length - 1];
-          const newItems = [lastItem].concat(prev.slice(0, prev.length - 1));
-          return newItems;
+          return [lastItem].concat(prev.slice(0, prev.length - 1));
         });
-        clearInterval(intervalRef.current); // Clear interval on user interaction
+        clearInterval(intervalRef.current);
       }
 
-      sliderRef.current.removeEventListener('touchmove', handleTouchMove); // Cleanup
+      sliderRef.current.removeEventListener('touchmove', handleTouchMove);
     };
 
     sliderRef.current.addEventListener('touchmove', handleTouchMove);
@@ -114,28 +106,37 @@ const LaptopDisplay = () => {
     <div className="laptop-container">
       <h2>Featured Laptops</h2>
       <div className="laptop-display" ref={sliderRef} onTouchStart={handleTouchStart}>
-        {loading ? ( // Show loading message or spinner while loading
+        {loading ? (
           <p>Loading laptops...</p>
+        ) : laptops.length === 0 ? (
+          <p>No laptops available at the moment.</p>
         ) : (
           <div className="laptop-slider">
-            {/* Display only the first 'displayCount' number of laptops */}
-            {laptops.slice(0, displayCount).map((laptop, index) => (
-              <div
-                className="laptop-item"
-                key={laptop.product_id}  // Ensure unique key
-                onClick={() => handleProductClick(laptop.product_id)}
-                onMouseEnter={() => handleMouseEnter(index)}  // Show secondary image on hover
-                onMouseLeave={handleMouseLeave}  // Revert to primary image on mouse leave
-              >
-                <img
-                  src={hoveredIndex === index && laptop.secondary_image_url ? laptop.secondary_image_url : laptop.image_url}
-                  alt={laptop.name}
-                  className="laptop-image"
-                />
-                <h3 className="laptop-name">{laptop.name}</h3>
-                <p className="laptop-price">{formatPrice(laptop.price)}</p> {/* Add formatted price here */}
-              </div>
-            ))}
+            {laptops.slice(0, displayCount).map((laptop, index) => {
+              const primaryImg = laptop?.image_url || '/placeholder.jpg';
+              const secondaryImg = laptop?.secondary_image_url || primaryImg;
+
+              return (
+                <div
+                  className="laptop-item"
+                  key={laptop.product_id || index}
+                  onClick={() => handleProductClick(laptop.product_id)}
+                  onMouseEnter={() => handleMouseEnter(index)}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <img
+                    src={hoveredIndex === index ? secondaryImg : primaryImg}
+                    alt={laptop?.name || 'Unnamed Laptop'}
+                    className="laptop-image"
+                    onError={(e) => {
+                      e.target.src = '/placeholder.jpg';
+                    }}
+                  />
+                  <h3 className="laptop-name">{laptop?.name || 'Unnamed Laptop'}</h3>
+                  <p className="laptop-price">{formatPrice(laptop?.price)}</p>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

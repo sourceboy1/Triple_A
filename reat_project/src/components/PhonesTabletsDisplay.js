@@ -25,7 +25,7 @@ const PhonesTabletsDisplay = () => {
   useEffect(() => {
     const fetchPhonesAndTablets = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/products/?category_id=4');
+        const response = await fetch('http://localhost:8000/api/products/?category_id=6');
         const data = await response.json();
         // Fetch and shuffle phones and tablets
         const shuffledProducts = shuffleArray(data.slice(0, fetchCount));

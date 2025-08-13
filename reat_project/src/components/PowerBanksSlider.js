@@ -23,7 +23,7 @@ const PowerBankDisplay = () => {
   useEffect(() => {
     const fetchPowerBanks = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/products/?category_id=2');
+        const response = await fetch('http://localhost:8000/api/products/?category_id=1');
         const data = await response.json();
         // Fetch and shuffle power banks
         const shuffledPowerBanks = shuffleArray(data.slice(0, fetchCount));
@@ -81,25 +81,34 @@ const PowerBankDisplay = () => {
         {  (
           <div className="powerbank-slider">
             {/* Display only the first 'displayCount' number of power banks */}
-            {powerBanks.slice(0, displayCount).map((powerBank, index) => (
-              <div 
-                className="powerbank-item" 
-                key={powerBank.product_id}  // Ensure unique key
-                onClick={() => handleProductClick(powerBank.product_id)} 
-                onMouseEnter={() => handleMouseEnter(index)}  // Show secondary image on hover
-                onMouseLeave={handleMouseLeave}  // Revert to primary image on mouse leave
-              >
-                <img 
-                  src={hoveredIndex === index && powerBank.secondary_image_url ? powerBank.secondary_image_url : powerBank.image_url} 
-                  alt={powerBank.name} 
-                  className="powerbank-image" 
-                />
-                <h3 className="powerbank-name">{powerBank.name}</h3>
-                <p className="powerbank-price">
-                  {formatPrice(parseFloat(powerBank.price))} {/* Format the price */}
-                </p>
-              </div>
-            ))}
+              {powerBanks.slice(0, displayCount).map((powerBank, index) => {
+              if (!powerBank || !powerBank.image_url) return null;
+
+              return (
+                <div 
+                  className="powerbank-item" 
+                  key={powerBank.product_id}
+                  onClick={() => handleProductClick(powerBank.product_id)} 
+                  onMouseEnter={() => handleMouseEnter(index)}  
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <img 
+                    src={
+                      hoveredIndex === index && powerBank.secondary_image_url 
+                        ? powerBank.secondary_image_url 
+                        : powerBank.image_url
+                    }
+                    alt={powerBank.name || "Power Bank"} 
+                    className="powerbank-image" 
+                  />
+                  <h3 className="powerbank-name">{powerBank.name}</h3>
+                  <p className="powerbank-price">
+                    {formatPrice(parseFloat(powerBank.price))}
+                  </p>
+                </div>
+              );
+            })}
+
           </div>
         )}
       </div>

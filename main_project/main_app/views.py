@@ -40,33 +40,47 @@ class Command(BaseCommand):
     help = "Select 'Deals of the Day' every 7 days"
 
     def handle(self, *args, **kwargs):
-        today = datetime.today()
-        seven_days_ago = today - timedelta(days=7)
-
-        # Reset the previous deals
+        # Reset previous deals
         Product.objects.filter(is_deal_of_the_day=True).update(is_deal_of_the_day=False)
 
-        # Select new random products for deal of the day
-        products = Product.objects.filter(created_at__gte=seven_days_ago)
+        # Get all products (instead of only recent ones)
+        products = Product.objects.all()
 
         if products.exists():
-            # Select random products as deal of the day (you can change how many are chosen)
-            deals_of_the_day = random.sample(list(products), k=min(len(products), 5))  # Change '5' to the number of products you want
+            # Pick up to 5 random products as deals
+            deals_of_the_day = random.sample(list(products), k=min(len(products), 5))
 
             for product in deals_of_the_day:
                 product.is_deal_of_the_day = True
                 product.save()
 
-        self.stdout.write(self.style.SUCCESS(f"Successfully updated 'Deals of the Day'"))
+            self.stdout.write(
+                self.style.SUCCESS(f"Successfully updated 'Deals of the Day'")
+            )
+        else:
+            self.stdout.write(
+                self.style.WARNING("No products available to set as deals.")
+            )
 
-
-
+# API View
 class DealOfTheDayView(APIView):
+    authentication_classes = []  # ✅ No authentication required
+    permission_classes = [AllowAny]
+
     def get(self, request):
         deals = Product.objects.filter(is_deal_of_the_day=True)
+
+        # Ensure fallback: if no deals, pick a random one
+        if not deals.exists():
+            all_products = Product.objects.all()
+            if all_products.exists():
+                random_product = random.choice(list(all_products))
+                random_product.is_deal_of_the_day = True
+                random_product.save()
+                deals = Product.objects.filter(is_deal_of_the_day=True)
+
         serializer = ProductSerializer(deals, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
-
 
 
 
@@ -228,33 +242,37 @@ class PlaceOrderView(APIView):
     def post(self, request):
         user_id = request.data.get('user_id')
         payment_method_id = request.data.get('payment_method_id')
-        
+
+        # Debug: print full incoming request data
+        print("Incoming order data:", request.data)
+
         # Check if user and payment method exist
         user = CustomUser.objects.filter(id=user_id).first()
         payment_method = PaymentMethod.objects.filter(id=payment_method_id).first()
 
         if not user or not payment_method:
+            print("Invalid user or payment method ID")
             return Response({'error': 'Invalid user or payment method'}, status=status.HTTP_400_BAD_REQUEST)
-        
+
         # Update request data with IDs
         request.data['user_id'] = user.id
         request.data['payment_method_id'] = payment_method.id
 
         # Serialize the order data
-        serializer = OrderSerializer(data=request.data)
+        serializer = OrderSerializer(data=request.data, context={'request': request})
 
         if serializer.is_valid():
             order = serializer.save()
-
+            print("Order created successfully:", order.order_id)
             return Response({
                 'message': 'Order placed successfully!',
                 'order_id': order.order_id,
                 'order': serializer.data
             }, status=status.HTTP_201_CREATED)
         else:
-            print("Serializer errors:", serializer.errors)
+            # Print full validation errors in the backend console
+            print("Serializer validation errors:", serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 
@@ -433,6 +451,7 @@ class PaymentMethodViewSet(viewsets.ModelViewSet):
 
 
 class ProductViewSet(viewsets.ModelViewSet):
+    authentication_classes = [] 
     queryset = Product.objects.all()  # Ensure queryset is defined
     serializer_class = ProductSerializer
     permission_classes = [AllowAny]

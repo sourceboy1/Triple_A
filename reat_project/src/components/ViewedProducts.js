@@ -1,43 +1,57 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import './ViewedProducts.css'; // Assuming you have your CSS file
+import './ViewedProducts.css';
 
-import ArrowRight from '../icons/Arrow_Right.jpg'; // Importing custom right arrow
-import ArrowLeft from '../icons/Arrow_Left.jpg'; // Importing custom left arrow
+import ArrowRight from '../icons/Arrow_Right.jpg';
+import ArrowLeft from '../icons/Arrow_Left.jpg';
 
 const ViewedProducts = () => {
     const [viewedProducts, setViewedProducts] = useState([]);
     const [currentBatch, setCurrentBatch] = useState(0);
-    const [productsPerBatch, setProductsPerBatch] = useState(getProductsPerBatch()); // Dynamic batch size
-
-    // Retrieve viewed products from localStorage
-    useEffect(() => {
-        const savedProducts = localStorage.getItem('viewedProducts');
-        if (savedProducts) {
-            setViewedProducts(JSON.parse(savedProducts));
-        }
-
-        // Update products per batch on resize
-        const handleResize = () => {
-            setProductsPerBatch(getProductsPerBatch());
-        };
-
-        window.addEventListener('resize', handleResize);
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
+    const [productsPerBatch, setProductsPerBatch] = useState(getProductsPerBatch());
 
     // Function to determine products per batch based on window size
     function getProductsPerBatch() {
         const width = window.innerWidth;
-        if (width <= 375) return 2;   // 2 items for small screens
-        if (width <= 425) return 4;   // 4 items for medium-small screens
-        if (width <= 768) return 5;   // 5 items for medium screens
-        return 6;                     // 6 items for larger screens
+        if (width <= 375) return 2;
+        if (width <= 425) return 4;
+        if (width <= 768) return 5;
+        return 6;
     }
 
-    // Calculate the current batch of products to display
+    // Fetch from localStorage
+    const loadViewedProducts = () => {
+        const savedProducts = localStorage.getItem('viewedProducts');
+        if (savedProducts) {
+            setViewedProducts(JSON.parse(savedProducts));
+        } else {
+            setViewedProducts([]);
+        }
+    };
+
+    // Initial load + listen for changes
+    useEffect(() => {
+        loadViewedProducts();
+
+        const handleResize = () => setProductsPerBatch(getProductsPerBatch());
+        const handleStorageChange = (e) => {
+            if (e.key === 'viewedProducts') {
+                loadViewedProducts();
+            }
+        };
+
+        // Listen for manual trigger from same tab
+        window.addEventListener('viewedProductsUpdated', loadViewedProducts);
+        window.addEventListener('resize', handleResize);
+        window.addEventListener('storage', handleStorageChange);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('storage', handleStorageChange);
+            window.removeEventListener('viewedProductsUpdated', loadViewedProducts);
+        };
+    }, []);
+
     const displayedProducts = viewedProducts.slice(
         currentBatch * productsPerBatch,
         (currentBatch + 1) * productsPerBatch

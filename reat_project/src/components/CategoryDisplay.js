@@ -6,9 +6,9 @@ import { TokenContext } from './TokenContext';
 
 const categories = [
   { id: 8, name: "Accessories", apiUrl: "http://localhost:8000/api/products/?category_id=8" },
-  { id: 1, name: "Games", apiUrl: "http://localhost:8000/api/products/?category_id=1" },
-  { id: 3, name: "Headphones & Airpods", apiUrl: "http://localhost:8000/api/products/?category_id=3" },
-  { id: 6, name: "Watches", apiUrl: "http://localhost:8000/api/products/?category_id=6" },
+  { id: 2, name: "Games", apiUrl: "http://localhost:8000/api/products/?category_id=2" },
+  { id: 4, name: "Headphones & Airpods", apiUrl: "http://localhost:8000/api/products/?category_id=4" },
+  { id: 7, name: "Watches", apiUrl: "http://localhost:8000/api/products/?category_id=7" },
 ];
 
 const shuffleArray = (array) => {

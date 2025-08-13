@@ -37,7 +37,6 @@ const Login = () => {
             email: data.email,
             token: data.token,
           });
-  
           navigate('/');
         } else {
           setError('Unexpected response format.');

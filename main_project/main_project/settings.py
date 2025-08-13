@@ -43,8 +43,7 @@ INSTALLED_APPS = [
     'main_app',
     'corsheaders',
     'rest_framework',
-    'rest_framework.authtoken',
-
+    'rest_framework.authtoken',  
 ]
 
 MIDDLEWARE = [
@@ -58,25 +57,33 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-
 AUTH_USER_MODEL = 'main_app.CustomUser'
-
-
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-    ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
-    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',  # ✅ This is correct
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',  # ✅ Works for open API; change to IsAuthenticated for protected endpoints
+        
+    ),
 }
 
+
+
+
+
+# Where to redirect when a login is required
+LOGIN_URL = '/login/'  # Change this to your React login URL if needed
+
+# Where to go after login (optional)
+LOGIN_REDIRECT_URL = '/'
 
 
 
@@ -121,7 +128,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'my_ecommerce_db',
         'USER': 'root',
-        'PASSWORD': 'oluwaseun123$',
+        'PASSWORD': 'oluwaseun123$',  # Replace with actual password
         'HOST': 'localhost',
         'PORT': '3306',
     }

@@ -57,8 +57,8 @@ const Checkout = () => {
 
 
     const paymentMethodIds = {
-        bank_transfer: 4,
-        debit_credit_cards: 3,
+        bank_transfer: 1,
+        debit_credit_cards: 2,
     };
     
 

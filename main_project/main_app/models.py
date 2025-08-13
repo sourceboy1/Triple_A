@@ -266,14 +266,12 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        managed = False
         db_table = 'reviews'
-        verbose_name = 'Review'
-        verbose_name_plural = 'Reviews'
-        ordering = ['created_at']
+        
 
     def __str__(self):
         return f"Review {self.review_id} for Product {self.product.name} by {self.user.username}"
+
 
 class ShippingAddress(models.Model):
     user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, default=1)  # Assuming 1 is a valid user ID

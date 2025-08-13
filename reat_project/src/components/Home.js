@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import slidingImage1 from '../pictures/sliding1.jpg';
-import slidingImage2 from '../pictures/sliding2.jpg';
-import slidingImage5 from '../pictures/sliding5.jpg';
-import wishlistIcon from '../pictures/wishlist.jpg';
-import wishlistIconActive from '../pictures/wishlist-active.jpg';
+import slidingImage2 from '../pictures/sliding3.jpg';
+import slidingImage5 from '../pictures/sliding4.jpg';
 import axios from 'axios';
 import './Home.css';
 import { useNavigate } from 'react-router-dom';

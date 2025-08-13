@@ -65,7 +65,6 @@ class PaymentDetailSerializer(serializers.ModelSerializer):
         fields = ['payment_detail_id', 'payment', 'transaction_id', 'amount', 'status', 'details']
 
 
-
 class ProductImageSerializer(serializers.ModelSerializer):
     image_url = serializers.SerializerMethodField()
     secondary_image_url = serializers.SerializerMethodField()
@@ -75,8 +74,8 @@ class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
         fields = [
-            'id', 'image_url', 'secondary_image_url', 
-            'tertiary_image_url', 'quaternary_image_url', 
+            'id', 'image_url', 'secondary_image_url',
+            'tertiary_image_url', 'quaternary_image_url',
             'description'
         ]
 
@@ -84,34 +83,33 @@ class ProductImageSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         if obj.image:
             return request.build_absolute_uri(obj.image.url)
-        return None
+        return request.build_absolute_uri('/media/default.jpg')
 
     def get_secondary_image_url(self, obj):
         request = self.context.get('request')
         if obj.secondary_image:
             return request.build_absolute_uri(obj.secondary_image.url)
-        return None
+        return request.build_absolute_uri('/media/default.jpg')
 
     def get_tertiary_image_url(self, obj):
         request = self.context.get('request')
         if obj.tertiary_image:
             return request.build_absolute_uri(obj.tertiary_image.url)
-        return None
+        return request.build_absolute_uri('/media/default.jpg')
 
     def get_quaternary_image_url(self, obj):
         request = self.context.get('request')
         if obj.quaternary_image:
             return request.build_absolute_uri(obj.quaternary_image.url)
-        return None
+        return request.build_absolute_uri('/media/default.jpg')
 
-    
-    
+
 
 class ProductSerializer(serializers.ModelSerializer):
-    image_url = serializers.SerializerMethodField()  # Dynamically get image URL
-    secondary_image_url = serializers.SerializerMethodField()  # Dynamically get secondary image URL
-    category_id = serializers.IntegerField(source='category.id', read_only=True)  # Get category ID
-    additional_images = ProductImageSerializer(many=True, read_only=True)  # Assuming additional images are linked to Product
+    image_url = serializers.SerializerMethodField()
+    secondary_image_url = serializers.SerializerMethodField()
+    category_id = serializers.IntegerField(source='category.id', read_only=True)
+    additional_images = ProductImageSerializer(many=True, read_only=True)
 
     class Meta:
         model = Product
@@ -121,21 +119,21 @@ class ProductSerializer(serializers.ModelSerializer):
             'secondary_image_url', 'additional_images', 'created_at'
         ]
 
-    # Method to get the full image URL
     def get_image_url(self, obj):
         request = self.context.get('request')
         if obj.image:
             return request.build_absolute_uri(obj.image.url)
-        return None
+        return request.build_absolute_uri('/media/default.jpg')  # 👈 always return something
 
-    # Method to get the secondary image URL
     def get_secondary_image_url(self, obj):
         request = self.context.get('request')
-        # Assuming `additional_images` is linked correctly, and the secondary image is stored there
-        first_additional_image = obj.additional_images.first()  # Get the first additional image (can adjust this logic as needed)
+        first_additional_image = obj.additional_images.first()
         if first_additional_image and first_additional_image.secondary_image:
             return request.build_absolute_uri(first_additional_image.secondary_image.url)
-        return None
+        return request.build_absolute_uri('/media/default.jpg')  # 👈 fallback
+
+
+
 
 
 
@@ -166,24 +164,32 @@ class ReviewSerializer(serializers.ModelSerializer):
         model = Review
         fields = ['review_id', 'product', 'user', 'rating', 'comment', 'created_at']
 
+class ShippingAddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShippingAddress
+        fields = ['address', 'city', 'state', 'postal_code', 'country']
+
+
 class OrderItemSerializer(serializers.ModelSerializer):
     product_name = serializers.CharField(source='product.name', read_only=True)
     product_image = serializers.SerializerMethodField()
 
+    # Allow frontend to send these without validation errors
+    name = serializers.CharField(required=False, write_only=True)
+    image_url = serializers.CharField(required=False, write_only=True)
+
     class Meta:
         model = OrderItem
-        fields = ['product', 'product_name', 'product_image', 'quantity', 'price']
+        fields = [
+            'product', 'product_name', 'product_image',
+            'quantity', 'price', 'name', 'image_url'
+        ]
 
     def get_product_image(self, obj):
         request = self.context.get('request')
         if obj.product.image:
             return request.build_absolute_uri(obj.product.image.url)
         return None
-
-class ShippingAddressSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ShippingAddress
-        fields = ['address', 'city', 'state', 'postal_code', 'country']
 
 
 
@@ -208,16 +214,24 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         cart_items_data = validated_data.pop('cart_items', [])
-        user = validated_data.pop('user_id')
-        payment_method_id = validated_data.pop('payment_method_id')  # Extract payment_method
+        user = validated_data.pop('user_id')  # This is already a CustomUser instance
+        payment_method = validated_data.pop('payment_method_id')  # Already a PaymentMethod instance
 
-        # Correct the field name to payment_method_id
-        order = Order.objects.create(user_id=user, payment_method_id=payment_method_id, **validated_data)
+        order = Order.objects.create(
+            user_id=user,
+            payment_method_id=payment_method,
+            **validated_data
+        )
 
         for item_data in cart_items_data:
+            item_data.pop('name', None)
+            item_data.pop('image_url', None)
             OrderItem.objects.create(order=order, **item_data)
 
         return order
+
+
+
 
 
 

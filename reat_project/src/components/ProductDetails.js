@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from 'react'; 
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useCart } from '../contexts/CartContext';
-import { useWishlist } from '../contexts/WishlistContext'; // Import WishlistContext
+import { useWishlist } from '../contexts/WishlistContext';
 import './ProductDetails.css';
 import markImg from '../pictures/mark.jpg';
 import markedImg from '../pictures/markred.jpg';
-import wishlistImg from '../pictures/wishlist.jpg'; // Inactive wishlist image
-import wishlistActiveImg from '../pictures/wishlist-active.jpg'; // Active wishlist image
+import wishlistImg from '../pictures/wishlist.jpg';
+import wishlistActiveImg from '../pictures/wishlist-active.jpg';
 
 const ProductDetails = () => {
     const { productId } = useParams();
-    const navigate = useNavigate();
     const [product, setProduct] = useState(null);
     const [selectedImage, setSelectedImage] = useState('');
     const [quantity, setQuantity] = useState(1);
     const { addItemToCart } = useCart();
-    const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist(); // Access WishlistContext
+    const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
     const [stockMessage, setStockMessage] = useState('');
-    
+
     // Fetch product details
     useEffect(() => {
         const fetchProduct = async () => {
@@ -29,6 +28,9 @@ const ProductDetails = () => {
                 const productData = response.data;
                 setProduct(productData);
                 setSelectedImage(productData.image_url || '');
+
+                // Save to "Recently Viewed" in localStorage
+                saveToRecentlyViewed(productData);
             } catch (error) {
                 console.error('Error fetching product:', error);
             }
@@ -36,7 +38,30 @@ const ProductDetails = () => {
         fetchProduct();
     }, [productId]);
 
-    // Handle quantity increase and decrease
+    // Save product to recently viewed in localStorage
+    const saveToRecentlyViewed = (productData) => {
+        let viewedProducts = JSON.parse(localStorage.getItem('viewedProducts')) || [];
+
+        // Remove if already exists
+        viewedProducts = viewedProducts.filter(p => p.product_id !== productData.product_id);
+
+        // Add the new one at the start
+        viewedProducts.unshift({
+            product_id: productData.product_id,
+            name: productData.name,
+            image_url: productData.image_url,
+            price: productData.price
+        });
+
+        // Limit to latest 20
+        if (viewedProducts.length > 20) {
+            viewedProducts = viewedProducts.slice(0, 20);
+        }
+
+        localStorage.setItem('viewedProducts', JSON.stringify(viewedProducts));
+    };
+
+    // Quantity controls
     const handleIncrease = () => {
         if (product && quantity < product.stock) {
             setQuantity(quantity + 1);
@@ -51,7 +76,7 @@ const ProductDetails = () => {
         }
     };
 
-    // Add product to cart
+    // Add to cart
     const handleAddToCart = () => {
         if (product) {
             if (quantity > 0 && quantity <= product.stock) {
@@ -63,16 +88,16 @@ const ProductDetails = () => {
         }
     };
 
-    // Toggle wishlist status
+    // Toggle wishlist
     const toggleWishlist = () => {
         if (isInWishlist(product.product_id)) {
-            removeFromWishlist(product.product_id); // Remove from wishlist if already added
+            removeFromWishlist(product.product_id);
         } else {
-            addToWishlist(product); // Add to wishlist
+            addToWishlist(product);
         }
     };
 
-    // Redirect to WhatsApp for purchasing
+    // WhatsApp buy
     const handleBuyNowOnWhatsApp = () => {
         const message = `Hello, I'm interested in buying ${product.name}. Please provide more details.`;
         const whatsappUrl = `https://wa.me/2348034593459?text=${encodeURIComponent(message)}`;
@@ -91,13 +116,14 @@ const ProductDetails = () => {
             <div className="product-detail-content">
                 {/* Wishlist Icon */}
                 <div className="wishlist-icon1" onClick={toggleWishlist}>
-                    <img 
-                        src={isInWishlist(product.product_id) ? wishlistActiveImg : wishlistImg} 
-                        alt="Wishlist" 
-                        className="wishlist-image2" 
+                    <img
+                        src={isInWishlist(product.product_id) ? wishlistActiveImg : wishlistImg}
+                        alt="Wishlist"
+                        className="wishlist-image2"
                     />
                 </div>
 
+                {/* Stock Info */}
                 <div className="klb-single-stock">
                     {product.stock > 0 ? (
                         <div className="product-stock in-stock">
@@ -112,11 +138,12 @@ const ProductDetails = () => {
                     )}
                 </div>
 
+                {/* Product Images */}
                 <div className="product-detail-images">
                     {selectedImage && (
-                        <img 
-                            src={selectedImage} 
-                            alt={product.name} 
+                        <img
+                            src={selectedImage}
+                            alt={product.name}
                             className="product-detail-image zoomable-image"
                         />
                     )}
@@ -133,6 +160,7 @@ const ProductDetails = () => {
                     </div>
                 </div>
 
+                {/* Product Info */}
                 <div className="product-detail-info">
                     <h2 className="product-title">{product.name}</h2>
                     <p className="product-description">{product.description}</p>
@@ -147,23 +175,29 @@ const ProductDetails = () => {
                         )}
                     </div>
 
+                    {/* Quantity Control */}
                     <div className="quantity-control">
                         <button onClick={handleDecrease}>-</button>
                         <span>{quantity}</span>
                         <button onClick={handleIncrease}>+</button>
                     </div>
 
-                    {stockMessage && <p className="stock-message" style={{ color: 'red' }}>{stockMessage}</p>} 
+                    {stockMessage && <p className="stock-message" style={{ color: 'red' }}>{stockMessage}</p>}
 
-                    <button 
-                        onClick={handleAddToCart} 
-                        className="button is-primary" 
+                    {/* Buttons */}
+                    <button
+                        onClick={handleAddToCart}
+                        className="button is-primary"
                         disabled={product.stock === 0}
                     >
                         Add to Cart
                     </button>
 
-                    <button onClick={handleBuyNowOnWhatsApp} className="button is-primary" style={{ marginTop: '10px' }}>
+                    <button
+                        onClick={handleBuyNowOnWhatsApp}
+                        className="button is-primary"
+                        style={{ marginTop: '10px' }}
+                    >
                         Buy Now on WhatsApp
                     </button>
                 </div>

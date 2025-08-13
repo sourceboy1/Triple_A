@@ -7,10 +7,13 @@
 .viewed-products-container h2 {
     color: green;
     margin-bottom: 20px;
+    text-decoration: none;
+
 }
 
 .viewed-products-container p {
     color: black;
+    text-decoration: none;
 }
 
 /* Viewed Products List */
@@ -32,7 +35,8 @@
 }
 
 .viewed-product-item:hover {
-    transform: scale(1.05);
+    transform: scale(1.18);
+    text-decoration: none;
 }
 
 .viewed-product-image {
