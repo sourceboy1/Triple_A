@@ -1,23 +1,24 @@
-# Django core
+# Core Django
 django>=4.2,<5.0
 
-# Database (PostgreSQL)
-psycopg2-binary
-
-# API support
+# REST API
 djangorestframework
 
-# CORS headers for API access
+# CORS support
 django-cors-headers
 
 # Static files in production
 whitenoise
 
-# Environment variables
+# Env variables
 python-dotenv
 
-# Image handling
+# Image/file handling
 Pillow
+
+# Database drivers (choose based on what DB you use)
+mysqlclient          # if using MySQL
+psycopg2-binary      # if using PostgreSQL
 
 # Production WSGI server
 gunicorn
