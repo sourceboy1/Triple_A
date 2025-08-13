@@ -1,0 +1,20 @@
+# Django core framework
+django>=4.2,<5.0
+
+# Gunicorn: production WSGI server
+gunicorn
+
+# PostgreSQL adapter for Django
+psycopg2-binary
+
+# Django Rest Framework (if you're building APIs)
+djangorestframework
+
+# Pillow: image processing
+Pillow
+
+# Whitenoise: serve static files in production
+whitenoise
+
+# dotenv: load environment variables from .env
+python-dotenv
