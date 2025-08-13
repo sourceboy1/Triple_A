@@ -125,14 +125,15 @@ DEFAULT_FROM_EMAIL = 'Triple A,s Support <support.royeane@yahoo.com>'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('PGDATABASE'),
-        'USER': os.environ.get('PGUSER'),
-        'PASSWORD': os.environ.get('PGPASSWORD'),
-        'HOST': os.environ.get('PGHOST'),
-        'PORT': os.environ.get('PGPORT', '5432'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'railway',  # database name from the URL
+        'USER': 'root',
+        'PASSWORD': 'cRWcDsUwiJnCiQmbOdIuIfHWsGRuqIbt',
+        'HOST': 'crossover.proxy.rlwy.net',
+        'PORT': '25386',
     }
 }
+
 
 
 # Password validation
