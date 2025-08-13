@@ -4,3 +4,9 @@ __pycache__/
 *.pyc
 staticfiles/
 media/
+venv/
+.venv/
+__pycache__/
+*.pyc
+staticfiles/
+media/
