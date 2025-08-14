@@ -194,10 +194,14 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000", 
 ]
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'reat_project', 'build', 'static'),
+]
+
 
 # Static files (CSS, JavaScript, images)
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles','reat_project', 'build', 'static')  # This is where collected static files will go
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # This is where collected static files will go
 
 # Media files (user-uploaded files)
 MEDIA_URL = '/media/'
