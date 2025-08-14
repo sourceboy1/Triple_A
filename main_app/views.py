@@ -28,7 +28,8 @@ from django.contrib.auth.tokens import default_token_generator
 
 
 
-
+def index(request):
+    return render(request, 'index.html')
 
 
 import random
