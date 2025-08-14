@@ -97,7 +97,7 @@ LOGIN_REDIRECT_URL = '/'
 ROOT_URLCONF = 'main_project.urls'
 
 
-FRONTEND_DIR = os.path.join(BASE_DIR,  'reat_project')
+FRONTEND_DIR = os.path.join(BASE_DIR,  'reat_project', 'build')
 
 TEMPLATES = [
     {
