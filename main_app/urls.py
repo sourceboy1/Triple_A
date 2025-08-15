@@ -31,11 +31,11 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('products/<int:pk>/', ProductDetailView.as_view(), name='product-detail'),
     path('products/suggestions/', views.product_suggestions, name='product_suggestions'),
-    path('api/orders/', PlaceOrderView.as_view(), name='place_order'),
+    path('orders/', PlaceOrderView.as_view(), name='place_order'),
     path('request-password-reset/', views.request_password_reset, name='request_password_reset'),
     path('reset-password/', views.reset_password, name='reset_password'),
     path('update-profile/', UpdateProfileView.as_view(), name='update-profile'),
-    path('api/user/orders/', UserOrdersView.as_view(), name='user_orders'),
+    path('user/orders/', UserOrdersView.as_view(), name='user_orders'),
     path('orders/<int:order_id>/', OrderDetailView.as_view(), name='order-detail'),
     path('deals_of_the_day/', DealOfTheDayView.as_view(), name='deals_of_the_day'),
 ]
