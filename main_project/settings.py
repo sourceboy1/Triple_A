@@ -97,7 +97,7 @@ LOGIN_REDIRECT_URL = '/'
 ROOT_URLCONF = 'main_project.urls'
 
 
-FRONTEND_DIR = os.path.join(BASE_DIR, 'reat_project', 'build')
+FRONTEND_DIR = os.path.join(BASE_DIR, 'react_project', 'build')
 
 TEMPLATES = [
     {
@@ -113,6 +113,10 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+STATICFILES_DIRS = [
+    os.path.join(FRONTEND_DIR, 'static'),
 ]
 
 WSGI_APPLICATION = 'main_project.wsgi.application'
