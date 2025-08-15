@@ -203,7 +203,7 @@ CORS_ALLOWED_ORIGINS = [
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Where collectstatic collects files
 STATICFILES_DIRS = [
-    os.path.join(FRONTEND_DIR, 'static'),  # React static folder
+    os.path.join(BASE_DIR, 'reat_project/build/static'),  # React static folder
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
