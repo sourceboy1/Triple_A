@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../Api'; // ✅ Use centralized API
 import './PowerBanksSlider.css';
-
-const BACKEND_URL = 'http://localhost:8000';
 
 const PowerBankDisplay = () => {
   const [powerBanks, setPowerBanks] = useState([]);
@@ -10,7 +9,7 @@ const PowerBankDisplay = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const displayCount = 6;
   const fetchCount = 30;
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -23,9 +22,17 @@ const PowerBankDisplay = () => {
   useEffect(() => {
     const fetchPowerBanks = async () => {
       try {
-        const response = await fetch(`${BACKEND_URL}/api/products/?category_id=1`);
-        const data = await response.json();
-        setPowerBanks(shuffleArray(data.slice(0, fetchCount)));
+        const response = await api.get('/products/', { params: { category_id: 1 } });
+        const data = response.data;
+
+        if (!Array.isArray(data)) {
+          console.error('Unexpected API response:', data);
+          setLoading(false);
+          return;
+        }
+
+        const shuffledPowerBanks = shuffleArray(data.slice(0, fetchCount));
+        setPowerBanks(shuffledPowerBanks);
       } catch (error) {
         console.error('Error fetching power banks:', error);
       } finally {
@@ -36,17 +43,32 @@ const PowerBankDisplay = () => {
     fetchPowerBanks();
 
     const interval = setInterval(() => {
-      setPowerBanks(prev => prev.length ? [...prev.slice(1), prev[0]] : prev);
+      setPowerBanks((prev) => {
+        if (prev.length === 0) return prev;
+        const firstItem = prev[0];
+        return prev.slice(1).concat(firstItem);
+      });
     }, 12000);
 
     return () => clearInterval(interval);
   }, []);
 
-  const handleProductClick = (product_id) => navigate(`/product-details/${product_id}`);
+  const handleProductClick = (product_id) => {
+    navigate(`/product-details/${product_id}`);
+  };
+
   const handleMouseEnter = (index) => setHoveredIndex(index);
   const handleMouseLeave = () => setHoveredIndex(null);
 
-  const formatPrice = (price) => isNaN(price) ? 'N/A' : new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(price);
+  const formatPrice = (price) => { 
+    if (isNaN(price)) return 'N/A';
+    return new Intl.NumberFormat('en-NG', {
+      style: 'currency',
+      currency: 'NGN',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(price);
+  };
 
   return (
     <div className="powerbank-container">
@@ -54,24 +76,34 @@ const PowerBankDisplay = () => {
       <div className="powerbank-display">
         {loading ? (
           <p>Loading power banks...</p>
+        ) : powerBanks.length === 0 ? (
+          <p>No power banks available at the moment.</p>
         ) : (
           <div className="powerbank-slider">
-            {powerBanks.slice(0, displayCount).map((pb, index) => {
-              if (!pb) return null;
-              const primaryImg = pb.image_url ? `${BACKEND_URL}${pb.image_url}` : '/placeholder.jpg';
-              const secondaryImg = pb.secondary_image_url ? `${BACKEND_URL}${pb.secondary_image_url}` : primaryImg;
+            {powerBanks.slice(0, displayCount).map((powerBank, index) => {
+              if (!powerBank || !powerBank.image_url) return null;
 
               return (
-                <div
-                  className="powerbank-item"
-                  key={pb.product_id || index}
-                  onClick={() => handleProductClick(pb.product_id)}
-                  onMouseEnter={() => handleMouseEnter(index)}
+                <div 
+                  className="powerbank-item" 
+                  key={powerBank.product_id}
+                  onClick={() => handleProductClick(powerBank.product_id)} 
+                  onMouseEnter={() => handleMouseEnter(index)}  
                   onMouseLeave={handleMouseLeave}
                 >
-                  <img src={hoveredIndex === index ? secondaryImg : primaryImg} alt={pb.name || 'Power Bank'} className="powerbank-image" />
-                  <h3 className="powerbank-name">{pb.name}</h3>
-                  <p className="powerbank-price">{formatPrice(parseFloat(pb.price))}</p>
+                  <img 
+                    src={
+                      hoveredIndex === index && powerBank.secondary_image_url 
+                        ? powerBank.secondary_image_url 
+                        : powerBank.image_url
+                    }
+                    alt={powerBank.name || "Power Bank"} 
+                    className="powerbank-image" 
+                  />
+                  <h3 className="powerbank-name">{powerBank.name}</h3>
+                  <p className="powerbank-price">
+                    {formatPrice(parseFloat(powerBank.price))}
+                  </p>
                 </div>
               );
             })}
