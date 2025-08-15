@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../Api'; // ✅ Use centralized API
 import './LaptopSlider.css';
 
 const LaptopDisplay = () => {
@@ -33,8 +34,8 @@ const LaptopDisplay = () => {
   useEffect(() => {
     const fetchLaptops = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/products/?category_id=3');
-        const data = await response.json();
+        const response = await api.get('/products/', { params: { category_id: 3 } });
+        const data = response.data;
 
         if (!Array.isArray(data)) {
           console.error('Unexpected API response:', data);
@@ -128,9 +129,7 @@ const LaptopDisplay = () => {
                     src={hoveredIndex === index ? secondaryImg : primaryImg}
                     alt={laptop?.name || 'Unnamed Laptop'}
                     className="laptop-image"
-                    onError={(e) => {
-                      e.target.src = '/placeholder.jpg';
-                    }}
+                    onError={(e) => { e.target.src = '/placeholder.jpg'; }}
                   />
                   <h3 className="laptop-name">{laptop?.name || 'Unnamed Laptop'}</h3>
                   <p className="laptop-price">{formatPrice(laptop?.price)}</p>

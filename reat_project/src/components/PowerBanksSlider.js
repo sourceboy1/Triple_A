@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../Api'; // ✅ Use centralized API
 import './PowerBanksSlider.css';
-
 
 const PowerBankDisplay = () => {
   const [powerBanks, setPowerBanks] = useState([]);
-  const [loading, setLoading] = useState(true); // Add loading state
-  const [hoveredIndex, setHoveredIndex] = useState(null); // Track which product is being hovered
-  const displayCount = 6; // Number of power banks to display at a time
-  const fetchCount = 30; // Number of power banks to fetch from the API
+  const [loading, setLoading] = useState(true);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const displayCount = 6;
+  const fetchCount = 30;
   const navigate = useNavigate(); 
 
-  // Function to shuffle the array randomly
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -23,65 +22,65 @@ const PowerBankDisplay = () => {
   useEffect(() => {
     const fetchPowerBanks = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/products/?category_id=1');
-        const data = await response.json();
-        // Fetch and shuffle power banks
+        const response = await api.get('/products/', { params: { category_id: 1 } });
+        const data = response.data;
+
+        if (!Array.isArray(data)) {
+          console.error('Unexpected API response:', data);
+          setLoading(false);
+          return;
+        }
+
         const shuffledPowerBanks = shuffleArray(data.slice(0, fetchCount));
         setPowerBanks(shuffledPowerBanks);
-        setLoading(false); // Set loading to false once data is fetched
       } catch (error) {
         console.error('Error fetching power banks:', error);
-        setLoading(false); // Set loading to false in case of error
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchPowerBanks();
 
-    // Set up an interval to rotate power banks
     const interval = setInterval(() => {
       setPowerBanks((prev) => {
+        if (prev.length === 0) return prev;
         const firstItem = prev[0];
-        const newItems = prev.slice(1).concat(firstItem); // Move the first item to the back
-        return newItems;
+        return prev.slice(1).concat(firstItem);
       });
-    }, 12000); // Change every 12 seconds
+    }, 12000);
 
-    return () => clearInterval(interval); // Cleanup interval on unmount
+    return () => clearInterval(interval);
   }, []);
 
   const handleProductClick = (product_id) => {
     navigate(`/product-details/${product_id}`);
   };
 
-  // Handle mouse enter event to set hovered index
-  const handleMouseEnter = (index) => {
-    setHoveredIndex(index);
-  };
+  const handleMouseEnter = (index) => setHoveredIndex(index);
+  const handleMouseLeave = () => setHoveredIndex(null);
 
-  // Handle mouse leave event to unset hovered index
-  const handleMouseLeave = () => {
-    setHoveredIndex(null);
-  };
-
-  // Function to format price using Intl.NumberFormat
   const formatPrice = (price) => { 
-    if (isNaN(price)) return 'N/A'; // Return 'N/A' if the price is not a valid number
-    return new Intl.NumberFormat('en-NG', { // Use 'en-NG' for Nigerian English
+    if (isNaN(price)) return 'N/A';
+    return new Intl.NumberFormat('en-NG', {
       style: 'currency',
-      currency: 'NGN', // Specify currency as Naira
+      currency: 'NGN',
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
-    }).format(price); // Format the price
-};
+    }).format(price);
+  };
 
   return (
     <div className="powerbank-container">
       <h2>Featured Power Banks</h2>
       <div className="powerbank-display">
-        {  (
+        {loading ? (
+          <p>Loading power banks...</p>
+        ) : powerBanks.length === 0 ? (
+          <p>No power banks available at the moment.</p>
+        ) : (
           <div className="powerbank-slider">
-            {/* Display only the first 'displayCount' number of power banks */}
-              {powerBanks.slice(0, displayCount).map((powerBank, index) => {
+            {powerBanks.slice(0, displayCount).map((powerBank, index) => {
               if (!powerBank || !powerBank.image_url) return null;
 
               return (
@@ -108,7 +107,6 @@ const PowerBankDisplay = () => {
                 </div>
               );
             })}
-
           </div>
         )}
       </div>
