@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../Api'; // ✅ Use centralized API
 import './LaptopSlider.css';
+
+const BACKEND_URL = 'http://localhost:8000';
 
 const LaptopDisplay = () => {
   const [laptops, setLaptops] = useState([]);
@@ -34,17 +35,14 @@ const LaptopDisplay = () => {
   useEffect(() => {
     const fetchLaptops = async () => {
       try {
-        const response = await api.get('/products/', { params: { category_id: 3 } });
-        const data = response.data;
-
+        const response = await fetch(`${BACKEND_URL}/api/products/?category_id=3`);
+        const data = await response.json();
         if (!Array.isArray(data)) {
           console.error('Unexpected API response:', data);
           setLoading(false);
           return;
         }
-
-        const shuffledLaptops = shuffleArray(data.slice(0, fetchCount));
-        setLaptops(shuffledLaptops);
+        setLaptops(shuffleArray(data.slice(0, fetchCount)));
       } catch (error) {
         console.error('Error fetching laptops:', error);
       } finally {
@@ -55,58 +53,20 @@ const LaptopDisplay = () => {
     fetchLaptops();
 
     intervalRef.current = setInterval(() => {
-      setLaptops((prev) => {
-        if (prev.length === 0) return prev;
-        const firstItem = prev[0];
-        return prev.slice(1).concat(firstItem);
-      });
+      setLaptops((prev) => prev.length ? [...prev.slice(1), prev[0]] : prev);
     }, 12000);
 
     return () => clearInterval(intervalRef.current);
   }, []);
 
-  const handleProductClick = (product_id) => {
-    navigate(`/product-details/${product_id}`);
-  };
-
+  const handleProductClick = (product_id) => navigate(`/product-details/${product_id}`);
   const handleMouseEnter = (index) => setHoveredIndex(index);
   const handleMouseLeave = () => setHoveredIndex(null);
-
-  const handleTouchStart = (e) => {
-    const touchStartX = e.touches[0].clientX;
-
-    const handleTouchMove = (e) => {
-      const touchEndX = e.touches[0].clientX;
-      const diff = touchStartX - touchEndX;
-
-      if (diff > 30) {
-        setLaptops((prev) => {
-          if (prev.length === 0) return prev;
-          const firstItem = prev[0];
-          return prev.slice(1).concat(firstItem);
-        });
-        clearInterval(intervalRef.current);
-      }
-
-      if (diff < -30) {
-        setLaptops((prev) => {
-          if (prev.length === 0) return prev;
-          const lastItem = prev[prev.length - 1];
-          return [lastItem].concat(prev.slice(0, prev.length - 1));
-        });
-        clearInterval(intervalRef.current);
-      }
-
-      sliderRef.current.removeEventListener('touchmove', handleTouchMove);
-    };
-
-    sliderRef.current.addEventListener('touchmove', handleTouchMove);
-  };
 
   return (
     <div className="laptop-container">
       <h2>Featured Laptops</h2>
-      <div className="laptop-display" ref={sliderRef} onTouchStart={handleTouchStart}>
+      <div className="laptop-display" ref={sliderRef}>
         {loading ? (
           <p>Loading laptops...</p>
         ) : laptops.length === 0 ? (
@@ -114,8 +74,8 @@ const LaptopDisplay = () => {
         ) : (
           <div className="laptop-slider">
             {laptops.slice(0, displayCount).map((laptop, index) => {
-              const primaryImg = laptop?.image_url || '/placeholder.jpg';
-              const secondaryImg = laptop?.secondary_image_url || primaryImg;
+              const primaryImg = laptop?.image_url ? `${BACKEND_URL}${laptop.image_url}` : '/placeholder.jpg';
+              const secondaryImg = laptop?.secondary_image_url ? `${BACKEND_URL}${laptop.secondary_image_url}` : primaryImg;
 
               return (
                 <div
@@ -129,7 +89,7 @@ const LaptopDisplay = () => {
                     src={hoveredIndex === index ? secondaryImg : primaryImg}
                     alt={laptop?.name || 'Unnamed Laptop'}
                     className="laptop-image"
-                    onError={(e) => { e.target.src = '/placeholder.jpg'; }}
+                    onError={(e) => e.target.src = '/placeholder.jpg'}
                   />
                   <h3 className="laptop-name">{laptop?.name || 'Unnamed Laptop'}</h3>
                   <p className="laptop-price">{formatPrice(laptop?.price)}</p>

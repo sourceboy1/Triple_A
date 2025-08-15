@@ -1,12 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link
+import { Link } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 import './Styling.css';
+
+const BACKEND_URL = 'http://localhost:8000'; // Change this for production
 
 const Product = ({ product_id, name, description, price, image_url }) => {
   const { addItemToCart } = useCart();
 
-  // Format the price with commas
   const formattedPrice = price ? new Intl.NumberFormat().format(price) : 'N/A';
 
   const handleAddToCart = () => {
@@ -14,13 +15,11 @@ const Product = ({ product_id, name, description, price, image_url }) => {
     addItemToCart(product);
   };
 
+  const fullImageUrl = image_url ? `${BACKEND_URL}${image_url}` : '/placeholder.jpg';
+
   return (
     <div className="product-card">
-      {image_url ? (
-        <img src={image_url} alt={name} className="product-image" />
-      ) : (
-        <p>No image available</p>
-      )}
+      <img src={fullImageUrl} alt={name || 'Product'} className="product-image" />
       <h2 className="product-title">
         <Link to={`/product-details/${product_id}`}>{name}</Link>
       </h2>
@@ -34,6 +33,3 @@ const Product = ({ product_id, name, description, price, image_url }) => {
 };
 
 export default Product;
-
-
-
