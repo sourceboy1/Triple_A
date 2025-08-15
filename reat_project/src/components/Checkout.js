@@ -10,7 +10,7 @@ import PhoneInputComponent from '../PhoneInput'; // Import PhoneInputComponent
 import { useUser } from '../contexts/UserContext';
 import { useCart } from '../contexts/CartContext';
 import countryList from 'react-select-country-list';
-import axios from 'axios';
+import api from '../Api';
 
 const Checkout = () => {
     const [email, setEmail] = useState('');
@@ -189,15 +189,12 @@ const Checkout = () => {
         
     
         try {
-            console.log('Order data being sent:', orderData);
-            const response = await axios.post('http://localhost:8000/api/orders/', orderData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Token ${token}`,
-                }
-            });
-    
-            clearCart();
+        console.log('Order data being sent:', orderData);
+
+        // ✅ Use centralized API
+        const response = await api.post('/orders/', orderData);
+
+        clearCart();
     
             const redirectPath = paymentMethod === 'debit_credit_cards' ? '/payment/debit-credit-card' : '/payment/bank-transfer';
             navigate(redirectPath, { state: { 

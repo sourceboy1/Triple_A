@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../Api'; // ✅ Unified API import
 import './Password.css'; // Import the CSS file
 
 const ForgotPassword = () => {
@@ -10,12 +10,11 @@ const ForgotPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Updated URL to include /api/ prefix
-      const response = await axios.post('http://localhost:8000/api/request-password-reset/', { email });
+      const response = await api.post('/request-password-reset/', { email });
       setMessage(response.data.message);
       setError('');
-    } catch (error) {
-      setError(error.response ? error.response.data.error : 'An error occurred');
+    } catch (err) {
+      setError(err.response ? err.response.data.error : 'An error occurred');
       setMessage('');
     }
   };

@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../Api'; // ✅ Centralized API config
 import Loading from './Loading';
 
 export const TokenContext = createContext();
@@ -12,7 +12,7 @@ export const TokenProvider = ({ children }) => {
   useEffect(() => {
     const fetchToken = async () => {
       try {
-        const response = await axios.post('http://localhost:8000/api/token/', {
+        const response = await api.post('api/token/', {
           username: 'admin',
           password: 'oluwaseun123'
         });
@@ -28,7 +28,7 @@ export const TokenProvider = ({ children }) => {
     fetchToken();
   }, []);
 
-  
+  if (loading) return <Loading />; // ✅ Show loading until token is fetched
   if (error) return <div>Error: {error}</div>;
 
   return (
@@ -37,4 +37,3 @@ export const TokenProvider = ({ children }) => {
     </TokenContext.Provider>
   );
 };
-

@@ -2,21 +2,20 @@ import React, { useState, useEffect, useContext } from 'react';
 import slidingImage1 from '../pictures/sliding1.jpg';
 import slidingImage2 from '../pictures/sliding3.jpg';
 import slidingImage5 from '../pictures/sliding4.jpg';
-import axios from 'axios';
 import './Home.css';
 import { useNavigate } from 'react-router-dom';
 import { TokenContext } from './TokenContext';
 import { useCart } from '../contexts/CartContext';
 import { useWishlist } from '../contexts/WishlistContext';
-import CategoryDisplay from './CategoryDisplay'; // Import CategoryDisplay
-import FeatureDisplay from './FeatureDisplay'; // Import the FeatureDisplay component
-import DealsOfTheDay from './Deals_of_the_Day'; // Import DealsOfTheDay component
-import PowerBankDisplay from './PowerBanksSlider'; // Import PowerBankDisplay component
+import CategoryDisplay from './CategoryDisplay';
+import FeatureDisplay from './FeatureDisplay';
+import DealsOfTheDay from './Deals_of_the_Day';
+import PowerBankDisplay from './PowerBanksSlider';
 import LaptopDisplay from './LaptopSlider';
 import ViewedProducts from './ViewedProducts';
 import PhonesTabletsDisplay from './PhonesTabletsDisplay';
+import api from '../Api'; // ✅ Unified API import
 
-// Images, captions, and button text
 const images = [slidingImage1, slidingImage2, slidingImage5];
 const captions = [
   "Discover the latest smartphones!",
@@ -31,28 +30,29 @@ const buttonTexts = [
 
 const Home = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [products, setProducts] = useState([]); // Still fetch products but don't display them
+  const [products, setProducts] = useState([]);
   const navigate = useNavigate();
   const accessToken = useContext(TokenContext);
   const { cart, addItemToCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/products/', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      }
-    })
-      .then(response => {
+    const fetchProducts = async () => {
+      try {
+        const response = await api.get('/products/', {
+          headers: { Authorization: `Bearer ${accessToken}` }
+        });
         setProducts(response.data);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the products!', error);
-      });
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchProducts();
 
     const interval = setInterval(() => {
       setCurrentIndex(prevIndex => (prevIndex + 1) % images.length);
-    }, 20000); // Change interval to 20 seconds
+    }, 20000);
 
     return () => clearInterval(interval);
   }, [accessToken]);
@@ -63,9 +63,7 @@ const Home = () => {
 
   const handleAddToCart = (product) => {
     const isProductInCart = cart.some(item => item.product_id === product.product_id);
-    if (!isProductInCart) {
-      addItemToCart(product);
-    }
+    if (!isProductInCart) addItemToCart(product);
   };
 
   const handleWishlistClick = (product) => {
@@ -106,59 +104,27 @@ const Home = () => {
       </div>
 
       {/* Feature Display Component */}
-      <FeatureDisplay /> {/* Added FeatureDisplay above CategoryDisplay */}
+      <FeatureDisplay />
 
       {/* Deals of the Day Component */}
-      <DealsOfTheDay /> {/* Added DealsOfTheDay below the slider */}
+      <DealsOfTheDay />
 
       {/* Category Display Component */}
-      <CategoryDisplay /> {/* Add the CategoryDisplay component here */}
+      <CategoryDisplay />
 
       {/* Power Bank Display Component */}
-      <PowerBankDisplay /> {/* Added PowerBankDisplay below CategoryDisplay */}
+      <PowerBankDisplay />
        
       {/* Laptop Display Component */}
       <LaptopDisplay />
       
-      {/* Viewed products Display Component */}  
+      {/* Phones/Tablets Display Component */}  
       <PhonesTabletsDisplay />
 
-      {/* Viewed products Display Component */}   
+      {/* Viewed Products Display Component */}
       <ViewedProducts />
-      
-      
 
-      {/* Commented out the product list */}
-      {/* <div className="product-list">
-        {products.map((product) => (
-          <div key={product.product_id} className="product-card">
-            <div onClick={() => handleProductClick(product.product_id)}>
-              {product.image_url ? (
-                <img src={product.image_url} alt={product.name} className="product-image" />
-              ) : (
-                <p>No image available</p>
-              )}
-              <h2 className="product-title">{product.name}</h2>
-              <p className="product-description">{product.description}</p>
-              <p className="product-price">
-                ₦{product.price ? new Intl.NumberFormat().format(product.price) : 'N/A'}
-              </p>
-            </div>
-            <img
-              src={isInWishlist(product.product_id) ? wishlistIconActive : wishlistIcon}
-              alt="Add to Wishlist"
-              className="wishlist-icon"
-              onClick={() => handleWishlistClick(product)}
-            />
-            <button
-              className="button is-primary"
-              onClick={() => handleAddToCart(product)}
-            >
-              Add to Cart
-            </button>
-          </div>
-        ))}
-      </div> */}
+      {/* Product list is commented out for now */}
     </div>
   );
 };

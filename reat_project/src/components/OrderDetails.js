@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../Api'; // ✅ Unified API import
 import './OrderDetails.css';
 
 const OrderDetails = () => {
@@ -13,19 +13,19 @@ const OrderDetails = () => {
 
     // Scroll to the top of the page whenever the component is loaded
     useEffect(() => {
-        window.scrollTo(0, 0);  // Scroll to top (0, 0) position
+        window.scrollTo(0, 0);
     }, []);
 
     useEffect(() => {
         const fetchOrderDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/orders/${orderId}/`, {
+                const response = await api.get(`/orders/${orderId}/`, {
                     headers: {
                         'Authorization': `Token ${token}`,
                     },
                 });
                 setOrder(response.data);
-            } catch (error) {
+            } catch (err) {
                 setError('Error fetching order details.');
             } finally {
                 setLoading(false);

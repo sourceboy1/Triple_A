@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import api from '../Api'; // ✅ centralized API instance
 import { useCart } from '../contexts/CartContext';
 import { useWishlist } from '../contexts/WishlistContext';
 import './ProductDetails.css';
@@ -24,12 +24,11 @@ const ProductDetails = () => {
             if (!productId) return;
 
             try {
-                const response = await axios.get(`http://localhost:8000/api/products/${productId}/`);
+                const response = await api.get(`api/products/${productId}/`);
                 const productData = response.data;
                 setProduct(productData);
                 setSelectedImage(productData.image_url || '');
 
-                // Save to "Recently Viewed" in localStorage
                 saveToRecentlyViewed(productData);
             } catch (error) {
                 console.error('Error fetching product:', error);
@@ -42,10 +41,8 @@ const ProductDetails = () => {
     const saveToRecentlyViewed = (productData) => {
         let viewedProducts = JSON.parse(localStorage.getItem('viewedProducts')) || [];
 
-        // Remove if already exists
         viewedProducts = viewedProducts.filter(p => p.product_id !== productData.product_id);
 
-        // Add the new one at the start
         viewedProducts.unshift({
             product_id: productData.product_id,
             name: productData.name,
@@ -53,7 +50,6 @@ const ProductDetails = () => {
             price: productData.price
         });
 
-        // Limit to latest 20
         if (viewedProducts.length > 20) {
             viewedProducts = viewedProducts.slice(0, 20);
         }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../Api'; // ✅ Use centralized API config
 
 const UploadImage = ({ productId }) => {
   const [file, setFile] = useState(null);
@@ -13,7 +13,7 @@ const UploadImage = ({ productId }) => {
     setDescription(e.target.value);
   };
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (!file) {
       alert('Please select a file.');
       return;
@@ -24,29 +24,31 @@ const UploadImage = ({ productId }) => {
     formData.append('description', description);
     formData.append('product', productId);
 
-    axios.post('http://localhost:8000/upload-images/', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-    .then(response => {
+    try {
+      const response = await api.post('upload-images/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       console.log('Image uploaded successfully:', response.data);
       // Optionally, update UI or state after successful upload
-    })
-    .catch(error => {
+    } catch (error) {
       console.error('Error uploading image:', error);
-    });
+    }
   };
 
   return (
     <div>
       <input type="file" onChange={handleFileChange} />
-      <input type="text" value={description} onChange={handleDescriptionChange} placeholder="Image description" />
+      <input
+        type="text"
+        value={description}
+        onChange={handleDescriptionChange}
+        placeholder="Image description"
+      />
       <button onClick={handleUpload}>Upload Image</button>
     </div>
   );
 };
 
 export default UploadImage;
-
-

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 import { useUser } from '../contexts/UserContext';
+import { useWishlist } from '../contexts/WishlistContext';
 import './Styling.css';
 import companyLogo from '../pictures/company logo.jpg';
 import searchIcon from '../pictures/search.jpg';
@@ -10,8 +11,7 @@ import cartIcon from '../pictures/cart.jpg';
 import userIcon from '../icons/usericon.jpg';
 import phoneIcon from '../icons/phone-icon.jpg';
 import wishlistIcon from '../pictures/wishlist.jpg';
-import { useWishlist } from '../contexts/WishlistContext';
-import axios from 'axios';
+import api from '../Api'; // ✅ Unified API import
 
 const Navbar = () => {
   const [products, setProducts] = useState([]);
@@ -32,7 +32,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/products/');
+        const response = await api.get('/products/');
         setProducts(response.data);
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -79,16 +79,14 @@ const Navbar = () => {
     setSelectedCategory(category);
     setCategoryDropdownVisible(false);
     setSearchWidth(category === 'All' ? '100%' : '50%');
-    scrollToTop();  // Scroll to top when a category is clicked
+    scrollToTop();
   };
 
   const handleSearch = () => {
-    if (!searchQuery.trim()) {
-      return;
-    }
-    setFilteredProducts([]); // Clear suggestions when search is initiated
+    if (!searchQuery.trim()) return;
+    setFilteredProducts([]);
     navigate(`/search?query=${encodeURIComponent(searchQuery)}&category=${encodeURIComponent(selectedCategory)}`);
-    scrollToTop();  // Scroll to top when search is triggered
+    scrollToTop();
   };
 
   const handleSearchInputChange = (event) => {
@@ -108,13 +106,13 @@ const Navbar = () => {
 
   const handlePhoneClick = () => {
     window.location.href = 'tel:+23434593459'; 
-    scrollToTop();  // Scroll to top when phone link is clicked
+    scrollToTop();
   };
 
   const handleSuggestionClick = (product) => {
     navigate(`/search?query=${encodeURIComponent(product.name)}&category=${encodeURIComponent(selectedCategory)}`);
-    setFilteredProducts([]); // Clear suggestions when a suggestion is clicked
-    scrollToTop();  // Scroll to top when a suggestion is clicked
+    setFilteredProducts([]);
+    scrollToTop();
   };
 
   const handleAccountClick = () => {
@@ -123,12 +121,12 @@ const Navbar = () => {
     } else {
       navigate('/signin');
     }
-    scrollToTop();  // Scroll to top when account is clicked
+    scrollToTop();
   };
 
   const handleWishlistClick = () => {
     navigate('/wishlist');
-    scrollToTop();  // Scroll to top when wishlist is clicked
+    scrollToTop();
   };
 
   return (
@@ -175,7 +173,7 @@ const Navbar = () => {
             />
             {categoryDropdownVisible && (
               <div className="dropdown-content show">
-                {["AII", 'Phones & Tablets', 'Headsets & AirPods', 'Laptops', 'Pouches & Guide', 'Powerbanks', 'Watches', 'Games', 'Accessories'].map((cat) => (
+                {["All", 'Phones & Tablets', 'Headsets & AirPods', 'Laptops', 'Pouches & Guide', 'Powerbanks', 'Watches', 'Games', 'Accessories'].map((cat) => (
                   <a href="#" key={cat} onClick={() => handleCategoryClick(cat)}>
                     {cat}
                   </a>

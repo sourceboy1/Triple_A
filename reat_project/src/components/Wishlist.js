@@ -6,7 +6,7 @@ import emptyWishlistImage from '../pictures/emptywishlist.jpg';
 import markImg from '../pictures/mark.jpg'; // In stock icon
 import markedImg from '../pictures/markred.jpg'; // Out of stock icon
 import './Wishlist.css';
-import axios from 'axios';
+import api from '../Api'; // ✅ Use centralized API config
 
 const Wishlist = () => {
   const { wishlist, removeFromWishlist } = useWishlist();
@@ -15,7 +15,7 @@ const Wishlist = () => {
   const [updatedWishlist, setUpdatedWishlist] = useState(wishlist);
 
   const handleReturnToShop = () => {
-    navigate('/'); // Navigate to the home page
+    navigate('/');
   };
 
   const formatPrice = (price) => {
@@ -27,14 +27,14 @@ const Wishlist = () => {
   };
 
   const handleProductClick = (productId) => {
-    navigate(`/product-details/${productId}`); // Navigate to product details page
+    navigate(`/product-details/${productId}`);
   };
 
   useEffect(() => {
     const fetchUpdatedWishlist = async () => {
       try {
         const updatedWishlistPromises = wishlist.map(item =>
-          axios.get(`http://localhost:8000/api/products/${item.product_id}/`)
+          api.get(`products/${item.product_id}/`) // ✅ Use baseURL from api.js
         );
         const responses = await Promise.all(updatedWishlistPromises);
         setUpdatedWishlist(responses.map(response => response.data));
@@ -43,11 +43,10 @@ const Wishlist = () => {
       }
     };
 
-    fetchUpdatedWishlist(); // Fetch updated wishlist on mount
+    fetchUpdatedWishlist();
 
-    const intervalId = setInterval(fetchUpdatedWishlist, 30000); // Poll every 30 seconds
-
-    return () => clearInterval(intervalId); // Clear interval on component unmount
+    const intervalId = setInterval(fetchUpdatedWishlist, 30000);
+    return () => clearInterval(intervalId);
   }, [wishlist]);
 
   return (
@@ -67,7 +66,7 @@ const Wishlist = () => {
             <div 
               key={item.product_id} 
               className="wishlist-item"
-              onClick={() => handleProductClick(item.product_id)} // Navigate to product details page
+              onClick={() => handleProductClick(item.product_id)}
             >
               <div className="wishlist-item-content">
                 <img src={item.image_url} alt={item.name} className="wishlist-item-image" />
@@ -75,24 +74,21 @@ const Wishlist = () => {
                   <h2 className="wishlist-item-name">{item.name}</h2>
                   <p className="wishlist-item-price">{formatPrice(item.price)}</p>
                   <div className="wishlist-item-stock-container">
-                    {/* Show in-stock or out-of-stock image */}
                     <img
                       src={item.stock > 0 ? markImg : markedImg}
                       alt={item.stock > 0 ? 'In Stock' : 'Out of Stock'}
                       className="wishlist-item-stock-image"
                     />
-                    {/* Show in-stock or out-of-stock label */}
                     <div className={`wishlist-item-stock ${item.stock > 0 ? 'in-stock' : 'out-of-stock'}`}>
                       {item.stock > 0 ? 'In Stock' : 'Out of Stock'}
                     </div>
                   </div>
 
-                  {/* Show "Add to Cart" button only if item is in stock */}
                   {item.stock > 0 ? (
                     <button
                       className="wishlist-item-add-to-cart"
                       onClick={(e) => {
-                        e.stopPropagation(); // Prevent triggering the product click handler
+                        e.stopPropagation();
                         handleAddToCart(item);
                       }}
                     >
@@ -104,11 +100,10 @@ const Wishlist = () => {
                     </button>
                   )}
 
-                  {/* Remove from wishlist */}
                   <button
                     className="wishlist-item-remove"
                     onClick={(e) => {
-                      e.stopPropagation(); // Prevent triggering the product click handler
+                      e.stopPropagation();
                       removeFromWishlist(item.product_id);
                     }}
                   >

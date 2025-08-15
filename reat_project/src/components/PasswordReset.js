@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import api from '../Api'; // ✅ Unified API import
 import './Password.css'; // Import the CSS file
 import eyeIcon from '../pictures/eye.jpg';
 import closedEyeIcon from '../pictures/eye-closed.jpg';
@@ -11,8 +11,8 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // State for password visibility
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State for confirm password visibility
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
   const handlePasswordToggle = () => {
@@ -25,20 +25,20 @@ const ResetPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       setMessage('');
       return;
     }
-    
+
     try {
-      const response = await axios.post('http://localhost:8000/api/reset-password/', { uid, token, password });
+      const response = await api.post('/reset-password/', { uid, token, password });
       setMessage(response.data.message);
       setError('');
       navigate('/signin'); // Redirect to login page after successful reset
-    } catch (error) {
-      setError(error.response ? error.response.data.error : 'An error occurred');
+    } catch (err) {
+      setError(err.response ? err.response.data.error : 'An error occurred');
       setMessage('');
     }
   };

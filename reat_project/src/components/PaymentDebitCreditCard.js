@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { PaystackButton } from 'react-paystack';
-import axios from 'axios';
+import api from '../Api'; // ✅ Using the single API instance
 import guaranteeIcon from '../icons/guarantee-icon.jpg';
 import fastShipIcon from '../icons/fast-ship-icon.jpg';
 import qualityAssuredIcon from '../icons/quality-assured-icon.jpg';
@@ -74,7 +74,7 @@ const PaymentPage = () => {
                 return;
             }
 
-            await axios.post(`http://localhost:8000/api/orders/${orderId}/cancel/`, {}, {
+            await api.post(`/orders/${orderId}/cancel/`, {}, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Token ${token}`,

@@ -1,17 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../Api'; // ✅ Centralized API import
 import { useNavigate } from 'react-router-dom';
-
-// Fetch all products from the API
-const fetchProducts = async () => {
-  try {
-    const response = await axios.get('http://localhost:8000/api/products/');
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching products:', error);
-    return [];
-  }
-};
 
 const SearchComponent = ({ selectedCategory }) => {
   const [products, setProducts] = useState([]);
@@ -19,8 +8,18 @@ const SearchComponent = ({ selectedCategory }) => {
   const [searchResults, setSearchResults] = useState([]);
   const navigate = useNavigate();
 
+  // Fetch all products from the API
+  const fetchProducts = async () => {
+    try {
+      const response = await api.get('api/products/');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      return [];
+    }
+  };
+
   useEffect(() => {
-    // Fetch product data when component mounts
     const getProducts = async () => {
       const data = await fetchProducts();
       setProducts(data);
@@ -31,7 +30,6 @@ const SearchComponent = ({ selectedCategory }) => {
 
   useEffect(() => {
     if (searchQuery.trim()) {
-      // Filter products based on search query and selected category
       const filteredResults = products.filter(product => 
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
         (!selectedCategory || product.category === selectedCategory)
@@ -43,12 +41,10 @@ const SearchComponent = ({ selectedCategory }) => {
   }, [searchQuery, products, selectedCategory]);
 
   const handleSearch = () => {
-    // Navigate to search results page
     navigate(`/search?query=${encodeURIComponent(searchQuery)}&category=${encodeURIComponent(selectedCategory)}`);
   };
 
   const handleProductClick = (productId) => {
-    // Navigate to product details page
     navigate(`/product-details/${productId}`);
   };
 
@@ -58,9 +54,9 @@ const SearchComponent = ({ selectedCategory }) => {
         type="text"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder={`Search ${selectedCategory}...`}
+        placeholder={`Search ${selectedCategory || 'products'}...`}
         style={{ width: '100%' }}
-        onKeyDown={(e) => e.key === 'Enter' && handleSearch()} // Trigger search on Enter key
+        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
       />
       <div className="search-results">
         {searchQuery && searchResults.length > 0 ? (
@@ -79,7 +75,7 @@ const SearchComponent = ({ selectedCategory }) => {
             </div>
           ))
         ) : (
-          <div>No results found</div>
+          searchQuery && <div>No results found</div>
         )}
       </div>
     </div>
@@ -87,10 +83,3 @@ const SearchComponent = ({ selectedCategory }) => {
 };
 
 export default SearchComponent;
-
-
-
-
-
-
-

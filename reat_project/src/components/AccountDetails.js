@@ -1,18 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react'; // Updated import
+import React, { useState, useRef, useEffect } from 'react';
 import { useUser } from '../contexts/UserContext';
-import axios from 'axios';
+import api from '../Api.js'; // <- use api.js
 import eyeIcon from '../pictures/eye.jpg';
 import closedEyeIcon from '../pictures/eye-closed.jpg';
 import './AccountDetails.css';
 import Loading from './Loading.js';
 
 const AccountDetails = () => {
-  // Scroll to top on component mount
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   const { firstName, lastName, email, token, userId, signIn } = useUser();
+
   const [editFirstName, setEditFirstName] = useState(firstName);
   const [editLastName, setEditLastName] = useState(lastName);
   const [editEmail, setEditEmail] = useState(email);
@@ -27,6 +23,12 @@ const AccountDetails = () => {
 
   const updateMessageRef = useRef(null);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const togglePasswordVisibility = (setter) => setter(prev => !prev);
+
   const handleAccountUpdate = async (event) => {
     event.preventDefault();
 
@@ -34,21 +36,22 @@ const AccountDetails = () => {
       setUpdateMessage('New passwords do not match.');
       return;
     }
-    setIsLoading(true);
 
+    setIsLoading(true);
     try {
-      const response = await axios.put('http://localhost:8000/api/update-profile/', {
-        first_name: editFirstName,
-        last_name: editLastName,
-        email: editEmail,
-        current_password: currentPassword,
-        new_password: newPassword,
-      }, {
-        headers: {
-          'Authorization': `Token ${token}`,
-          'Content-Type': 'application/json',
+      const response = await api.put(
+        'update-profile/',
+        {
+          first_name: editFirstName,
+          last_name: editLastName,
+          email: editEmail,
+          current_password: currentPassword,
+          new_password: newPassword,
         },
-      });
+        {
+          headers: { Authorization: `Token ${token}` }
+        }
+      );
 
       if (response.status === 200) {
         setUpdateMessage('Account details changed successfully.');
@@ -69,9 +72,7 @@ const AccountDetails = () => {
         }
 
         setTimeout(() => {
-          if (updateMessageRef.current) {
-            updateMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
+          updateMessageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
       }
     } catch (error) {
@@ -80,19 +81,12 @@ const AccountDetails = () => {
       } else {
         setUpdateMessage('Failed to update profile. Please check your current password.');
       }
-
       setTimeout(() => {
-        if (updateMessageRef.current) {
-          updateMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+        updateMessageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const togglePasswordVisibility = (setter) => {
-    setter((prev) => !prev);
   };
 
   return (
@@ -104,9 +98,8 @@ const AccountDetails = () => {
       )}
       <form className="account-details-form" onSubmit={handleAccountUpdate}>
         <h2>Account Details</h2>
-        <div ref={updateMessageRef} className="update-message">
-          {updateMessage}
-        </div>
+        <div ref={updateMessageRef} className="update-message">{updateMessage}</div>
+
         <div>
           <label htmlFor="firstName">First name *</label>
           <input
@@ -117,6 +110,7 @@ const AccountDetails = () => {
             required
           />
         </div>
+
         <div>
           <label htmlFor="lastName">Last name *</label>
           <input
@@ -127,6 +121,7 @@ const AccountDetails = () => {
             required
           />
         </div>
+
         <div>
           <label htmlFor="displayName">Display name *</label>
           <input
@@ -137,6 +132,7 @@ const AccountDetails = () => {
           />
           <small>This will be how your name will be displayed in the account section and in reviews.</small>
         </div>
+
         <div>
           <label htmlFor="email">Email address *</label>
           <input
@@ -147,57 +143,31 @@ const AccountDetails = () => {
             required
           />
         </div>
-        <div className="password-container">
-          <label htmlFor="currentPassword">Current password (leave blank to leave unchanged)</label>
-          <div className="password-input-container">
-            <input
-              id="currentPassword"
-              type={showCurrentPassword ? 'text' : 'password'}
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-            />
-            <img
-              src={showCurrentPassword ? closedEyeIcon : eyeIcon}
-              alt="Toggle visibility"
-              className="eye-icon"
-              onClick={() => togglePasswordVisibility(setShowCurrentPassword)}
-            />
+
+        {[ // password fields
+          { label: 'Current password (leave blank to leave unchanged)', value: currentPassword, setter: setCurrentPassword, show: showCurrentPassword, toggle: setShowCurrentPassword, id: 'currentPassword' },
+          { label: 'New password (leave blank to leave unchanged)', value: newPassword, setter: setNewPassword, show: showNewPassword, toggle: setShowNewPassword, id: 'newPassword' },
+          { label: 'Confirm new password', value: confirmNewPassword, setter: setConfirmNewPassword, show: showConfirmNewPassword, toggle: setShowConfirmNewPassword, id: 'confirmNewPassword' }
+        ].map(field => (
+          <div className="password-container" key={field.id}>
+            <label htmlFor={field.id}>{field.label}</label>
+            <div className="password-input-container">
+              <input
+                id={field.id}
+                type={field.show ? 'text' : 'password'}
+                value={field.value}
+                onChange={(e) => field.setter(e.target.value)}
+              />
+              <img
+                src={field.show ? closedEyeIcon : eyeIcon}
+                alt="Toggle visibility"
+                className="eye-icon"
+                onClick={() => togglePasswordVisibility(field.toggle)}
+              />
+            </div>
           </div>
-        </div>
-        <div className="password-container">
-          <label htmlFor="newPassword">New password (leave blank to leave unchanged)</label>
-          <div className="password-input-container">
-            <input
-              id="newPassword"
-              type={showNewPassword ? 'text' : 'password'}
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-            <img
-              src={showNewPassword ? closedEyeIcon : eyeIcon}
-              alt="Toggle visibility"
-              className="eye-icon"
-              onClick={() => togglePasswordVisibility(setShowNewPassword)}
-            />
-          </div>
-        </div>
-        <div className="password-container">
-          <label htmlFor="confirmNewPassword">Confirm new password</label>
-          <div className="password-input-container">
-            <input
-              id="confirmNewPassword"
-              type={showConfirmNewPassword ? 'text' : 'password'}
-              value={confirmNewPassword}
-              onChange={(e) => setConfirmNewPassword(e.target.value)}
-            />
-            <img
-              src={showConfirmNewPassword ? closedEyeIcon : eyeIcon}
-              alt="Toggle visibility"
-              className="eye-icon"
-              onClick={() => togglePasswordVisibility(setShowConfirmNewPassword)}
-            />
-          </div>
-        </div>
+        ))}
+
         <button type="submit">Save changes</button>
       </form>
     </div>

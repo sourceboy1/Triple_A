@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../Api'; // ✅ Unified API import
 import './PaymentBankTransfer.css';
 
 const Transfer = () => {
@@ -29,28 +29,17 @@ const Transfer = () => {
 
     const confirmCancelOrder = async () => {
         try {
-    
-            const response = await axios.post(`http://localhost:8000/api/orders/${orderId}/cancel/`, {}, {
+            await api.post(`/orders/${orderId}/cancel/`, {}, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${token}`,  // Use the same token authentication as in your checkout process
+                    'Authorization': `Token ${token}`,
                 }
             });
-    
             navigate('/');
         } catch (error) {
-            
-    
-            if (error.response && error.response.data && error.response.data.message) {
-                
-            } else {
-                
-            }
+            console.error('Error canceling order:', error);
         }
     };
-    
-    
-    
 
     const cancelOrderDialog = (
         <div className="cancel-dialog">

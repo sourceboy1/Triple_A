@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { TokenContext } from './TokenContext';
-import './Styling.css';
 import Loading from './Loading';
+import api from '../Api'; // Centralized API instance
+import './Styling.css';
 
 const CategoryProducts = () => {
   const { categoryName } = useParams();
@@ -14,16 +14,18 @@ const CategoryProducts = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const response = await axios.get('http://localhost:8000/api/products/', {
-          params: { category: categoryName }, // Use category name to fetch products
+        const response = await api.get('/products/', {
+          params: { category: categoryName },
           headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
+            Authorization: `Bearer ${accessToken}`,
+          },
         });
         setProducts(response.data);
-      } catch (error) {
-        console.error('Error fetching products:', error);
+      } catch (err) {
+        console.error('Error fetching products:', err);
         setError('Failed to load products');
       } finally {
         setLoading(false);
@@ -33,7 +35,7 @@ const CategoryProducts = () => {
     fetchProducts();
   }, [categoryName, accessToken]);
 
-  
+  if (loading) return <Loading />;
   if (error) return <p>{error}</p>;
 
   return (
@@ -65,6 +67,3 @@ const CategoryProducts = () => {
 };
 
 export default CategoryProducts;
-
-
-

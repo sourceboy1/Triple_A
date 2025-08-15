@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../Api'; // ✅ Centralized API import
 import Product from './Product';
-import { useCart } from '../contexts/CartContext'; // Import the custom hook
+import { useCart } from '../contexts/CartContext';
 
 const ProductList = ({ category, searchQuery }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { addItemToCart } = useCart(); // Get addItemToCart from the context
+  const { addItemToCart } = useCart();
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/products/', {
+        const response = await api.get('api/products/', {
           params: { category, searchQuery },
         });
         setProducts(response.data);
@@ -25,9 +25,9 @@ const ProductList = ({ category, searchQuery }) => {
     };
 
     fetchProducts();
-  }, [category, searchQuery]); // Fetch products whenever category or searchQuery changes
+  }, [category, searchQuery]);
 
-  
+  if (loading) return <p>Loading products...</p>;
   if (error) return <p>{error}</p>;
 
   return (
@@ -42,7 +42,7 @@ const ProductList = ({ category, searchQuery }) => {
             description={product.description}
             price={product.price}
             image_url={product.image_url}
-            addItemToCart={addItemToCart} // Pass addItemToCart function
+            addItemToCart={addItemToCart}
           />
         ))}
       </div>
@@ -51,4 +51,3 @@ const ProductList = ({ category, searchQuery }) => {
 };
 
 export default ProductList;
-
