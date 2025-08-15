@@ -115,9 +115,7 @@ TEMPLATES = [
     },
 ]
 
-STATICFILES_DIRS = [
-    os.path.join(FRONTEND_DIR, 'static'),
-]
+
 
 WSGI_APPLICATION = 'main_project.wsgi.application'
 
@@ -206,10 +204,11 @@ CORS_ALLOWED_ORIGINS = [
 # Static files (CSS, JavaScript, images)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Where collectstatic collects files
+FRONTEND_DIR = os.path.join(BASE_DIR, 'reat_project', 'build')
+
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'reat_project/build/static'),  # React static folder
+    os.path.join(FRONTEND_DIR, 'static'),
 ]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # Media files (user-uploaded files)
