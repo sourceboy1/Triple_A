@@ -208,9 +208,11 @@ CORS_ALLOWED_ORIGINS = [
 # Static files (CSS, JavaScript, images)
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = []
-if (FRONTEND_DIR / 'static').exists():
-    STATICFILES_DIRS.append(FRONTEND_DIR / 'static')
+STATICFILES_DIRS = [
+    FRONTEND_DIR / 'static',  # JS/CSS
+    FRONTEND_DIR,             # manifest.json, favicon.ico
+]
+
 
 
 # Media files (user-uploaded files)

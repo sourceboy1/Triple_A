@@ -12,7 +12,7 @@ export const TokenProvider = ({ children }) => {
   useEffect(() => {
     const fetchToken = async () => {
       try {
-        const response = await api.post('api/token/', {
+        const response = await api.post('/token/', {
           username: 'admin',
           password: 'oluwaseun123'
         });
