@@ -17,16 +17,16 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
 
-# Serve media files (uploads)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Serve static files in DEBUG mode
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # React frontend fallback (only if build exists)
 index_file_path = os.path.join(settings.FRONTEND_DIR, 'index.html')
 if os.path.exists(index_file_path):
     urlpatterns += [
-        re_path(r'^(?!api/|admin/|static/|media/).*$', TemplateView.as_view(template_name='index.html'))
+        re_path(r'^(?!api/|admin/|static/|media/|manifest\.json|favicon\.ico).*$', 
+                TemplateView.as_view(template_name='index.html'))
     ]
-
-# Serve static files in dev mode (DEBUG=True)
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
