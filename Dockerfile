@@ -1,27 +1,23 @@
-# Base image with Python
 FROM python:3.11-slim
 
-# Install system dependencies first
+# Install system dependencies and Node.js directly
 RUN apt-get update && apt-get install -y \
     curl \
     gnupg \
     ca-certificates \
     build-essential \
-    && rm -rf /var/lib/apt/lists/*
+    nodejs \
+    npm \
+ && npm install -g npm@latest \
+ && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install Node.js 18 and latest npm
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get install -y nodejs && \
-    npm install -g npm@latest && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Set working directory
+# Set work directory
 WORKDIR /app
 
-# Copy everything
+# Copy project
 COPY . /app/
 
-# Install React dependencies and build
+# Install React dependencies and build React
 RUN npm install --prefix reat_project && \
     npm run build --prefix reat_project
 
@@ -35,5 +31,5 @@ RUN python manage.py collectstatic --noinput
 # Expose port
 EXPOSE 8000
 
-# Start Django with Gunicorn
+# Run Django with Gunicorn
 CMD ["gunicorn", "main_project.wsgi:application", "--bind", "0.0.0.0:8000"]
