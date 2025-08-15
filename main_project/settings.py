@@ -97,7 +97,8 @@ LOGIN_REDIRECT_URL = '/'
 ROOT_URLCONF = 'main_project.urls'
 
 
-FRONTEND_DIR = os.path.join(BASE_DIR, 'react_project', 'build')
+FRONTEND_DIR = BASE_DIR / 'reat_project' / 'build'
+
 
 TEMPLATES = [
     {
@@ -196,19 +197,20 @@ CSRF_TRUSTED_ORIGINS = [
 
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000", 
+    "https://tripleastechng.com",
+    "https://www.tripleastechng.com",
+    "http://localhost:3000",
 ]
+
 
 
 
 # Static files (CSS, JavaScript, images)
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Where collectstatic collects files
-FRONTEND_DIR = os.path.join(BASE_DIR, 'reat_project', 'build')
-
-STATICFILES_DIRS = [
-    os.path.join(FRONTEND_DIR, 'static'),
-]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = []
+if (FRONTEND_DIR / 'static').exists():
+    STATICFILES_DIRS.append(FRONTEND_DIR / 'static')
 
 
 # Media files (user-uploaded files)

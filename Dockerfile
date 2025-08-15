@@ -32,5 +32,6 @@ RUN python manage.py collectstatic --noinput
 EXPOSE 8000
 
 # Run Django with Gunicorn
-CMD ["sh", "-c", "gunicorn main_project.wsgi:application --bind 0.0.0.0:${PORT}"]
+CMD ["sh", "-c", "gunicorn main_project.wsgi:application --bind 0.0.0.0:${PORT:-8080}"]
+
 
