@@ -46,8 +46,12 @@ INSTALLED_APPS = [
     'main_app',
     'corsheaders',
     'rest_framework',
-    'rest_framework.authtoken',  
+    'rest_framework.authtoken',
+    'cloudinary_storage',
+    'cloudinary',  
 ]
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -222,3 +226,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # This is where media files will b
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+cloudinary.config(
+    cloud_name = os.getenv('CLOUDINARY_CLOUD_NAME'),
+    api_key = os.getenv('CLOUDINARY_API_KEY'),
+    api_secret = os.getenv('CLOUDINARY_API_SECRET'),
+)
