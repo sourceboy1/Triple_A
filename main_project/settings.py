@@ -21,8 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
 import cloudinary
-import cloudinary.uploader
-import cloudinary.api
+
 
 # This will pick CLOUDINARY_URL automatically
 cloudinary.config(secure=True)
