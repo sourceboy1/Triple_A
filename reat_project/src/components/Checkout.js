@@ -11,6 +11,8 @@ import { useUser } from '../contexts/UserContext';
 import { useCart } from '../contexts/CartContext';
 import countryList from 'react-select-country-list';
 import api from '../Api';
+import 'react-phone-input-2/lib/style.css';
+
 
 const Checkout = () => {
     const [email, setEmail] = useState('');
