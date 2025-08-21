@@ -245,7 +245,17 @@ if FRONTEND_DIR.exists():
 
 # Media files (user-uploaded files)
 MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
+
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Extra places Django will look for static files
+STATICFILES_DIRS = []
+if (BASE_DIR / "reat_project" / "build" / "static").exists():
+    STATICFILES_DIRS.append(BASE_DIR / "reat_project" / "build" / "static")
+
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
