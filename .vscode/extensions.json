@@ -1,0 +1,19 @@
+{
+  "recommendations": [
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "ms-python.black-formatter",
+    "ms-python.isort",
+    "batisteo.vscode-django",
+    "dsznajder.es7-react-js-snippets",
+    "xabikos.javascriptsnippets",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+    "pkief.material-icon-theme",
+    "zhuangtongfa.material-theme",
+    "formulahendry.auto-close-tag",
+    "formulahendry.auto-rename-tag",
+    "mikestead.dotenv",
+    "eamodio.gitlens"
+  ]
+}
