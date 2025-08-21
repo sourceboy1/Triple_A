@@ -13,19 +13,18 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     npm install -g npm@latest && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-    # Build React
-WORKDIR /app/reat_project
-RUN npm install && npm run build
-
-# Set work directory
+# Set main work directory
 WORKDIR /app
 
-# Copy project
+# Copy project files first
 COPY . /app/
 
 # Install React dependencies and build React
-RUN npm install --prefix reat_project && \
-    npm run build --prefix reat_project
+WORKDIR /app/reat_project
+RUN npm install && npm run build
+
+# Back to Django project root
+WORKDIR /app
 
 # Install Python dependencies
 RUN pip install --upgrade pip && \
