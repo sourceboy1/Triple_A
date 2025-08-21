@@ -25,22 +25,12 @@ load_dotenv(BASE_DIR / ".env")
 
 import cloudinary
 
-
-# This will pick CLOUDINARY_URL automatically
-cloudinary.config(secure=True)
-
+if CLOUDINARY_URL := os.environ.get("CLOUDINARY_URL"):
+    cloudinary.config(cloudinary_url=CLOUDINARY_URL, secure=True)
 
 
 
 
-
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-gy%qkzk$5a8idz4s$%6o-x$l$8tkhxd22yss^6_5o1m7os5$yx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -162,15 +152,16 @@ DEFAULT_FROM_EMAIL = 'Triple A,s Support <support.royeane@yahoo.com>'
 
 import dj_database_url
 
+SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-dev-key")
+
 DATABASES = {
     "default": dj_database_url.config(
-        default=os.environ.get("DATABASE_URL", "sqlite:///db.sqlite3"),
+        default=os.environ.get("DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
         conn_max_age=600,
-        ssl_require=True,
+        ssl_require=os.environ.get("DATABASE_SSL", "True") == "True",
     )
 }
 
-SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-dev-key")  # Only for fallback
 
 
 
@@ -233,18 +224,16 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 
-# Static files (CSS, JavaScript, Images)
+# Static files
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Point to React build only if it exists
+# Always point to React build
 FRONTEND_STATIC_DIR = BASE_DIR / "reat_project" / "build" / "static"
-if FRONTEND_STATIC_DIR.exists():
-    STATICFILES_DIRS = [FRONTEND_STATIC_DIR]
-else:
-    STATICFILES_DIRS = []
+STATICFILES_DIRS = [FRONTEND_STATIC_DIR] if FRONTEND_STATIC_DIR.exists() else []
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 # Media files (user-uploaded files)
 MEDIA_URL = '/media/'
