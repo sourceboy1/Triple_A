@@ -21,7 +21,8 @@ COPY . /app/
 
 # Install React dependencies and build React
 WORKDIR /app/reat_project
-RUN npm install && npm run build
+RUN npm install && npm run build || (echo "React build failed!" && exit 1)
+
 
 # Back to Django project root
 WORKDIR /app

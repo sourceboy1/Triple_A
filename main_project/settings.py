@@ -118,10 +118,7 @@ LOGIN_REDIRECT_URL = '/'
 
 
 
-ROOT_URLCONF = 'main_project.urls'
-
-
-FRONTEND_DIR = BASE_DIR / 'reat_project' / 'build'
+ROOT_URLCONF = 'main_project.urls'  
 
 
 TEMPLATES = [
@@ -231,13 +228,15 @@ CORS_ALLOWED_ORIGINS = [
 
 
 
-# Static files (CSS, JavaScript, images)
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [
-    FRONTEND_DIR / 'static',  # JS/CSS
-    FRONTEND_DIR,             # manifest.json, favicon.ico
-]
+FRONTEND_DIR = BASE_DIR / 'reat_project' / 'build'
+
+STATICFILES_DIRS = []
+if FRONTEND_DIR.exists():
+    STATICFILES_DIRS = [
+        FRONTEND_DIR / 'static',
+        FRONTEND_DIR,
+    ]
+
 
 
 
