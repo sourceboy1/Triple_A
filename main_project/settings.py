@@ -238,3 +238,20 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Media files (user-uploaded files)
 MEDIA_URL = '/media/'
 # MEDIA_ROOT = BASE_DIR / 'media'  # Uncomment if you need local media storage
+
+# Logging config to avoid startup errors
+LOGGING_CONFIG = 'logging.config.dictConfig'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+}
