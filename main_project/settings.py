@@ -44,7 +44,12 @@ SECRET_KEY = 'django-insecure-gy%qkzk$5a8idz4s$%6o-x$l$8tkhxd22yss^6_5o1m7os5$yx
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['tripleastechng.com', 'www.tripleastechng.com']
+ALLOWED_HOSTS = [
+    'tripleastechng.com',
+    'www.tripleastechng.com',
+    'crossover.proxy.rlwy.net',
+    '*',  # optional catch-all (safe if DEBUG=False)
+]
 
 
 
@@ -153,16 +158,16 @@ DEFAULT_FROM_EMAIL = 'Triple A,s Support <support.royeane@yahoo.com>'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+import dj_database_url
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'railway',  # database name from the URL
-        'USER': 'root',
-        'PASSWORD': 'cRWcDsUwiJnCiQmbOdIuIfHWsGRuqIbt',
-        'HOST': 'crossover.proxy.rlwy.net',
-        'PORT': '25386',
-    }
+    "default": dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+        conn_max_age=600,
+        ssl_require=True,
+    )
 }
+
 
 
 
@@ -212,7 +217,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CSRF_TRUSTED_ORIGINS = [
     'https://tripleastechng.com',
     'https://www.tripleastechng.com',
+    'https://crossover.proxy.rlwy.net',
 ]
+
 
 
 CORS_ALLOWED_ORIGINS = [
