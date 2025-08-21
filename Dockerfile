@@ -1,45 +1,60 @@
-FROM python:3.11-slim
+# --------------------------
+# Stage 1: Build React Frontend
+# --------------------------
+FROM node:20 AS frontend
+
+WORKDIR /app/frontend
+
+# Copy only React files first for better caching
+COPY reat_project/package*.json ./
+RUN npm install
+
+# Copy rest of React app and build
+COPY reat_project/ ./
+RUN npm run build
+
+
+# --------------------------
+# Stage 2: Django Backend
+# --------------------------
+FROM python:3.11-slim AS backend
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
+    build-essential \
     curl \
-    gnupg \
-    ca-certificates \
-    build-essential
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install Node.js 20 (LTS) and latest npm
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
-    apt-get install -y nodejs && \
-    npm install -g npm@latest && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Set main work directory
-WORKDIR /app
-
-# Copy project files first
-COPY . /app/
-
-# Install React dependencies and build React
-WORKDIR /app/reat_project
-RUN npm install && npm run build || (echo "React build failed!" && exit 1)
-
-
-# Back to Django project root
 WORKDIR /app
 
 # Install Python dependencies
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN python manage.py check
+# Copy Django project files
+COPY . .
+
+# Copy built React frontend into Django static directory
+COPY --from=frontend /app/frontend/build ./reat_project/build
+
+# Debug step (will show in build logs)
+RUN python -m django --version
 RUN python manage.py help
 
-# Collect Django static files
-RUN python manage.py collectstatic --noinput --settings=main_project.settings
+# Run checks
+RUN python manage.py check
 
+# Collect static files
+RUN python manage.py collectstatic --noinput
 
-# Expose port
+# Expose port (Railway will override with its own $PORT)
 EXPOSE 8000
 
-# Run Django with Gunicorn
+
+# Start with gunicorn
 CMD ["sh", "-c", "gunicorn main_project.wsgi:application --bind 0.0.0.0:${PORT:-8080}"]
