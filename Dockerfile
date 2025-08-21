@@ -13,6 +13,10 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     npm install -g npm@latest && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
+    # Build React
+WORKDIR /app/reat_project
+RUN npm install && npm run build
+
 # Set work directory
 WORKDIR /app
 
