@@ -17,6 +17,9 @@ from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# React build directory
+FRONTEND_DIR = BASE_DIR / 'reat_project' / 'build'
+
 # Load .env from project root
 load_dotenv(BASE_DIR / ".env")
 
@@ -29,8 +32,6 @@ cloudinary.config(secure=True)
 
 
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 
@@ -118,13 +119,16 @@ LOGIN_REDIRECT_URL = '/'
 
 
 
-ROOT_URLCONF = 'main_project.urls'  
+ROOT_URLCONF = 'main_project.urls'
+
+
+FRONTEND_DIR = BASE_DIR / 'reat_project' / 'build'
 
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [FRONTEND_DIR],  # <-- React build directory here
+        'DIRS': [FRONTEND_DIR] if FRONTEND_DIR.exists() else [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -136,6 +140,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 
 
@@ -227,8 +232,6 @@ CORS_ALLOWED_ORIGINS = [
 
 
 
-
-FRONTEND_DIR = BASE_DIR / 'reat_project' / 'build'
 
 STATICFILES_DIRS = []
 if FRONTEND_DIR.exists():
