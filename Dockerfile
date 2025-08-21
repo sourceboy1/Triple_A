@@ -31,8 +31,12 @@ WORKDIR /app
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt
 
+RUN python manage.py check
+RUN python manage.py help
+
 # Collect Django static files
-RUN python manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput --settings=main_project.settings
+
 
 # Expose port
 EXPOSE 8000
