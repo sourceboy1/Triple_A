@@ -57,10 +57,10 @@ INSTALLED_APPS = [
     'main_app',
     'corsheaders',
     'rest_framework',
-    'rest_framework.authtoken',
     'cloudinary_storage',
-    'cloudinary',  
+    'cloudinary',
 ]
+
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
@@ -85,15 +85,13 @@ AUTHENTICATION_BACKENDS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',  # ✅ This is correct
-        'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.AllowAny',  # ✅ Works for open API; change to IsAuthenticated for protected endpoints
-        
+        'rest_framework.permissions.AllowAny',
     ),
 }
+
 
 
 
@@ -232,7 +230,8 @@ FRONTEND_STATIC_DIR = BASE_DIR / "reat_project" / "build" / "static"
 STATICFILES_DIRS = [FRONTEND_STATIC_DIR]
 
 # WhiteNoise for serving static files
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 MEDIA_URL = '/media/'
