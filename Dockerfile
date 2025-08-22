@@ -5,14 +5,16 @@ FROM node:20 AS frontend
 
 WORKDIR /app/frontend
 
-# Copy only package.json first for caching
+# Copy package.json and package-lock.json first for caching
 COPY reat_project/package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy rest of React app and build
+# Copy the rest of React code
 COPY reat_project/ ./
+
+# Build React production files
 RUN npm run build
 
 # --------------------------
@@ -20,7 +22,7 @@ RUN npm run build
 # --------------------------
 FROM python:3.11-slim AS backend
 
-# Environment variables
+# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
@@ -33,22 +35,25 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-# Install Python dependencies
+# Copy Python dependencies
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy Django project files
-COPY . .
+COPY . ./
 
 # Copy built React frontend into Django static directory
 COPY --from=frontend /app/frontend/build ./reat_project/build
 
-# Debug: check Python and Django
+# Run Django checks (optional)
 RUN python -m django --version
-RUN python manage.py help
+RUN python manage.py check
 
-# Expose port (Railway overrides with $PORT)
+# Collect static files
+RUN python manage.py collectstatic --noinput
+
+# Expose port (Railway or local)
 EXPOSE 8000
 
-# Start app with Gunicorn
-CMD ["sh", "-c", "gunicorn main_project.wsgi:application --bind 0.0.0.0:${PORT:-8080}"]
+# Start Django with Gunicorn
+CMD ["gunicorn", "main_project.wsgi:application", "--bind", "0.0.0.0:8000"]
