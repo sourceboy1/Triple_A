@@ -129,6 +129,7 @@ TEMPLATES = [
     },
 ]
 
+CORS_ALLOW_CREDENTIALS = 'True'
 
 
 
@@ -220,6 +221,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://www.tripleastechng.com",
     "http://localhost:3000",
 ]
+
 
 
 STATIC_URL = '/static/'
