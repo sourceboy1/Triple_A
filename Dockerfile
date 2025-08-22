@@ -22,6 +22,7 @@ RUN npm run build
 # --------------------------
 FROM python:3.11-slim AS backend
 
+# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
@@ -44,10 +45,14 @@ COPY . ./
 # Copy built React frontend into Django static directory
 COPY --from=frontend /app/frontend/build ./reat_project/build
 
+# Run Django checks (optional)
+RUN python -m django --version
+RUN python manage.py check
+
 # Collect static files
 RUN python manage.py collectstatic --noinput
 
-# Expose port
+# Expose port (Railway or local)
 EXPOSE 8000
 
 # Start Django with Gunicorn
