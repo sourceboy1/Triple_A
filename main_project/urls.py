@@ -28,5 +28,5 @@ index_file_path = os.path.join(settings.FRONTEND_DIR, 'index.html')
 if os.path.exists(index_file_path):
     urlpatterns += [
         re_path(r'^(?!api/|admin/|static/|media/|manifest\.json|favicon\.ico).*$', 
-                TemplateView.as_view(template_name='index.html'))
+        index)
     ]

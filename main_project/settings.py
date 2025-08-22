@@ -230,7 +230,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Always point to React build
 FRONTEND_STATIC_DIR = BASE_DIR / "reat_project" / "build" / "static"
-STATICFILES_DIRS = [FRONTEND_STATIC_DIR] if FRONTEND_STATIC_DIR.exists() else []
+STATICFILES_DIRS = [BASE_DIR / "reat_project" / "build" / "static"]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
