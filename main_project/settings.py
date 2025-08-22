@@ -224,20 +224,19 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 
-# Static files
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Always point to React build
+# React static files
 FRONTEND_STATIC_DIR = BASE_DIR / "reat_project" / "build" / "static"
-STATICFILES_DIRS = [BASE_DIR / "reat_project" / "build" / "static"]
+STATICFILES_DIRS = [FRONTEND_STATIC_DIR]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# WhiteNoise for serving static files
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage
 
-
-# Media files (user-uploaded files)
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 MEDIA_URL = '/media/'
-# MEDIA_ROOT = BASE_DIR / 'media'  # Uncomment if you need local media storage
+
 
 # Logging config to avoid startup errors
 LOGGING = {
