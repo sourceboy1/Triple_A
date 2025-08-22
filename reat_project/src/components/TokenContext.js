@@ -12,10 +12,10 @@ export const TokenProvider = ({ children }) => {
   useEffect(() => {
     const fetchToken = async () => {
       try {
-        const response = await api.post('/api/token/', {
-          username: 'admin',
-          password: 'oluwaseun123'
-        });
+        const response = await api.post('token/', {   // no leading slash!
+        username: 'admin',
+        password: 'oluwaseun123'
+      });
         setAccessToken(response.data.access);
       } catch (err) {
         console.error('Error fetching token:', err);
