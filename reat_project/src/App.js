@@ -32,7 +32,7 @@ import AccountDetails from './components/AccountDetails';
 import OrderDetails from './components/OrderDetails';
 import PowerBankDisplay from './components/PowerBanksSlider';
 import Footer from './components/Footer';
-import UserOrders from './components/UserOrders';
+import UserOrderParent from './components/UserOrderParent';
 import FloatingNav from './components/FloatingNav';
 import NotFoundPage from './components/404Page';
 import ScrollToTop from './components/ScrollToTop';
@@ -99,7 +99,7 @@ const AppContent = () => {
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/account/details" element={<AccountDetails />} />
           <Route path="/order/:orderId" element={<OrderDetails />} />
-          <Route path="/user/orders" element={<UserOrders />} />
+          <Route path="/user/orders" element={<UserOrderParent />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       )}

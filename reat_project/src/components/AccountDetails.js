@@ -1,10 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';  
 import { useUser } from '../contexts/UserContext';
-import api from '../Api.js'; // <- use api.js
+import api from '../Api.js'; // <- central api.js
 import eyeIcon from '../pictures/eye.jpg';
 import closedEyeIcon from '../pictures/eye-closed.jpg';
 import './AccountDetails.css';
-import Loading from './Loading.js';
 
 const AccountDetails = () => {
   const { firstName, lastName, email, token, userId, signIn } = useUser();
@@ -38,16 +37,19 @@ const AccountDetails = () => {
     }
 
     setIsLoading(true);
+
+    const payload = {
+      first_name: editFirstName,
+      last_name: editLastName,
+      email: editEmail,
+      current_password: currentPassword, // ✅ always required
+      new_password: newPassword || null, // ✅ optional
+    };
+
     try {
       const response = await api.put(
         'update-profile/',
-        {
-          first_name: editFirstName,
-          last_name: editLastName,
-          email: editEmail,
-          current_password: currentPassword,
-          new_password: newPassword,
-        },
+        payload,
         {
           headers: { Authorization: `Token ${token}` }
         }
@@ -59,17 +61,16 @@ const AccountDetails = () => {
         setNewPassword('');
         setConfirmNewPassword('');
 
-        const newToken = response.data.token;
-        if (newToken) {
-          signIn({
-            username: response.data.username,
-            userId: response.data.user_id,
-            firstName: response.data.first_name,
-            lastName: response.data.last_name,
-            email: response.data.email,
-            token: newToken,
-          });
-        }
+        const newTokens = response.data.tokens;
+        signIn({
+          username: response.data.username,
+          userId: response.data.user_id,
+          firstName: response.data.first_name,
+          lastName: response.data.last_name,
+          email: response.data.email,
+          token: newTokens ? newTokens.access : token,
+          refreshToken: newTokens ? newTokens.refresh : null,
+        });
 
         setTimeout(() => {
           updateMessageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -79,7 +80,7 @@ const AccountDetails = () => {
       if (error.response?.status === 401) {
         setUpdateMessage('Session expired. Please log in again.');
       } else {
-        setUpdateMessage('Failed to update profile. Please check your current password.');
+        setUpdateMessage(error.response?.data?.detail || 'Failed to update profile. Please check your current password.');
       }
       setTimeout(() => {
         updateMessageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -144,9 +145,37 @@ const AccountDetails = () => {
           />
         </div>
 
-        {[ // password fields
-          { label: 'Current password (leave blank to leave unchanged)', value: currentPassword, setter: setCurrentPassword, show: showCurrentPassword, toggle: setShowCurrentPassword, id: 'currentPassword' },
-          { label: 'New password (leave blank to leave unchanged)', value: newPassword, setter: setNewPassword, show: showNewPassword, toggle: setShowNewPassword, id: 'newPassword' },
+        {/* Current Password - always required */}
+        <div className="password-container">
+          <label htmlFor="currentPassword">Current password *</label>
+          <div className="password-input-container">
+            <input
+              id="currentPassword"
+              type={showCurrentPassword ? 'text' : 'password'}
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              required
+            />
+            <img
+              src={showCurrentPassword ? closedEyeIcon : eyeIcon}
+              alt="Toggle visibility"
+              className="eye-icon"
+              onClick={() => togglePasswordVisibility(setShowCurrentPassword)}
+            />
+          </div>
+        </div>
+
+        {/* Note for password change */}
+        <div className="password-note">
+          <small>
+            If you want to change your password, fill in the fields below.  
+            Otherwise, leave them blank and your password will remain the same.
+          </small>
+        </div>
+
+        {/* Optional password change */}
+        {[
+          { label: 'New password (optional)', value: newPassword, setter: setNewPassword, show: showNewPassword, toggle: setShowNewPassword, id: 'newPassword' },
           { label: 'Confirm new password', value: confirmNewPassword, setter: setConfirmNewPassword, show: showConfirmNewPassword, toggle: setShowConfirmNewPassword, id: 'confirmNewPassword' }
         ].map(field => (
           <div className="password-container" key={field.id}>

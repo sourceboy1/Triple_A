@@ -1,4 +1,4 @@
-/* Transfer.css */
+/* Transfer.css (Improved for Mobile) */
 
 .transfer-container {
     display: flex;
@@ -7,7 +7,7 @@
     width: 80%;
     margin: 0 auto;
     padding: 20px;
-    background-color: #ffffff; /* Ensures a white background */
+    background-color: #ffffff; 
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     font-family: Arial, sans-serif;
@@ -24,13 +24,13 @@
 }
 
 .order-section h2 {
-    font-size: 1.6em; /* Slightly larger for emphasis */
+    font-size: 1.6em;
     color: #333;
     margin-bottom: 10px;
 }
 
 .order-section h3 {
-    font-size: 1.3em; /* Increased font size for prominence */
+    font-size: 1.3em;
     color: #555;
     margin-bottom: 15px;
 }
@@ -38,26 +38,29 @@
 .order-section p {
     font-size: 1em;
     color: #666;
-    margin: 8px 0; /* Increased margin for readability */
+    margin: 8px 0;
 }
 
 .customer-details h4 {
-    font-size: 1.3em; /* Increased font size for section header */
+    font-size: 1.3em;
     color: #333;
     margin-bottom: 15px;
 }
 
+/* ✅ Fix order summary */
 .order-summary {
     width: 100%;
+    max-width: 450px; /* Prevent stretching */
+    margin: 0 auto; /* Center horizontally */
     padding: 20px;
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 8px;
-    margin-left: 2px;
+    text-align: left;
 }
 
 .order-summary h2 {
-    font-size: 1.6em; /* Consistent with order section */
+    font-size: 1.6em;
     color: #333;
     margin-bottom: 15px;
 }
@@ -96,16 +99,14 @@
     margin: 4px 0;
 }
 
+/* ✅ Price rows stay aligned left & right */
 .total, .shipping-cost, .total-amount {
     font-size: 1.1em;
     color: #333;
     margin: 10px 0;
-}
-
-.total span, .shipping-cost span, .total-amount span {
-    display: inline-block;
-    width: 150px;
-    font-weight: bold;
+    display: flex;
+    justify-content: space-between; /* keeps label left, price right */
+    align-items: center;
 }
 
 .payment-info-section {
@@ -123,15 +124,27 @@
     margin: 8px 0;
 }
 
+/* ✅ Mobile responsiveness */
 @media (max-width: 768px) {
     .transfer-container {
         width: 95%;
         padding: 10px;
     }
 
+    .order-summary {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .order-summary-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
     .order-summary-item-image {
         width: 60px;
         height: 60px;
+        margin-bottom: 10px;
     }
 
     .order-summary-item-details h3 {
@@ -141,6 +154,42 @@
     .total, .shipping-cost, .total-amount {
         font-size: 1em;
     }
+}
+
+/* ✅ Very small screens (320px - 425px) */
+@media (max-width: 425px) {
+    .order-summary {
+        padding: 15px;
+        max-width: 100%;
+    }
+
+    .order-summary h2 {
+        font-size: 1.3em;
+        text-align: center;
+    }
+
+    .order-summary-item {
+        align-items: center;
+    }
+
+    .order-summary-item-details h3 {
+        font-size: 0.95em;
+        text-align: center;
+    }
+
+    .order-summary-item-details p {
+        font-size: 0.9em;
+        text-align: center;
+    }
+
+    /* ✅ Keep totals aligned nicely on small screens */
+.total, .shipping-cost, .total-amount {
+        font-size: 0.95em;
+        flex-direction: row; 
+        justify-content: flex-start; /* label + price together */
+        align-items: center;
+        gap: 8px; /* tighter space */
+    } 
 }
 
 .go-home-button {
@@ -221,4 +270,3 @@
 .dialog-cancel-button:hover {
     background-color: #0056b3; /* Darker blue on hover */
 }
-

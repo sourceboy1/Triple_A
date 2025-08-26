@@ -11,7 +11,7 @@ const SearchComponent = ({ selectedCategory }) => {
   // Fetch all products from the API
   const fetchProducts = async () => {
     try {
-      const response = await api.get('api/products/');
+      const response = await api.get('products/', { params });
       return response.data;
     } catch (error) {
       console.error('Error fetching products:', error);

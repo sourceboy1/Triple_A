@@ -23,26 +23,26 @@ const Login = () => {
         },
         body: JSON.stringify({ username: identifier, password }),
       });
-  
+
       const data = await response.json();
-      console.log('Login response:', data); // Log the response for debugging
-  
+
       if (response.ok) {
-        if (data.token && data.user_id) {
+        if (data.access && data.refresh && data.user) {
           signIn({
-            username: data.username,
-            userId: data.user_id,
-            firstName: data.first_name,
-            lastName: data.last_name,
-            email: data.email,
-            token: data.token,
+            username: data.user.username,
+            userId: data.user.id,
+            firstName: data.user.first_name,
+            lastName: data.user.last_name,
+            email: data.user.email,
+            token: data.access,       // access token
+            refresh: data.refresh,    // refresh token
           });
           navigate('/');
         } else {
-          setError('Unexpected response format.');
+          setError('Unexpected response format. Please try again.');
         }
       } else {
-        setError(data.error || 'Invalid credentials.');
+        setError(data.detail || data.error || 'Invalid credentials.');
       }
     } catch (error) {
       setError('Error logging in: ' + error.message);
@@ -54,14 +54,18 @@ const Login = () => {
   };
 
   const handleRegisterClick = () => {
-    navigate('/signup'); // Navigate to the signup page
+    navigate('/signup'); 
   };
 
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
-        <h2>Login 
-          <span style={{ marginLeft: '10px', cursor: 'pointer', color: 'blue' }} onClick={handleRegisterClick}>
+        <h2>
+          Login 
+          <span 
+            style={{ marginLeft: '10px', cursor: 'pointer', color: 'blue' }}
+            onClick={handleRegisterClick}
+          >
             Register
           </span>
         </h2>

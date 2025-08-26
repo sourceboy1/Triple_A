@@ -106,19 +106,29 @@
     color: white;
 }
 
+/* ✅ Mobile responsiveness for 320px, 375px, 425px */
 @media (max-width: 425px) {
-    .payment-info-section {
-        flex-direction: column;
+    .payment-page-container {
+        width: 95%;              /* keep edges visible */
+        padding: 15px;           /* balanced padding */
+        margin: 20px auto;       /* center vertically */
     }
 
-    .payment-info, .info-section {
+    .payment-info-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .payment-info, 
+    .info-section {
         width: 100%;
+        margin-bottom: 20px;
     }
 
     .info-section h1 {
         font-size: 1.2em;
         text-align: center;
-        margin-top: 15px;
+        margin-top: 10px;
     }
 
     .order-summary {
@@ -127,6 +137,7 @@
 
     .payment-buttons {
         flex-direction: column;
+        width: 100%;
     }
 
     .payment-buttons button {
@@ -135,7 +146,47 @@
     }
 }
 
-/* For medium screens: 720px and 1025px */
+/* ✅ Fine-tuned breakpoints */
+@media (max-width: 375px) {
+    .payment-page-container {
+        width: 92%;
+        padding: 12px;
+    }
+
+    .payment-info h2,
+    .info-section h1 {
+        font-size: 1.1em;
+    }
+
+    .info-block img {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 320px) {
+    .payment-page-container {
+        width: 90%;
+        padding: 10px;
+    }
+
+    .payment-info h2,
+    .info-section h1 {
+        font-size: 1em;
+    }
+
+    .info-block img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .payment-buttons button {
+        font-size: 0.85em;
+        padding: 8px 15px;
+    }
+}
+
+/* ✅ Medium screens: 720px - 1025px */
 @media (min-width: 720px) and (max-width: 1025px) {
     .payment-info-section {
         justify-content: space-between;
@@ -145,7 +196,9 @@
         font-size: 1.4em;
     }
 
-    .payment-info h2, .info-section h1, .info-block h4 {
+    .payment-info h2, 
+    .info-section h1, 
+    .info-block h4 {
         font-size: 1.3em;
     }
 

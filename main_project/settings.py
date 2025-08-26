@@ -23,23 +23,37 @@ FRONTEND_DIR = BASE_DIR / 'reat_project' / 'build'
 # Load .env from project root
 load_dotenv(BASE_DIR / ".env")
 
-import cloudinary
-
-if CLOUDINARY_URL := os.environ.get("CLOUDINARY_URL"):
-    cloudinary.config(cloudinary_url=CLOUDINARY_URL, secure=True)
-
-
-
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+CORS_ALLOW_CREDENTIALS = True
+
 ALLOWED_HOSTS = [
     'tripleastechng.com',
     'www.tripleastechng.com',
     'crossover.proxy.rlwy.net',
-    '*',  # optional catch-all (safe if DEBUG=False)
+    'localhost',
+    '127.0.0.1',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://tripleastechng.com',
+    'https://www.tripleastechng.com',
+    'https://crossover.proxy.rlwy.net',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",       # React dev server
+    "http://127.0.0.1:3000",
+    "http://localhost:8000",       # Django local
+    "http://127.0.0.1:8000",
+    "https://tripleastechng.com",  # Production domain
+    "https://www.tripleastechng.com",
+    "https://crossover.proxy.rlwy.net",  # Your Railway proxy
 ]
 
 
@@ -61,9 +75,6 @@ INSTALLED_APPS = [
     'cloudinary',
 ]
 
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this
@@ -77,23 +88,30 @@ MIDDLEWARE = [
 ]
 
 
-AUTH_USER_MODEL = 'main_app.CustomUser'
+AUTH_USER_MODEL = "main_app.CustomUser"
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
+    "main_app.backends.UsernameOrEmailBackend",  # custom backend
+    "django.contrib.auth.backends.ModelBackend", # fallback
 ]
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticated',
     ),
 }
 
 
+# Cloudinary storage
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+import cloudinary
+if CLOUDINARY_URL := os.environ.get("CLOUDINARY_URL"):
+    cloudinary.config(cloudinary_url=CLOUDINARY_URL, secure=True)
 
 
 
@@ -102,9 +120,6 @@ LOGIN_URL = '/login/'  # Change this to your React login URL if needed
 
 # Where to go after login (optional)
 LOGIN_REDIRECT_URL = '/'
-
-
-
 
 
 ROOT_URLCONF = 'main_project.urls'
@@ -129,7 +144,7 @@ TEMPLATES = [
     },
 ]
 
-CORS_ALLOW_CREDENTIALS = True
+
 
 
 
@@ -153,13 +168,34 @@ import dj_database_url
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-dev-key")
 
+import dj_database_url
+
 DATABASES = {
     "default": dj_database_url.config(
-        default=os.environ.get("DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
+        default=os.environ.get(
+            "DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
+        ),
         conn_max_age=600,
-        ssl_require=os.environ.get("DATABASE_SSL", "True") == "True",
     )
 }
+
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         "NAME": "my_triplea_ecommerce_db",
+#         "USER": "triple_user",
+#         "PASSWORD": "oluwaseun123$",
+#         "HOST": "localhost",
+#         "PORT": "3306",
+#         "OPTIONS": {
+#             "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+#         },
+#     }
+# }
+
+
+
 
 
 
@@ -205,22 +241,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# settings.py
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://tripleastechng.com',
-    'https://www.tripleastechng.com',
-    'https://crossover.proxy.rlwy.net',
-]
-
-
-
-CORS_ALLOWED_ORIGINS = [
-    "https://tripleastechng.com",
-    "https://www.tripleastechng.com",
-    "http://localhost:3000",
-]
 
 
 

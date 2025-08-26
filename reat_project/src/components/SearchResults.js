@@ -19,7 +19,7 @@ const SearchResults = () => {
       setLoading(true);
       try {
         const params = categoryId ? { category_id: categoryId } : { query };
-        const response = await api.get('api/products/', { params });
+        const response = await api.get('products/', { params });
         setResults(response.data);
       } catch (error) {
         console.error('Error fetching search results:', error);
@@ -61,7 +61,12 @@ const SearchResults = () => {
         {currentResults.length > 0 ? (
           currentResults.map(product => (
             <div key={product.product_id} className="result-item">
-              <img src={product.image_url} alt={product.name} className="product-image" />
+              <img 
+                src={product.image_urls?.large || product.image_urls?.small || '/placeholder.png'} 
+                alt={product.name} 
+                className="product-image" 
+              />
+
               <div className="result-info">
                 <a href={`/product-details/${product.product_id}`}>
                   <h3>{product.name}</h3>

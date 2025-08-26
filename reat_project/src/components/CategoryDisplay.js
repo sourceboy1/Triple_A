@@ -6,10 +6,10 @@ import './CategoryDisplay.css';
 
 // Define categories once
 const categories = [
-  { id: 8, name: "Accessories" },
-  { id: 2, name: "Games" },
+  { id: 2, name: "Accessories" },
+  { id: 1, name: "Games" },
   { id: 4, name: "Headphones & Airpods" },
-  { id: 7, name: "Watches" },
+  { id: 6, name: "Watches" },
 ];
 
 // Utility to shuffle arrays
@@ -69,20 +69,29 @@ const CategoryDisplay = () => {
             <div key={category.id} className="category-container">
               <h3 className="category-title">{category.name}</h3>
               <div className="product-grid">
-                {products[category.name] && products[category.name].map(product => (
-                  <div
-                    key={product.product_id}
-                    className="product-card"
-                    onClick={() => handleProductClick(product.product_id)}
-                  >
-                    {product.image_url ? (
-                      <img src={product.image_url} alt={product.name} className="product-image" />
-                    ) : (
-                      <p>No image available</p>
-                    )}
-                    <h4 className="product-title">{product.name}</h4>
-                  </div>
-                ))}
+                {products[category.name] && products[category.name].map(product => {
+                  const mainImage = product.image_urls?.medium || '/media/default.jpg';
+                  const secondaryImage = product.secondary_image_urls?.medium || mainImage;
+
+                  return (
+                    <div
+                      key={product.product_id}
+                      className="product-card"
+                      onClick={() => handleProductClick(product.product_id)}
+                      onMouseEnter={(e) => {
+                        const imgEl = e.currentTarget.querySelector('img');
+                        imgEl.src = secondaryImage;
+                      }}
+                      onMouseLeave={(e) => {
+                        const imgEl = e.currentTarget.querySelector('img');
+                        imgEl.src = mainImage;
+                      }}
+                    >
+                      <img src={mainImage} alt={product.name} className="product-image" />
+                      <h4 className="product-title">{product.name}</h4>
+                    </div>
+                  );
+                })}
               </div>
               <div
                 className="see-more-link"

@@ -1,65 +1,86 @@
 .footer-container {
     background-color: #f9f9f9; /* Light background color */
     padding: 20px; /* Space around the footer */
-    text-align: center; /* Center align text for the main container */
+    text-align: center; /* Default for larger screens */
     padding-top: 50px; /* Additional space at the top */
     margin-bottom: 10px; /* Space below the footer */
 }
 
 .footer-content {
     display: flex; /* Use flexbox for layout */
-    justify-content: space-between; /* Space items evenly */
-    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+    justify-content: space-between; /* Spread items */
+    flex-wrap: wrap; /* Allow items to wrap */
 }
 
 .footer-section {
-    flex: 1; /* Each section takes equal space */
-    padding: 10px; /* Space within each section */
-    min-width: 200px; /* Minimum width for each section */
+    flex: 1; /* Equal space */
+    padding: 10px;
+    min-width: 200px;
 }
 
 .footer-section h3 {
-    color: green; /* Color for section headings */
-    margin-bottom: 10px; /* Space below headings */
-    text-align: left; /* Align headings to the start */
+    color: green;
+    margin-bottom: 10px;
+    text-align: left; /* Headings always left */
 }
 
 .footer-section p {
-    color: black; /* Color for paragraph text */
-    margin: 5px 0; /* Space above and below paragraphs */
-    text-align: left; /* Align text under headings to the start */
+    color: black;
+    margin: 5px 0;
+    text-align: left; /* Content always left */
 }
 
-/* Social Media Icons Styling */
+/* Social Media Icons */
 .footer-social-media {
     margin-top: 20px;
     display: flex;
-    justify-content: flex-start; /* Align icons to the start */
-    gap: 10px; /* Space between icons */
+    justify-content: flex-start; /* Align icons left */
+    gap: 10px;
 }
 
 .social-icon {
-    width: 30px; /* Smaller size for the icons */
-    height: 30px; /* Ensure height matches */
-    border-radius: 50%; /* Make icons circular */
-    border: 2px solid green; /* Circular border around icons */
-    padding: 5px; /* Space inside the border */
-    background-color: #fff; /* Background color for the icons */
-    transition: transform 0.3s ease; /* Smooth scaling effect */
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid green;
+    padding: 5px;
+    background-color: #fff;
+    transition: transform 0.3s ease;
 }
 
 .social-icon:hover {
-    transform: scale(1.2); /* Increase size slightly on hover */
+    transform: scale(1.2);
 }
 
-/* Responsive Styles */
+/* Tablet and smaller */
 @media (max-width: 768px) {
     .footer-content {
-        flex-direction: column; /* Stack sections on smaller screens */
-        align-items: center; /* Center align sections */
+        flex-direction: column; /* Stack */
+        align-items: flex-start; /* ✅ Left-align instead of center */
+        text-align: left; /* ✅ Ensure all text is left-aligned */
+    }
+
+    .footer-section {
+        width: 100%; /* Take full width */
     }
 
     .footer-social-media {
-        flex-direction: row; /* Keep icons in a row on smaller screens */
+        justify-content: flex-start; /* ✅ Icons stay left */
+    }
+}
+
+/* Specific small devices: 320px, 375px, 425px */
+@media (max-width: 425px) {
+    .footer-container {
+        text-align: left; /* ✅ Override container centering */
+    }
+
+    .footer-content {
+        align-items: flex-start;
+    }
+
+    .footer-section h3,
+    .footer-section p {
+        text-align: left; /* ✅ Force left for headings + text */
     }
 }

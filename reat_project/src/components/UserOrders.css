@@ -1,304 +1,222 @@
-
-
 body, html {
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden; /* Prevent horizontal scrolling */
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .orders-container {
-    width: 90%;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
+  width: 95%;
+  max-width: 1200px;
+  margin: 35px auto;
+  padding: 20px;
 }
 
 .orders-container h2 {
-    margin-bottom: 20px;
-    color: #333;
+  margin-bottom: 20px;
+  color: #222;
+  font-size: 1.8rem;
+  font-weight: 600;
 }
 
+/* Table / Grid for desktop */
 .orders-table {
-    border-collapse: collapse;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .orders-header {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    background-color: #f4f4f4;
-    padding: 10px;
-    border-bottom: 2px solid #ddd;
-    font-weight: bold;
-    color: #333;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  background-color: #f8f8f8;
+  padding: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #444;
+  border-bottom: 1px solid #ddd;
 }
 
 .orders-row {
-    border-bottom: 1px solid #ddd;
-    padding: 10px 0;
-    position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  padding: 12px;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  font-size: 0.95rem;
 }
 
-.order-info {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    align-items: center;
+.orders-row:last-child {
+  border-bottom: none;
 }
 
+/* Action buttons */
 .order-actions {
-    display: flex;
-    gap: 10px; /* Adds space between the buttons */
-    margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
 }
 
 .order-actions button {
-    background-color: green;
-    color: white;
-    border: none;
-    padding: 12px 18px;
-    cursor: pointer;
-    border-radius: 4px;
-    flex: 1; /* Ensures buttons take equal width */
-    margin-top: 25px;
-    margin-bottom: 10px;
+  flex: 1;
+  background-color: #198754;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: 0.2s ease;
 }
 
 .order-actions button:hover {
-    background-color: darkgreen;
+  background-color: #146c43;
 }
 
-.order-actions button:only-child {
-    padding: 12px 18px; /* Smaller padding for single button */
-    margin-left: auto;
-    margin-right: auto;
-    width: auto;
-    max-width: 220px; /* Ensure the button is not too wide */
-    text-align: center;
+.order-actions button:nth-child(2) {
+  background-color: #dc3545;
 }
 
-.order-summary {
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #f9f9f9;
-    margin-bottom: 40px;
+.order-actions button:nth-child(2):hover {
+  background-color: #b02a37;
 }
 
-.order-summary h2 {
-    margin-bottom: 15px;
-    color: #333;
-}
-
-.order-summary-items {
-    list-style: none;
-    padding: 0;
-}
-
-.order-summary-item {
-    display: flex;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 10px;
-}
-
-.order-summary-item:last-child {
-    border-bottom: none;
-}
-
-.order-summary-item-image {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    margin-right: 15px;
-    border-radius: 4px;
-}
-
-.order-summary-item-details {
-    display: flex;
-    flex-direction: column;
-}
-
-.order-summary-item-details h3 {
-    margin: 0;
-    color: green;
-}
-
-.order-summary-item-details p {
-    margin: 5px 0;
-    color: hsl(0, 0%, 33%);
-}
-
+/* Cancel Dialog */
 .cancel-dialog-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
 }
 
 .cancel-dialog {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
 }
 
-.dialog-confirm-button, .dialog-cancel-button {
-    margin: 10px;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
+.dialog-confirm-button,
+.dialog-cancel-button {
+  margin: 10px 5px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
 }
 
 .dialog-confirm-button {
-    background-color: green;
-    color: white;
+  background: #dc3545;
+  color: white;
 }
 
 .dialog-cancel-button {
-    background-color: darkgreen;
-    color: white;
+  background: #198754;
+  color: white;
 }
 
-/* Mobile responsiveness for screens up to 768px */
+/* --- Responsive --- */
+
+/* Tablets */
+@media screen and (max-width: 992px) {
+  .orders-header {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+
+  .orders-row {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile (stack as cards) */
 @media screen and (max-width: 768px) {
-    .orders-container {
-        width: 100%; /* Full width on smaller screens */
-        padding: 10px; /* Reduced padding */
-        margin-top: 65px;
-    }
+      .orders-container {
+ 
+    margin: 90px auto;           /* center the container */
+   
+  }
+  .orders-header {
+    display: none; /* hide table header */
+  }
 
-    .orders-header {
-        grid-template-columns: 1fr 1fr; /* Two columns for smaller screens */
-    }
+  .orders-row {
+    grid-template-columns: 1fr;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    padding: 15px;
+    background: #fafafa;
+  }
 
-    .order-info {
-        grid-template-columns: 1fr 1fr; /* Two columns for smaller screens */
-    }
+  .orders-row > div {
+    margin: 6px 0;
+    font-size: 0.95rem;
+  }
 
-    .order-actions {
-        flex-direction: column; /* Stack buttons vertically */
-        margin-top: 15px;
-        margin-bottom: 15px;
-    }
+  .order-actions {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+  }
 
-    .order-actions button {
-        margin: 5px 0; /* Adjust button margin */
-        margin-left: 0; /* Remove margin-left */
-        margin-right: 0; /* Remove margin-right */
-        width: 100%; /* Make buttons full-width */
-        max-width: none; /* Remove max-width limit */
-    }
-
-    .order-summary {
-        margin-top: 15px;
-        margin-bottom: 20px;
-    }
-
-    .order-summary-item {
-        flex-direction: column; /* Stack items vertically */
-        align-items: flex-start; /* Align to the left */
-        margin-bottom: 10px; /* Reduced space between items */
-    }
-
-    .order-summary-item-image {
-        width: 80px; /* Smaller image size */
-        height: 80px;
-        margin-bottom: 10px; /* Space below the image */
-    }
-
-    .order-summary-item-details h3 {
-        font-size: 1.2em; /* Adjust heading font size */
-    }
-
-    .order-summary-item-details p {
-        font-size: 0.9em; /* Smaller text for better readability */
-    }
-
-    .cancel-dialog {
-        width: 90%; /* Make dialog width responsive */
-        max-width: 400px; /* Limit max-width */
-    }
-
-    .dialog-confirm-button, .dialog-cancel-button {
-        width: 100%; /* Make buttons full width */
-        max-width: none; /* Remove max-width limit */
-    }
+  .order-actions button {
+    width: 100%;
+  }
 }
 
-/* Mobile responsiveness for screens up to 480px */
+/* Very small phones */
 @media screen and (max-width: 480px) {
-    .orders-container {
-        width: 95%; /* Slightly smaller width for tiny screens */
-        padding: 8px; /* Less padding */
-    }
+  .orders-container {
+    padding: 12px;
+    width: 100%;
+  }
 
-    .orders-header {
-        grid-template-columns: 1fr 1fr; /* Two columns */
-        font-size: 0.9em; /* Smaller font size for headers */
-    }
+/* For very small devices (320px, 375px, 425px) */
+@media screen and (max-width: 425px) {
+  .orders-container {
+    width: 95%;               /* keep it inside screen */
+    margin: 20px auto;           /* center the container */
+    border: 1px solid #ddd;   /* full border around container */
+    border-radius: 6px;       /* rounded look */
+    background: #fff;         /* keep background white */
+    overflow: hidden;         /* prevent right cut-off */
+  }
 
-    .order-info {
-        grid-template-columns: 1fr 1fr; /* Two columns */
-    }
+  .orders-container h2 {
+    margin-top: 80px; /* push heading further down */
+    font-size: 1.3em;
+    text-align: center;
+  }
 
-    .order-actions {
-        flex-direction: column; /* Stack actions vertically */
-        margin-top: 12px;
-    }
+  .orders-header, .orders-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* keep two columns */
+    border: 1px solid #ddd;         /* border all around each row */
+    margin-bottom: 8px;             /* small gap between rows */
+    border-radius: 4px;             /* soft edges */
+    padding: 10px;
+    background: #fafafa;
+  }
 
-    .order-actions button {
-        width: 100%; /* Full width for buttons */
-        margin: 5px 0;
-        padding: 10px 15px; /* Adjust padding for smaller buttons */
-    }
+  .orders-row {
+    font-size: 0.85rem;
+  }
 
-    .order-summary {
-        margin-top: 12px;
-        margin-bottom: 15px;
-        margin-right: 90px; /* Reduced right margin */
-        padding: 8px; /* Reduced padding */
-        font-size: 0.9em; /* Smaller font size for order summary */
-    }
-
-    .order-summary h2 {
-        font-size: 1.2em; /* Smaller title size */
-    }
-
-    .order-summary-item {
-        flex-direction: column; /* Stack vertically */
-        align-items: flex-start;
-    }
-
-    .order-summary-item-image {
-        width: 60px; /* Smaller image size */
-        height: 60px;
-        margin-bottom: 8px; /* Adjust spacing */
-    }
-
-    .order-summary-item-details h3 {
-        font-size: 1em; /* Smaller heading size */
-    }
-
-    .order-summary-item-details p {
-        font-size: 0.8em; /* Even smaller text */
-    }
-
-    .cancel-dialog {
-        width: 85%; /* More compact dialog box */
-        max-width: 350px; /* Limit max width */
-    }
-
-    .dialog-confirm-button, .dialog-cancel-button {
-        padding: 8px 16px; /* Smaller button size */
-        width: 100%;
-    }
+  .order-actions button {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+    width: 100%; /* full width buttons for small screens */
+  }
+}
 }

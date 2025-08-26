@@ -1,129 +1,122 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import api from '../Api'; // ✅ Unified API import
+import { useUser } from '../contexts/UserContext';
+import api from '../Api';
 import './OrderDetails.css';
 
-const OrderDetails = () => {
-    const { orderId } = useParams();
-    const [order, setOrder] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const token = localStorage.getItem('token');
-    const navigate = useNavigate();
+const OrderDetails = ({ orderId: propOrderId, onBack }) => {
+  const { orderId: paramOrderId } = useParams();
+  const orderId = propOrderId || paramOrderId;
+  const { token } = useUser();
 
-    // Scroll to the top of the page whenever the component is loaded
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
+  const [order, setOrder] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchOrderDetails = async () => {
-            try {
-                const response = await api.get(`/orders/${orderId}/`, {
-                    headers: {
-                        'Authorization': `Token ${token}`,
-                    },
-                });
-                setOrder(response.data);
-            } catch (err) {
-                setError('Error fetching order details.');
-            } finally {
-                setLoading(false);
-            }
-        };
-    
-        fetchOrderDetails();
-    }, [orderId, token]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
-    const formatPrice = (price) => {
-        return Number(price).toLocaleString('en-NG', { style: 'currency', currency: 'NGN' });
+  useEffect(() => {
+    const fetchOrderDetails = async () => {
+      try {
+        const response = await api.get(`/orders/${orderId}/`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setOrder(response.data);
+      } catch (err) {
+        console.error('Error fetching order:', err);
+        setError('Error fetching order details.');
+      } finally {
+        setLoading(false);
+      }
     };
 
-    const getPaymentMethodName = (paymentMethodId) => {
-        switch (paymentMethodId) {
-            case 4:
-                return 'Direct Bank Transfer';
-            case 3:
-                return 'Debit/Credit Cards';
-            default:
-                return 'Unknown Payment Method';
-        }
-    };
+    if (orderId && token) fetchOrderDetails();
+  }, [orderId, token]);
 
-    if (error) return <p>{error}</p>;
-    if (!order) return <p>No order details found.</p>;
+  const formatPrice = (price) =>
+    Number(price).toLocaleString('en-NG', { style: 'currency', currency: 'NGN' });
 
-    return (
-        <div className="order-details-container">
-            <button onClick={() => navigate(-1)} className="back-button">Back to Orders</button>
+  const getPaymentMethodName = (paymentMethodId) => {
+    switch (paymentMethodId) {
+      case 4: return 'Direct Bank Transfer';
+      case 3: return 'Debit/Credit Card';
+      default: return 'Unknown Payment Method';
+    }
+  };
 
-            <h2>Order #{order.order_id} was placed on {new Date(order.created_at).toLocaleDateString()} and is currently {order.status}.</h2>
+  if (loading) return <p>Loading order details...</p>;
+  if (error) return <p className="error">{error}</p>;
+  if (!order) return <p>No order details found.</p>;
 
-            <h3>Products</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {order.cart_items.map(item => (
-                    <tr key={item.product_id}>
-                        <td>
-                            {item.product_name ? `${item.product_name} × ${item.quantity}` : `Product Name Missing × ${item.quantity}`}
-                        </td>
-                        <td>{formatPrice(item.price * item.quantity)}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+  return (
+    <div className="order-details-container">
+      {/* Header */}
+      <div className="order-header">
+        <button onClick={() => onBack ? onBack() : navigate(-1)} className="back-button">
+          ← Back to Orders
+        </button>
+        <h2>
+          Order #{order.order_id} <span className="status">({order.status})</span>
+        </h2>
+        <p className="order-date">
+          Placed on {new Date(order.created_at).toLocaleDateString()}
+        </p>
+      </div>
 
-            <h3>Order Summary</h3>
-            <table className="order-summary-table">
-                <tbody>
-                    <tr>
-                        <td>Subtotal</td>
-                        <td>{formatPrice(order.total_amount)}</td>
-                    </tr>
-                    <tr>
-                        <td>Shipping</td>
-                        <td>{order.shipping_method === 'store_pickup' ? 'Store Pickup' : 'Standard Shipping'}</td>
-                    </tr>
-                    <tr>
-                        <td>Payment method</td>
-                        <td>{getPaymentMethodName(order.payment_method_id)}</td>
-                    </tr>
-                    <tr>
-                        <td>Total</td>
-                        <td>{formatPrice(order.total_amount)}</td>
-                    </tr>
-                    <tr>
-                        <td>Note</td>
-                        <td>{order.order_note || 'No additional notes'}</td>
-                    </tr>
-                </tbody>
-            </table>
+      {/* Products */}
+      <h3>Products</h3>
+      <table className="products-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {(order.cart_items || []).map((item) => (
+            <tr key={item.product}>
+              <td>{item.product_name || 'Product Missing'} × {item.quantity}</td>
+              <td>{formatPrice(item.price * item.quantity)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
-            <div className="address-section">
-                <div className="address-box">
-                    <h3>Billing Address</h3>
-                    <p>{order.first_name} {order.last_name}</p>
-                    <p>{order.address}</p>
-                    <p>{order.city}, {order.state}</p>
-                    <p>{order.phone}</p>
-                    <p>{order.email}</p>
-                </div>
-                <div className="address-box">
-                    <h3>Shipping Address</h3>
-                    <p>{order.first_name} {order.last_name}</p>
-                    <p>{order.address}</p>
-                    <p>{order.city}, {order.state}</p>
-                    <p>{order.phone}</p>
-                </div>
-            </div>
+      {/* Order Summary */}
+      <h3>Order Summary</h3>
+      <table className="order-summary-table">
+        <tbody>
+          <tr><td>Subtotal</td><td>{formatPrice(order.total_amount)}</td></tr>
+          <tr><td>Shipping</td><td>{order.shipping_method === 'store_pickup' ? 'Store Pickup' : 'Standard Shipping'}</td></tr>
+          <tr><td>Payment method</td><td>{getPaymentMethodName(order.payment_method_id)}</td></tr>
+          <tr className="total-row"><td>Total</td><td>{formatPrice(order.total_amount)}</td></tr>
+          <tr><td>Note</td><td>{order.order_note || 'No additional notes'}</td></tr>
+        </tbody>
+      </table>
+
+      {/* Address Section */}
+      <div className="address-section">
+        <div className="address-box">
+          <h3>Billing Address</h3>
+          <p>{order.first_name} {order.last_name}</p>
+          <p>{order.address}</p>
+          <p>{order.city}, {order.state}</p>
+          <p>{order.phone}</p>
+          <p>{order.email}</p>
         </div>
-    );
+        <div className="address-box">
+          <h3>Shipping Address</h3>
+          <p>{order.first_name} {order.last_name}</p>
+          <p>{order.address}</p>
+          <p>{order.city}, {order.state}</p>
+          <p>{order.phone}</p>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default OrderDetails;

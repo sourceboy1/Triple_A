@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react'; 
 import './Deals_of_the_Day.css';
 import cartIcon from '../pictures/cart.jpg';
 import wishlistIcon from '../pictures/wishlist.jpg';
@@ -8,7 +8,7 @@ import arrowLeft from '../icons/Arrow_Left.jpg';
 import { useCart } from '../contexts/CartContext';
 import { useWishlist } from '../contexts/WishlistContext';
 import { useNavigate } from 'react-router-dom';
-import api from '../Api'; // ✅ Unified API import
+import api from '../Api';
 import Loading from './Loading';
 
 const DealsOfTheDay = () => {
@@ -18,6 +18,10 @@ const DealsOfTheDay = () => {
   const { addItemToCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const navigate = useNavigate();
+  const dealsListRef = useRef(null);
+
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
 
   useEffect(() => {
     const fetchDeals = async () => {
@@ -55,7 +59,7 @@ const DealsOfTheDay = () => {
       name: deal.name,
       description: deal.description,
       price: deal.price,
-      image_url: deal.image_url,
+      image_url: deal.image_urls?.medium || '',
       stock: deal.stock,
     });
   };
@@ -65,7 +69,24 @@ const DealsOfTheDay = () => {
   const slideRight = () => setCurrentIndex((prevIndex) => (prevIndex === deals.length - 1 ? 0 : prevIndex + 1));
   const slideLeft = () => setCurrentIndex((prevIndex) => (prevIndex === 0 ? deals.length - 1 : prevIndex - 1));
 
-  const displayedDeals = [...deals, ...deals];
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    const diff = touchStartX.current - touchEndX.current;
+    if (diff > 50) {
+      slideRight();
+    } else if (diff < -50) {
+      slideLeft();
+    }
+  };
+
+  const displayedDeals = deals;
 
   if (loading) return <Loading />;
 
@@ -78,6 +99,10 @@ const DealsOfTheDay = () => {
         </div>
         <div
           className="deals-list"
+          ref={dealsListRef}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
           style={{ transform: `translateX(-${(currentIndex * 100) / displayedDeals.length}%)` }}
         >
           {displayedDeals.map((deal, index) => (
@@ -85,10 +110,21 @@ const DealsOfTheDay = () => {
               key={index}
               className="deal-item"
               onClick={() => handleProductClick(deal.product_id)}
-              onMouseEnter={(e) => e.currentTarget.querySelector('img').src = deal.secondary_image_url}
-              onMouseLeave={(e) => e.currentTarget.querySelector('img').src = deal.image_url}
+              onMouseEnter={(e) => {
+                const imgEl = e.currentTarget.querySelector('img');
+                if (deal.secondary_image_urls?.medium) {
+                  imgEl.src = deal.secondary_image_urls.medium;
+                }
+              }}
+              onMouseLeave={(e) => {
+                const imgEl = e.currentTarget.querySelector('img');
+                imgEl.src = deal.image_urls?.medium || '';
+              }}
             >
-              <img src={deal.image_url} alt={deal.name} />
+              <img
+                src={deal.image_urls?.medium || ''}
+                alt={deal.name}
+              />
               <div className="icon-container">
                 <img
                   src={isInWishlist(deal.product_id) ? wishlistActiveIcon : wishlistIcon}

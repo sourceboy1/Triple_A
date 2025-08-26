@@ -114,8 +114,8 @@ const LaptopDisplay = () => {
         ) : (
           <div className="laptop-slider">
             {laptops.slice(0, displayCount).map((laptop, index) => {
-              const primaryImg = laptop?.image_url || '/placeholder.jpg';
-              const secondaryImg = laptop?.secondary_image_url || primaryImg;
+              const primaryImg = laptop.image_urls?.medium || '/placeholder.jpg';
+              const secondaryImg = laptop.secondary_image_urls?.medium || primaryImg;
 
               return (
                 <div

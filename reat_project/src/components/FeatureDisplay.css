@@ -1,30 +1,32 @@
-.feature-container {
+.feature-container { 
     display: flex;
-    flex-direction: row;  /* Align items in a row */
-    justify-content: space-between;  /* Distribute space between items */
-    border: 1px solid #ddd;  /* Adjusted border to 1px */
+    flex-direction: row;  
+    justify-content: space-between;  
+    border: 1px solid #ddd;  
     padding: 20px;
     background-color: white;
     border-radius: 10px;
-    max-width: 100%;  /* Use full width */
-    margin: 0 auto;  /* Center the container horizontally */
-    flex-wrap: wrap;  /* Allow wrapping */
+    max-width: 100%;  
+    margin: 0 auto;  
+    flex-wrap: wrap;  
     margin-top: 30px;
+    box-sizing: border-box;
 }
 
 .feature-item {
     display: flex;
-    align-items: center;  /* Align items horizontally in the center */
+    align-items: center;  
     margin: 10px;
-    flex: 1;  /* Default behavior, allow items to grow */
+    flex: 1;  
+    justify-content: flex-start; 
 }
 
 /* Default styles for larger screens */
 .feature-icon {
-    width: 50px;  /* Set the image width */
+    width: 50px;  
     height: 50px;
-    margin-right: 15px;  /* Space between the icon and text */
-    border-radius: 5px;  /* Slight rounding for images */
+    margin-right: 15px;  
+    border-radius: 5px;  
 }
 
 .feature-text h4 {
@@ -42,50 +44,82 @@
 
 /* Media Queries */
 
-/* For screen sizes 769px and below (3 items per row) */
+/* For screens 769px and below */
 @media (max-width: 769px) {
     .feature-item {
-        flex: 0 0 30%;  /* Each item takes up approximately 30% of the row */
-        max-width: 30%;  /* Set max-width to 30% to maintain 3 items in a row */
+        flex: 0 0 30%;  
+        max-width: 30%;  
+        justify-content: flex-start; 
     }
 
     .feature-text h4 {
-        font-size: 16px;  /* Slightly smaller text size */
+        font-size: 16px;  
     }
 
     .feature-text p {
-        font-size: 12px;  /* Slightly smaller text size */
+        font-size: 12px;  
     }
 }
 
-/* For screen sizes 425px and below (2 items per row) */
+/* For screens 425px and below */
 @media (max-width: 425px) {
+    .feature-container {
+        justify-content: center; /* Center all items in the row */
+    }
+
     .feature-item {
-        flex: 0 0 45%;  /* Each item takes up approximately 45% of the row */
-        max-width: 45%;  /* Set max-width to 45% to maintain 2 items in a row */
+        flex: 0 0 45%;  
+        max-width: 45%;  
+        justify-content: center;  
     }
 
     .feature-text h4 {
-        font-size: 14px;  /* Smaller text size */
+        font-size: 14px;  
     }
 
     .feature-text p {
-        font-size: 10px;  /* Smaller text size */
+        font-size: 10px;  
     }
 }
 
-/* For screen sizes 320px and below (1 item per row) */
-@media (max-width: 320px) {
+/* For screens 375px and below */
+@media (max-width: 375px) {
+    .feature-container {
+        justify-content: center; 
+    }
+
     .feature-item {
-        flex: 0 0 100%;  /* Each item takes full width */
-        max-width: 100%;  /* Set max-width to 100% to maintain 1 item in a row */
+        flex: 0 0 70%;  
+        max-width: 70%;  
+        justify-content: center;  
     }
 
     .feature-text h4 {
-        font-size: 12px;  /* Smaller text size */
+        font-size: 13px;  
     }
 
     .feature-text p {
-        font-size: 8px;  /* Smaller text size */
+        font-size: 9px;  
+    }
+}
+
+/* For screens 320px and below */
+@media (max-width: 320px) {
+    .feature-container {
+        justify-content: center; 
+    }
+
+    .feature-item {
+        flex: 0 0 90%;  
+        max-width: 90%;  
+        justify-content: center;  
+    }
+
+    .feature-text h4 {
+        font-size: 12px;  
+    }
+
+    .feature-text p {
+        font-size: 8px;  
     }
 }

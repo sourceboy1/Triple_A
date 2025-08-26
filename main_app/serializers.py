@@ -1,7 +1,11 @@
 from rest_framework import serializers
-from .models import CustomUser, Cart, CartItem, Category, Payment,PaymentDetail,PaymentMethod,Product,Review,ProductPromotion,Promotion,Order,OrderItem,ShippingAddress, ProductImage
-from django.contrib.auth import get_user_model
+from .models import CustomUser, Cart, CartItem, Category, Payment,PaymentDetail,PaymentMethod,Product,Order,OrderItem,ShippingAddress,ProductImage
+from django.contrib.auth import authenticate, get_user_model
 from django.utils import timezone
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+import cloudinary
+import cloudinary.utils
+from django.utils.translation import gettext as _
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -31,8 +35,58 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+User = get_user_model()
 
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    """
+    Custom JWT login serializer that allows login with either email or username.
+    """
+    def validate(self, attrs):
+        login = attrs.get("email") or attrs.get("username")  # user can pass either
+        password = attrs.get("password")
 
+        if not login or not password:
+            raise serializers.ValidationError(_("Must include 'email/username' and 'password'."))
+
+        user = None
+
+        # Try authenticating with email
+        try:
+            user_obj = User.objects.get(email=login)
+            user = authenticate(
+                request=self.context.get("request"),
+                email=user_obj.email,
+                password=password
+            )
+        except User.DoesNotExist:
+            pass
+
+        # If not found with email, try username
+        if user is None:
+            try:
+                user_obj = User.objects.get(username=login)
+                user = authenticate(
+                    request=self.context.get("request"),
+                    email=user_obj.email,  # ✅ notice: we still use email, since USERNAME_FIELD=email
+                    password=password
+                )
+            except User.DoesNotExist:
+                pass
+
+        if user is None:
+            raise serializers.ValidationError(_("Invalid login credentials"))
+
+        refresh = self.get_token(user)
+
+        return {
+            "refresh": str(refresh),
+            "access": str(refresh.access_token), # pyright: ignore[reportAttributeAccessIssue]
+            "user": {
+                "id": user.id, # type: ignore
+                "email": user.email,
+                "username": user.username,
+            }
+        }
 
 
 class CartSerializer(serializers.ModelSerializer):
@@ -66,48 +120,60 @@ class PaymentDetailSerializer(serializers.ModelSerializer):
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
-    image_url = serializers.SerializerMethodField()
-    secondary_image_url = serializers.SerializerMethodField()
-    tertiary_image_url = serializers.SerializerMethodField()
-    quaternary_image_url = serializers.SerializerMethodField()
+    image_urls = serializers.SerializerMethodField()
+    secondary_image_urls = serializers.SerializerMethodField()
+    tertiary_image_urls = serializers.SerializerMethodField()
+    quaternary_image_urls = serializers.SerializerMethodField()
 
     class Meta:
         model = ProductImage
         fields = [
-            'id', 'image_url', 'secondary_image_url',
-            'tertiary_image_url', 'quaternary_image_url',
+            'id', 'image_urls', 'secondary_image_urls',
+            'tertiary_image_urls', 'quaternary_image_urls',
             'description'
         ]
 
-    def get_image_url(self, obj):
-        request = self.context.get('request')
-        if obj.image:
-            return request.build_absolute_uri(obj.image.url)
-        return request.build_absolute_uri('/media/default.jpg')
+    def get_cloudinary_urls(self, image):
+        """Return Cloudinary URLs in multiple sizes"""
+        sizes = {
+            'thumbnail': 200,
+            'medium': 500,
+            'large': 1000
+        }
+        urls = {}
+        for label, width in sizes.items():
+            if image:
+                url, _ = cloudinary.utils.cloudinary_url(
+                    image.name,
+                    width=width,
+                    crop='scale',
+                    quality='auto',
+                    secure=True
+                )
+                urls[label] = url
+            else:
+                # Fallback to a placeholder image on Cloudinary if needed
+                urls[label] = cloudinary.utils.cloudinary_url(
+                    "default.jpg", secure=True  # Make sure you upload a default.jpg to Cloudinary
+                )[0]
+        return urls
 
-    def get_secondary_image_url(self, obj):
-        request = self.context.get('request')
-        if obj.secondary_image:
-            return request.build_absolute_uri(obj.secondary_image.url)
-        return request.build_absolute_uri('/media/default.jpg')
+    def get_image_urls(self, obj):
+        return self.get_cloudinary_urls(obj.image)
 
-    def get_tertiary_image_url(self, obj):
-        request = self.context.get('request')
-        if obj.tertiary_image:
-            return request.build_absolute_uri(obj.tertiary_image.url)
-        return request.build_absolute_uri('/media/default.jpg')
+    def get_secondary_image_urls(self, obj):
+        return self.get_cloudinary_urls(obj.secondary_image)
 
-    def get_quaternary_image_url(self, obj):
-        request = self.context.get('request')
-        if obj.quaternary_image:
-            return request.build_absolute_uri(obj.quaternary_image.url)
-        return request.build_absolute_uri('/media/default.jpg')
+    def get_tertiary_image_urls(self, obj):
+        return self.get_cloudinary_urls(obj.tertiary_image)
 
+    def get_quaternary_image_urls(self, obj):
+        return self.get_cloudinary_urls(obj.quaternary_image)
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    image_url = serializers.SerializerMethodField()
-    secondary_image_url = serializers.SerializerMethodField()
+    image_urls = serializers.SerializerMethodField()
+    secondary_image_urls = serializers.SerializerMethodField()
     category_id = serializers.IntegerField(source='category.id', read_only=True)
     additional_images = ProductImageSerializer(many=True, read_only=True)
 
@@ -115,24 +181,23 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             'product_id', 'name', 'description', 'price', 'original_price',
-            'discount', 'stock', 'category', 'category_id', 'image_url',
-            'secondary_image_url', 'additional_images', 'created_at'
+            'discount', 'stock', 'category', 'category_id', 'image_urls',
+            'secondary_image_urls', 'additional_images', 'created_at'
         ]
 
-    def get_image_url(self, obj):
-        request = self.context.get('request')
-        if obj.image:
-            return request.build_absolute_uri(obj.image.url)
-        return request.build_absolute_uri('/media/default.jpg')  # 👈 always return something
+    def get_image_urls(self, obj):
+        """Return main product image URLs from Cloudinary"""
+        return ProductImageSerializer(context=self.context).get_cloudinary_urls(obj.image)
 
-    def get_secondary_image_url(self, obj):
-        request = self.context.get('request')
+    def get_secondary_image_urls(self, obj):
+        """Return first additional image's secondary image or fallback"""
         first_additional_image = obj.additional_images.first()
         if first_additional_image and first_additional_image.secondary_image:
-            return request.build_absolute_uri(first_additional_image.secondary_image.url)
-        return request.build_absolute_uri('/media/default.jpg')  # 👈 fallback
-
-
+            return ProductImageSerializer(context=self.context).get_cloudinary_urls(
+                first_additional_image.secondary_image
+            )
+        # Fallback to default placeholder on Cloudinary
+        return ProductImageSerializer(context=self.context).get_cloudinary_urls(None)
 
 
 
@@ -143,26 +208,6 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['category_id', 'name']
 
 
-class PromotionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Promotion
-        fields = ['promotion_id', 'code', 'description', 'discount_type', 'discount_value', 'start_date', 'end_date', 'usage_limit', 'usage_count', 'status', 'created_at']
-
-class ProductPromotionSerializer(serializers.ModelSerializer):
-    product = ProductSerializer()
-    promotion = PromotionSerializer()
-
-    class Meta:
-        model = ProductPromotion
-        fields = ['product_promotion_id', 'product', 'promotion', 'discount_value']
-
-class ReviewSerializer(serializers.ModelSerializer):
-    product = ProductSerializer()
-    user = UserSerializer()
-
-    class Meta:
-        model = Review
-        fields = ['review_id', 'product', 'user', 'rating', 'comment', 'created_at']
 
 class ShippingAddressSerializer(serializers.ModelSerializer):
     class Meta:
@@ -170,37 +215,39 @@ class ShippingAddressSerializer(serializers.ModelSerializer):
         fields = ['address', 'city', 'state', 'postal_code', 'country']
 
 
+
+# serializers.py
+
 class OrderItemSerializer(serializers.ModelSerializer):
     product_name = serializers.CharField(source='product.name', read_only=True)
     product_image = serializers.SerializerMethodField()
 
-    # Allow frontend to send these without validation errors
     name = serializers.CharField(required=False, write_only=True)
     image_url = serializers.CharField(required=False, write_only=True)
 
     class Meta:
         model = OrderItem
         fields = [
+            'order_item_id',  # replace with your actual PK field
             'product', 'product_name', 'product_image',
             'quantity', 'price', 'name', 'image_url'
         ]
 
     def get_product_image(self, obj):
-        request = self.context.get('request')
-        if obj.product.image:
-            return request.build_absolute_uri(obj.product.image.url)
+        request = self.context.get('request', None)
+        if obj.product and obj.product.image:
+            if request:
+                return request.build_absolute_uri(obj.product.image.url)
+            return obj.product.image.url
         return None
 
 
 
 class OrderSerializer(serializers.ModelSerializer):
     user_id = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
-    payment_method_id = serializers.PrimaryKeyRelatedField(
-        queryset=PaymentMethod.objects.all(),
-    )
-    cart_items = OrderItemSerializer(many=True)
-    
-    
+    payment_method_id = serializers.PrimaryKeyRelatedField(queryset=PaymentMethod.objects.all())
+    cart_items = OrderItemSerializer(many=True, read_only=True)  # Pull related OrderItems
+
     class Meta:
         model = Order
         fields = [
@@ -210,40 +257,25 @@ class OrderSerializer(serializers.ModelSerializer):
             'shipping_cost', 'status', 'cart_items'
         ]
 
-
-
     def create(self, validated_data):
-        cart_items_data = validated_data.pop('cart_items', [])
-        user = validated_data.pop('user_id')  # This is already a CustomUser instance
+        cart_items_data = self.context['request'].data.get('cart_items', [])
+        user = validated_data.pop('user_id')  # Already a CustomUser instance
         payment_method = validated_data.pop('payment_method_id')  # Already a PaymentMethod instance
 
+        # Create order
         order = Order.objects.create(
             user_id=user,
             payment_method_id=payment_method,
             **validated_data
         )
 
+        # Create each OrderItem
         for item_data in cart_items_data:
             item_data.pop('name', None)
             item_data.pop('image_url', None)
             OrderItem.objects.create(order=order, **item_data)
 
         return order
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

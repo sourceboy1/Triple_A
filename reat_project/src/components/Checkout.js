@@ -64,158 +64,81 @@ const Checkout = () => {
     };
     
 
-    const handlePlaceOrder = async () => {
-        setEmailError('');
+   const handlePlaceOrder = async () => {
+    setEmailError('');
 
-        const scrollToError = (ref) => {
-            if (ref && ref.current) {
-                ref.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                ref.current.focus();
-            }
-        };
-    
-        if (!termsAgreed) {
-            setEmailError('You must agree to the terms and conditions before placing the order.');
-            return;
-        }
-    
-        
-    
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            setEmailError('Please enter a valid email address.');
-            scrollToError(emailRef);
-            return;
-        }
-    
-        if (!firstName) {
-            setEmailError('Please fill in your first name.');
-            scrollToError(firstNameRef);
-            return;
-        }
+    if (!termsAgreed) {
+        setEmailError('You must agree to the terms and conditions before placing the order.');
+        return;
+    }
 
-        if (!lastName) {
-            setEmailError('Please fill in your last name.');
-            scrollToError(lastNameRef);
-            return;
-        }
+    if (!email || !firstName || !lastName || !addressLine1 || !city || !state || !postalCode || !country || !phone) {
+        setEmailError('Please fill in all required fields.');
+        return;
+    }
 
-        if (!addressLine1) {
-            setEmailError('Please fill in your address.');
-            scrollToError(addressRef);
-            return;
-        }
+    const fullAddress = `${addressLine1}${addressLine2 ? ', ' + addressLine2 : ''}`;
+    const userId = parseInt(localStorage.getItem('userId'), 10);
+    if (!token || isNaN(userId)) {
+        setEmailError('Authentication error. Please log in again.');
+        return;
+    }
 
-        if (!city) {
-            setEmailError('Please fill in your city.');
-            scrollToError(cityRef);
-            return;
-        }
+    const paymentMethodId = paymentMethodIds[paymentMethod] || 1;
+    const shippingCost = getShippingCost();
+    const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const total = subtotal + shippingCost;
 
-        if (!state) {
-            setEmailError('Please fill in your state.');
-            scrollToError(stateRef);
-            return;
-        }
+    // Send cart items including name and image_url
+    const orderData = {
+        user_id: userId,
+        email,
+        first_name: firstName,
+        last_name: lastName,
+        address: fullAddress,
+        city,
+        state,
+        postal_code: postalCode,
+        country,
+        phone,
+        shipping_method: shippingMethod,
+        order_note: orderNote,
+        payment_method_id: paymentMethodId,
+        shipping_cost: shippingCost,
+        total_amount: total,
+        cart_items: cart.map(item => ({
+            product: item.product_id,    // must be valid product ID
+            name: item.name,             // optional, write-only
+            image_url: item.image_url,   // optional, write-only
+            quantity: item.quantity,
+            price: item.price            // optional, you can keep for reference
+        }))
+    };
 
-        if (!postalCode) {
-            setEmailError('Please fill in your postal code.');
-            scrollToError(postalCodeRef);
-            return;
-        }
-
-        if (!phone) {
-            setEmailError('Please fill in your phone number.');
-            scrollToError(phoneRef);
-            return;
-        }
-
-        if (phone.length < 10) {
-            setEmailError('Please enter a valid phone number.');
-            scrollToError(phoneRef);
-            return;
-        }
-
-        if (postalCode.length < 5) {
-            setEmailError('Please enter a valid postal code.');
-            scrollToError(postalCodeRef);
-            return;
-        }
-    
-        // Full address formatting
-        const fullAddress = `${addressLine1}${addressLine2 ? ', ' + addressLine2 : ''}`;
-        const userId = parseInt(localStorage.getItem('userId'), 10);
-    
-        if (!token) {
-            setEmailError('Authentication token is missing. Please log in again.');
-            return;
-        }
-    
-        if (isNaN(userId)) {
-            setEmailError('There was an issue with your login session. Please log in again.');
-            return;
-        }
-        if (!email || !firstName || !lastName || !addressLine1 || !city || !state || !postalCode || !country || !phone) {
-            setEmailError('Please fill in all required fields.');
-            return;
-        }
-    
-        const paymentMethodId = paymentMethodIds[paymentMethod] || 1;  // Map payment methods
-        const shippingCost = getShippingCost();  // Assume this function calculates shipping cost
-        const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-        const total = subtotal + shippingCost;
-    
-        const orderData = {
-            user_id: userId,
-            email: email,
-            first_name: firstName,
-            last_name: lastName,
-            address: fullAddress,
-            city: city,
-            state: state,
-            postal_code: postalCode,
-            country: country,
-            phone: phone,
-            shipping_method: shippingMethod,
-            order_note: orderNote,
-            payment_method_id: paymentMethodId,
-            cart_items: cart.map(item => ({
-                product: item.product_id,
-                name: item.name,          // Include product name
-                image_url: item.image_url, // Include product image URL
-                quantity: item.quantity,
-                price: item.price
-            })),
-            shipping_cost: shippingCost,
-            total_amount: total,
-        };
-        
-    
-        try {
+    try {
         console.log('Order data being sent:', orderData);
-
-        // ✅ Use centralized API
         const response = await api.post('/orders/', orderData);
 
         clearCart();
-    
-            const redirectPath = paymentMethod === 'debit_credit_cards' ? '/payment/debit-credit-card' : '/payment/bank-transfer';
-            navigate(redirectPath, { state: { 
-                orderId: response.data.order_id, 
-                email, 
-                phone, 
-                address: fullAddress, 
-                subtotal, 
-                shippingCost, 
-                total, 
-                products: cart 
-            }});
-        } catch (error) {
-            console.error('Error placing the order:', error);
-            setEmailError('There was an error placing your order. Please try again.');
-        }
-    };
-    
-    
+
+        const redirectPath = paymentMethod === 'debit_credit_cards' ? '/payment/debit-credit-card' : '/payment/bank-transfer';
+        navigate(redirectPath, {
+            state: {
+                orderId: response.data.order_id,
+                email,
+                phone,
+                address: fullAddress,
+                subtotal,
+                shippingCost,
+                total,
+                products: cart
+            }
+        });
+    } catch (error) {
+        console.error('Error placing the order:', error.response || error);
+        setEmailError('There was an error placing your order. Please try again.');
+    }
+};
     
     
 
@@ -229,12 +152,12 @@ const Checkout = () => {
         switch (shippingMethod) {
             case 'pickup': return 0;
             case 'express': return 0.01;
-            case 'area1': return 1500;
-            case 'satellite': return 1500;
-            case 'area2': return 2500;
-            case 'abule_egba': return 3000;
+            case 'area1': return 10000;
+            case 'satellite': return 12000;
+            case 'area2': return 10000;
+            case 'abule_egba': return 8000;
             case 'ikeja': return 3000;
-            case 'lagos_mainland': return 5000;
+            case 'lagos_mainland': return 12000;
             default: return 0;
         }
     };

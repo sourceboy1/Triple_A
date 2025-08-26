@@ -3,15 +3,16 @@ from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import TokenRefreshView  # keep only refresh
+from main_app.views import CustomTokenObtainPairView, CustomTokenRefreshView  # ✅ import both
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('main_app.urls')),
 
-    # ✅ Only JWT
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    # ✅ Use custom JWT login
+    path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', CustomTokenRefreshView.as_view(), name='token_refresh'),
 ]
 
 # Media

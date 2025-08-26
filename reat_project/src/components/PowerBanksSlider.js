@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../Api'; // ✅ Use centralized API
+import api from '../Api';
 import './PowerBanksSlider.css';
 
 const PowerBankDisplay = () => {
   const [powerBanks, setPowerBanks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [hoveredIndex, setHoveredIndex] = useState(null);
   const displayCount = 6;
   const fetchCount = 30;
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const hoverIntervals = useRef({}); // store hover timers
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -17,6 +17,16 @@ const PowerBankDisplay = () => {
       [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
+  };
+
+  const formatPrice = (price) => {
+    if (isNaN(price)) return 'N/A';
+    return new Intl.NumberFormat('en-NG', {
+      style: 'currency',
+      currency: 'NGN',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(price);
   };
 
   useEffect(() => {
@@ -41,33 +51,41 @@ const PowerBankDisplay = () => {
     };
 
     fetchPowerBanks();
-
-    const interval = setInterval(() => {
-      setPowerBanks((prev) => {
-        if (prev.length === 0) return prev;
-        const firstItem = prev[0];
-        return prev.slice(1).concat(firstItem);
-      });
-    }, 12000);
-
-    return () => clearInterval(interval);
   }, []);
 
   const handleProductClick = (product_id) => {
     navigate(`/product-details/${product_id}`);
   };
 
-  const handleMouseEnter = (index) => setHoveredIndex(index);
-  const handleMouseLeave = () => setHoveredIndex(null);
+  const handleMouseEnter = (index) => {
+    const powerBank = powerBanks[index];
+    const images = [
+      powerBank.image_urls?.medium,
+      powerBank.secondary_image_urls?.medium,
+      powerBank.tertiary_image_urls?.medium,
+      powerBank.quaternary_image_urls?.medium,
+    ].filter(Boolean);
 
-  const formatPrice = (price) => { 
-    if (isNaN(price)) return 'N/A';
-    return new Intl.NumberFormat('en-NG', {
-      style: 'currency',
-      currency: 'NGN',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(price);
+    if (images.length < 2) return; // no need to cycle if only one image
+
+    let currentImgIndex = 0;
+    hoverIntervals.current[index] = setInterval(() => {
+      const imgElement = document.querySelectorAll('.powerbank-item img')[index];
+      if (imgElement) {
+        imgElement.src = images[currentImgIndex];
+        currentImgIndex = (currentImgIndex + 1) % images.length;
+      }
+    }, 1000); // change image every second
+  };
+
+  const handleMouseLeave = (index) => {
+    clearInterval(hoverIntervals.current[index]);
+    hoverIntervals.current[index] = null;
+
+    const powerBank = powerBanks[index];
+    const primaryImg = powerBank.image_urls?.medium || '/placeholder.jpg';
+    const imgElement = document.querySelectorAll('.powerbank-item img')[index];
+    if (imgElement) imgElement.src = primaryImg;
   };
 
   return (
@@ -81,24 +99,21 @@ const PowerBankDisplay = () => {
         ) : (
           <div className="powerbank-slider">
             {powerBanks.slice(0, displayCount).map((powerBank, index) => {
-              if (!powerBank || !powerBank.image_url) return null;
+              const primaryImg = powerBank.image_urls?.medium || '/placeholder.jpg';
 
               return (
-                <div 
-                  className="powerbank-item" 
+                <div
+                  className="powerbank-item"
                   key={powerBank.product_id}
-                  onClick={() => handleProductClick(powerBank.product_id)} 
-                  onMouseEnter={() => handleMouseEnter(index)}  
-                  onMouseLeave={handleMouseLeave}
+                  onClick={() => handleProductClick(powerBank.product_id)}
+                  onMouseEnter={() => handleMouseEnter(index)}
+                  onMouseLeave={() => handleMouseLeave(index)}
                 >
-                  <img 
-                    src={
-                      hoveredIndex === index && powerBank.secondary_image_url 
-                        ? powerBank.secondary_image_url 
-                        : powerBank.image_url
-                    }
-                    alt={powerBank.name || "Power Bank"} 
-                    className="powerbank-image" 
+                  <img
+                    src={primaryImg}
+                    alt={powerBank.name || "Power Bank"}
+                    className="powerbank-image"
+                    onError={(e) => { e.target.src = '/placeholder.jpg'; }}
                   />
                   <h3 className="powerbank-name">{powerBank.name}</h3>
                   <p className="powerbank-price">

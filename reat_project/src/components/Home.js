@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
-import slidingImage1 from '../pictures/sliding1.jpg';
-import slidingImage2 from '../pictures/sliding3.jpg';
-import slidingImage5 from '../pictures/sliding4.jpg';
+import React, { useState, useEffect, useContext, useRef } from 'react'; 
+import slidingImage1 from '../pictures/sliding8.jpg';
+import slidingImage2 from '../pictures/sliding6.jpg';
+import slidingImage5 from '../pictures/sliding7.jpg';
 import './Home.css';
 import { useNavigate } from 'react-router-dom';
 import { TokenContext } from './TokenContext';
@@ -14,7 +14,6 @@ import PowerBankDisplay from './PowerBanksSlider';
 import LaptopDisplay from './LaptopSlider';
 import ViewedProducts from './ViewedProducts';
 import PhonesTabletsDisplay from './PhonesTabletsDisplay';
-import api from '../Api'; // ✅ Unified API import
 
 const images = [slidingImage1, slidingImage2, slidingImage5];
 const captions = [
@@ -30,60 +29,47 @@ const buttonTexts = [
 
 const Home = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [products, setProducts] = useState([]);
   const navigate = useNavigate();
   const accessToken = useContext(TokenContext);
   const { cart, addItemToCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await api.get('/products/', {
-          headers: { Authorization: `Bearer ${accessToken}` }
-        });
-        setProducts(response.data);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
-
-    fetchProducts();
-
     const interval = setInterval(() => {
-      setCurrentIndex(prevIndex => (prevIndex + 1) % images.length);
-    }, 20000);
-
+      setCurrentIndex(prev => (prev + 1) % images.length);
+    }, 22000); // slower sliding (12s)
     return () => clearInterval(interval);
-  }, [accessToken]);
+  }, []);
 
-  const handleProductClick = (productId) => {
-    navigate(`/product-details/${productId}`);
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
   };
 
-  const handleAddToCart = (product) => {
-    const isProductInCart = cart.some(item => item.product_id === product.product_id);
-    if (!isProductInCart) addItemToCart(product);
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.touches[0].clientX;
   };
 
-  const handleWishlistClick = (product) => {
-    if (isInWishlist(product.product_id)) {
-      removeFromWishlist(product.product_id);
-    } else {
-      addToWishlist(product);
+  const handleTouchEnd = () => {
+    if (touchStartX.current - touchEndX.current > 50) {
+      setCurrentIndex(prev => (prev + 1) % images.length);
+    } else if (touchStartX.current - touchEndX.current < -50) {
+      setCurrentIndex(prev => (prev - 1 + images.length) % images.length);
     }
   };
 
   return (
     <div className="home">
-      <div className="slider">
+      <div 
+        className="slider" 
+        onTouchStart={handleTouchStart} 
+        onTouchMove={handleTouchMove} 
+        onTouchEnd={handleTouchEnd}
+      >
         {images.map((image, index) => (
           <div key={index} className={`slide-container ${index === currentIndex ? 'active' : ''}`}>
-            <img
-              src={image}
-              alt={`Slide ${index + 1}`}
-              className={`slide-image ${index === currentIndex ? 'active' : ''}`}
-            />
+            <img src={image} alt={`Slide ${index + 1}`} className={`slide-image ${index === currentIndex ? 'active' : ''}`} />
             {index === currentIndex && (
               <div className="slider-caption fade-in">
                 <h2 className="slider-text">{captions[index]}</h2>
@@ -103,28 +89,13 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Feature Display Component */}
       <FeatureDisplay />
-
-      {/* Deals of the Day Component */}
       <DealsOfTheDay />
-
-      {/* Category Display Component */}
       <CategoryDisplay />
-
-      {/* Power Bank Display Component */}
       <PowerBankDisplay />
-       
-      {/* Laptop Display Component */}
       <LaptopDisplay />
-      
-      {/* Phones/Tablets Display Component */}  
       <PhonesTabletsDisplay />
-
-      {/* Viewed Products Display Component */}
       <ViewedProducts />
-
-      {/* Product list is commented out for now */}
     </div>
   );
 };
