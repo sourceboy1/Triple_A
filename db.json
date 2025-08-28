@@ -1,0 +1,184 @@
+[
+{
+    "model": "main_app.customuser",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$tb2MFDKfdrmd0scwXNplS7$Diq+VckLPcxkYYmR1LoWmlto0eZDlwNh4ghxyLHoL14=",
+        "last_login": "2025-08-24T21:31:04.294Z",
+        "is_superuser": true,
+        "username": "sourceboy",
+        "email": "seunakanni417@gmail.com",
+        "first_name": null,
+        "last_name": null,
+        "address": null,
+        "phone": null,
+        "date_joined": "2025-08-24T21:29:58.798Z",
+        "is_active": true,
+        "is_staff": true,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "main_app.customuser",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$cLgAXO6dZFbuGb0OrsWf16$6f4mv4edy13XsgfBd06fykozPWYZnmwnIM7t5Ob2em4=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "sourceboy1",
+        "email": "segzykid416@gmail.com",
+        "first_name": "akanni",
+        "last_name": "bolatito",
+        "address": "no 1 ashiru",
+        "phone": "23449028492",
+        "date_joined": "2025-08-25T08:09:42.063Z",
+        "is_active": true,
+        "is_staff": false,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "main_app.customuser",
+    "fields": {
+        "password": "pbkdf2_sha256$870000$KoCbcDGOABSAqOJitv7ctC$VOvojE+ZxSbZPTaMF+HjYQdzYWaauUaUVAvXbYA97wg=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "source2",
+        "email": "seunakanni416@gmail.com",
+        "first_name": "akanni",
+        "last_name": "oluwaseun",
+        "address": "no 3",
+        "phone": "234849032332",
+        "date_joined": "2025-08-26T11:18:19.806Z",
+        "is_active": true,
+        "is_staff": false,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "main_app.category",
+    "pk": 1,
+    "fields": {
+        "name": "Games",
+        "description": "",
+        "created_at": "2025-08-24T21:31:55.785Z"
+    }
+},
+{
+    "model": "main_app.category",
+    "pk": 2,
+    "fields": {
+        "name": "Accessrioes",
+        "description": "",
+        "created_at": "2025-08-24T21:54:01.079Z"
+    }
+},
+{
+    "model": "main_app.category",
+    "pk": 3,
+    "fields": {
+        "name": "Phones & Tablets",
+        "description": "",
+        "created_at": "2025-08-26T14:22:40.865Z"
+    }
+},
+{
+    "model": "main_app.category",
+    "pk": 4,
+    "fields": {
+        "name": "Headphones & Airpods",
+        "description": "",
+        "created_at": "2025-08-26T14:23:08.224Z"
+    }
+},
+{
+    "model": "main_app.category",
+    "pk": 6,
+    "fields": {
+        "name": "Watches",
+        "description": "",
+        "created_at": "2025-08-26T14:24:02.091Z"
+    }
+},
+{
+    "model": "main_app.category",
+    "pk": 7,
+    "fields": {
+        "name": "Powerbanks",
+        "description": "",
+        "created_at": "2025-08-26T14:24:24.641Z"
+    }
+},
+{
+    "model": "main_app.category",
+    "pk": 8,
+    "fields": {
+        "name": "Laptops",
+        "description": "",
+        "created_at": "2025-08-26T14:25:50.272Z"
+    }
+},
+{
+    "model": "main_app.category",
+    "pk": 9,
+    "fields": {
+        "name": "Pouches & Guides",
+        "description": "",
+        "created_at": "2025-08-26T14:26:52.202Z"
+    }
+},
+{
+    "model": "main_app.product",
+    "pk": 3,
+    "fields": {
+        "name": "Apple ait tag",
+        "description": "airtag",
+        "price": "10000.00",
+        "original_price": null,
+        "discount": null,
+        "stock": 3,
+        "category": 2,
+        "image": "media/products/air_tag_1_e6sd88",
+        "created_at": "2025-08-25T08:10:48.675Z",
+        "is_deal_of_the_day": true,
+        "is_featured": false,
+        "is_new": false
+    }
+},
+{
+    "model": "main_app.productimage",
+    "pk": 2,
+    "fields": {
+        "product": 3,
+        "image": "media/products/additional/air_tag_2_r3msm2",
+        "secondary_image": "media/products/additional/air_tag_3_r0tnd9",
+        "tertiary_image": "media/products/additional/air_tag_4_vp9bpm",
+        "quaternary_image": "media/products/additional/air_tag_5_gtctsk",
+        "description": ""
+    }
+},
+{
+    "model": "main_app.paymentmethod",
+    "pk": 1,
+    "fields": {
+        "user": [
+            "seunakanni417@gmail.com"
+        ],
+        "method_name": "Bank Transfer",
+        "details": "",
+        "created_at": "2025-08-25T08:44:44.451Z"
+    }
+},
+{
+    "model": "main_app.paymentmethod",
+    "pk": 2,
+    "fields": {
+        "user": [
+            "seunakanni417@gmail.com"
+        ],
+        "method_name": "Debit/Credit Cards",
+        "details": "",
+        "created_at": "2025-08-25T08:45:13.758Z"
+    }
+}

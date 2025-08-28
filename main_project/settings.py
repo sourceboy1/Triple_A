@@ -44,6 +44,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://crossover.proxy.rlwy.net',
     'http://localhost:8000',
     'http://127.0.0.1:8000',
+    'https://metro.proxy.rlwy.net',
+
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -54,6 +56,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://tripleastechng.com",  # Production domain
     "https://www.tripleastechng.com",
     "https://crossover.proxy.rlwy.net",  # Your Railway proxy
+    "https://metro.proxy.rlwy.net",
 ]
 
 
@@ -165,19 +168,25 @@ DEFAULT_FROM_EMAIL = 'Triple A,s Support <support.royeane@yahoo.com>'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 import dj_database_url
+from urllib.parse import urlparse
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-dev-key")
 
-import dj_database_url
+db_url = os.environ.get("DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}")
+
+# 🔑 Detect Railway internal environment
+if os.environ.get("RAILWAY_ENVIRONMENT") or os.environ.get("RAILWAY_STATIC_URL"):
+    # Replace public proxy with internal host
+    db_url = db_url.replace("crossover.proxy.rlwy.net", "mysql.railway.internal")
+    db_url = db_url.replace("metro.proxy.rlwy.net", "mysql.railway.internal")
 
 DATABASES = {
     "default": dj_database_url.config(
-        default=os.environ.get(
-            "DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
-        ),
+        default=db_url,
         conn_max_age=600,
     )
 }
+
 
 
 # DATABASES = {
