@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import pymysql
+pymysql.install_as_MySQLdb()
 
 from pathlib import Path
 import os
@@ -24,6 +25,7 @@ FRONTEND_DIR = BASE_DIR / 'reat_project' / 'build'
 load_dotenv(BASE_DIR / ".env")
 
 
+SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key-for-local-dev")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -167,25 +169,29 @@ DEFAULT_FROM_EMAIL = 'Triple A,s Support <support.royeane@yahoo.com>'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# db_url = os.environ.get("DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}")
+
+# # 👇 Only change host when inside Railway (not on your PC)
+# if os.environ.get("RAILWAY_RUNTIME") == "true":
+#     db_url = db_url.replace("crossover.proxy.rlwy.net", "mysql.railway.internal")
+#     db_url = db_url.replace("metro.proxy.rlwy.net", "mysql.railway.internal")
+
 import dj_database_url
-from urllib.parse import urlparse
-
-SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-dev-key")
-
-db_url = os.environ.get("DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}")
-
-# 🔑 Detect Railway internal environment
-if os.environ.get("RAILWAY_ENVIRONMENT") or os.environ.get("RAILWAY_STATIC_URL"):
-    # Replace public proxy with internal host
-    db_url = db_url.replace("crossover.proxy.rlwy.net", "mysql.railway.internal")
-    db_url = db_url.replace("metro.proxy.rlwy.net", "mysql.railway.internal")
+import os
 
 DATABASES = {
-    "default": dj_database_url.config(
-        default=db_url,
+    "default": dj_database_url.parse(
+        os.environ.get("DATABASE_URL"), # type: ignore
         conn_max_age=600,
     )
 }
+
+
+
 
 
 
@@ -228,8 +234,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-import pymysql
-pymysql.install_as_MySQLdb()
 
 
 # Internationalization
