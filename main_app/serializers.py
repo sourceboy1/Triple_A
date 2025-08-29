@@ -219,9 +219,9 @@ class ShippingAddressSerializer(serializers.ModelSerializer):
 # serializers.py
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())  # resolves ID → Product
-    product_name = serializers.CharField(source='product.name', read_only=True)
-    product_image = serializers.SerializerMethodField()
+    product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())  # write with ID
+    product_name = serializers.CharField(source='product.name', read_only=True)   # read-only
+    product_image = serializers.SerializerMethodField()  # read-only
 
     name = serializers.CharField(required=False, write_only=True)
     image_url = serializers.CharField(required=False, write_only=True)
@@ -245,10 +245,11 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 
 
+
 class OrderSerializer(serializers.ModelSerializer):
     user_id = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
     payment_method_id = serializers.PrimaryKeyRelatedField(queryset=PaymentMethod.objects.all())
-    cart_items = OrderItemSerializer(many=True)  # ✅ no longer read_only
+    cart_items = OrderItemSerializer(many=True)  # ✅ writable + readable
 
     class Meta:
         model = Order
@@ -264,20 +265,19 @@ class OrderSerializer(serializers.ModelSerializer):
         user = validated_data.pop('user_id')
         payment_method = validated_data.pop('payment_method_id')
 
-        # Create order
         order = Order.objects.create(
             user_id=user,
             payment_method_id=payment_method,
             **validated_data
         )
 
-        # Create items (DRF already resolved product IDs → Product objects)
         for item_data in cart_items_data:
             item_data.pop('name', None)
             item_data.pop('image_url', None)
             OrderItem.objects.create(order=order, **item_data)
 
         return order
+
 
 
 
