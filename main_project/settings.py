@@ -30,6 +30,10 @@ SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key-for-local-dev")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+# settings.py
+MAINTENANCE_MODE = os.getenv("MAINTENANCE_MODE", "off").lower() == "on"
+
+
 CORS_ALLOW_CREDENTIALS = True
 
 ALLOWED_HOSTS = [
@@ -81,6 +85,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "main_app.middleware.MaintenanceModeMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this
     'corsheaders.middleware.CorsMiddleware',  # Move above CommonMiddleware
