@@ -33,14 +33,22 @@ const UserOrders = ({ onViewOrder }) => {
         }));
 
         setOrders(
-          formattedOrders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+          formattedOrders.sort(
+            (a, b) => new Date(b.created_at) - new Date(a.created_at)
+          )
         );
+        setError(null); // ✅ clear any previous error
       } else {
         setError('Unexpected API response format.');
       }
     } catch (err) {
       console.error('Error fetching orders:', err);
-      setError('Error fetching your orders.');
+
+      if (err.response?.status === 401) {
+        setError('You must be logged in to view your orders.');
+      } else {
+        setError('Error fetching your orders.');
+      }
     } finally {
       setLoading(false);
     }
@@ -50,7 +58,7 @@ const UserOrders = ({ onViewOrder }) => {
     if (token) {
       fetchUserOrders();
     } else {
-      setError('User not authenticated.');
+      setError('You must be logged in to view your orders.');
       setLoading(false);
     }
   }, [token]);
@@ -76,38 +84,40 @@ const UserOrders = ({ onViewOrder }) => {
       <h2>Your Orders</h2>
 
       {loading && <p>Loading...</p>}
-      {error && <p className="error">{error}</p>}
-      {!loading && orders.length === 0 && <p>No orders found.</p>}
+      {!loading && error && <p className="error">{error}</p>}
+      {!loading && !error && orders.length === 0 && <p>No orders found.</p>}
 
-      <div className="orders-table">
-        <div className="orders-header">
-          <div>Order</div>
-          <div>Date</div>
-          <div>Status</div>
-          <div>Total</div>
-          <div>Actions</div>
-        </div>
-
-        {orders.map(order => (
-          <div key={order.order_id} className="orders-row">
-            <div>#{order.order_id}</div>
-            <div>{new Date(order.created_at).toLocaleDateString()}</div>
-            <div>{order.status}</div>
-            <div>{formatPrice(order.total_amount)}</div>
-            <div className="order-actions">
-              <button onClick={() => onViewOrder(order.order_id)}>View</button>
-              {order.status !== 'Cancelled' && order.status !== 'Delivered' && (
-                <button onClick={() => {
-                  setCancelOrderId(order.order_id);
-                  setIsCanceling(true);
-                }}>
-                  Cancel
-                </button>
-              )}
-            </div>
+      {!loading && !error && orders.length > 0 && (
+        <div className="orders-table">
+          <div className="orders-header">
+            <div>Order</div>
+            <div>Date</div>
+            <div>Status</div>
+            <div>Total</div>
+            <div>Actions</div>
           </div>
-        ))}
-      </div>
+
+          {orders.map(order => (
+            <div key={order.order_id} className="orders-row">
+              <div>#{order.order_id}</div>
+              <div>{new Date(order.created_at).toLocaleDateString()}</div>
+              <div>{order.status}</div>
+              <div>{formatPrice(order.total_amount)}</div>
+              <div className="order-actions">
+                <button onClick={() => onViewOrder(order.order_id)}>View</button>
+                {order.status !== 'Cancelled' && order.status !== 'Delivered' && (
+                  <button onClick={() => {
+                    setCancelOrderId(order.order_id);
+                    setIsCanceling(true);
+                  }}>
+                    Cancel
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {isCanceling && (
         <div className="cancel-dialog-overlay">

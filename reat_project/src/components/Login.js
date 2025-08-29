@@ -13,10 +13,13 @@ const Login = () => {
   const navigate = useNavigate();
   const { signIn } = useUser();
 
+  // ✅ Use environment variable (from .env.production)
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000/api/";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8000/api/login/', {
+      const response = await fetch(`${API_URL}login/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -28,6 +31,10 @@ const Login = () => {
 
       if (response.ok) {
         if (data.access && data.refresh && data.user) {
+          // ✅ Save tokens so api.js can use them
+          localStorage.setItem("access_token", data.access);
+          localStorage.setItem("refresh_token", data.refresh);
+
           signIn({
             username: data.user.username,
             userId: data.user.id,
