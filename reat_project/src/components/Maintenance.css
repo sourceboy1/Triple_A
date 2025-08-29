@@ -1,37 +1,87 @@
-/* src/components/Maintenance.css */
+/* Base styling */
 .maintenance-container {
-    text-align: center;
-    padding: 50px;
-  }
-  
-  .maintenance-container h1 {
-    font-size: 2em;
-    color: #333;
-  }
-  
-  .maintenance-container p {
-    font-size: 1.2em;
-    color: #666;
-  }
-  
-  .maintenance-gif {
-    width: 60%;
-    max-width: 500px;
-    margin-top: 20px;
-  }
-  
-  .admin-login-link {
-  margin-top: 20px;
-  font-size: 14px;
+  text-align: center;
+  padding: 50px 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #f9f9f9;
 }
 
-.admin-login-link a {
+.maintenance-container h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.maintenance-container p {
+  font-size: 1.2rem;
   color: #666;
-  text-decoration: none;
-  opacity: 0.5;
+  margin-top: 20px;
+  line-height: 1.6;
 }
 
-.admin-login-link a:hover {
-  opacity: 1;
-  text-decoration: underline;
+.maintenance-gif {
+  width: 60%;
+  max-width: 500px;
+  margin: 20px auto;
+  display: block;
+  border-radius: 10px;
+}
+
+/* 📱 Mobile first responsiveness */
+@media (max-width: 425px) {
+  .maintenance-container {
+    padding: 30px 15px;
+  }
+
+  .maintenance-container h1 {
+    font-size: 1.8rem;
+  }
+
+  .maintenance-container p {
+    font-size: 1rem;
+  }
+
+  .maintenance-gif {
+    width: 90%;
+  }
+}
+
+/* Extra small screens (like 320px) */
+@media (max-width: 320px) {
+  .maintenance-container h1 {
+    font-size: 1.5rem;
+  }
+
+  .maintenance-container p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Slightly larger mobile (375px) */
+@media (max-width: 375px) {
+  .maintenance-container h1 {
+    font-size: 1.6rem;
+  }
+}
+
+/* Tablets (~768px and up) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .maintenance-container {
+    padding: 60px;
+  }
+
+  .maintenance-container h1 {
+    font-size: 2.2rem;
+  }
+
+  .maintenance-container p {
+    font-size: 1.1rem;
+  }
+
+  .maintenance-gif {
+    width: 70%;
+  }
 }
