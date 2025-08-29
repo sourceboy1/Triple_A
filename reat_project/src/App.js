@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { TokenProvider } from './components/TokenContext';
 import { CartProvider } from './contexts/CartContext';
-import { UserProvider } from './contexts/UserContext';
+import { UserProvider, useUser } from './contexts/UserContext'; // ✅ import useUser
 import { WishlistProvider } from './contexts/WishlistContext';
 import { LoadingProvider, useLoading } from './contexts/LoadingContext';
 import Loading from './components/Loading';
@@ -39,9 +39,6 @@ import ScrollToTop from './components/ScrollToTop';
 import Maintenance from './components/Maintenance'; // Import Maintenance component
 
 const App = () => {
-  // Check maintenance mode flag from environment variables
-  const isMaintenanceMode = process.env.REACT_APP_MAINTENANCE_MODE === 'true';
-
   return (
     <UserProvider>
       <TokenProvider>
@@ -50,7 +47,7 @@ const App = () => {
             <LoadingProvider>
               <Router>
                 <ScrollToTop />
-                {isMaintenanceMode ? <Maintenance /> : <AppContent />} {/* Conditional rendering */}
+                <MaintenanceWrapper /> {/* ✅ Use wrapper for maintenance check */}
               </Router>
             </LoadingProvider>
           </WishlistProvider>
@@ -58,6 +55,24 @@ const App = () => {
       </TokenProvider>
     </UserProvider>
   );
+};
+
+/**
+ * This wrapper decides if maintenance mode should be applied
+ * - If REACT_APP_MAINTENANCE_MODE=true and user is NOT staff → show Maintenance
+ * - Otherwise → load normal app
+ */
+const MaintenanceWrapper = () => {
+  const { user } = useUser(); // ✅ from UserContext
+  const isMaintenanceMode = process.env.REACT_APP_MAINTENANCE_MODE === 'true';
+
+  // If maintenance mode is on AND user is not staff → show maintenance
+  if (isMaintenanceMode && !(user && user.is_staff)) {
+    return <Maintenance />;
+  }
+
+  // Otherwise → show app content
+  return <AppContent />;
 };
 
 const AppContent = () => {
