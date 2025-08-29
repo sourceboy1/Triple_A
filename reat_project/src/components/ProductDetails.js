@@ -4,14 +4,10 @@ import api from '../Api';
 import { useCart } from '../contexts/CartContext';
 import { useWishlist } from '../contexts/WishlistContext';
 import './ProductDetails.css';
-import markImgImport from '../pictures/mark.jpg';
-import markedImgImport from '../pictures/markred.jpg';
+import markImg from '../pictures/mark.jpg';
+import markedImg from '../pictures/markred.jpg';
 import wishlistImg from '../pictures/wishlist.jpg';
 import wishlistActiveImg from '../pictures/wishlist-active.jpg';
-
-// ✅ Ensure fallback in case imports are undefined
-const markImg = markImgImport || '/static/media/mark.jpg';
-const markedImg = markedImgImport || '/static/media/markred.jpg';
 
 const ProductDetails = () => {
   const { productId } = useParams();
@@ -22,9 +18,8 @@ const ProductDetails = () => {
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const [stockMessage, setStockMessage] = useState('');
 
-  // Debug log to verify images in production
-  console.log("✅ markImg:", markImg);
-  console.log("✅ markedImg:", markedImg);
+  // Helper to build absolute paths
+  const getImageUrl = (img) => `${process.env.PUBLIC_URL}${img}`;
 
   // Fetch product details
   useEffect(() => {
@@ -135,7 +130,7 @@ const ProductDetails = () => {
         {/* Wishlist Icon */}
         <div className="wishlist-icon1" onClick={toggleWishlist}>
           <img
-            src={isInWishlist(product.product_id) ? wishlistActiveImg : wishlistImg}
+            src={isInWishlist(product.product_id) ? getImageUrl(wishlistActiveImg) : getImageUrl(wishlistImg)}
             alt="Wishlist"
             className="wishlist-image2"
           />
@@ -145,12 +140,12 @@ const ProductDetails = () => {
         <div className="klb-single-stock">
           {product.stock > 0 ? (
             <div className="product-stock in-stock">
-              <img src={markImg || '/static/media/mark.jpg'} alt="In Stock" className="stock-image" />
+              <img src={getImageUrl(markImg)} alt="In Stock" className="stock-image" />
               <span>In Stock</span>
             </div>
           ) : (
             <div className="product-stock out-of-stock">
-              <img src={markedImg || '/static/media/markred.jpg'} alt="Out of Stock" className="stock-image" />
+              <img src={getImageUrl(markedImg)} alt="Out of Stock" className="stock-image" />
               <span>Out of Stock</span>
             </div>
           )}
@@ -163,7 +158,6 @@ const ProductDetails = () => {
               src={selectedImage}
               alt={product.name}
               className="product-detail-image zoomable-image"
-              onError={(e) => (e.currentTarget.src = '/media/default.jpg')}
             />
           )}
           <div className="product-detail-controls">
@@ -174,7 +168,6 @@ const ProductDetails = () => {
                 alt={`Thumbnail ${index + 1}`}
                 className={`product-detail-controls-img ${selectedImage === url ? 'active' : ''}`}
                 onClick={() => setSelectedImage(url || '/media/default.jpg')}
-                onError={(e) => (e.currentTarget.src = '/media/default.jpg')}
               />
             ))}
           </div>
