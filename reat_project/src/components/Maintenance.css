@@ -40,6 +40,7 @@
 
   .maintenance-container p {
     font-size: 1rem;
+    margin-right: 25px;
   }
 
   .maintenance-gif {
@@ -54,6 +55,7 @@
 
   .maintenance-container p {
     font-size: 0.9rem;
+    margin-right: 25PX;
   }
 }
 

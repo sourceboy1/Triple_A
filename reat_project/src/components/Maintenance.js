@@ -13,8 +13,7 @@ const Maintenance = () => {
         className="maintenance-gif" 
       />
       <p>
-        Sorry for the inconvenience, but we're performing some maintenance right now. 
-        Please check back later.
+        We apologize for the inconvenience. Our site is currently undergoing maintenance and will be back online shortly. Thank you for your patience.
       </p>
     </div>
   );

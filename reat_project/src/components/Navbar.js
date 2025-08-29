@@ -105,7 +105,7 @@ const Navbar = () => {
   };
 
   const handlePhoneClick = () => {
-    window.location.href = 'tel:+23434593459'; 
+    window.location.href = 'tel:+2348034593459'; 
     scrollToTop();
   };
 
