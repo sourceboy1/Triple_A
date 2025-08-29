@@ -4,16 +4,13 @@ import api from '../Api';
 import { useCart } from '../contexts/CartContext';
 import { useWishlist } from '../contexts/WishlistContext';
 import './ProductDetails.css';
-import markImg from '../pictures/mark.jpg';
-import markedImg from '../pictures/markred.jpg';
-import wishlistImg from '../pictures/wishlist.jpg';
-import wishlistActiveImg from '../pictures/wishlist-active.jpg';
 
-// ✅ Helper for correct image URLs in production
-const getImageUrl = (path) => {
-  if (!path) return '';
-  if (path.startsWith('http')) return path; // already absolute
-  return process.env.PUBLIC_URL + path.replace(/^\./, '');
+// ✅ Absolute paths served from /public (no bundler hashing)
+const ICONS = {
+  inStock: '/pictures/mark.jpg',
+  outOfStock: '/pictures/markred.jpg',
+  wishlist: '/pictures/wishlist.jpg',
+  wishlistActive: '/pictures/wishlist-active.jpg',
 };
 
 const ProductDetails = () => {
@@ -125,6 +122,7 @@ const ProductDetails = () => {
 
   const uniqueThumbnails = [...new Set(thumbnails)];
 
+  const inStock = Number(product.stock) > 0;
   const formattedPrice = product.price ? new Intl.NumberFormat().format(product.price) : 'N/A';
   const formattedOriginalPrice = product.original_price ? new Intl.NumberFormat().format(product.original_price) : 'N/A';
 
@@ -134,22 +132,33 @@ const ProductDetails = () => {
         {/* Wishlist Icon */}
         <div className="wishlist-icon1" onClick={toggleWishlist}>
           <img
-            src={isInWishlist(product.product_id) ? wishlistActiveImg : wishlistImg}
+            src={isInWishlist(product.product_id) ? ICONS.wishlistActive : ICONS.wishlist}
             alt="Wishlist"
             className="wishlist-image2"
+            onError={(e) => { e.currentTarget.src = ICONS.wishlist; }}
           />
         </div>
 
         {/* Stock Info */}
         <div className="klb-single-stock">
-          {product.stock > 0 ? (
+          {inStock ? (
             <div className="product-stock in-stock">
-              <img src={getImageUrl(markImg)} alt="In Stock" className="stock-image" />
+              <img
+                src={ICONS.inStock}
+                alt="In Stock"
+                className="stock-image"
+                onError={(e) => { e.currentTarget.src = ICONS.inStock; }}
+              />
               <span>In Stock</span>
             </div>
           ) : (
             <div className="product-stock out-of-stock">
-              <img src={getImageUrl(markedImg)} alt="Out of Stock" className="stock-image" />
+              <img
+                src={ICONS.outOfStock}
+                alt="Out of Stock"
+                className="stock-image"
+                onError={(e) => { e.currentTarget.src = ICONS.outOfStock; }}
+              />
               <span>Out of Stock</span>
             </div>
           )}
@@ -162,6 +171,7 @@ const ProductDetails = () => {
               src={selectedImage}
               alt={product.name}
               className="product-detail-image zoomable-image"
+              onError={(e) => { e.currentTarget.src = '/media/default.jpg'; }}
             />
           )}
           <div className="product-detail-controls">
@@ -172,6 +182,7 @@ const ProductDetails = () => {
                 alt={`Thumbnail ${index + 1}`}
                 className={`product-detail-controls-img ${selectedImage === url ? 'active' : ''}`}
                 onClick={() => setSelectedImage(url || '/media/default.jpg')}
+                onError={(e) => { e.currentTarget.src = '/media/default.jpg'; }}
               />
             ))}
           </div>
@@ -208,7 +219,7 @@ const ProductDetails = () => {
             className="button is-primary"
             disabled={product.stock === 0}
           >
-            {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+            {inStock ? 'Add to Cart' : 'Out of Stock'}
           </button>
 
           <button
