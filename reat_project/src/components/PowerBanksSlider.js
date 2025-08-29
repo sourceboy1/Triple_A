@@ -31,7 +31,7 @@ const PowerBankDisplay = () => {
   useEffect(() => {
     const fetchPowerBanks = async () => {
       try {
-        const response = await api.get('/products/', { params: { category_id: 7 } });
+        const response = await api.get(`products/?category_id=7`);
         const data = response.data;
 
         if (!Array.isArray(data)) {

@@ -25,7 +25,7 @@ const PhonesTabletsDisplay = () => {
   useEffect(() => {
     const fetchPhonesAndTablets = async () => {
       try {
-        const response = await api.get('/products/', { params: { category_id: 2 } });
+        const response = await api.get(`products/?category_id=2`);
         const data = response.data;
 
         if (!Array.isArray(data)) {

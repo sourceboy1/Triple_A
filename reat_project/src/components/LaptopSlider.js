@@ -30,7 +30,7 @@ const LaptopDisplay = () => {
   useEffect(() => {
     const fetchLaptops = async () => {
       try {
-        const response = await api.get('/products/', { params: { category_id: 4 } });
+        const response = await api.get(`products/?category_id=4`);
         const data = response.data;
 
         if (!Array.isArray(data)) {
