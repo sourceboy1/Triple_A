@@ -11,11 +11,13 @@ class MaintenanceModeMiddleware:
             if request.path.startswith("/admin"):
                 return self.get_response(request)
 
-            # ✅ Allow staff/admin users to bypass maintenance
+            # ✅ Allow staff/admin users to bypass AND auto-redirect away from /maintenance
             if request.user.is_authenticated and request.user.is_staff:
+                if request.path.startswith("/maintenance"):
+                    return redirect("/")  # send staff back to homepage/dashboard
                 return self.get_response(request)
 
-            # ✅ Everyone else goes to /maintenance
+            # ✅ Normal users: redirect everything to /maintenance
             if not request.path.startswith("/maintenance"):
                 return redirect("/maintenance")
 

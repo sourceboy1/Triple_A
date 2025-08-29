@@ -85,7 +85,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "main_app.middleware.MaintenanceModeMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this
     'corsheaders.middleware.CorsMiddleware',  # Move above CommonMiddleware
@@ -93,6 +92,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    "main_app.middleware.MaintenanceModeMiddleware",
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
