@@ -9,6 +9,13 @@ import markedImg from '../pictures/markred.jpg';
 import wishlistImg from '../pictures/wishlist.jpg';
 import wishlistActiveImg from '../pictures/wishlist-active.jpg';
 
+// ✅ Helper for correct image URLs in production
+const getImageUrl = (path) => {
+  if (!path) return '';
+  if (path.startsWith('http')) return path; // already absolute
+  return process.env.PUBLIC_URL + path.replace(/^\./, '');
+};
+
 const ProductDetails = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
@@ -17,9 +24,6 @@ const ProductDetails = () => {
   const { addItemToCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const [stockMessage, setStockMessage] = useState('');
-
-  // Helper to build absolute paths
-  const getImageUrl = (img) => `${process.env.PUBLIC_URL}${img}`;
 
   // Fetch product details
   useEffect(() => {
@@ -130,7 +134,7 @@ const ProductDetails = () => {
         {/* Wishlist Icon */}
         <div className="wishlist-icon1" onClick={toggleWishlist}>
           <img
-            src={isInWishlist(product.product_id) ? getImageUrl(wishlistActiveImg) : getImageUrl(wishlistImg)}
+            src={isInWishlist(product.product_id) ? wishlistActiveImg : wishlistImg}
             alt="Wishlist"
             className="wishlist-image2"
           />
