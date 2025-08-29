@@ -6,10 +6,10 @@ import './CategoryDisplay.css';
 
 // Define categories once
 const categories = [
-  { id: 2, name: "Accessories" },
-  { id: 1, name: "Games" },
-  { id: 4, name: "Headphones & Airpods" },
-  { id: 6, name: "Watches" },
+  { id: 1, name: "Accessories" },
+  { id: 9, name: "Games" },
+  { id: 3, name: "Headphones & Airpods" },
+  { id: 8, name: "Watches" },
 ];
 
 // Utility to shuffle arrays
