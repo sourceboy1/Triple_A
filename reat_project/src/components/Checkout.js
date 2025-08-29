@@ -33,7 +33,7 @@ const Checkout = () => {
     const { cart, clearCart } = useCart();
     const [showTerms, setShowTerms] = useState(false);
     const { isLoggedIn, firstName: userFirstName, lastName: userLastName, email: userEmail } = useUser();
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('access_token')
     const navigate = useNavigate();
     const options = countryList().getData();
 
@@ -243,7 +243,7 @@ const Checkout = () => {
                                 checked={shippingMethod === 'area1'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
                             />
-                            Amuwo Odofin GRA/Festac: ₦1,500.00
+                            Amuwo Odofin GRA/Festac: ₦10,000.00
                         </label>
                         <label>
                             <input
@@ -253,7 +253,7 @@ const Checkout = () => {
                                 checked={shippingMethod === 'satellite'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
                             />
-                            Satellite town/Suru Alaba/Isolo/Maza maza: ₦1,500.00
+                            Satellite town/Suru Alaba/Isolo/Maza maza: ₦12,000.00
                         </label>
                         <label>
                             <input
@@ -263,7 +263,7 @@ const Checkout = () => {
                                 checked={shippingMethod === 'area2'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
                             />
-                            Ajao Estate/Oshodi/Lawanson/Orile/Itire/Gbagada/Apapa/Surulere/Tradefair: ₦2,500.00
+                            Ajao Estate/Oshodi/Lawanson/Orile/Itire/Gbagada/Apapa/Surulere/Tradefair: ₦10,000.00
                         </label>
                         <label>
                             <input
@@ -273,7 +273,7 @@ const Checkout = () => {
                                 checked={shippingMethod === 'abule_egba'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
                             />
-                            Abule Egba/ Iyana Ipaja/ Ayobo: ₦3,000.00
+                            Abule Egba/ Iyana Ipaja/ Ayobo: ₦8,000.00
                         </label>
                         <label>
                             <input
@@ -293,7 +293,7 @@ const Checkout = () => {
                                 checked={shippingMethod === 'lagos_mainland'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
                             />
-                            LAGOS MAINLAND: ₦5,000.00
+                            LAGOS MAINLAND: ₦12,000.00
                         </label>
                     </div>
                 </div>
