@@ -11,23 +11,27 @@ h2 {
   color: var(--main-accent-color);
 }
 
-.powerbank-display {
-  overflow: hidden; /* Hide extra items */
-  position: relative;
+/* 👇 Horizontal scroll just like laptops */
+.powerbank-slider {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
 }
 
+/* Hide scrollbar */
+.powerbank-slider::-webkit-scrollbar {
+  display: none;
+}
 .powerbank-slider {
-  display: flex; /* Use flexbox to keep items on the same row */
-  transition: transform 0.5s ease;
-  width: fit-content; /* Only take space for visible items */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .powerbank-item {
-  flex: 0 0 auto; /* Prevent items from shrinking */
+  flex: 0 0 auto;
   width: 150px;
-  margin: 15px;
-  display: flex;
-  flex-direction: column;
   border: 2px solid var(--main-accent-color);
   border-radius: 10px;
   padding: 10px;
@@ -58,32 +62,9 @@ h2 {
   color: #333;
 }
 
-/* Responsive Media Queries */
-
-/* 320px and 375px - 2 items visible */
-@media (max-width: 375px) {
-  .powerbank-display {
-    width: calc(2 * 150px + 2 * 15px); /* Adjust width to show only 2 items */
-  }
-}
-
-/* 425px - 3 items visible */
-@media (min-width: 376px) and (max-width: 425px) {
-  .powerbank-display {
-    width: calc(3 * 150px + 3 * 15px); /* Adjust width to show 3 items */
-  }
-}
-
-/* 769px - 5 items visible */
-@media (min-width: 426px) and (max-width: 769px) {
-  .powerbank-display {
-    width: calc(5 * 150px + 5 * 15px); /* Adjust width to show 5 items */
-  }
-}
-
-/* 1024px - 6 items visible */
-@media (min-width: 770px) and (max-width: 1024px) {
-  .powerbank-display {
-    width: calc(6 * 150px + 6 * 15px); /* Adjust width to show 6 items */
+/* ✅ Responsive tweak: shrink item width a bit for very small screens */
+@media (max-width: 425px) {
+  .powerbank-item {
+    width: 120px;
   }
 }

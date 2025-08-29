@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../Api'; // ✅ Use centralized API
+import api from '../Api';
 import './PhonesTabletsDisplay.css';
 
 const PhonesTabletsDisplay = () => {
@@ -10,7 +10,7 @@ const PhonesTabletsDisplay = () => {
   const fetchCount = 30;
   const navigate = useNavigate();
   const sliderRef = useRef(null);
-  const hoverIntervals = useRef({}); // store hover timers
+  const hoverIntervals = useRef({});
   const [startX, setStartX] = useState(0);
   const [currentTranslate, setCurrentTranslate] = useState(0);
 
@@ -25,7 +25,7 @@ const PhonesTabletsDisplay = () => {
   useEffect(() => {
     const fetchPhonesAndTablets = async () => {
       try {
-        const response = await api.get('/products/', { params: { category_id: 6 } });
+        const response = await api.get('/products/', { params: { category_id: 2 } });
         const data = response.data;
 
         if (!Array.isArray(data)) {
@@ -78,7 +78,7 @@ const PhonesTabletsDisplay = () => {
         imgElement.src = images[currentImgIndex];
         currentImgIndex = (currentImgIndex + 1) % images.length;
       }
-    }, 1000); // cycle every 1 second
+    }, 1000);
   };
 
   const handleMouseLeave = (index) => {

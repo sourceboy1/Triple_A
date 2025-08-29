@@ -6,7 +6,6 @@ import './PowerBanksSlider.css';
 const PowerBankDisplay = () => {
   const [powerBanks, setPowerBanks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const displayCount = 6;
   const fetchCount = 30;
   const navigate = useNavigate();
   const hoverIntervals = useRef({}); // store hover timers
@@ -32,7 +31,7 @@ const PowerBankDisplay = () => {
   useEffect(() => {
     const fetchPowerBanks = async () => {
       try {
-        const response = await api.get('/products/', { params: { category_id: 1 } });
+        const response = await api.get('/products/', { params: { category_id: 7 } });
         const data = response.data;
 
         if (!Array.isArray(data)) {
@@ -66,7 +65,7 @@ const PowerBankDisplay = () => {
       powerBank.quaternary_image_urls?.medium,
     ].filter(Boolean);
 
-    if (images.length < 2) return; // no need to cycle if only one image
+    if (images.length < 2) return;
 
     let currentImgIndex = 0;
     hoverIntervals.current[index] = setInterval(() => {
@@ -75,7 +74,7 @@ const PowerBankDisplay = () => {
         imgElement.src = images[currentImgIndex];
         currentImgIndex = (currentImgIndex + 1) % images.length;
       }
-    }, 1000); // change image every second
+    }, 1000);
   };
 
   const handleMouseLeave = (index) => {
@@ -91,40 +90,38 @@ const PowerBankDisplay = () => {
   return (
     <div className="powerbank-container">
       <h2>Featured Power Banks</h2>
-      <div className="powerbank-display">
-        {loading ? (
-          <p>Loading power banks...</p>
-        ) : powerBanks.length === 0 ? (
-          <p>No power banks available at the moment.</p>
-        ) : (
-          <div className="powerbank-slider">
-            {powerBanks.slice(0, displayCount).map((powerBank, index) => {
-              const primaryImg = powerBank.image_urls?.medium || '/placeholder.jpg';
+      {loading ? (
+        <p>Loading power banks...</p>
+      ) : powerBanks.length === 0 ? (
+        <p>No power banks available at the moment.</p>
+      ) : (
+        <div className="powerbank-slider">
+          {powerBanks.map((powerBank, index) => {
+            const primaryImg = powerBank.image_urls?.medium || '/placeholder.jpg';
 
-              return (
-                <div
-                  className="powerbank-item"
-                  key={powerBank.product_id}
-                  onClick={() => handleProductClick(powerBank.product_id)}
-                  onMouseEnter={() => handleMouseEnter(index)}
-                  onMouseLeave={() => handleMouseLeave(index)}
-                >
-                  <img
-                    src={primaryImg}
-                    alt={powerBank.name || "Power Bank"}
-                    className="powerbank-image"
-                    onError={(e) => { e.target.src = '/placeholder.jpg'; }}
-                  />
-                  <h3 className="powerbank-name">{powerBank.name}</h3>
-                  <p className="powerbank-price">
-                    {formatPrice(parseFloat(powerBank.price))}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
+            return (
+              <div
+                className="powerbank-item"
+                key={powerBank.product_id}
+                onClick={() => handleProductClick(powerBank.product_id)}
+                onMouseEnter={() => handleMouseEnter(index)}
+                onMouseLeave={() => handleMouseLeave(index)}
+              >
+                <img
+                  src={primaryImg}
+                  alt={powerBank.name || "Power Bank"}
+                  className="powerbank-image"
+                  onError={(e) => { e.target.src = '/placeholder.jpg'; }}
+                />
+                <h3 className="powerbank-name">{powerBank.name}</h3>
+                <p className="powerbank-price">
+                  {formatPrice(parseFloat(powerBank.price))}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
