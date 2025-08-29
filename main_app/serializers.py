@@ -219,6 +219,7 @@ class ShippingAddressSerializer(serializers.ModelSerializer):
 # serializers.py
 
 class OrderItemSerializer(serializers.ModelSerializer):
+    product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())  # resolves ID → Product
     product_name = serializers.CharField(source='product.name', read_only=True)
     product_image = serializers.SerializerMethodField()
 
@@ -228,13 +229,13 @@ class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
         fields = [
-            'order_item_id',  # replace with your actual PK field
+            'order_item_id',
             'product', 'product_name', 'product_image',
             'quantity', 'price', 'name', 'image_url'
         ]
 
     def get_product_image(self, obj):
-        request = self.context.get('request', None)
+        request = self.context.get('request')
         if obj.product and obj.product.image:
             if request:
                 return request.build_absolute_uri(obj.product.image.url)
@@ -243,10 +244,11 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 
 
+
 class OrderSerializer(serializers.ModelSerializer):
     user_id = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
     payment_method_id = serializers.PrimaryKeyRelatedField(queryset=PaymentMethod.objects.all())
-    cart_items = OrderItemSerializer(many=True, read_only=True)  # Pull related OrderItems
+    cart_items = OrderItemSerializer(many=True)  # ✅ no longer read_only
 
     class Meta:
         model = Order
@@ -258,9 +260,9 @@ class OrderSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
-        cart_items_data = self.context['request'].data.get('cart_items', [])
-        user = validated_data.pop('user_id')  # Already a CustomUser instance
-        payment_method = validated_data.pop('payment_method_id')  # Already a PaymentMethod instance
+        cart_items_data = validated_data.pop('cart_items', [])
+        user = validated_data.pop('user_id')
+        payment_method = validated_data.pop('payment_method_id')
 
         # Create order
         order = Order.objects.create(
@@ -269,7 +271,7 @@ class OrderSerializer(serializers.ModelSerializer):
             **validated_data
         )
 
-        # Create each OrderItem
+        # Create items (DRF already resolved product IDs → Product objects)
         for item_data in cart_items_data:
             item_data.pop('name', None)
             item_data.pop('image_url', None)
