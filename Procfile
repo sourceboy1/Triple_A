@@ -1,1 +1,1 @@
-web: gunicorn your_project_name.wsgi --log-file - --workers 4 --threads 2 --timeout 120
+web: gunicorn main_project.wsgi:application --log-file - --workers 3 --threads 2 --timeout 120 --max-requests 500 --max-requests-jitter 50
