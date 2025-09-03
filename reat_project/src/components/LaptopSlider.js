@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react'; 
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../Api'; // ✅ Use centralized API
+import api from '../Api';
 import './LaptopSlider.css';
 
 const LaptopDisplay = () => {
   const [laptops, setLaptops] = useState([]);
   const [loading, setLoading] = useState(true);
-  const displayCount = 30; // fetch up to 30 products
+  const [hoverImageIndexes, setHoverImageIndexes] = useState({});
+  const displayCount = 30;
   const navigate = useNavigate();
+  const intervalsRef = useRef({});
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -49,10 +51,38 @@ const LaptopDisplay = () => {
     };
 
     fetchLaptops();
+
+    return () => {
+      // cleanup all hover intervals
+      Object.values(intervalsRef.current).forEach(clearInterval);
+    };
   }, []);
 
   const handleProductClick = (product_id) => {
     navigate(`/product-details/${product_id}`);
+  };
+
+  const handleMouseEnter = (productId, images) => {
+    if (images.length < 2) return;
+
+    let currentImgIndex = 0;
+    intervalsRef.current[productId] = setInterval(() => {
+      currentImgIndex = (currentImgIndex + 1) % images.length;
+      setHoverImageIndexes((prev) => ({
+        ...prev,
+        [productId]: currentImgIndex,
+      }));
+    }, 1000);
+  };
+
+  const handleMouseLeave = (productId) => {
+    clearInterval(intervalsRef.current[productId]);
+    intervalsRef.current[productId] = null;
+
+    setHoverImageIndexes((prev) => ({
+      ...prev,
+      [productId]: 0,
+    }));
   };
 
   return (
@@ -65,18 +95,35 @@ const LaptopDisplay = () => {
       ) : (
         <div className="laptop-slider">
           {laptops.map((laptop, index) => {
-            const primaryImg = laptop.image_urls?.medium || '/placeholder.jpg';
+            if (!laptop) return null;
+
+            // Collect available images
+            const images = [
+              laptop.image_urls?.medium,
+              laptop.secondary_image_urls?.medium,
+              laptop.tertiary_image_urls?.medium,
+              laptop.quaternary_image_urls?.medium,
+            ].filter(Boolean);
+
+            const currentImg =
+              images[hoverImageIndexes[laptop.product_id] || 0] ||
+              '/placeholder.jpg';
+
             return (
               <div
                 className="laptop-item"
                 key={laptop.product_id || index}
                 onClick={() => handleProductClick(laptop.product_id)}
+                onMouseEnter={() => handleMouseEnter(laptop.product_id, images)}
+                onMouseLeave={() => handleMouseLeave(laptop.product_id)}
               >
                 <img
-                  src={primaryImg}
+                  src={currentImg}
                   alt={laptop?.name || 'Unnamed Laptop'}
                   className="laptop-image"
-                  onError={(e) => { e.target.src = '/placeholder.jpg'; }}
+                  onError={(e) => {
+                    e.target.src = '/placeholder.jpg';
+                  }}
                 />
                 <h3 className="laptop-name">{laptop?.name || 'Unnamed Laptop'}</h3>
                 <p className="laptop-price">{formatPrice(laptop?.price)}</p>

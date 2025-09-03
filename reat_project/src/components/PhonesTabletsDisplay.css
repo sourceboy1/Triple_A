@@ -3,7 +3,7 @@
   margin: 20px auto;
   max-width: 1200px;
   padding: 0 15px;
-  overflow: hidden; /* ✅ prevent overflow */
+  overflow: hidden;
 }
 
 h2 {
@@ -13,20 +13,20 @@ h2 {
 }
 
 .phones-tablets-display {
-  overflow-x: auto; /* ✅ allow horizontal scroll */
+  overflow-x: auto;
   overflow-y: hidden;
-  -webkit-overflow-scrolling: touch; /* ✅ smooth scroll on iOS */
+  -webkit-overflow-scrolling: touch;
 }
 
 .phones-tablets-slider {
   display: flex;
-  flex-wrap: nowrap; /* ✅ force one line */
+  flex-wrap: nowrap;
   transition: transform 0.5s ease-in-out;
 }
 
 .phones-tablets-item {
   flex: 0 0 auto;
-  width: 25%; /* ✅ default (desktop/tablets: 4 per view) */
+  width: 25%;
   margin: 10px;
   display: flex;
   flex-direction: column;

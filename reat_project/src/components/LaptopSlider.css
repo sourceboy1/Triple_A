@@ -30,7 +30,7 @@ h2 {
 }
 
 .laptop-item {
-  flex: 0 0 auto; /* 👈 Prevent shrinking, keep items inline */
+  flex: 0 0 auto;
   width: 150px;
   border: 2px solid var(--main-accent-color);
   border-radius: 10px;
@@ -38,6 +38,7 @@ h2 {
   background-color: white;
   transition: transform 0.3s, box-shadow 0.3s;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
 .laptop-item:hover {
@@ -49,6 +50,11 @@ h2 {
   width: 100%;
   height: auto;
   border-radius: 5px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.laptop-item:hover .laptop-image {
+  transform: scale(1.05);
 }
 
 .laptop-name {
@@ -57,7 +63,13 @@ h2 {
   color: #333;
 }
 
-/* ✅ Responsive: items auto-fit, just scroll */
+.laptop-price {
+  color: var(--main-accent-color);
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* ✅ Responsive */
 @media (max-width: 425px) {
   .laptop-item {
     width: 120px;

@@ -6,13 +6,10 @@ import './PhonesTabletsDisplay.css';
 const PhonesTabletsDisplay = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const displayCount = 6;
+  const [hoverImageIndexes, setHoverImageIndexes] = useState({});
   const fetchCount = 30;
   const navigate = useNavigate();
-  const sliderRef = useRef(null);
-  const hoverIntervals = useRef({});
-  const [startX, setStartX] = useState(0);
-  const [currentTranslate, setCurrentTranslate] = useState(0);
+  const intervalsRef = useRef({});
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -53,68 +50,37 @@ const PhonesTabletsDisplay = () => {
       });
     }, 12000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      Object.values(intervalsRef.current).forEach(clearInterval);
+    };
   }, []);
 
   const handleProductClick = (product_id) => {
     navigate(`/product-details/${product_id}`);
   };
 
-  const handleMouseEnter = (index) => {
-    const product = products[index];
-    const images = [
-      product.image_urls?.medium,
-      product.secondary_image_urls?.medium,
-      product.tertiary_image_urls?.medium,
-      product.quaternary_image_urls?.medium,
-    ].filter(Boolean);
-
+  const handleMouseEnter = (productId, images) => {
     if (images.length < 2) return;
 
     let currentImgIndex = 0;
-    hoverIntervals.current[index] = setInterval(() => {
-      const imgElement = document.querySelectorAll('.phones-tablets-item img')[index];
-      if (imgElement) {
-        imgElement.src = images[currentImgIndex];
-        currentImgIndex = (currentImgIndex + 1) % images.length;
-      }
+    intervalsRef.current[productId] = setInterval(() => {
+      currentImgIndex = (currentImgIndex + 1) % images.length;
+      setHoverImageIndexes((prev) => ({
+        ...prev,
+        [productId]: currentImgIndex,
+      }));
     }, 1000);
   };
 
-  const handleMouseLeave = (index) => {
-    clearInterval(hoverIntervals.current[index]);
-    hoverIntervals.current[index] = null;
+  const handleMouseLeave = (productId) => {
+    clearInterval(intervalsRef.current[productId]);
+    intervalsRef.current[productId] = null;
 
-    const product = products[index];
-    const primaryImg = product.image_urls?.medium || '/placeholder.jpg';
-    const imgElement = document.querySelectorAll('.phones-tablets-item img')[index];
-    if (imgElement) imgElement.src = primaryImg;
-  };
-
-  const handleTouchStart = (event) => {
-    setStartX(event.touches[0].clientX);
-    setCurrentTranslate(0);
-  };
-
-  const handleTouchMove = (event) => {
-    const currentX = event.touches[0].clientX;
-    const diffX = currentX - startX;
-    setCurrentTranslate(diffX);
-  };
-
-  const handleTouchEnd = () => {
-    if (currentTranslate > 50) {
-      setProducts((prev) => {
-        const firstItem = prev[0];
-        return [...prev.slice(1), firstItem];
-      });
-    } else if (currentTranslate < -50) {
-      setProducts((prev) => {
-        const lastItem = prev[prev.length - 1];
-        return [lastItem, ...prev.slice(0, -1)];
-      });
-    }
-    setCurrentTranslate(0);
+    setHoverImageIndexes((prev) => ({
+      ...prev,
+      [productId]: 0,
+    }));
   };
 
   const formatPrice = (price) => {
@@ -136,32 +102,39 @@ const PhonesTabletsDisplay = () => {
         ) : products.length === 0 ? (
           <p>No phones or tablets available at the moment.</p>
         ) : (
-          <div
-            className="phones-tablets-slider"
-            ref={sliderRef}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-            style={{ transform: `translateX(${currentTranslate}px)`, transition: 'transform 0.3s ease-in-out' }}
-          >
-            {products.slice(0, displayCount).map((product, index) => {
+          <div className="phones-tablets-slider">
+            {products.map((product) => {
               if (!product || !product.image_urls?.medium) return null;
+
+              const images = [
+                product.image_urls?.medium,
+                product.secondary_image_urls?.medium,
+                product.tertiary_image_urls?.medium,
+                product.quaternary_image_urls?.medium,
+              ].filter(Boolean);
+
+              const currentImg =
+                images[hoverImageIndexes[product.product_id] || 0] || images[0];
 
               return (
                 <div
                   className="phones-tablets-item"
                   key={product.product_id}
                   onClick={() => handleProductClick(product.product_id)}
-                  onMouseEnter={() => handleMouseEnter(index)}
-                  onMouseLeave={() => handleMouseLeave(index)}
+                  onMouseEnter={() =>
+                    handleMouseEnter(product.product_id, images)
+                  }
+                  onMouseLeave={() => handleMouseLeave(product.product_id)}
                 >
                   <img
-                    src={product.image_urls?.medium || '/placeholder.jpg'}
+                    src={currentImg || '/placeholder.jpg'}
                     alt={product.name || 'Phone/Tablet'}
                     className="phones-tablets-image"
                   />
                   <h3 className="phones-tablets-name">{product.name}</h3>
-                  <p className="phones-tablets-price">{formatPrice(parseFloat(product.price))}</p>
+                  <p className="phones-tablets-price">
+                    {formatPrice(parseFloat(product.price))}
+                  </p>
                 </div>
               );
             })}

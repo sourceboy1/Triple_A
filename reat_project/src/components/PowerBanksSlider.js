@@ -6,9 +6,10 @@ import './PowerBanksSlider.css';
 const PowerBankDisplay = () => {
   const [powerBanks, setPowerBanks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [hoverImageIndexes, setHoverImageIndexes] = useState({});
   const fetchCount = 30;
   const navigate = useNavigate();
-  const hoverIntervals = useRef({}); // store hover timers
+  const intervalsRef = useRef({});
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -50,41 +51,38 @@ const PowerBankDisplay = () => {
     };
 
     fetchPowerBanks();
+
+    return () => {
+      // cleanup all hover intervals
+      Object.values(intervalsRef.current).forEach(clearInterval);
+    };
   }, []);
 
   const handleProductClick = (product_id) => {
     navigate(`/product-details/${product_id}`);
   };
 
-  const handleMouseEnter = (index) => {
-    const powerBank = powerBanks[index];
-    const images = [
-      powerBank.image_urls?.medium,
-      powerBank.secondary_image_urls?.medium,
-      powerBank.tertiary_image_urls?.medium,
-      powerBank.quaternary_image_urls?.medium,
-    ].filter(Boolean);
-
+  const handleMouseEnter = (productId, images) => {
     if (images.length < 2) return;
 
     let currentImgIndex = 0;
-    hoverIntervals.current[index] = setInterval(() => {
-      const imgElement = document.querySelectorAll('.powerbank-item img')[index];
-      if (imgElement) {
-        imgElement.src = images[currentImgIndex];
-        currentImgIndex = (currentImgIndex + 1) % images.length;
-      }
+    intervalsRef.current[productId] = setInterval(() => {
+      currentImgIndex = (currentImgIndex + 1) % images.length;
+      setHoverImageIndexes((prev) => ({
+        ...prev,
+        [productId]: currentImgIndex,
+      }));
     }, 1000);
   };
 
-  const handleMouseLeave = (index) => {
-    clearInterval(hoverIntervals.current[index]);
-    hoverIntervals.current[index] = null;
+  const handleMouseLeave = (productId) => {
+    clearInterval(intervalsRef.current[productId]);
+    intervalsRef.current[productId] = null;
 
-    const powerBank = powerBanks[index];
-    const primaryImg = powerBank.image_urls?.medium || '/placeholder.jpg';
-    const imgElement = document.querySelectorAll('.powerbank-item img')[index];
-    if (imgElement) imgElement.src = primaryImg;
+    setHoverImageIndexes((prev) => ({
+      ...prev,
+      [productId]: 0,
+    }));
   };
 
   return (
@@ -97,21 +95,37 @@ const PowerBankDisplay = () => {
       ) : (
         <div className="powerbank-slider">
           {powerBanks.map((powerBank, index) => {
-            const primaryImg = powerBank.image_urls?.medium || '/placeholder.jpg';
+            if (!powerBank) return null;
+
+            // Collect available images
+            const images = [
+              powerBank.image_urls?.medium,
+              powerBank.secondary_image_urls?.medium,
+              powerBank.tertiary_image_urls?.medium,
+              powerBank.quaternary_image_urls?.medium,
+            ].filter(Boolean);
+
+            const currentImg =
+              images[hoverImageIndexes[powerBank.product_id] || 0] ||
+              '/placeholder.jpg';
 
             return (
               <div
                 className="powerbank-item"
-                key={powerBank.product_id}
+                key={powerBank.product_id || index}
                 onClick={() => handleProductClick(powerBank.product_id)}
-                onMouseEnter={() => handleMouseEnter(index)}
-                onMouseLeave={() => handleMouseLeave(index)}
+                onMouseEnter={() =>
+                  handleMouseEnter(powerBank.product_id, images)
+                }
+                onMouseLeave={() => handleMouseLeave(powerBank.product_id)}
               >
                 <img
-                  src={primaryImg}
-                  alt={powerBank.name || "Power Bank"}
+                  src={currentImg}
+                  alt={powerBank.name || 'Power Bank'}
                   className="powerbank-image"
-                  onError={(e) => { e.target.src = '/placeholder.jpg'; }}
+                  onError={(e) => {
+                    e.target.src = '/placeholder.jpg';
+                  }}
                 />
                 <h3 className="powerbank-name">{powerBank.name}</h3>
                 <p className="powerbank-price">

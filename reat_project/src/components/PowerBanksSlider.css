@@ -38,6 +38,7 @@ h2 {
   background-color: white;
   transition: transform 0.3s, box-shadow 0.3s;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
 .powerbank-item:hover {
@@ -62,7 +63,13 @@ h2 {
   color: #333;
 }
 
-/* ✅ Responsive tweak: shrink item width a bit for very small screens */
+.powerbank-price {
+  color: var(--main-accent-color);
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* ✅ Responsive tweak */
 @media (max-width: 425px) {
   .powerbank-item {
     width: 120px;

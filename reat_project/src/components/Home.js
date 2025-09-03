@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { TokenContext } from './TokenContext';
 import { useCart } from '../contexts/CartContext';
 import { useWishlist } from '../contexts/WishlistContext';
+
 import CategoryDisplay from './CategoryDisplay';
 import FeatureDisplay from './FeatureDisplay';
 import DealsOfTheDay from './Deals_of_the_Day';
@@ -14,6 +15,8 @@ import PowerBankDisplay from './PowerBanksSlider';
 import LaptopDisplay from './LaptopSlider';
 import ViewedProducts from './ViewedProducts';
 import PhonesTabletsDisplay from './PhonesTabletsDisplay';
+
+import Loading from './Loading'; // ✅ your loading component
 
 const images = [slidingImage1, slidingImage2, slidingImage5];
 const captions = [
@@ -29,6 +32,7 @@ const buttonTexts = [
 
 const Home = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState(true); // ✅ global loading
   const navigate = useNavigate();
   const accessToken = useContext(TokenContext);
   const { cart, addItemToCart } = useCart();
@@ -36,10 +40,18 @@ const Home = () => {
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
+  // ✅ Simulate waiting for ALL child components (mock: 2s)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false); 
+    }, 2000); 
+    return () => clearTimeout(timer);
+  }, []);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex(prev => (prev + 1) % images.length);
-    }, 22000); // slower sliding (12s)
+    }, 22000);
     return () => clearInterval(interval);
   }, []);
 
@@ -58,6 +70,11 @@ const Home = () => {
       setCurrentIndex(prev => (prev - 1 + images.length) % images.length);
     }
   };
+
+  // ✅ show loading first
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="home">
@@ -89,6 +106,7 @@ const Home = () => {
         </div>
       </div>
 
+      {/* ✅ children render only AFTER loading finishes */}
       <FeatureDisplay />
       <DealsOfTheDay />
       <CategoryDisplay />
