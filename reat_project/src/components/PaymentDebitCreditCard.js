@@ -1,176 +1,139 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
-import { PaystackButton } from 'react-paystack';
-import api from '../Api'; // ✅ Using the single API instance
-import guaranteeIcon from '../icons/guarantee-icon.jpg';
-import fastShipIcon from '../icons/fast-ship-icon.jpg';
-import qualityAssuredIcon from '../icons/quality-assured-icon.jpg';
-import customerServiceIcon from '../icons/customer-service-icon.jpg';
-import './PaymentDebitCreditCard.css';
+import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import api from '../Api';
+import './PhonesTabletsDisplay.css';
 
-const PaymentPage = () => {
-    const location = useLocation();
-    const navigate = useNavigate();
-    const { state } = location;
-    const [isCanceling, setIsCanceling] = useState(false);
-    const [paystackOpen, setPaystackOpen] = useState(false);
+const PhonesTabletsDisplay = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const fetchCount = 30;
+  const navigate = useNavigate();
+  const sliderRef = useRef(null);
+  const hoverIntervals = useRef({});
 
-    const {
-        orderId = 'N/A',
-        products = [],
-        shippingCost = 0
-    } = state || {};
-    const token = localStorage.getItem('token');
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
 
-    // Paystack Public Key and other configurations
-    const publicKey = "pk_live_465faeaf26bb124923dde0c51f9f2b6a1b9ee006";
-    const email = "useremail@example.com";
+  useEffect(() => {
+    const fetchPhonesAndTablets = async () => {
+      try {
+        const response = await api.get(`products/?category_id=2`);
+        const data = response.data;
 
-    // Calculate total amount
-    const totalAmount = products.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-    const totalWithShipping = totalAmount + shippingCost;
-
-    // Calculate Paystack fee
-    let feeAmount = totalWithShipping <= 126600 ? totalWithShipping * 0.015 + 100 : 2000;
-    const totalWithFee = totalWithShipping + feeAmount;
-    const totalAmountInKobo = totalWithFee * 100;
-
-    const componentProps = {
-        email,
-        amount: totalAmountInKobo,
-        publicKey,
-        text: "Pay with Paystack",
-        onSuccess: (response) => {
-            console.log("Payment Successful!", response);
-            navigate('/payment-success', { state: { reference: response.reference } });
-        },
-        onClose: () => {
-            console.log("Payment popup closed");
-        },
-        embed: true, // Enable embed mode for automatic popup
-        reference: new Date().getTime().toString(),
-    };
-
-    useEffect(() => {
-        window.scrollTo(0, 0); // Scroll to top when component mounts
-        setPaystackOpen(true); // Trigger Paystack pop-up on page load
-    }, []);
-
-    const formatPrice = (amount) => (Number(amount) || 0).toLocaleString();
-
-    const getCurrentDate = () => {
-        const date = new Date();
-        return date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
-    };
-
-    const handleCancelOrder = () => {
-        setIsCanceling(true);
-    };
-
-    const confirmCancelOrder = async () => {
-        try {
-            if (orderId === 'N/A') {
-                alert('Order ID is not available');
-                return;
-            }
-
-            await api.post(`/orders/${orderId}/cancel/`, {}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Token ${token}`,
-                }
-            });
-
-            navigate('/');
-        } catch (error) {
-            console.error('Error canceling order:', error);
+        if (!Array.isArray(data)) {
+          console.error('Unexpected API response:', data);
+          setLoading(false);
+          return;
         }
+
+        const shuffledProducts = shuffleArray(data.slice(0, fetchCount));
+        setProducts(shuffledProducts);
+      } catch (error) {
+        console.error('Error fetching phones and tablets:', error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    const cancelOrderDialog = (
-        <div className="cancel-dialog">
-            <p>Are you sure you want to cancel this order?</p>
-            <button onClick={confirmCancelOrder} className="dialog-confirm-button">Yes, Cancel Order</button>
-            <button onClick={() => setIsCanceling(false)} className="dialog-cancel-button">No, Keep Order</button>
-        </div>
-    );
+    fetchPhonesAndTablets();
 
-    return (
-        <div className="payment-page-container">
-            <div className="payment-info-section">
-                <div className="payment-info">
-                    <h2>Complete your order</h2>
-                    <p><strong>Order number:</strong> #{orderId || 'N/A'}</p>
-                    <p><strong>Date:</strong> {getCurrentDate()}</p>
-                    <p><strong>Subtotal:</strong> ₦{formatPrice(totalAmount)}</p>
-                    <p><strong>Shipping Cost:</strong> ₦{formatPrice(shippingCost)}</p>
-                    <p><strong>Total:</strong> ₦{formatPrice(totalWithShipping)}</p>
-                    <p><strong>Payment method:</strong> Debit/Credit Cards</p>
-                    <p>Thank you for your order, please click the button below to pay with Paystack.</p>
+    const interval = setInterval(() => {
+      setProducts((prev) => {
+        if (prev.length === 0) return prev;
+        const firstItem = prev[0];
+        return [...prev.slice(1), firstItem];
+      });
+    }, 12000);
 
-                    <div className="order-summary">
-                        <h2>Order Summary</h2>
-                        <ul className="order-summary-items">
-                            {products.length > 0 ? (
-                                products.map((item) => (
-                                    <li key={item.product_id} className="order-summary-item">
-                                        <img src={item.image_url} alt={item.name} className="order-summary-item-image" />
-                                        <div className="order-summary-item-details">
-                                            <h3>{item.name}</h3>
-                                            <p>Price: ₦{formatPrice(item.price)}</p>
-                                            <p>Quantity: {item.quantity}</p>
-                                            <p>Total: ₦{formatPrice(item.price * item.quantity)}</p>
-                                        </div>
-                                    </li>
-                                ))
-                            ) : (
-                                <li>No products found</li>
-                            )}
-                        </ul>
-                    </div>
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleProductClick = (product_id) => {
+    navigate(`/product-details/${product_id}`);
+  };
+
+  const handleMouseEnter = (index) => {
+    const product = products[index];
+    const images = [
+      product.image_urls?.medium,
+      product.secondary_image_urls?.medium,
+      product.tertiary_image_urls?.medium,
+      product.quaternary_image_urls?.medium,
+    ].filter(Boolean);
+
+    if (images.length < 2) return;
+
+    let currentImgIndex = 0;
+    hoverIntervals.current[index] = setInterval(() => {
+      const imgElement = document.querySelectorAll('.phones-tablets-item img')[index];
+      if (imgElement) {
+        imgElement.src = images[currentImgIndex];
+        currentImgIndex = (currentImgIndex + 1) % images.length;
+      }
+    }, 1000);
+  };
+
+  const handleMouseLeave = (index) => {
+    clearInterval(hoverIntervals.current[index]);
+    hoverIntervals.current[index] = null;
+
+    const product = products[index];
+    const primaryImg = product.image_urls?.medium || '/placeholder.jpg';
+    const imgElement = document.querySelectorAll('.phones-tablets-item img')[index];
+    if (imgElement) imgElement.src = primaryImg;
+  };
+
+  const formatPrice = (price) => {
+    if (isNaN(price)) return 'N/A';
+    return new Intl.NumberFormat('en-NG', {
+      style: 'currency',
+      currency: 'NGN',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(price);
+  };
+
+  return (
+    <div className="phones-tablets-container">
+      <h2>Featured Phones & Tablets</h2>
+      <div className="phones-tablets-display" ref={sliderRef}>
+        {loading ? (
+          <p>Loading phones and tablets...</p>
+        ) : products.length === 0 ? (
+          <p>No phones or tablets available at the moment.</p>
+        ) : (
+          <div className="phones-tablets-slider">
+            {products.map((product, index) => {
+              if (!product || !product.image_urls?.medium) return null;
+
+              return (
+                <div
+                  className="phones-tablets-item"
+                  key={product.product_id}
+                  onClick={() => handleProductClick(product.product_id)}
+                  onMouseEnter={() => handleMouseEnter(index)}
+                  onMouseLeave={() => handleMouseLeave(index)}
+                >
+                  <img
+                    src={product.image_urls?.medium || '/placeholder.jpg'}
+                    alt={product.name || 'Phone/Tablet'}
+                    className="phones-tablets-image"
+                  />
+                  <h3 className="phones-tablets-name">{product.name}</h3>
+                  <p className="phones-tablets-price">{formatPrice(parseFloat(product.price))}</p>
                 </div>
-
-                <div className="info-section">
-                    <h1>Your Reliable IT Gadgets & Accessories Store</h1>
-                    <div className="info-block">
-                        <img src={guaranteeIcon} alt="Guaranteed Product Satisfaction" />
-                        <div>
-                            <h4>Guaranteed Product Satisfaction</h4>
-                            <p>Triple A's Technology values your patronage. If you're not satisfied with your purchase, please review our <Link to="/return-refund-policy">Return/Refund or Exchange Policy</Link>.</p>
-                        </div>
-                    </div>
-                    <div className="info-block">
-                        <img src={fastShipIcon} alt="Your Preferred Delivery Option" />
-                        <div>
-                            <h4>Your Preferred Delivery Option</h4>
-                            <p>Choose how you want your order delivered. Check <Link to="/faq">Our FAQ</Link></p>
-                        </div>
-                    </div>
-                    <div className="info-block">
-                        <img src={qualityAssuredIcon} alt="Guaranteed Buyers Protection" />
-                        <div>
-                            <h4>Guaranteed Buyers Protection</h4>
-                            <p>We offer all our customers ultimate peace of mind on every eligible purchase.</p>
-                        </div>
-                    </div>
-                    <div className="info-block">
-                        <img src={customerServiceIcon} alt="Passionate Customer Service" />
-                        <div>
-                            <h4>Passionate Customer Service</h4>
-                            <p>Visit us at: Ikeja - Lagos Office, 2 Obaakran Avenue, Ikeja, Lagos. Or Call: +2348034593459</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="payment-buttons">
-                {paystackOpen && <PaystackButton {...componentProps} />}
-                <button onClick={handleCancelOrder}>Cancel order & return home</button>
-            </div>
-
-            {isCanceling && cancelOrderDialog}
-        </div>
-    );
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
-export default PaymentPage;
+export default PhonesTabletsDisplay;
