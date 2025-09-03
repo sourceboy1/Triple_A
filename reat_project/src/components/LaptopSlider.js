@@ -7,9 +7,11 @@ const LaptopDisplay = ({ onLoaded }) => {
   const [laptops, setLaptops] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hoverImageIndexes, setHoverImageIndexes] = useState({});
-  const displayCount = 30;
+  const fetchCount = 30;
+  const displayCount = 6;
   const navigate = useNavigate();
   const intervalsRef = useRef({});
+  const rotateIntervalRef = useRef(null);
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -24,13 +26,12 @@ const LaptopDisplay = ({ onLoaded }) => {
     return new Intl.NumberFormat('en-NG', {
       style: 'currency',
       currency: 'NGN',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
     }).format(price);
   };
 
   useEffect(() => {
     let isMounted = true;
+
     const fetchLaptops = async () => {
       try {
         const response = await api.get(`products/?category_id=4`);
@@ -43,8 +44,8 @@ const LaptopDisplay = ({ onLoaded }) => {
         }
 
         if (isMounted) {
-          const shuffledLaptops = shuffleArray(data.slice(0, displayCount));
-          setLaptops(shuffledLaptops);
+          const shuffled = shuffleArray(data.slice(0, fetchCount));
+          setLaptops(shuffled);
         }
       } catch (error) {
         console.error('Error fetching laptops:', error);
@@ -58,36 +59,46 @@ const LaptopDisplay = ({ onLoaded }) => {
 
     fetchLaptops();
 
+    // rotate every 12s
+    rotateIntervalRef.current = setInterval(() => {
+      setLaptops((prev) => {
+        if (prev.length === 0) return prev;
+        const first = prev[0];
+        return [...prev.slice(1), first];
+      });
+    }, 12000);
+
     return () => {
       isMounted = false;
+      clearInterval(rotateIntervalRef.current);
       Object.values(intervalsRef.current).forEach(clearInterval);
     };
   }, [onLoaded]);
 
-  const handleProductClick = (product_id) => {
-    navigate(`/product-details/${product_id}`);
+  const handleProductClick = (id) => {
+    navigate(`/product-details/${id}`);
   };
 
-  const handleMouseEnter = (productId, images) => {
+  const handleMouseEnter = (id, images) => {
     if (images.length < 2) return;
 
-    let currentImgIndex = 0;
-    intervalsRef.current[productId] = setInterval(() => {
-      currentImgIndex = (currentImgIndex + 1) % images.length;
+    let currentIndex = 0;
+    intervalsRef.current[id] = setInterval(() => {
+      currentIndex = (currentIndex + 1) % images.length;
       setHoverImageIndexes((prev) => ({
         ...prev,
-        [productId]: currentImgIndex,
+        [id]: currentIndex,
       }));
     }, 1000);
   };
 
-  const handleMouseLeave = (productId) => {
-    clearInterval(intervalsRef.current[productId]);
-    intervalsRef.current[productId] = null;
+  const handleMouseLeave = (id) => {
+    clearInterval(intervalsRef.current[id]);
+    intervalsRef.current[id] = null;
 
     setHoverImageIndexes((prev) => ({
       ...prev,
-      [productId]: 0,
+      [id]: 0,
     }));
   };
 
@@ -96,47 +107,47 @@ const LaptopDisplay = ({ onLoaded }) => {
   return (
     <div className="laptop-container">
       <h2>Featured Laptops</h2>
-      {laptops.length === 0 ? (
-        <p>No laptops available at the moment.</p>
-      ) : (
-        <div className="laptop-slider">
-          {laptops.map((laptop, index) => {
-            if (!laptop) return null;
+      <div className="laptop-display">
+        {laptops.length === 0 ? (
+          <p>No laptops available at the moment.</p>
+        ) : (
+          <div className="laptop-slider">
+            {laptops.slice(0, displayCount).map((laptop) => {
+              if (!laptop) return null;
 
-            const images = [
-              laptop.image_urls?.medium,
-              laptop.secondary_image_urls?.medium,
-              laptop.tertiary_image_urls?.medium,
-              laptop.quaternary_image_urls?.medium,
-            ].filter(Boolean);
+              const images = [
+                laptop.image_urls?.medium,
+                laptop.secondary_image_urls?.medium,
+                laptop.tertiary_image_urls?.medium,
+                laptop.quaternary_image_urls?.medium,
+              ].filter(Boolean);
 
-            const currentImg =
-              images[hoverImageIndexes[laptop.product_id] || 0] ||
-              '/placeholder.jpg';
+              const currentImg =
+                images[hoverImageIndexes[laptop.product_id] || 0] ||
+                '/placeholder.jpg';
 
-            return (
-              <div
-                className="laptop-item"
-                key={laptop.product_id || index}
-                onClick={() => handleProductClick(laptop.product_id)}
-                onMouseEnter={() => handleMouseEnter(laptop.product_id, images)}
-                onMouseLeave={() => handleMouseLeave(laptop.product_id)}
-              >
-                <img
-                  src={currentImg}
-                  alt={laptop?.name || 'Unnamed Laptop'}
-                  className="laptop-image"
-                  onError={(e) => {
-                    e.target.src = '/placeholder.jpg';
-                  }}
-                />
-                <h3 className="laptop-name">{laptop?.name || 'Unnamed Laptop'}</h3>
-                <p className="laptop-price">{formatPrice(laptop?.price)}</p>
-              </div>
-            );
-          })}
-        </div>
-      )}
+              return (
+                <div
+                  className="laptop-item"
+                  key={laptop.product_id}
+                  onClick={() => handleProductClick(laptop.product_id)}
+                  onMouseEnter={() => handleMouseEnter(laptop.product_id, images)}
+                  onMouseLeave={() => handleMouseLeave(laptop.product_id)}
+                >
+                  <img
+                    src={currentImg}
+                    alt={laptop.name || 'Laptop'}
+                    className="laptop-image"
+                    onError={(e) => { e.target.src = '/placeholder.jpg'; }}
+                  />
+                  <h3 className="laptop-name">{laptop.name}</h3>
+                  <p className="laptop-price">{formatPrice(parseFloat(laptop.price))}</p>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
