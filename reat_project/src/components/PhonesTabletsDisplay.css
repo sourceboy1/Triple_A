@@ -2,7 +2,7 @@
   text-align: start;
   margin: 20px auto;
   max-width: 1200px;
-  padding-right: 15px; /* ✅ push content away from right side */
+  padding: 0 15px;
 }
 
 h2 {
@@ -18,21 +18,25 @@ h2 {
 
 .phones-tablets-slider {
   display: flex;
+  flex-wrap: wrap; /* ✅ makes items wrap on small screens */
+  justify-content: center;
   transition: transform 0.5s ease-in-out;
 }
 
 .phones-tablets-item {
-  flex: 0 0 auto; /* ✅ prevent shrinking */
-  width: 150px;
-  margin: 15px;
+  flex: 0 0 auto;
+  width: calc(16.66% - 20px); /* ✅ default 6 per row on desktop */
+  margin: 10px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   border: 2px solid var(--main-accent-color);
   border-radius: 10px;
   padding: 10px;
   background-color: white;
   transition: transform 0.3s, box-shadow 0.3s;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
 .phones-tablets-item:hover {
@@ -42,7 +46,8 @@ h2 {
 
 .phones-tablets-image {
   width: 100%;
-  height: auto;
+  height: 200px; /* ✅ consistent height */
+  object-fit: contain; /* ✅ keeps full image visible */
   border-radius: 5px;
   transition: transform 0.3s ease-in-out;
 }
@@ -55,10 +60,12 @@ h2 {
   margin-top: 10px;
   font-size: 1em;
   color: #333;
+  min-height: 40px; /* ✅ keeps titles aligned */
 }
 
 .phones-tablets-price {
   color: var(--main-accent-color);
+  font-weight: bold;
 }
 
 /* ✅ Mobile Responsiveness */
@@ -66,27 +73,27 @@ h2 {
 /* Small phones 320px–375px → 2 per row */
 @media (max-width: 375px) {
   .phones-tablets-item {
-    width: calc(50% - 30px);
+    width: calc(50% - 20px);
   }
 }
 
 /* Larger phones up to 425px → 3 per row */
 @media (min-width: 376px) and (max-width: 425px) {
   .phones-tablets-item {
-    width: calc(33.33% - 30px);
+    width: calc(33.33% - 20px);
   }
 }
 
 /* Tablets up to 768px → 4 per row */
 @media (min-width: 426px) and (max-width: 768px) {
   .phones-tablets-item {
-    width: calc(25% - 30px);
+    width: calc(25% - 20px);
   }
 }
 
 /* Small laptops up to 1024px → 5 per row */
 @media (min-width: 769px) and (max-width: 1024px) {
   .phones-tablets-item {
-    width: calc(20% - 30px);
+    width: calc(20% - 20px);
   }
 }
