@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../Api';
 import './PowerBanksSlider.css';
 
-const PowerBankDisplay = () => {
+const PowerBankDisplay = ({ onLoaded }) => {
   const [powerBanks, setPowerBanks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hoverImageIndexes, setHoverImageIndexes] = useState({});
@@ -30,6 +30,7 @@ const PowerBankDisplay = () => {
   };
 
   useEffect(() => {
+    let isMounted = true;
     const fetchPowerBanks = async () => {
       try {
         const response = await api.get(`products/?category_id=7`);
@@ -37,26 +38,31 @@ const PowerBankDisplay = () => {
 
         if (!Array.isArray(data)) {
           console.error('Unexpected API response:', data);
-          setLoading(false);
+          if (isMounted) setPowerBanks([]);
           return;
         }
 
-        const shuffledPowerBanks = shuffleArray(data.slice(0, fetchCount));
-        setPowerBanks(shuffledPowerBanks);
+        if (isMounted) {
+          const shuffledPowerBanks = shuffleArray(data.slice(0, fetchCount));
+          setPowerBanks(shuffledPowerBanks);
+        }
       } catch (error) {
         console.error('Error fetching power banks:', error);
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+          if (typeof onLoaded === 'function') onLoaded();
+        }
       }
     };
 
     fetchPowerBanks();
 
     return () => {
-      // cleanup all hover intervals
+      isMounted = false;
       Object.values(intervalsRef.current).forEach(clearInterval);
     };
-  }, []);
+  }, [onLoaded]);
 
   const handleProductClick = (product_id) => {
     navigate(`/product-details/${product_id}`);
@@ -85,19 +91,22 @@ const PowerBankDisplay = () => {
     }));
   };
 
+  if (loading) {
+    // child handles its internal loading UI if you want; parent shows global loading.
+    // Keep a small placeholder or nothing since Home shows global Loading.
+    return null;
+  }
+
   return (
     <div className="powerbank-container">
       <h2>Featured Power Banks</h2>
-      {loading ? (
-        <p>Loading power banks...</p>
-      ) : powerBanks.length === 0 ? (
+      {powerBanks.length === 0 ? (
         <p>No power banks available at the moment.</p>
       ) : (
         <div className="powerbank-slider">
           {powerBanks.map((powerBank, index) => {
             if (!powerBank) return null;
 
-            // Collect available images
             const images = [
               powerBank.image_urls?.medium,
               powerBank.secondary_image_urls?.medium,

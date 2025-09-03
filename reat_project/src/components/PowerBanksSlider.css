@@ -1,8 +1,9 @@
-/* Container styling */
 .powerbank-container {
   text-align: start;
   margin: 20px auto;
   max-width: 1200px;
+  padding: 0 15px;
+  overflow: hidden;
 }
 
 h2 {
@@ -11,27 +12,24 @@ h2 {
   color: var(--main-accent-color);
 }
 
-/* 👇 Horizontal scroll just like laptops */
-.powerbank-slider {
-  display: flex;
-  gap: 15px;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  padding-bottom: 10px;
+.powerbank-display {
+  overflow-x: hidden;
 }
 
-/* Hide scrollbar */
-.powerbank-slider::-webkit-scrollbar {
-  display: none;
-}
 .powerbank-slider {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  transition: transform 0.5s ease-in-out;
 }
 
 .powerbank-item {
   flex: 0 0 auto;
-  width: 150px;
+  width: 25%;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   border: 2px solid var(--main-accent-color);
   border-radius: 10px;
   padding: 10px;
@@ -48,7 +46,8 @@ h2 {
 
 .powerbank-image {
   width: 100%;
-  height: auto;
+  height: 200px;
+  object-fit: contain;
   border-radius: 5px;
   transition: transform 0.3s ease-in-out;
 }
@@ -61,6 +60,7 @@ h2 {
   margin-top: 10px;
   font-size: 1em;
   color: #333;
+  min-height: 40px;
 }
 
 .powerbank-price {
@@ -69,9 +69,21 @@ h2 {
   margin-top: 5px;
 }
 
-/* ✅ Responsive tweak */
-@media (max-width: 425px) {
+/* ✅ Mobile Responsiveness */
+@media (max-width: 480px) {
   .powerbank-item {
-    width: 120px;
+    width: 50%; /* 2 per row */
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .powerbank-item {
+    width: 33.33%; /* 3 per row */
+  }
+}
+
+@media (min-width: 769px) {
+  .powerbank-item {
+    width: 25%; /* 4 per row */
   }
 }

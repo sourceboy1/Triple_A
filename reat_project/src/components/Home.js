@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useContext, useRef } from 'react'; 
+import React, { useState, useEffect, useRef } from 'react';
 import slidingImage1 from '../pictures/sliding8.jpg';
 import slidingImage2 from '../pictures/sliding6.jpg';
 import slidingImage5 from '../pictures/sliding7.jpg';
 import './Home.css';
 import { useNavigate } from 'react-router-dom';
-import { TokenContext } from './TokenContext';
-import { useCart } from '../contexts/CartContext';
-import { useWishlist } from '../contexts/WishlistContext';
 
+import Loading from './Loading';
 import CategoryDisplay from './CategoryDisplay';
 import FeatureDisplay from './FeatureDisplay';
 import DealsOfTheDay from './Deals_of_the_Day';
@@ -15,8 +13,6 @@ import PowerBankDisplay from './PowerBanksSlider';
 import LaptopDisplay from './LaptopSlider';
 import ViewedProducts from './ViewedProducts';
 import PhonesTabletsDisplay from './PhonesTabletsDisplay';
-
-import Loading from './Loading'; // ✅ your loading component
 
 const images = [slidingImage1, slidingImage2, slidingImage5];
 const captions = [
@@ -32,22 +28,15 @@ const buttonTexts = [
 
 const Home = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [loading, setLoading] = useState(true); // ✅ global loading
+
+  // We will wait for these 3 children to finish fetching:
+  const totalChildrenToWait = 3; // PowerBank, Laptop, PhonesTablets
+  const [loadedCount, setLoadedCount] = useState(0);
+  const [isReady, setIsReady] = useState(false);
+  const safetyTimerRef = useRef(null);
   const navigate = useNavigate();
-  const accessToken = useContext(TokenContext);
-  const { cart, addItemToCart } = useCart();
-  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
-  const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
 
-  // ✅ Simulate waiting for ALL child components (mock: 2s)
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false); 
-    }, 2000); 
-    return () => clearTimeout(timer);
-  }, []);
-
+  // slider auto-advance
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex(prev => (prev + 1) % images.length);
@@ -55,35 +44,41 @@ const Home = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handleTouchStart = (e) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchMove = (e) => {
-    touchEndX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = () => {
-    if (touchStartX.current - touchEndX.current > 50) {
-      setCurrentIndex(prev => (prev + 1) % images.length);
-    } else if (touchStartX.current - touchEndX.current < -50) {
-      setCurrentIndex(prev => (prev - 1 + images.length) % images.length);
+  // When loadedCount reaches totalChildrenToWait => ready
+  useEffect(() => {
+    if (loadedCount >= totalChildrenToWait) {
+      // small delay so the user sees a stable UI
+      const t = setTimeout(() => setIsReady(true), 150);
+      return () => clearTimeout(t);
     }
+  }, [loadedCount]);
+
+  // Safety timeout: if something never calls onLoaded, we still proceed
+  useEffect(() => {
+    // 10 seconds safety window — adjust if you expect longer loads
+    safetyTimerRef.current = setTimeout(() => {
+      setIsReady(true);
+    }, 10000);
+
+    return () => {
+      if (safetyTimerRef.current) clearTimeout(safetyTimerRef.current);
+    };
+  }, []);
+
+  // callback to pass to children
+  const handleChildLoaded = () => {
+    setLoadedCount((c) => c + 1);
   };
 
-  // ✅ show loading first
-  if (loading) {
+  // if not ready, show full-screen Loading
+  if (!isReady) {
     return <Loading />;
   }
 
+  // === actual page render after all children have loaded ===
   return (
     <div className="home">
-      <div 
-        className="slider" 
-        onTouchStart={handleTouchStart} 
-        onTouchMove={handleTouchMove} 
-        onTouchEnd={handleTouchEnd}
-      >
+      <div className="slider">
         {images.map((image, index) => (
           <div key={index} className={`slide-container ${index === currentIndex ? 'active' : ''}`}>
             <img src={image} alt={`Slide ${index + 1}`} className={`slide-image ${index === currentIndex ? 'active' : ''}`} />
@@ -106,13 +101,16 @@ const Home = () => {
         </div>
       </div>
 
-      {/* ✅ children render only AFTER loading finishes */}
+      {/* Non-fetching children can render normally */}
       <FeatureDisplay />
       <DealsOfTheDay />
       <CategoryDisplay />
-      <PowerBankDisplay />
-      <LaptopDisplay />
-      <PhonesTabletsDisplay />
+
+      {/* These 3 are fetching children: pass onLoaded to each */}
+      <PowerBankDisplay onLoaded={handleChildLoaded} />
+      <LaptopDisplay onLoaded={handleChildLoaded} />
+      <PhonesTabletsDisplay onLoaded={handleChildLoaded} />
+
       <ViewedProducts />
     </div>
   );

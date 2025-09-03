@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import api from '../Api';
 import './PhonesTabletsDisplay.css';
 
-const PhonesTabletsDisplay = () => {
+const PhonesTabletsDisplay = ({ onLoaded }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [hoverImageIndexes, setHoverImageIndexes] = useState({});
+  const displayCount = 6;
   const fetchCount = 30;
   const navigate = useNavigate();
-  const intervalsRef = useRef({});
+  const hoverIntervals = useRef({});
+  const [hoverImageIndexes, setHoverImageIndexes] = useState({});
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -20,6 +21,7 @@ const PhonesTabletsDisplay = () => {
   };
 
   useEffect(() => {
+    let isMounted = true;
     const fetchPhonesAndTablets = async () => {
       try {
         const response = await api.get(`products/?category_id=2`);
@@ -27,16 +29,21 @@ const PhonesTabletsDisplay = () => {
 
         if (!Array.isArray(data)) {
           console.error('Unexpected API response:', data);
-          setLoading(false);
+          if (isMounted) setProducts([]);
           return;
         }
 
-        const shuffledProducts = shuffleArray(data.slice(0, fetchCount));
-        setProducts(shuffledProducts);
+        if (isMounted) {
+          const shuffledProducts = shuffleArray(data.slice(0, fetchCount));
+          setProducts(shuffledProducts);
+        }
       } catch (error) {
         console.error('Error fetching phones and tablets:', error);
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+          if (typeof onLoaded === 'function') onLoaded();
+        }
       }
     };
 
@@ -51,10 +58,11 @@ const PhonesTabletsDisplay = () => {
     }, 12000);
 
     return () => {
+      isMounted = false;
       clearInterval(interval);
-      Object.values(intervalsRef.current).forEach(clearInterval);
+      Object.values(hoverIntervals.current).forEach(clearInterval);
     };
-  }, []);
+  }, [onLoaded]);
 
   const handleProductClick = (product_id) => {
     navigate(`/product-details/${product_id}`);
@@ -64,7 +72,7 @@ const PhonesTabletsDisplay = () => {
     if (images.length < 2) return;
 
     let currentImgIndex = 0;
-    intervalsRef.current[productId] = setInterval(() => {
+    hoverIntervals.current[productId] = setInterval(() => {
       currentImgIndex = (currentImgIndex + 1) % images.length;
       setHoverImageIndexes((prev) => ({
         ...prev,
@@ -74,8 +82,8 @@ const PhonesTabletsDisplay = () => {
   };
 
   const handleMouseLeave = (productId) => {
-    clearInterval(intervalsRef.current[productId]);
-    intervalsRef.current[productId] = null;
+    clearInterval(hoverIntervals.current[productId]);
+    hoverIntervals.current[productId] = null;
 
     setHoverImageIndexes((prev) => ({
       ...prev,
@@ -83,27 +91,20 @@ const PhonesTabletsDisplay = () => {
     }));
   };
 
-  const formatPrice = (price) => {
-    if (isNaN(price)) return 'N/A';
-    return new Intl.NumberFormat('en-NG', {
-      style: 'currency',
-      currency: 'NGN',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(price);
-  };
+  if (loading) return null;
 
   return (
     <div className="phones-tablets-container">
       <h2>Featured Phones & Tablets</h2>
       <div className="phones-tablets-display">
-        {loading ? (
-          <p>Loading phones and tablets...</p>
-        ) : products.length === 0 ? (
+        {products.length === 0 ? (
           <p>No phones or tablets available at the moment.</p>
         ) : (
-          <div className="phones-tablets-slider">
-            {products.map((product) => {
+          <div
+            className="phones-tablets-slider"
+            style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}
+          >
+            {products.slice(0, displayCount).map((product, index) => {
               if (!product || !product.image_urls?.medium) return null;
 
               const images = [
@@ -121,20 +122,17 @@ const PhonesTabletsDisplay = () => {
                   className="phones-tablets-item"
                   key={product.product_id}
                   onClick={() => handleProductClick(product.product_id)}
-                  onMouseEnter={() =>
-                    handleMouseEnter(product.product_id, images)
-                  }
+                  onMouseEnter={() => handleMouseEnter(product.product_id, images)}
                   onMouseLeave={() => handleMouseLeave(product.product_id)}
                 >
                   <img
                     src={currentImg || '/placeholder.jpg'}
                     alt={product.name || 'Phone/Tablet'}
                     className="phones-tablets-image"
+                    onError={(e) => { e.target.src = '/placeholder.jpg'; }}
                   />
                   <h3 className="phones-tablets-name">{product.name}</h3>
-                  <p className="phones-tablets-price">
-                    {formatPrice(parseFloat(product.price))}
-                  </p>
+                  <p className="phones-tablets-price">{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(parseFloat(product.price) || 0)}</p>
                 </div>
               );
             })}

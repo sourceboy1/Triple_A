@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../Api';
 import './LaptopSlider.css';
 
-const LaptopDisplay = () => {
+const LaptopDisplay = ({ onLoaded }) => {
   const [laptops, setLaptops] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hoverImageIndexes, setHoverImageIndexes] = useState({});
@@ -30,6 +30,7 @@ const LaptopDisplay = () => {
   };
 
   useEffect(() => {
+    let isMounted = true;
     const fetchLaptops = async () => {
       try {
         const response = await api.get(`products/?category_id=4`);
@@ -37,26 +38,31 @@ const LaptopDisplay = () => {
 
         if (!Array.isArray(data)) {
           console.error('Unexpected API response:', data);
-          setLoading(false);
+          if (isMounted) setLaptops([]);
           return;
         }
 
-        const shuffledLaptops = shuffleArray(data.slice(0, displayCount));
-        setLaptops(shuffledLaptops);
+        if (isMounted) {
+          const shuffledLaptops = shuffleArray(data.slice(0, displayCount));
+          setLaptops(shuffledLaptops);
+        }
       } catch (error) {
         console.error('Error fetching laptops:', error);
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+          if (typeof onLoaded === 'function') onLoaded();
+        }
       }
     };
 
     fetchLaptops();
 
     return () => {
-      // cleanup all hover intervals
+      isMounted = false;
       Object.values(intervalsRef.current).forEach(clearInterval);
     };
-  }, []);
+  }, [onLoaded]);
 
   const handleProductClick = (product_id) => {
     navigate(`/product-details/${product_id}`);
@@ -85,19 +91,18 @@ const LaptopDisplay = () => {
     }));
   };
 
+  if (loading) return null;
+
   return (
     <div className="laptop-container">
       <h2>Featured Laptops</h2>
-      {loading ? (
-        <p>Loading laptops...</p>
-      ) : laptops.length === 0 ? (
+      {laptops.length === 0 ? (
         <p>No laptops available at the moment.</p>
       ) : (
         <div className="laptop-slider">
           {laptops.map((laptop, index) => {
             if (!laptop) return null;
 
-            // Collect available images
             const images = [
               laptop.image_urls?.medium,
               laptop.secondary_image_urls?.medium,
