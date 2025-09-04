@@ -31,13 +31,14 @@ const ProductDetails = () => {
           productData.image_urls?.large ||
           productData.secondary_image_urls?.large ||
           (productData.additional_images?.[0]?.image_urls?.large) ||
-          '/media/default.jpg';
+          '/media/default.jpg'; // Ensure a default if no images
 
         setSelectedImage(mainImage);
         setProduct(productData);
         saveToRecentlyViewed(productData, mainImage);
       } catch (error) {
-        console.error('Error fetching product:', error);
+        console.error('Error fetching product:', error.response?.data || error.message || error);
+        // Consider setting product to null or showing an error state here if fetch fails
       }
     };
 
@@ -90,130 +91,158 @@ const ProductDetails = () => {
 
   // Toggle wishlist
   const toggleWishlist = () => {
-    if (isInWishlist(product.product_id)) removeFromWishlist(product.product_id);
-    else addToWishlist(product);
+    if (product) { // Ensure product is not null before accessing its properties
+        if (isInWishlist(product.product_id)) {
+            removeFromWishlist(product.product_id);
+        } else {
+            addToWishlist(product);
+        }
+    }
   };
+
 
   // WhatsApp buy
   const handleBuyNowOnWhatsApp = () => {
-    const message = `Hello, I'm interested in buying ${product.name}. Please provide more details.`;
-    const whatsappUrl = `https://wa.me/2348034593459?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    if (product) { // Ensure product is not null
+      const message = `Hello, I'm interested in buying ${product.name}. Please provide more details.`;
+      const whatsappUrl = `https://wa.me/2348034593459?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+    }
   };
 
-  if (!product) return <div>Loading...</div>;
+  if (!product) return <div className="loading-product-details">Loading product details...</div>;
 
   // Prepare all images for thumbnails
   const thumbnails = [];
 
+  // Consolidated image parsing logic
+  // Prioritize primary and secondary directly from productData
   if (product.image_urls?.large) thumbnails.push(product.image_urls.large);
   if (product.secondary_image_urls?.large) thumbnails.push(product.secondary_image_urls.large);
 
+  // Then add from additional_images, ensuring uniqueness
   product.additional_images?.forEach(img => {
-    ['image_urls', 'secondary_image_urls', 'tertiary_image_urls', 'quaternary_image_urls'].forEach(key => {
-      if (img[key]?.large) thumbnails.push(img[key].large);
+    // Collect all available 'large' images from each tier
+    const imageCandidates = [
+      img.image_urls?.large,
+      img.secondary_image_urls?.large,
+      img.tertiary_image_urls?.large,
+      img.quaternary_image_urls?.large
+    ].filter(Boolean); // Filter out any undefined/null values
+
+    imageCandidates.forEach(url => {
+      if (!thumbnails.includes(url)) { // Add only if not already present
+        thumbnails.push(url);
+      }
     });
   });
 
-  const uniqueThumbnails = [...new Set(thumbnails)];
+  // Fallback for thumbnails if product has no images defined at all
+  if (thumbnails.length === 0) {
+    thumbnails.push('/media/default.jpg');
+  }
+
+  const uniqueThumbnails = [...new Set(thumbnails)]; // Ensure absolute uniqueness in case of overlaps
 
   const formattedPrice = product.price ? new Intl.NumberFormat().format(product.price) : 'N/A';
   const formattedOriginalPrice = product.original_price ? new Intl.NumberFormat().format(product.original_price) : 'N/A';
 
   return (
-    <div className="product-detail">
-      <div className="product-detail-content">
-        {/* Wishlist Icon */}
-        <div className="wishlist-icon1" onClick={toggleWishlist}>
-          <img
-            src={isInWishlist(product.product_id) ? wishlistActiveImg : wishlistImg}
-            alt="Wishlist"
-            className="wishlist-image2"
-          />
-        </div>
+    <div className="product-detail-page-wrapper"> {/* Added a wrapper for overall layout */}
+      <div className="product-detail">
+        <div className="product-detail-content">
 
-        {/* Stock Info */}
-        <div className="klb-single-stock">
-          {product.stock > 0 ? (
-            <div className="product-stock in-stock">
-              <img src="/mark.jpg" alt="In Stock" className="stock-image" />
-              <span>In Stock</span>
-            </div>
-          ) : (
-            <div className="product-stock out-of-stock">
-              <img src="/markred.jpg" alt="Out of Stock" className="stock-image" />
-              <span>Out of Stock</span>
-            </div>
-          )}
-        </div>
-
-        {/* Product Images */}
-        <div className="product-detail-images">
-          {selectedImage && (
+          {/* Wishlist Icon */}
+          <div className="wishlist-icon1" onClick={toggleWishlist}>
             <img
-              src={selectedImage}
-              alt={product.name}
-              className={`product-detail-image ${isZoomed ? 'zoomed' : ''}`}
-              onClick={() => setIsZoomed(!isZoomed)} // ✅ toggle zoom on tap
+              src={isInWishlist(product.product_id) ? wishlistActiveImg : wishlistImg}
+              alt="Wishlist"
+              className="wishlist-image2"
             />
-          )}
-          <div className="product-detail-controls">
-            {uniqueThumbnails.map((url, index) => (
-              <img
-                key={index}
-                src={url || '/media/default.jpg'}
-                alt={`Thumbnail ${index + 1}`}
-                className={`product-detail-controls-img ${selectedImage === url ? 'active' : ''}`}
-                onClick={() => {
-                  setSelectedImage(url || '/media/default.jpg');
-                  setIsZoomed(false); // reset zoom when changing image
-                }}
-              />
-            ))}
           </div>
-        </div>
 
-        {/* Product Info */}
-        <div className="product-detail-info">
-          <h2 className="product-title">{product.name}</h2>
-          <p className="product-description">{product.description}</p>
-
-          <div className="product-price">
-            {product.discount ? (
-              <>
-                <span className="discounted-price">₦{formattedPrice}</span>
-                <span className="original-price">₦{formattedOriginalPrice}</span>
-              </>
+          {/* Stock Info - NO MARK IMAGES */}
+          <div className="klb-single-stock">
+            {product.stock > 0 ? (
+              <div className="product-stock in-stock">
+                <span>In Stock</span>
+              </div>
             ) : (
-              <p>Price: ₦{formattedPrice}</p>
+              <div className="product-stock out-of-stock">
+                <span>Out of Stock</span>
+              </div>
             )}
           </div>
 
-          {/* Quantity Control */}
-          <div className="quantity-control">
-            <button onClick={handleDecrease}>-</button>
-            <span>{quantity}</span>
-            <button onClick={handleIncrease}>+</button>
+          {/* Product Images */}
+          <div className="product-detail-images">
+            {selectedImage && (
+              <img
+                src={selectedImage}
+                alt={product.name}
+                className={`product-detail-image ${isZoomed ? 'zoomed' : ''}`}
+                onClick={() => setIsZoomed(!isZoomed)} // ✅ toggle zoom on tap
+              />
+            )}
+            <div className="product-detail-controls">
+              {uniqueThumbnails.map((url, index) => (
+                <img
+                  key={index}
+                  src={url || '/media/default.jpg'} // Ensure default if URL is bad
+                  alt={`Thumbnail ${index + 1}`}
+                  className={`product-detail-controls-img ${selectedImage === url ? 'active' : ''}`}
+                  onClick={() => {
+                    setSelectedImage(url || '/media/default.jpg');
+                    setIsZoomed(false); // reset zoom when changing image
+                  }}
+                />
+              ))}
+            </div>
           </div>
 
-          {stockMessage && <p className="stock-message" style={{ color: 'red' }}>{stockMessage}</p>}
+          {/* Product Info */}
+          <div className="product-detail-info">
+            <h2 className="product-title">{product.name}</h2>
+            <p className="product-description">{product.description}</p>
 
-          {/* Buttons */}
-          <button
-            onClick={handleAddToCart}
-            className="button is-primary"
-            disabled={product.stock === 0}
-          >
-            {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
-          </button>
+            <div className="product-price">
+              {product.discount ? (
+                <>
+                  <span className="discounted-price">₦{formattedPrice}</span>
+                  {product.original_price && <span className="original-price">₦{formattedOriginalPrice}</span>}
+                </>
+              ) : (
+                <p>Price: ₦{formattedPrice}</p>
+              )}
+            </div>
 
-          <button
-            onClick={handleBuyNowOnWhatsApp}
-            className="button is-primary"
-            style={{ marginTop: '10px' }}
-          >
-            Buy Now on WhatsApp
-          </button>
+            {/* Quantity Control */}
+            <div className="quantity-control">
+              <button onClick={handleDecrease}>-</button>
+              <span>{quantity}</span>
+              <button onClick={handleIncrease}>+</button>
+            </div>
+
+            {stockMessage && <p className="stock-message" style={{ color: 'red' }}>{stockMessage}</p>}
+
+            {/* Buttons */}
+            <button
+              onClick={handleAddToCart}
+              className="button is-primary"
+              disabled={product.stock === 0}
+            >
+              {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+            </button>
+
+            <button
+              onClick={handleBuyNowOnWhatsApp}
+              className="button is-primary"
+              style={{ marginTop: '10px' }}
+              disabled={!product} // Disable if product data not loaded
+            >
+              Buy Now on WhatsApp
+            </button>
+          </div>
         </div>
       </div>
     </div>
