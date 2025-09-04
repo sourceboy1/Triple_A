@@ -13,13 +13,14 @@ h2 {
 }
 
 .powerbank-display {
-  overflow-x: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 .powerbank-slider {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  flex-wrap: nowrap;
   transition: transform 0.5s ease-in-out;
 }
 
@@ -66,24 +67,27 @@ h2 {
 .powerbank-price {
   color: var(--main-accent-color);
   font-weight: bold;
-  margin-top: 5px;
 }
 
 /* ✅ Mobile Responsiveness */
+
+/* Small phones → 2 per row */
 @media (max-width: 480px) {
   .powerbank-item {
-    width: 50%; /* 2 per row */
+    width: 50%;
   }
 }
 
+/* Tablets → 3 per row */
 @media (min-width: 481px) and (max-width: 768px) {
   .powerbank-item {
-    width: 33.33%; /* 3 per row */
+    width: 33.33%;
   }
 }
 
+/* Small laptops → 4 per row */
 @media (min-width: 769px) {
   .powerbank-item {
-    width: 25%; /* 4 per row */
+    width: 25%;
   }
 }

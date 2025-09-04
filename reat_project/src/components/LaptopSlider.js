@@ -4,14 +4,14 @@ import api from '../Api';
 import './LaptopSlider.css';
 
 const LaptopDisplay = ({ onLoaded }) => {
-  const [laptops, setLaptops] = useState([]);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hoverImageIndexes, setHoverImageIndexes] = useState({});
-  const fetchCount = 30;
   const displayCount = 6;
+  const fetchCount = 30;
   const navigate = useNavigate();
-  const intervalsRef = useRef({});
-  const rotateIntervalRef = useRef(null);
+  const hoverIntervals = useRef({});
+  const rotateInterval = useRef(null);
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -19,14 +19,6 @@ const LaptopDisplay = ({ onLoaded }) => {
       [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
-  };
-
-  const formatPrice = (price) => {
-    if (isNaN(price)) return 'N/A';
-    return new Intl.NumberFormat('en-NG', {
-      style: 'currency',
-      currency: 'NGN',
-    }).format(price);
   };
 
   useEffect(() => {
@@ -39,13 +31,13 @@ const LaptopDisplay = ({ onLoaded }) => {
 
         if (!Array.isArray(data)) {
           console.error('Unexpected API response:', data);
-          if (isMounted) setLaptops([]);
+          if (isMounted) setProducts([]);
           return;
         }
 
         if (isMounted) {
           const shuffled = shuffleArray(data.slice(0, fetchCount));
-          setLaptops(shuffled);
+          setProducts(shuffled);
         }
       } catch (error) {
         console.error('Error fetching laptops:', error);
@@ -59,9 +51,9 @@ const LaptopDisplay = ({ onLoaded }) => {
 
     fetchLaptops();
 
-    // rotate every 12s
-    rotateIntervalRef.current = setInterval(() => {
-      setLaptops((prev) => {
+    // auto-rotate items every 12s
+    rotateInterval.current = setInterval(() => {
+      setProducts((prev) => {
         if (prev.length === 0) return prev;
         const first = prev[0];
         return [...prev.slice(1), first];
@@ -70,8 +62,8 @@ const LaptopDisplay = ({ onLoaded }) => {
 
     return () => {
       isMounted = false;
-      clearInterval(rotateIntervalRef.current);
-      Object.values(intervalsRef.current).forEach(clearInterval);
+      clearInterval(rotateInterval.current);
+      Object.values(hoverIntervals.current).forEach(clearInterval);
     };
   }, [onLoaded]);
 
@@ -83,7 +75,7 @@ const LaptopDisplay = ({ onLoaded }) => {
     if (images.length < 2) return;
 
     let currentIndex = 0;
-    intervalsRef.current[id] = setInterval(() => {
+    hoverIntervals.current[id] = setInterval(() => {
       currentIndex = (currentIndex + 1) % images.length;
       setHoverImageIndexes((prev) => ({
         ...prev,
@@ -93,8 +85,8 @@ const LaptopDisplay = ({ onLoaded }) => {
   };
 
   const handleMouseLeave = (id) => {
-    clearInterval(intervalsRef.current[id]);
-    intervalsRef.current[id] = null;
+    clearInterval(hoverIntervals.current[id]);
+    hoverIntervals.current[id] = null;
 
     setHoverImageIndexes((prev) => ({
       ...prev,
@@ -108,12 +100,15 @@ const LaptopDisplay = ({ onLoaded }) => {
     <div className="laptop-container">
       <h2>Featured Laptops</h2>
       <div className="laptop-display">
-        {laptops.length === 0 ? (
+        {products.length === 0 ? (
           <p>No laptops available at the moment.</p>
         ) : (
-          <div className="laptop-slider">
-            {laptops.slice(0, displayCount).map((laptop) => {
-              if (!laptop) return null;
+          <div
+            className="laptop-slider"
+            style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}
+          >
+            {products.slice(0, displayCount).map((laptop) => {
+              if (!laptop || !laptop.image_urls?.medium) return null;
 
               const images = [
                 laptop.image_urls?.medium,
@@ -123,8 +118,7 @@ const LaptopDisplay = ({ onLoaded }) => {
               ].filter(Boolean);
 
               const currentImg =
-                images[hoverImageIndexes[laptop.product_id] || 0] ||
-                '/placeholder.jpg';
+                images[hoverImageIndexes[laptop.product_id] || 0] || images[0];
 
               return (
                 <div
@@ -135,13 +129,18 @@ const LaptopDisplay = ({ onLoaded }) => {
                   onMouseLeave={() => handleMouseLeave(laptop.product_id)}
                 >
                   <img
-                    src={currentImg}
+                    src={currentImg || '/placeholder.jpg'}
                     alt={laptop.name || 'Laptop'}
                     className="laptop-image"
                     onError={(e) => { e.target.src = '/placeholder.jpg'; }}
                   />
                   <h3 className="laptop-name">{laptop.name}</h3>
-                  <p className="laptop-price">{formatPrice(parseFloat(laptop.price))}</p>
+                  <p className="laptop-price">
+                    {new Intl.NumberFormat('en-NG', {
+                      style: 'currency',
+                      currency: 'NGN',
+                    }).format(parseFloat(laptop.price) || 0)}
+                  </p>
                 </div>
               );
             })}

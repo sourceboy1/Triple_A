@@ -4,14 +4,14 @@ import api from '../Api';
 import './PowerBanksSlider.css';
 
 const PowerBankDisplay = ({ onLoaded }) => {
-  const [powerBanks, setPowerBanks] = useState([]);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hoverImageIndexes, setHoverImageIndexes] = useState({});
-  const fetchCount = 30;
   const displayCount = 6;
+  const fetchCount = 30;
   const navigate = useNavigate();
-  const intervalsRef = useRef({});
-  const rotateIntervalRef = useRef(null);
+  const hoverIntervals = useRef({});
+  const rotateInterval = useRef(null);
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -19,14 +19,6 @@ const PowerBankDisplay = ({ onLoaded }) => {
       [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
-  };
-
-  const formatPrice = (price) => {
-    if (isNaN(price)) return 'N/A';
-    return new Intl.NumberFormat('en-NG', {
-      style: 'currency',
-      currency: 'NGN',
-    }).format(price);
   };
 
   useEffect(() => {
@@ -39,13 +31,13 @@ const PowerBankDisplay = ({ onLoaded }) => {
 
         if (!Array.isArray(data)) {
           console.error('Unexpected API response:', data);
-          if (isMounted) setPowerBanks([]);
+          if (isMounted) setProducts([]);
           return;
         }
 
         if (isMounted) {
           const shuffled = shuffleArray(data.slice(0, fetchCount));
-          setPowerBanks(shuffled);
+          setProducts(shuffled);
         }
       } catch (error) {
         console.error('Error fetching power banks:', error);
@@ -59,8 +51,9 @@ const PowerBankDisplay = ({ onLoaded }) => {
 
     fetchPowerBanks();
 
-    rotateIntervalRef.current = setInterval(() => {
-      setPowerBanks((prev) => {
+    // auto-rotate items every 12s
+    rotateInterval.current = setInterval(() => {
+      setProducts((prev) => {
         if (prev.length === 0) return prev;
         const first = prev[0];
         return [...prev.slice(1), first];
@@ -69,8 +62,8 @@ const PowerBankDisplay = ({ onLoaded }) => {
 
     return () => {
       isMounted = false;
-      clearInterval(rotateIntervalRef.current);
-      Object.values(intervalsRef.current).forEach(clearInterval);
+      clearInterval(rotateInterval.current);
+      Object.values(hoverIntervals.current).forEach(clearInterval);
     };
   }, [onLoaded]);
 
@@ -82,7 +75,7 @@ const PowerBankDisplay = ({ onLoaded }) => {
     if (images.length < 2) return;
 
     let currentIndex = 0;
-    intervalsRef.current[id] = setInterval(() => {
+    hoverIntervals.current[id] = setInterval(() => {
       currentIndex = (currentIndex + 1) % images.length;
       setHoverImageIndexes((prev) => ({
         ...prev,
@@ -92,8 +85,8 @@ const PowerBankDisplay = ({ onLoaded }) => {
   };
 
   const handleMouseLeave = (id) => {
-    clearInterval(intervalsRef.current[id]);
-    intervalsRef.current[id] = null;
+    clearInterval(hoverIntervals.current[id]);
+    hoverIntervals.current[id] = null;
 
     setHoverImageIndexes((prev) => ({
       ...prev,
@@ -107,12 +100,15 @@ const PowerBankDisplay = ({ onLoaded }) => {
     <div className="powerbank-container">
       <h2>Featured Power Banks</h2>
       <div className="powerbank-display">
-        {powerBanks.length === 0 ? (
+        {products.length === 0 ? (
           <p>No power banks available at the moment.</p>
         ) : (
-          <div className="powerbank-slider">
-            {powerBanks.slice(0, displayCount).map((pb) => {
-              if (!pb) return null;
+          <div
+            className="powerbank-slider"
+            style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}
+          >
+            {products.slice(0, displayCount).map((pb) => {
+              if (!pb || !pb.image_urls?.medium) return null;
 
               const images = [
                 pb.image_urls?.medium,
@@ -122,8 +118,7 @@ const PowerBankDisplay = ({ onLoaded }) => {
               ].filter(Boolean);
 
               const currentImg =
-                images[hoverImageIndexes[pb.product_id] || 0] ||
-                '/placeholder.jpg';
+                images[hoverImageIndexes[pb.product_id] || 0] || images[0];
 
               return (
                 <div
@@ -134,13 +129,18 @@ const PowerBankDisplay = ({ onLoaded }) => {
                   onMouseLeave={() => handleMouseLeave(pb.product_id)}
                 >
                   <img
-                    src={currentImg}
+                    src={currentImg || '/placeholder.jpg'}
                     alt={pb.name || 'Power Bank'}
                     className="powerbank-image"
                     onError={(e) => { e.target.src = '/placeholder.jpg'; }}
                   />
                   <h3 className="powerbank-name">{pb.name}</h3>
-                  <p className="powerbank-price">{formatPrice(parseFloat(pb.price))}</p>
+                  <p className="powerbank-price">
+                    {new Intl.NumberFormat('en-NG', {
+                      style: 'currency',
+                      currency: 'NGN',
+                    }).format(parseFloat(pb.price) || 0)}
+                  </p>
                 </div>
               );
             })}
