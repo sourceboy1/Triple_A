@@ -191,6 +191,12 @@
     align-items: center;
 }
 
+.product-detail-image.zoomed {
+  transform: scale(2);   /* Zoom level */
+  transition: transform 0.3s ease;
+  cursor: zoom-out;
+}
+
 @media (max-width: 1024px) {
     .product-detail{
         margin-top: 120px;

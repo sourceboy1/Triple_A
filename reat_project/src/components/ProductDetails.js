@@ -7,9 +7,6 @@ import './ProductDetails.css';
 import wishlistImg from '../pictures/wishlist.jpg';
 import wishlistActiveImg from '../pictures/wishlist-active.jpg';
 
-// ✅ Helper for correct image URLs in production
-const getPublicImage = (filename) => `${process.env.PUBLIC_URL}/${filename}`;
-
 const ProductDetails = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
@@ -18,6 +15,7 @@ const ProductDetails = () => {
   const { addItemToCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const [stockMessage, setStockMessage] = useState('');
+  const [isZoomed, setIsZoomed] = useState(false); // ✅ zoom state
 
   // Fetch product details
   useEffect(() => {
@@ -138,12 +136,12 @@ const ProductDetails = () => {
         <div className="klb-single-stock">
           {product.stock > 0 ? (
             <div className="product-stock in-stock">
-              <img src={getPublicImage('mark.jpg')} alt="In Stock" className="stock-image" />
+              <img src="/mark.jpg" alt="In Stock" className="stock-image" />
               <span>In Stock</span>
             </div>
           ) : (
             <div className="product-stock out-of-stock">
-              <img src={getPublicImage('markred.jpg')} alt="Out of Stock" className="stock-image" />
+              <img src="/markred.jpg" alt="Out of Stock" className="stock-image" />
               <span>Out of Stock</span>
             </div>
           )}
@@ -155,7 +153,8 @@ const ProductDetails = () => {
             <img
               src={selectedImage}
               alt={product.name}
-              className="product-detail-image zoomable-image"
+              className={`product-detail-image ${isZoomed ? 'zoomed' : ''}`}
+              onClick={() => setIsZoomed(!isZoomed)} // ✅ toggle zoom on tap
             />
           )}
           <div className="product-detail-controls">
@@ -165,7 +164,10 @@ const ProductDetails = () => {
                 src={url || '/media/default.jpg'}
                 alt={`Thumbnail ${index + 1}`}
                 className={`product-detail-controls-img ${selectedImage === url ? 'active' : ''}`}
-                onClick={() => setSelectedImage(url || '/media/default.jpg')}
+                onClick={() => {
+                  setSelectedImage(url || '/media/default.jpg');
+                  setIsZoomed(false); // reset zoom when changing image
+                }}
               />
             ))}
           </div>
