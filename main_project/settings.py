@@ -172,12 +172,11 @@ if DEBUG:
     # }
     pass
 else:
+    DATABASE_URL = os.environ.get("DATABASE_URL") or os.environ.get("MYSQL_PUBLIC_URL")
     DATABASES = {
-        "default": dj_database_url.parse(
-            os.environ.get("DATABASE_URL"), # type: ignore
-            conn_max_age=600,
-        )
+        "default": dj_database_url.parse(DATABASE_URL, conn_max_age=600) # type: ignore
     }
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
