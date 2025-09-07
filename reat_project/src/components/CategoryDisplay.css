@@ -121,7 +121,6 @@
   overflow: hidden; /* Hide overflow if text is too long */
   text-overflow: ellipsis; /* Add ellipsis for overflowed text */
   display: -webkit-box; /* For multi-line ellipsis */
-  -webkit-line-clamp: 2; /* Limit to 2 lines */
   -webkit-box-orient: vertical;
 }
 
@@ -234,7 +233,7 @@
   .product-title {
     font-size: 0.85em;
     height: auto; /* Allow title height to be dynamic for single column */
-    -webkit-line-clamp: unset; /* Remove line clamp for single column */
+    
   }
 
   .see-more-link {
