@@ -39,7 +39,7 @@ const Checkout = () => {
     const options = countryList().getData();
     const { loading, setLoading } = useLoading(); // Use the loading hook
 
-    // Refs for scrolling
+    // Refs for scrolling (not directly used for the login scroll, but good to keep)
     const emailRef = useRef(null);
     const firstNameRef = useRef(null);
     const lastNameRef = useRef(null);
@@ -71,16 +71,19 @@ const Checkout = () => {
 
     // Check if user is logged in
     if (!isLoggedIn) {
+        window.scrollTo(0, 0); // Scroll to the top
         setEmailError('Please log in or register to place your order. You can do so by clicking the "Click here to login" link above.');
         return;
     }
 
     if (!termsAgreed) {
+        window.scrollTo(0, 0); // Scroll to the top if terms not agreed
         setEmailError('You must agree to the terms and conditions before placing the order.');
         return;
     }
 
     if (!email || !firstName || !lastName || !addressLine1 || !city || !state || !postalCode || !country || !phone) {
+        window.scrollTo(0, 0); // Scroll to the top if fields are missing
         setEmailError('Please fill in all required fields.');
         return;
     }
@@ -90,6 +93,7 @@ const Checkout = () => {
     const fullAddress = `${addressLine1}${addressLine2 ? ', ' + addressLine2 : ''}`;
     const userId = parseInt(localStorage.getItem('userId'), 10);
     if (!token || isNaN(userId)) {
+        window.scrollTo(0, 0); // Scroll to the top on auth error
         setEmailError('Authentication error. Please log in again.');
         setLoading(false); // Stop loading on auth error
         return;
@@ -147,6 +151,7 @@ const Checkout = () => {
         });
     } catch (error) {
         console.error('Error placing the order:', error.response || error);
+        window.scrollTo(0, 0); // Scroll to the top on error
         setEmailError('There was an error placing your order. Please try again.');
     } finally {
         setLoading(false); // Stop loading regardless of success or failure
