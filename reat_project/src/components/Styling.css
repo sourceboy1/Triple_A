@@ -69,8 +69,7 @@
   position: relative; /* Necessary for absolute positioning of the search button */
   display: flex;
   align-items: center;
-  width: 100%; /* Keep this at 100% to fill its parent (search-bar-container) */
-  /* Remove any explicit width setting here that would override the 100% */
+  width: 100%;
 }
 
 /* Search Input */
@@ -107,17 +106,23 @@
   border-right: none;
   border-radius: 4px 0 0 4px;
   white-space: nowrap; /* Prevent text from wrapping to a new line */
-  /* Removed flex-grow and max-width that were dynamically changing its size */
-  min-width: 120px; /* Set a fixed minimum width */
+  flex-grow: 1; /* Allow the dropdown to expand and take up available space */
+  min-width: 120px; /* Set a minimum width for the dropdown */
+  max-width: 300px; /* Set a maximum width to prevent it from growing too large */
   overflow: hidden; /* Hide overflowing text */
   text-overflow: ellipsis; /* Display ellipsis (...) for overflowing text */
 }
+
+
+
 
 .search-button img {
   width: 41px; /* Adjust the size of the search icon */
   height: 41px;
   margin-right: 10px;
 }
+
+
 
 /* Dropdown content styling */
 .dropdown-content {
@@ -148,6 +153,16 @@
 .dropdown-content a:hover {
   background-color: #f0f0f0;
 }
+
+
+
+
+
+
+
+
+
+
 
 .button {
   background-color: green;
@@ -205,11 +220,19 @@
   background-color: #f0f0f0;
 }
 
+
+
+
+
+
+
+
 .user-icon-container {
   display: flex;
   align-items: center;
   position: relative;
   cursor: pointer;
+  
 }
 
 .user-icon {
@@ -224,6 +247,8 @@
   font-size: 1rem;
   color: #333;
 }
+
+
 
 .user-icon-container:hover .user-dropdown {
   display: block; /* Show dropdown on hover */
@@ -276,6 +301,13 @@
   background-color: #f0f0f0;
 }
 
+
+
+
+
+
+
+
 .phone-icon-container {
   position: fixed;
   bottom: 20px;
@@ -322,6 +354,19 @@
     transform: translateY(0);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .product-list {
   display: grid;
@@ -372,6 +417,8 @@
   padding-right: 10px;
 }
 
+
+
 /* Styling for the cart icon and the count badge */
 .cart-link {
   position: relative;
@@ -393,6 +440,7 @@
   padding: 4px 8px; /* Increased padding for better visibility */
   font-size: 14px; /* Increased font size */
   font-weight: bold;
+  
 }
 .wishlist-link {
   position: relative;
@@ -409,6 +457,10 @@
   filter: brightness(1.2); /* Slightly brighten on hover */
 }
 
+
+
+
+
 .product-card .wishlist-icon {
   position: absolute;
   top: 10px;
@@ -424,6 +476,19 @@
   /* Other styling properties for the product card */
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 .wishlist-container {
   position: relative;
   display: flex;
@@ -434,6 +499,7 @@
   width: 30px;
   height: 30px;
   cursor: pointer;
+
 }
 
 .wishlist-count {
@@ -445,6 +511,7 @@
   font-weight: bold;
   margin-right: 2px;
   margin-bottom: 35px;
+
 }
 
 .wishlist-dropdown {
@@ -476,6 +543,27 @@
   display: flex;
   flex-direction: column;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Overall styling for the product list */
 .product-list {
@@ -562,6 +650,24 @@
   background-color: darkgreen;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Product Image Zoom Effect */
 .zoomable-image {
   width: 60%;
@@ -576,6 +682,17 @@
 .zoomable-image:hover {
   transform: scale(1.5); /* Zooms the image by 20% */
 }
+
+
+
+
+
+
+
+
+
+
+
 
 /* Tablet (1024px and below) */
 @media (max-width: 1024px) {
@@ -621,10 +738,12 @@
   .all-dropdown {
     padding: 10px 5px; /* Adjust dropdown padding */
     min-width: 100px; /* Adjust minimum width */
-    /* Removed max-width */
+    max-width: 180px; /* Adjust maximum width */
     font-size: 13px; /* Adjust font size */
   }
 }
+
+
 
 @media (max-width: 768px) {
   .navbar {
@@ -669,7 +788,7 @@
   .all-dropdown {
     padding: 12px 6px; /* Adjust padding for dropdown */
     min-width: 100px; /* Adjust minimum width */
-    /* Removed max-width */
+    max-width: 200px; /* Adjust maximum width */
     font-size: 14px; /* Adjust font size */
   }
 }
@@ -713,7 +832,7 @@
   .all-dropdown {
     padding: 10px 5px; /* Adjust padding for dropdown */
     min-width: 80px; /* Reduce minimum width */
-    /* Removed max-width */
+    max-width: 120px; /* Reduce maximum width */
     font-size: 12px; /* Adjust font size */
   }
 
@@ -776,7 +895,7 @@
   .all-dropdown {
     padding: 8px 3px; /* Reduce padding for dropdown */
     min-width: 60px; /* Further reduce min width */
-    /* Removed max-width */
+    max-width: 100px; /* Further reduce max width */
     font-size: 10px; /* Smaller font size */
   }
 
@@ -800,3 +919,4 @@
     font-size: 10px; /* Smaller font size */
   }
 }
+
