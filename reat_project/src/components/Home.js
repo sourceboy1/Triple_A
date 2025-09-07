@@ -1,5 +1,6 @@
 // components/Home.jsx
 import React, { useState, useEffect } from 'react';
+import homeVideo from '../pictures/home.mp4';
 import './Home.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,7 +19,10 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 2000);
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
     return () => clearTimeout(timer);
   }, []);
 
@@ -26,24 +30,24 @@ const Home = () => {
     navigate('/product-catalog');
   };
 
-  if (loading) return <Loading />;
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="home">
       <div className="hero-video-container">
         <video
           className="hero-video"
+          src={homeVideo}
+          autoPlay
           loop
           muted
           playsInline
           preload="auto"
-          autoPlay
-          poster="/videos/home-poster.jpg" // optional fallback image for mobile
         >
-          <source src="/videos/home.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-
         <div className="hero-content-overlay">
           <h1 className="hero-title">Discover cutting-edge technology.</h1>
           <p className="hero-subtitle">Experience innovation with every product.</p>
@@ -53,7 +57,8 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Sections after hero video */}
+      {/* Children render after loading finishes */}
+      {/* FeatureDisplay is the one we want to add space above */}
       <FeatureDisplay />
       <DealsOfTheDay />
       <CategoryDisplay />
