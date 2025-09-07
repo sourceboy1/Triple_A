@@ -1,0 +1,153 @@
+/* components/PriceAlertModal.css */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's on top of other content */
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  max-width: 500px; /* Maximum width for larger screens */
+  width: 90%; /* Occupy 90% of parent width, ensuring margins */
+  position: relative;
+  animation: fadeInScale 0.3s ease-out; /* Simple animation */
+  margin: 20px; /* Add some margin on all sides for smaller screens */
+}
+
+.modal-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+  padding: 5px 10px;
+  line-height: 1;
+}
+
+.modal-close-button:hover {
+  color: #f00;
+}
+
+.modal-title {
+  color: #ff4500; /* Orange-red for alert */
+  margin-bottom: 15px;
+  font-size: 1.8em;
+  font-weight: bold;
+}
+
+.modal-message {
+  color: #555;
+  margin-bottom: 20px;
+  line-height: 1.6;
+  font-size: 1.1em;
+}
+
+.modal-contact {
+  color: #666;
+  margin-bottom: 15px;
+  font-size: 1em;
+}
+
+.whatsapp-button {
+  background-color: #25d366; /* WhatsApp green */
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none; /* Ensure no underline if it acts as a link */
+  white-space: nowrap; /* Prevent button text from wrapping if possible */
+}
+
+.whatsapp-button:hover {
+  background-color: #1da851;
+}
+
+/* Optional: Animation */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* --- Responsive Adjustments --- */
+
+/* For smaller mobile devices (e.g., up to 480px) */
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 20px; /* Reduce padding */
+    width: 95%; /* Make it take a bit more width on very small screens */
+    margin: 10px; /* Smaller outer margin */
+  }
+
+  .modal-title {
+    font-size: 1.5em; /* Smaller title */
+  }
+
+  .modal-message {
+    font-size: 1em; /* Smaller message font */
+    margin-bottom: 15px;
+  }
+
+  .modal-contact {
+    font-size: 0.9em;
+  }
+
+  .whatsapp-button {
+    padding: 10px 20px; /* Smaller button padding */
+    font-size: 1em; /* Smaller button font */
+  }
+
+  .modal-close-button {
+    font-size: 20px; /* Smaller close button */
+    top: 5px;
+    right: 5px;
+  }
+}
+
+/* For tablets and medium-sized devices (e.g., 481px to 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .modal-content {
+    padding: 25px; /* Slightly reduce padding */
+    max-width: 450px; /* Keep max-width reasonable */
+    width: 85%; /* Adjust width */
+  }
+
+  .modal-title {
+    font-size: 1.6em;
+  }
+
+  .modal-message {
+    font-size: 1.05em;
+  }
+
+  .whatsapp-button {
+    padding: 11px 22px;
+    font-size: 1.05em;
+  }
+}

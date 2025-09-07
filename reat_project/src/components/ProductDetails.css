@@ -1,244 +1,426 @@
-.product-detail {
-    max-width: 800px;
-    margin: 80px auto;
-    padding: 20px;
-    background-color: #fffefe;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+/* General Styling */
+.product-detail-page-wrapper {
+  padding: 1rem; /* Add some padding around the whole page wrapper */
 }
 
-.product-detail-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.product-detail {
+  max-width: 1200px; /* Increased max-width for larger screens */
+  margin: 80px auto;
+  padding: 20px;
+  background-color: #fffefe;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column; /* Stack content vertically by default */
+  position: relative; /* For absolute positioning of header elements */
+}
+
+.product-detail-header {
+  display: flex;
+  justify-content: flex-end; /* Align items to the end initially */
+  align-items: center; /* Vertically center items */
+  width: 100%;
+  margin-bottom: 20px; /* Space below header */
+  position: absolute; /* Position the header elements within the product-detail */
+  top: 20px;
+  left: 0;
+  right: 20px; /* Push to the right */
+  padding: 0 20px; /* Add padding to match the product-detail padding */
+  z-index: 10; /* Ensure it's above other content */
 }
 
 .klb-single-stock {
-    margin-bottom: 20px;
-    text-align: end; /* Center align stock status */
+  margin-right: 15px; /* Space between stock and wishlist icon */
+  flex-shrink: 0; /* Prevent it from shrinking */
 }
 
 .product-stock {
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-}
-
-.stock-image {
-    width: 24px;
-    height: 24px;
-    margin-right: 8px;
+  display: inline-flex; /* Use inline-flex for better alignment in small spaces */
+  align-items: center;
+  font-size: 16px;
+  padding: 5px 10px;
+  border-radius: 4px;
 }
 
 .product-stock.in-stock {
-    display: flex;
-    align-items: center;
-    border: 1px solid green; /* Add a border to the stock status */
-    padding: 5px 10px;
-    border-radius: 4px;
-    color: green;
-    background-color: #f9f9f9; /* Optional: Add a background color */
+  border: 1px solid green;
+  color: green;
+  background-color: #f9f9f9;
+}
+
+.product-stock.out-of-stock {
+  border: 1px solid red;
+  color: red;
+  background-color: #f9f9f9;
 }
 
 .stock-image {
-    width: 20px; /* Adjust the width of the image as needed */
-    height: 20px;
-    margin-right: 5px; /* Space between the image and the text */
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
 }
-.product-stock.out-of-stock {
+
+.wishlist-icon1 {
+  cursor: pointer;
+  flex-shrink: 0; /* Prevent it from shrinking */
+}
+
+.wishlist-image2 {
+  width: 35px;
+  height: 35px;
+  object-fit: cover;
+}
+
+.product-detail-content {
   display: flex;
+  flex-direction: column; /* Stack images and info vertically on small screens */
   align-items: center;
-  border: 1px solid red; /* Add a border to indicate out of stock */
-  padding: 5px 10px;
-  border-radius: 4px;
-  color: red;
-  background-color: #f9f9f9; /* Optional: Add a background color */
+  position: relative;
+  padding-top: 60px; /* Add padding to clear the absolute header */
 }
 
 .product-detail-images {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%; /* Take full width on small screens */
 }
 
 .product-detail-image {
-    max-width: 450px;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  max-width: 100%; /* Ensure image doesn't overflow */
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease; /* Smooth transition for zoom */
+  cursor: zoom-in;
+}
+
+.product-detail-image.zoomed {
+  transform: scale(1.5); /* Zoom level, adjust as needed */
+  cursor: zoom-out;
 }
 
 .product-detail-controls {
-    display: flex;
-    margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap; /* Allow thumbnails to wrap to the next line */
+  justify-content: center;
+  margin-top: 10px;
+  max-width: 100%; /* Ensure controls don't overflow */
 }
 
-.quantity-control {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 20px 0;
-  }
-
 .product-detail-controls-img {
-    width: 60px;
-    height: 60px;
-    margin: 0 5px;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: border-color 0.3s;
+  width: 60px;
+  height: 60px;
+  margin: 5px; /* Adjust margin for better spacing on wrap */
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.3s, transform 0.3s;
+  object-fit: cover; /* Ensure thumbnails look good */
 }
 
 .product-detail-controls-img.active {
-    border: 2px solid green;  /* Highlight active image with a border */
-    transform: scale(1.1);
+  border: 2px solid green;
+  transform: scale(1.05); /* Slightly enlarge active thumbnail */
 }
 
 .product-detail-info {
-    text-align: center;
+  text-align: center;
+  width: 100%; /* Take full width on small screens */
+  padding: 0 10px; /* Add some horizontal padding */
 }
 
 .product-title {
-    font-size: 24px;
-    color: #1E2019;
-    margin: 10px 0;
+  font-size: 28px; /* Slightly larger for better readability */
+  color: #1E2019;
+  margin: 15px 0;
 }
 
 .product-description {
-    font-size: 16px;
-    color: #666;
-    margin: 10px 0;
+  font-size: 16px;
+  color: #666;
+  margin: 10px 0 20px 0; /* More space below description */
+  line-height: 1.6; /* Improve readability */
 }
 
 .product-price {
-    font-size: 18px;
-    margin: 10px 0;
+  font-size: 22px;
+  margin: 15px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
 }
 
 .discounted-price {
-    color: green;
-    font-weight: bold;
-    margin-right: 10px;
+  color: green;
+  font-weight: bold;
+  margin-right: 10px;
+  font-size: 1.1em; /* Make discounted price slightly larger */
 }
 
 .original-price {
-    text-decoration: line-through;
-    color: #999;
+  text-decoration: line-through;
+  color: #999;
+  font-size: 0.9em; /* Make original price slightly smaller */
 }
 
 .quantity-control {
-    display: flex;
-    align-items: center;
-    margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.quantity-control button {
+  background-color: green;
+  border: none;
+  color: white;
+  padding: 8px 15px; /* Larger padding for easier tapping */
+  cursor: pointer;
+  font-size: 18px; /* Larger font size for buttons */
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.quantity-control button:hover {
+  background-color: darkgreen;
+}
+
+.quantity-control span {
+  margin: 0 15px; /* More space around quantity number */
+  font-size: 1.4em; /* Larger quantity number */
+  min-width: 30px; /* Ensure consistent width */
+  text-align: center;
 }
 
 .button.is-primary {
-    background-color: green;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 12px 25px; /* Larger buttons */
+  border-radius: 4px;
+  font-size: 18px; /* Larger font for buttons */
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%; /* Full width buttons on small screens */
+  max-width: 300px; /* Limit max width for desktop */
+  margin-bottom: 10px; /* Space between buttons */
 }
 
-.button.is-primary:hover {
-    background-color: darkgreen;
+.button.is-primary:hover:not(:disabled) {
+  background-color: darkgreen;
 }
 
-.quantity-control {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
+.button.is-primary:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.stock-message {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* --- Media Queries --- */
+
+/* For screens larger than 768px (Desktop/Tablet landscape) */
+@media (min-width: 769px) {
+  .product-detail {
+    flex-direction: row; /* Layout side-by-side on larger screens */
+    align-items: flex-start; /* Align content to the top */
+    margin-top: 100px; /* Adjust top margin for desktop */
   }
-  
+
+  .product-detail-header {
+    justify-content: space-between; /* Space out wishlist and stock */
+    padding: 0 20px;
+    width: auto;
+    left: 0;
+    right: 0;
+    top: 20px;
+  }
+
+  .klb-single-stock {
+    order: 1; /* Stock comes first visually */
+    margin-right: 0; /* Reset margin */
+  }
+
+  .wishlist-icon1 {
+    order: 2; /* Wishlist comes second visually */
+  }
+
+  .product-detail-content {
+    flex-direction: row; /* Layout side-by-side for images and info */
+    gap: 30px; /* Space between image and info sections */
+    padding-top: 0; /* No padding needed here, handled by product-detail margin */
+    margin-top: 50px; /* Adjust content top margin to clear header */
+  }
+
+  .product-detail-images {
+    flex: 1; /* Allow image section to grow */
+    max-width: 50%; /* Control image section width */
+    margin-bottom: 0; /* Reset margin */
+  }
+
+  .product-detail-image {
+    max-width: 500px; /* Max width for the main image on desktop */
+  }
+
+  .product-detail-controls {
+    flex-direction: row;
+    flex-wrap: nowrap; /* Prevent wrapping on desktop if enough space */
+    justify-content: flex-start; /* Align thumbnails to the start */
+  }
+
+  .product-detail-info {
+    flex: 1; /* Allow info section to grow */
+    text-align: left; /* Align text to the left on desktop */
+    padding: 0; /* Reset padding */
+  }
+
+  .product-price {
+    justify-content: flex-start; /* Align prices to the left */
+  }
+
+  .quantity-control {
+    justify-content: flex-start; /* Align quantity control to the left */
+  }
+
+  .button.is-primary {
+    width: auto; /* Auto width for buttons on desktop */
+    max-width: 250px; /* A reasonable max width for desktop buttons */
+  }
+}
+
+/* For smaller screens (Mobile and Tablet Portrait) */
+@media (max-width: 768px) {
+  .product-detail-page-wrapper {
+    padding: 0.5rem; /* Less padding on very small screens */
+  }
+
+  .product-detail {
+    margin-top: 120px; /* Adjusted margin for mobile */
+    padding: 15px;
+  }
+
+  .product-detail-header {
+    justify-content: space-between; /* Keep them spaced on one line */
+    align-items: center; /* Vertically center */
+    position: static; /* Make it static within the flow on mobile */
+    padding: 0; /* Remove horizontal padding as it's handled by product-detail */
+    margin-bottom: 10px; /* Space below header */
+    top: auto;
+    left: auto;
+    right: auto;
+    width: 100%;
+  }
+
+  .klb-single-stock {
+    order: 1; /* Ensure stock comes first */
+    margin-right: 10px; /* Smaller margin for mobile */
+  }
+
+  .product-stock {
+    font-size: 13px; /* Smaller font for stock on mobile */
+    padding: 3px 6px; /* Smaller padding */
+  }
+  .product-stock span {
+    font-size: 13px; /* Ensure span font also smaller */
+  }
+
+  .wishlist-icon1 {
+    order: 2; /* Ensure wishlist comes second */
+  }
+
+  .wishlist-image2 {
+    width: 30px; /* Slightly smaller wishlist icon */
+    height: 30px;
+  }
+
+  .product-detail-content {
+    padding-top: 0; /* No need for padding-top here as header is static */
+  }
+
+  .product-title {
+    font-size: 24px; /* Adjusted title size for mobile */
+    margin: 10px 0;
+  }
+
+  .product-description {
+    font-size: 15px;
+    margin: 10px 0;
+  }
+
+  .product-price {
+    font-size: 20px;
+    margin: 10px 0;
+  }
+
+  .discounted-price {
+    font-size: 1em;
+  }
+
+  .original-price {
+    font-size: 0.85em;
+  }
+
+  .quantity-control {
+    margin: 15px 0;
+  }
+
   .quantity-control button {
-    background-color: green;
-    border: none;
-    color: white;
-    padding: 5px 10px;
-    cursor: pointer;
+    padding: 6px 12px;
+    font-size: 16px;
   }
-  
+
   .quantity-control span {
     margin: 0 10px;
     font-size: 1.2em;
   }
 
-.wishlist-icon1 {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    z-index: 10;
-    cursor: pointer;
+  .button.is-primary {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+
+  /* Adjust zoom for very small screens if needed */
+  .product-detail-image.zoomed {
+    transform: scale(1.2); /* Less aggressive zoom on smaller screens */
+  }
 }
 
-.wishlist-image2 {
-    width: 35px;
-    height: 35px;
-    object-fit: cover;
-}
+/* For even smaller screens (e.g., iPhone 5/SE) */
+@media (max-width: 480px) {
+  .product-detail {
+    padding: 10px;
+    margin-top: 95px;
+  }
 
-.product-detail-content {
-    position: relative; /* To allow absolute positioning of wishlist icon */
-}
+  .product-detail-header {
+    justify-content: space-around; /* Distribute space more evenly */
+  }
 
-.product-stock {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
+  .product-stock {
+    font-size: 12px;
+    padding: 2px 5px;
+  }
+  .product-stock span {
+    font-size: 12px;
+  }
 
-.product-detail-image.zoomed {
-  transform: scale(2);   /* Zoom level */
-  transition: transform 0.3s ease;
-  cursor: zoom-out;
-}
+  .wishlist-image2 {
+    width: 25px;
+    height: 25px;
+  }
 
-@media (max-width: 1024px) {
-    .product-detail{
-        margin-top: 120px;
-    }
-}
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-    .product-detail {
-        margin-top: 50px;
-    }
-    .product-detail-content {
-        flex-direction: column;
-        align-items: center;
-    }
+  .product-title {
+    font-size: 22px;
+  }
 
-    .product-stock {
-        font-size: 18px; /* Increase font size for better visibility */
-        margin-bottom: 15px; /* Add margin to separate from other elements */
-    }
-
-    .product-title {
-        font-size: 20px;
-    }
-
-    .product-description {
-        font-size: 14px;
-    }
-
-    .quantity-control {
-        flex-direction: row;
-        justify-content: center;
-        margin: 10px 0;
-    }
-
-    .quantity-control button {
-        margin: 0 5px; /* Add some margin between buttons */
-    }
-}
-
-@media (max-width: 768px) {
-    .product-detail{
-        margin-top: 100px;
-    }
-
+  .product-detail-controls-img {
+    width: 50px;
+    height: 50px;
+    margin: 3px;
+  }
 }

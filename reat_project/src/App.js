@@ -15,6 +15,7 @@ import SignUpForm from './SignUpForm';
 import SignIn from './components/Login';
 import PasswordResetRequest from './components/PasswordResetRequest';
 import PasswordReset from './components/PasswordReset';
+import ProductCatalog from './components/ProductCatalog';
 import ProductDetails from './components/ProductDetails';
 import ProductList from './components/ProductList';
 import CategoryProducts from './components/CategoryProducts';
@@ -99,6 +100,7 @@ const AppContent = () => {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/request-password-reset" element={<PasswordResetRequest />} />
           <Route path="/reset-password/:uid/:token" element={<PasswordReset />} />
+          <Route path="/product-catalog" element={<ProductCatalog />} />
           <Route path="/product-details/:productId" element={<ProductDetails />} />
           <Route path="/products" element={<ProductList />} />
           <Route path="/shop/:categoryName" element={<CategoryProducts />} />

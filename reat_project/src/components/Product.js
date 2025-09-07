@@ -1,21 +1,30 @@
-import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link
+// Product.jsx
+import React, { useState } from 'react'; // Import useState
+import { Link } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
-import './Styling.css';
+import PriceAlertModal from './PriceAlertModal'; // Import the modal
+import './Styling.css'; // Assuming your general styling
 
 const Product = ({ product_id, name, description, price, image_urls, stock }) => {
   const { addItemToCart } = useCart();
+  const [showPriceAlert, setShowPriceAlert] = useState(false); // State for modal visibility
 
   // Format the price with commas
   const formattedPrice = price ? new Intl.NumberFormat().format(price) : 'N/A';
 
   const handleAddToCart = () => {
     if (stock > 0) {
-      const product = { product_id, name, description, price, image_url: image_urls.large };
-      addItemToCart(product);
+      const productToAdd = { product_id, name, description, price, image_url: image_urls.large, stock }; // Pass stock
+      addItemToCart(productToAdd);
+      setShowPriceAlert(true); // Show alert after adding to cart
     } else {
       alert('Product is out of stock!');
     }
+  };
+
+  // Function to view product details and show alert
+  const handleProductClick = () => {
+    setShowPriceAlert(true); // Show alert when clicking on product name/link
   };
 
   return (
@@ -27,7 +36,10 @@ const Product = ({ product_id, name, description, price, image_urls, stock }) =>
       )}
 
       <h2 className="product-title">
-        <Link to={`/product-details/${product_id}`}>{name}</Link>
+        {/* Wrap Link in an onClick to show the alert */}
+        <Link to={`/product-details/${product_id}`} onClick={handleProductClick}>
+          {name}
+        </Link>
       </h2>
 
       <p className="product-description">{description}</p>
@@ -41,6 +53,14 @@ const Product = ({ product_id, name, description, price, image_urls, stock }) =>
       >
         {stock > 0 ? 'Add to Cart' : 'Out of Stock'}
       </button>
+
+      {/* Price Alert Modal */}
+      <PriceAlertModal
+        show={showPriceAlert}
+        onClose={() => setShowPriceAlert(false)}
+        product={{ name }} // Pass product name for specific WhatsApp message
+        type="product" // Indicate this is from a product page
+      />
     </div>
   );
 };

@@ -1,28 +1,37 @@
-import React from 'react';
+// Cart.jsx
+import React, { useState, useEffect } from 'react'; // Import useState and useEffect
 import { useCart } from '../contexts/CartContext';
 import emptyCartImage from '../pictures/emptycart.jpg';
 import { useNavigate } from 'react-router-dom';
+import PriceAlertModal from './PriceAlertModal'; // Import the modal
 import './Cart.css';
 
 const Cart = () => {
   const { cart, removeItemFromCart, increaseQuantity, decreaseQuantity } = useCart();
   const navigate = useNavigate();
+  const [showPriceAlert, setShowPriceAlert] = useState(false); // State for modal visibility
+
+  // Show the price alert when the Cart component mounts
+  useEffect(() => {
+    if (cart.length > 0) { // Only show if there are items in the cart
+      setShowPriceAlert(true);
+    }
+  }, []); // Empty dependency array means this runs once on mount
 
   const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
-  const total = subtotal; // Removed shipping from total
+  const total = subtotal;
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat().format(price);
   };
 
   const handleCheckout = () => {
-    // Store cart data in local storage
     localStorage.setItem('cartData', JSON.stringify(cart));
-    navigate('/checkout'); // Navigate to the checkout page
+    navigate('/checkout');
   };
 
   const handleReturnToShop = () => {
-    navigate('/'); // Navigate back to the home page
+    navigate('/');
   };
 
   return (
@@ -85,6 +94,13 @@ const Cart = () => {
           </div>
         </div>
       )}
+
+      {/* Price Alert Modal for Cart */}
+      <PriceAlertModal
+        show={showPriceAlert}
+        onClose={() => setShowPriceAlert(false)}
+        type="cart" // Indicate this is from the cart
+      />
     </div>
   );
 };

@@ -251,7 +251,7 @@ class SignupView(APIView):
         })
 
         if serializer.is_valid():
-            user: CustomUser = serializer.save()  # Save user
+            user: CustomUser = serializer.save()  # type: ignore # Save user
 
             # Generate JWT tokens
             refresh = RefreshToken.for_user(user)
@@ -287,7 +287,7 @@ class PlaceOrderView(APIView):
 
         data = request.data.copy()
         data['user_id'] = user.id  # ✅ force bind to logged-in user
-        data['payment_method_id'] = payment_method.id
+        data['payment_method_id'] = payment_method.id # type: ignore
 
         serializer = OrderSerializer(data=data, context={'request': request})
         if serializer.is_valid():
@@ -298,7 +298,7 @@ class PlaceOrderView(APIView):
 
             return Response({
                 'message': 'Order placed successfully!',
-                'order_id': order.order_id,
+                'order_id': order.order_id, # type: ignore
                 'order': order_data
             }, status=201)
 
@@ -345,7 +345,7 @@ class LoginView(APIView):
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
                 'user': {
-                    'id': user.id,
+                    'id': user.id, # type: ignore
                     'username': user.username,
                     'first_name': user.first_name,
                     'last_name': user.last_name,
@@ -535,7 +535,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         # ✅ Users only see their own orders
         user = self.request.user
-        return Order.objects.filter(user_id=user.id)
+        return Order.objects.filter(user_id=user.id) # type: ignore
 
     @action(detail=True, methods=['post'])
     def cancel(self, request, pk=None):

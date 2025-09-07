@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import api from '../Api';
 import { useCart } from '../contexts/CartContext';
 import { useWishlist } from '../contexts/WishlistContext';
+import PriceAlertModal from './PriceAlertModal';
 import './ProductDetails.css';
 import wishlistImg from '../pictures/wishlist.jpg';
 import wishlistActiveImg from '../pictures/wishlist-active.jpg';
@@ -15,9 +16,9 @@ const ProductDetails = () => {
   const { addItemToCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const [stockMessage, setStockMessage] = useState('');
-  const [isZoomed, setIsZoomed] = useState(false); // ✅ zoom state
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [showPriceAlert, setShowPriceAlert] = useState(false);
 
-  // Fetch product details
   useEffect(() => {
     const fetchProduct = async () => {
       if (!productId) return;
@@ -26,26 +27,25 @@ const ProductDetails = () => {
         const response = await api.get(`products/${productId}/`);
         const productData = response.data;
 
-        // Set initial main image (use first available)
         const mainImage =
           productData.image_urls?.large ||
           productData.secondary_image_urls?.large ||
           (productData.additional_images?.[0]?.image_urls?.large) ||
-          '/media/default.jpg'; // Ensure a default if no images
+          '/media/default.jpg';
 
         setSelectedImage(mainImage);
         setProduct(productData);
         saveToRecentlyViewed(productData, mainImage);
+
+        setShowPriceAlert(true);
       } catch (error) {
         console.error('Error fetching product:', error.response?.data || error.message || error);
-        // Consider setting product to null or showing an error state here if fetch fails
       }
     };
 
     fetchProduct();
   }, [productId]);
 
-  // Save product to recently viewed in localStorage
   const saveToRecentlyViewed = (productData, mainImage) => {
     let viewedProducts = JSON.parse(localStorage.getItem('viewedProducts')) || [];
     viewedProducts = viewedProducts.filter(p => p.product_id !== productData.product_id);
@@ -61,7 +61,6 @@ const ProductDetails = () => {
     localStorage.setItem('viewedProducts', JSON.stringify(viewedProducts));
   };
 
-  // Quantity controls
   const handleIncrease = () => {
     if (product && quantity < product.stock) setQuantity(quantity + 1);
   };
@@ -69,7 +68,6 @@ const ProductDetails = () => {
     if (quantity > 1) setQuantity(quantity - 1);
   };
 
-  // Add to cart
   const handleAddToCart = () => {
     if (product) {
       if (quantity > 0 && quantity <= product.stock) {
@@ -83,15 +81,15 @@ const ProductDetails = () => {
         };
         addItemToCart(cartProduct);
         setStockMessage('');
+        setShowPriceAlert(true);
       } else {
         setStockMessage('No available stock.');
       }
     }
   };
 
-  // Toggle wishlist
   const toggleWishlist = () => {
-    if (product) { // Ensure product is not null before accessing its properties
+    if (product) {
         if (isInWishlist(product.product_id)) {
             removeFromWishlist(product.product_id);
         } else {
@@ -100,10 +98,8 @@ const ProductDetails = () => {
     }
   };
 
-
-  // WhatsApp buy
   const handleBuyNowOnWhatsApp = () => {
-    if (product) { // Ensure product is not null
+    if (product) {
       const message = `Hello, I'm interested in buying ${product.name}. Please provide more details.`;
       const whatsappUrl = `https://wa.me/2348034593459?text=${encodeURIComponent(message)}`;
       window.open(whatsappUrl, '_blank');
@@ -112,56 +108,40 @@ const ProductDetails = () => {
 
   if (!product) return <div className="loading-product-details">Loading product details...</div>;
 
-  // Prepare all images for thumbnails
   const thumbnails = [];
 
-  // Consolidated image parsing logic
-  // Prioritize primary and secondary directly from productData
   if (product.image_urls?.large) thumbnails.push(product.image_urls.large);
   if (product.secondary_image_urls?.large) thumbnails.push(product.secondary_image_urls.large);
 
-  // Then add from additional_images, ensuring uniqueness
   product.additional_images?.forEach(img => {
-    // Collect all available 'large' images from each tier
     const imageCandidates = [
       img.image_urls?.large,
       img.secondary_image_urls?.large,
       img.tertiary_image_urls?.large,
       img.quaternary_image_urls?.large
-    ].filter(Boolean); // Filter out any undefined/null values
+    ].filter(Boolean);
 
     imageCandidates.forEach(url => {
-      if (!thumbnails.includes(url)) { // Add only if not already present
+      if (!thumbnails.includes(url)) {
         thumbnails.push(url);
       }
     });
   });
 
-  // Fallback for thumbnails if product has no images defined at all
   if (thumbnails.length === 0) {
     thumbnails.push('/media/default.jpg');
   }
 
-  const uniqueThumbnails = [...new Set(thumbnails)]; // Ensure absolute uniqueness in case of overlaps
+  const uniqueThumbnails = [...new Set(thumbnails)];
 
   const formattedPrice = product.price ? new Intl.NumberFormat().format(product.price) : 'N/A';
   const formattedOriginalPrice = product.original_price ? new Intl.NumberFormat().format(product.original_price) : 'N/A';
 
   return (
-    <div className="product-detail-page-wrapper"> {/* Added a wrapper for overall layout */}
+    <div className="product-detail-page-wrapper">
       <div className="product-detail">
-        <div className="product-detail-content">
-
-          {/* Wishlist Icon */}
-          <div className="wishlist-icon1" onClick={toggleWishlist}>
-            <img
-              src={isInWishlist(product.product_id) ? wishlistActiveImg : wishlistImg}
-              alt="Wishlist"
-              className="wishlist-image2"
-            />
-          </div>
-
-          {/* Stock Info - NO MARK IMAGES */}
+        <div className="product-detail-header">
+          {/* Stock Info */}
           <div className="klb-single-stock">
             {product.stock > 0 ? (
               <div className="product-stock in-stock">
@@ -174,6 +154,17 @@ const ProductDetails = () => {
             )}
           </div>
 
+          {/* Wishlist Icon */}
+          <div className="wishlist-icon1" onClick={toggleWishlist}>
+            <img
+              src={isInWishlist(product.product_id) ? wishlistActiveImg : wishlistImg}
+              alt="Wishlist"
+              className="wishlist-image2"
+            />
+          </div>
+        </div>
+
+        <div className="product-detail-content">
           {/* Product Images */}
           <div className="product-detail-images">
             {selectedImage && (
@@ -181,19 +172,19 @@ const ProductDetails = () => {
                 src={selectedImage}
                 alt={product.name}
                 className={`product-detail-image ${isZoomed ? 'zoomed' : ''}`}
-                onClick={() => setIsZoomed(!isZoomed)} // ✅ toggle zoom on tap
+                onClick={() => setIsZoomed(!isZoomed)}
               />
             )}
             <div className="product-detail-controls">
               {uniqueThumbnails.map((url, index) => (
                 <img
                   key={index}
-                  src={url || '/media/default.jpg'} // Ensure default if URL is bad
+                  src={url || '/media/default.jpg'}
                   alt={`Thumbnail ${index + 1}`}
                   className={`product-detail-controls-img ${selectedImage === url ? 'active' : ''}`}
                   onClick={() => {
                     setSelectedImage(url || '/media/default.jpg');
-                    setIsZoomed(false); // reset zoom when changing image
+                    setIsZoomed(false);
                   }}
                 />
               ))}
@@ -238,13 +229,20 @@ const ProductDetails = () => {
               onClick={handleBuyNowOnWhatsApp}
               className="button is-primary"
               style={{ marginTop: '10px' }}
-              disabled={!product} // Disable if product data not loaded
+              disabled={!product}
             >
               Buy Now on WhatsApp
             </button>
           </div>
         </div>
       </div>
+
+      <PriceAlertModal
+        show={showPriceAlert}
+        onClose={() => setShowPriceAlert(false)}
+        product={product ? { name: product.name } : null}
+        type="product"
+      />
     </div>
   );
 };

@@ -187,17 +187,17 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def get_image_urls(self, obj):
         """Return main product image URLs from Cloudinary"""
-        return ProductImageSerializer(context=self.context).get_cloudinary_urls(obj.image)
+        return ProductImageSerializer(context=self.context).get_cloudinary_urls(obj.image) # type: ignore
 
     def get_secondary_image_urls(self, obj):
         """Return first additional image's secondary image or fallback"""
         first_additional_image = obj.additional_images.first()
         if first_additional_image and first_additional_image.secondary_image:
-            return ProductImageSerializer(context=self.context).get_cloudinary_urls(
+            return ProductImageSerializer(context=self.context).get_cloudinary_urls( # type: ignore
                 first_additional_image.secondary_image
             )
         # Fallback to default placeholder on Cloudinary
-        return ProductImageSerializer(context=self.context).get_cloudinary_urls(None)
+        return ProductImageSerializer(context=self.context).get_cloudinary_urls(None) # type: ignore
 
 
 

@@ -51,8 +51,9 @@ const Footer = () => {
                     <h3>Triple A's Technology</h3>
                     <p>Call us 24/7</p>
                     <p>+2348034593459</p>
+                    <p>+2348023975782</p>
                     <p>2 Oba Akran, Ikeja, Lagos.</p>
-                    <p>contact@Tripleastechnology.com</p>
+                    <p>Tripleastech518@gmail.com</p>
                 </div>
                 <div className="footer-section">
                     <h3>INFORMATION</h3>

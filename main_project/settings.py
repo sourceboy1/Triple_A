@@ -7,7 +7,7 @@ For more information on this file, see
 https://docs.djangoproject.com/en/5.0/topics/settings/
 
 For the full list of settings and their values, see
-https://docs.djangoproject.com/en/5.0/ref/settings/
+https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 """
 import pymysql
 pymysql.install_as_MySQLdb()
@@ -22,54 +22,83 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 FRONTEND_DIR = BASE_DIR / 'reat_project' / 'build'
 
 # Load .env from project root
+# It's good practice to load .env first, then override with .env.local
+# for local development. dotenv.load_dotenv(override=True) ensures .env.local takes precedence.
 load_dotenv(BASE_DIR / ".env")
+load_dotenv(BASE_DIR / ".env.local", override=True) # Load local overrides
 
-
-SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key-for-local-dev")
+# SECRET_KEY and DEBUG are now controlled by environment variables.
+# .env.local should set DEBUG=True and a local SECRET_KEY for development.
+SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key-for-local-dev-if-env-missing")
+# For production, ensure SECRET_KEY is set in your Railway environment variables
+# and is a long, random string. The fallback is ONLY for *local* dev if .env.local is missing it.
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# DEBUG is now read from environment variable, with a fallback to False for safety.
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+# For production deployment, ensure DEBUG is set to 'False' in your Railway environment variables.
+# For local development, set DEBUG='True' in .env.local.
 
 # settings.py
 MAINTENANCE_MODE = os.getenv("MAINTENANCE_MODE", "off").lower() == "on"
-
+# For production, set MAINTENANCE_MODE='on' in your Railway environment variables if you need it.
+# For local dev, you can set it to 'on' in .env.local for testing the maintenance page.
 
 CORS_ALLOW_CREDENTIALS = True
 
-ALLOWED_HOSTS = [
-    'tripleastechng.com',
-    'www.tripleastechng.com',
-    'crossover.proxy.rlwy.net',
-    'localhost',
-    '127.0.0.1',
-]
+# Dynamically set ALLOWED_HOSTS based on DEBUG mode
+# In DEBUG mode, allow localhost and 127.0.0.1
+# In production, use your domain and Railway proxies
+if DEBUG:
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0'] # 0.0.0.0 for Docker/other local setups
+    # For local development, these are appropriate.
+else:
+    ALLOWED_HOSTS = [
+        'tripleastechng.com',
+        'www.tripleastechng.com',
+        'crossover.proxy.rlwy.net', # Your primary Railway public domain proxy
+        'metro.proxy.rlwy.net', # Ensure this is also present if used (another Railway proxy)
+    ]
+    # For production, ensure these reflect your actual domain and Railway proxy URLs.
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://tripleastechng.com',
-    'https://www.tripleastechng.com',
-    'https://crossover.proxy.rlwy.net',
-    'http://localhost:8000',
-    'http://127.0.0.1:8000',
-    'https://metro.proxy.rlwy.net',
+# Dynamically set CSRF_TRUSTED_ORIGINS based on DEBUG mode
+if DEBUG:
+    CSRF_TRUSTED_ORIGINS = [
+        'http://localhost:8000',
+        'http://127.0.0.1:8000',
+        'http://localhost:3000', # Your React dev server
+        'http://127.0.0.1:3000', # Your React dev server
+    ]
+    # For local development, these are appropriate.
+else:
+    CSRF_TRUSTED_ORIGINS = [
+        'https://tripleastechng.com',
+        'https://www.tripleastechng.com',
+        'https://crossover.proxy.rlwy.net',
+        'https://metro.proxy.rlwy.net',
+    ]
+    # For production, ensure these reflect your actual domain and Railway proxy URLs, using HTTPS.
 
-]
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",       # React dev server
-    "http://127.0.0.1:3000",
-    "http://localhost:8000",       # Django local
-    "http://127.0.0.1:8000",
-    "https://tripleastechng.com",  # Production domain
-    "https://www.tripleastechng.com",
-    "https://crossover.proxy.rlwy.net",  # Your Railway proxy
-    "https://metro.proxy.rlwy.net",
-]
-
+# Dynamically set CORS_ALLOWED_ORIGINS based on DEBUG mode
+if DEBUG:
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:3000",       # React dev server
+        "http://127.0.0.1:3000",
+        "http://localhost:8000",       # Django local
+        "http://127.0.0.1:8000",
+    ]
+    # For local development, these are appropriate.
+else:
+    CORS_ALLOWED_ORIGINS = [
+        "https://tripleastechng.com",  # Production domain
+        "https://www.tripleastechng.com",
+        "https://crossover.proxy.rlwy.net",  # Your Railway proxy
+        "https://metro.proxy.rlwy.net",
+    ]
+    # For production, ensure these reflect your actual domain and Railway proxy URLs, using HTTPS.
 
 
 # Application definition
-
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -82,21 +111,29 @@ INSTALLED_APPS = [
     'rest_framework',
     'cloudinary_storage',
     'cloudinary',
+    # 'rest_framework_simplejwt', # You might want to add this if you're using simplejwt for tokens.
+                                 # It's referenced in REST_FRAMEWORK but not in INSTALLED_APPS.
+                                 # If you have it installed, uncomment this.
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this
-    'corsheaders.middleware.CorsMiddleware',  # Move above CommonMiddleware
+    # WhiteNoise is for serving static files in production.
+    # In local development, Django's runserver handles static files.
+    # We keep it here, but it mostly activates when DEBUG is False.
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # WhiteNoise is crucial for serving static and media files in production.
+    # Ensure it's active and correctly configured for deployment.
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     "main_app.middleware.MaintenanceModeMiddleware",
+    # This custom middleware enables your MAINTENANCE_MODE functionality.
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
 
 AUTH_USER_MODEL = "main_app.CustomUser"
 
@@ -105,42 +142,55 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend", # fallback
 ]
 
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
+        # In DEBUG mode, you might want more permissive settings for testing.
+        # However, for APIs, IsAuthenticated is often good even locally.
+        # You can make this conditional if needed.
         'rest_framework.permissions.IsAuthenticated',
     ),
+    # For production, 'IsAuthenticated' is generally a good default.
+    # For development, you might temporarily use 'AllowAny' for quick testing,
+    # but be sure to revert it for production.
 }
 
-
 # Cloudinary storage
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-import cloudinary
-if CLOUDINARY_URL := os.environ.get("CLOUDINARY_URL"):
-    cloudinary.config(cloudinary_url=CLOUDINARY_URL, secure=True)
-
+# In local development, you might want to use Django's default FileSystemStorage
+# for media files if you don't want to upload to Cloudinary constantly.
+# I'll make this conditional.
+if DEBUG:
+    # Use default file storage for local development
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    # When DEBUG=True (local dev), media files will be saved to your local `MEDIA_ROOT`.
+    # Cloudinary setup is skipped here.
+else:
+    # Use Cloudinary in production
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    import cloudinary
+    # Cloudinary config will only run if CLOUDINARY_URL is available
+    if CLOUDINARY_URL := os.environ.get("CLOUDINARY_URL"):
+        cloudinary.config(cloudinary_url=CLOUDINARY_URL, secure=True)
+    # When DEBUG=False (production), media files will be uploaded to Cloudinary.
+    # Ensure CLOUDINARY_URL is set in your Railway environment variables.
 
 
 # Where to redirect when a login is required
-LOGIN_URL = '/login/'  # Change this to your React login URL if needed
+LOGIN_URL = '/signin'  # Change this to your React login URL if needed (relative path)
 
 # Where to go after login (optional)
 LOGIN_REDIRECT_URL = '/'
 
-
 ROOT_URLCONF = 'main_project.urls'
-
-
-FRONTEND_DIR = BASE_DIR / 'reat_project' / 'build'
-
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        # FRONTEND_DIR points to your React build.
+        # This is primarily for production to serve index.html.
+        # For local dev, React's dev server serves the frontend.
         'DIRS': [FRONTEND_DIR] if FRONTEND_DIR.exists() else [],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -154,76 +204,66 @@ TEMPLATES = [
     },
 ]
 
-
-
-
-
 WSGI_APPLICATION = 'main_project.wsgi.application'
-
-
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'seunakanni417@gmail.com'
-EMAIL_HOST_PASSWORD = 'nmxwcdumiwjwccyr'
-DEFAULT_FROM_EMAIL = 'Triple A,s Support <support.royeane@yahoo.com>'
+# These should ideally be in environment variables,
+# For production, ensure these are set in your Railway environment variables.
+# For local dev, you can use .env.local for testing with a real email,
+# or a service like Mailhog/Mailtrap for development.
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'seunakanni417@gmail.com') # Use env var, fallback to hardcoded
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'nmxwcdumiwjwccyr') # Use env var, fallback to hardcoded
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'Triple A,s Support <support.royeane@yahoo.com>') # Use env var, fallback to hardcoded
 
 
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-# db_url = os.environ.get("DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}")
-
-# # 👇 Only change host when inside Railway (not on your PC)
-# if os.environ.get("RAILWAY_RUNTIME") == "true":
-#     db_url = db_url.replace("crossover.proxy.rlwy.net", "mysql.railway.internal")
-#     db_url = db_url.replace("metro.proxy.rlwy.net", "mysql.railway.internal")
+# Database configuration
+# The DATABASES setting is now conditional based on DEBUG.
+# When DEBUG is True, it uses your local MySQL setup.
+# When DEBUG is False, it uses dj_database_url.parse with the DATABASE_URL environment variable.
 
 import dj_database_url
 import os
 
-DATABASES = {
-    "default": dj_database_url.parse(
-        os.environ.get("DATABASE_URL"), # type: ignore
-        conn_max_age=600,
-    )
-}
+if DEBUG:
+    # Local MySQL Database configuration
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": "my_triplea_ecommerce_db",
+            "USER": "triple_user",
+            "PASSWORD": "oluwaseun123$",
+            "HOST": "127.0.0.1", # Use 127.0.0.1 instead of localhost for consistency
+            "PORT": "3306",
+            "OPTIONS": {
+                "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+            },
+        }
+    }
+    # For local development, these credentials should match your local MySQL setup.
+else:
+    # Production Database configuration (e.g., Railway)
+    # The `DATABASE_URL` should come from your .env or Railway environment
+    DATABASES = {
+        "default": dj_database_url.parse(
+            os.environ.get("DATABASE_URL"), # type: ignore
+            conn_max_age=600,
+        )
+    }
+    # For production, DATABASE_URL must be set in your Railway environment variables.
+    # dj_database_url handles parsing it into the correct Django database settings.
 
-
-
-
-
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.mysql",
-#         "NAME": "my_triplea_ecommerce_db",
-#         "USER": "triple_user",
-#         "PASSWORD": "oluwaseun123$",
-#         "HOST": "localhost",
-#         "PORT": "3306",
-#         "OPTIONS": {
-#             "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
-#         },
-#     }
-# }
-
-
-
-
-
-
+    # This block should probably be applied *after* dj_database_url.parse
+    # or ensure dj_database_url handles this if it can.
+    # For now, keeping it commented out for clarity as dj_database_url.parse is robust.
+    # if os.environ.get("RAILWAY_RUNTIME") == "true":
+    #     DATABASES["default"]["HOST"] = "mysql.railway.internal" # Example, check Railway docs
+    # This specific Railway optimization is often not needed if DATABASE_URL is correctly set.
 
 
 # Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -239,11 +279,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-
 # Internationalization
-# https://docs.djangoproject.com/en/5.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -252,31 +288,39 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800  # 50 MB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800
 
-
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-
+# Static files configuration
+# In DEBUG mode, Django's `runserver` handles static files from `STATICFILES_DIRS`.
+# In production (DEBUG=False), WhiteNoise takes over using `STATIC_ROOT`.
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
+# In production, `python manage.py collectstatic` will gather all static files here.
 
-# React static files
+# React static files (build output)
 FRONTEND_STATIC_DIR = BASE_DIR / "reat_project" / "build" / "static"
 STATICFILES_DIRS = [FRONTEND_STATIC_DIR]
+# This tells Django where to look for static files *in addition* to app-specific 'static/' dirs.
+# It's where your React build's static assets will be found.
 
-# WhiteNoise for serving static files
+# WhiteNoise for serving static files - only effectively used in production (DEBUG=False)
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# This is crucial for efficient static file serving in production.
+# Ensure 'whitenoise' is in INSTALLED_APPS and MIDDLEWARE.
 
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# Media files configuration
+# If DEBUG is True, DEFAULT_FILE_STORAGE is FileSystemStorage, so MEDIA_ROOT is used.
+# If DEBUG is False, DEFAULT_FILE_STORAGE is MediaCloudinaryStorage, so MEDIA_ROOT is less critical.
 MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / "media" # Define MEDIA_ROOT for local FileSystemStorage
+# In production with Cloudinary, MEDIA_ROOT is less used as files are stored remotely.
+# For local dev, this is where uploaded media files will reside.
 
 
 # Logging config to avoid startup errors
@@ -304,4 +348,3 @@ LOGGING = {
         "level": "INFO",
     },
 }
-

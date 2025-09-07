@@ -1,0 +1,246 @@
+/* src/components/ProductCatalog.css */
+.product-catalog-page {
+    padding: 80px 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    color: #1d1d1f;
+    background-color: #f5f5f7;
+    /* Removed overflow: hidden from here, as the slider itself will manage scrolling */
+}
+
+.catalog-main-title {
+    font-size: 3rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 60px;
+    letter-spacing: -0.01em;
+}
+
+.product-slider-wrapper {
+    /* Removed overflow-x: hidden from here */
+    position: relative;
+    padding: 20px 0;
+}
+
+.product-slider {
+    display: flex;
+    flex-wrap: nowrap; /* Keep items in a single row */
+    gap: 30px; /* Space between cards */
+    /* Removed transition: transform from here, as there's no programmatic sliding */
+    /* will-change: transform; is also not strictly needed without transitions */
+
+    /* ✅ Add scrolling properties */
+    overflow-x: auto; /* Enable horizontal scrolling */
+    -webkit-overflow-scrolling: touch; /* Smoother scrolling on iOS */
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: #888 #f1f1f1; /* Firefox */
+    padding-bottom: 20px; /* Add space for scrollbar if it appears */
+}
+
+/* Custom scrollbar for Webkit browsers (Chrome, Safari) */
+.product-slider::-webkit-scrollbar {
+    height: 8px; /* Height of horizontal scrollbar */
+}
+
+.product-slider::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Color of the scrollbar track */
+    border-radius: 10px;
+}
+
+.product-slider::-webkit-scrollbar-thumb {
+    background: #888; /* Color of the scrollbar thumb */
+    border-radius: 10px;
+}
+
+.product-slider::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color when hovering over the scrollbar thumb */
+}
+
+
+.product-card {
+    flex: 0 0 auto; /* Prevent cards from shrinking */
+    background-color: white;
+    border-radius: 18px;
+    padding: 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+    width: 280px; /* Default width for cards */
+    min-width: 280px; /* Ensure minimum width */
+    max-width: 300px; /* Max width for consistency */
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.product-tagline {
+    font-size: 0.85rem;
+    color: #86868b;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+.product-name {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    line-height: 1.2;
+}
+
+.product-card-price {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1d1d1f;
+    margin-bottom: 20px;
+}
+
+.product-image-container {
+    width: 100%;
+    max-width: 250px;
+    height: 180px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.product-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+    transition: transform 0.3s ease-in-out;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.05);
+}
+
+.placeholder-image {
+    background-color: #e0e0e0;
+    color: #888;
+    font-style: italic;
+    font-size: 1rem;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.product-details {
+    width: 100%;
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.add-to-cart-button {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    text-transform: capitalize;
+}
+
+.add-to-cart-button:hover {
+    background-color: darkgreen;
+}
+
+/* Responsive adjustments */
+
+/* Large screens / Laptops (5 items in a row, but still scrollable if more items) */
+@media (min-width: 1400px) {
+    .product-card {
+        /* Maintain a fixed width or percentage, but allow for scrolling if many items */
+        width: 280px; /* Keep consistent width, let scroll handle overflow */
+    }
+}
+
+/* Desktops / larger tablets (4 items in a row, scrollable if more) */
+@media (min-width: 1025px) and (max-width: 1399px) {
+    .product-card {
+        width: 260px; /* Slightly smaller fixed width */
+    }
+}
+
+/* Tablets (3 items in a row, scrollable if more) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .product-card {
+        width: 240px; /* Smaller fixed width */
+    }
+    .catalog-main-title {
+        font-size: 2.5rem;
+    }
+}
+
+/* Small tablets / large phones (2 items in a row, scrollable if more) */
+@media (min-width: 481px) and (max-width: 768px) {
+    .product-catalog-page {
+        padding: 60px 15px;
+    }
+    .catalog-main-title {
+        font-size: 2.2rem;
+        margin-bottom: 40px;
+    }
+    .product-card {
+        width: 200px; /* Fixed width, scrollable */
+        padding: 20px;
+    }
+    .product-name {
+        font-size: 1.4rem;
+    }
+    .product-image-container {
+        height: 150px;
+    }
+    .add-to-cart-button {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Mobile (1 item per row, scrollable) */
+@media (max-width: 480px) {
+    .product-catalog-page {
+        padding: 50px 10px;
+        margin-top: 50px;
+    }
+    .catalog-main-title {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+    }
+    .product-slider {
+        justify-content: flex-start; /* Items start from left, then scroll */
+        padding-left: 10px; /* Ensure first item isn't flush with edge */
+        padding-right: 10px; /* Ensure last item isn't flush with edge */
+    }
+    .product-card {
+        width: 250px; /* Fixed width for mobile, allowing clear scrolling */
+        min-width: 250px; /* Ensure it maintains this width */
+        margin: 0 10px; /* Add some margin for spacing */
+        padding: 15px;
+    }
+    .product-name {
+        font-size: 1.2rem;
+    }
+    .product-image-container {
+        height: 120px;
+    }
+    .add-to-cart-button {
+        padding: 6px 12px;
+        font-size: 0.7rem;
+    }
+}

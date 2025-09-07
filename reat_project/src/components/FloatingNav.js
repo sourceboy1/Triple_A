@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
+import { useNavigate } from 'react-router-dom';
+import { useUser } from '../contexts/UserContext'; // ✅ import useUser
 import homeIcon from '../pictures/home_icon.jpg';
 import cartIcon from '../pictures/carticon.jpg';
 import userIcon from '../pictures/usericon.jpg';
@@ -8,23 +9,21 @@ import './FloatingNav.css';
 
 const FloatingNav = ({ onSearchClick }) => {
   const [isMobile, setIsMobile] = useState(false);
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
+  const { isLoggedIn } = useUser(); // ✅ access login status
 
-  // Check screen size to determine if we should display this component
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768); // Adjust this width as needed
-    };
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener('resize', handleResize);
     handleResize();
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const handleScrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' }); // Smooth scroll to the top of the page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  if (!isMobile) return null; // Don't render if it's not a mobile screen
+  if (!isMobile) return null;
 
   return (
     <div className="floating-nav">
@@ -32,29 +31,32 @@ const FloatingNav = ({ onSearchClick }) => {
         src={homeIcon} 
         alt="Home" 
         className="nav-icon" 
-        onClick={() => { navigate('/'); handleScrollToTop(); }} // Scroll to top when navigating to home
+        onClick={() => { navigate('/'); handleScrollToTop(); }} 
       />
       <img 
         src={cartIcon} 
         alt="Cart" 
         className="nav-icon" 
-        onClick={() => { navigate('/cart'); handleScrollToTop(); }} // Scroll to top when navigating to cart
+        onClick={() => { navigate('/cart'); handleScrollToTop(); }} 
       />
       <img 
         src={searchIcon} 
         alt="Search" 
         className="nav-icon" 
-        onClick={() => { 
-          navigate('/search');  // Navigate to /search route
-          handleScrollToTop();   // Scroll to top
-        }} 
+        onClick={() => { navigate('/search'); handleScrollToTop(); }} 
       />
-
       <img 
         src={userIcon} 
         alt="User" 
         className="nav-icon" 
-        onClick={() => { navigate('/account'); handleScrollToTop(); }} // Scroll to top when navigating to account
+        onClick={() => { 
+          if (isLoggedIn) {
+            navigate('/account');
+          } else {
+            navigate('/signin');
+          }
+          handleScrollToTop(); 
+        }} 
       />
     </div>
   );

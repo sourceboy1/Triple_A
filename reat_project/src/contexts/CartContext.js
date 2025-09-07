@@ -1,3 +1,4 @@
+// contexts/CartContext.js
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
 // Create Cart Context
@@ -22,7 +23,7 @@ export const CartProvider = ({ children }) => {
       !product.name ||
       !product.image_url ||
       !product.price ||
-      product.stock === undefined
+      product.stock === undefined // Ensure stock is present
     ) {
       console.error('Incomplete product data:', product);
       return;
@@ -33,7 +34,15 @@ export const CartProvider = ({ children }) => {
         (item) => item.product_id === product.product_id
       );
       if (existingProduct) {
-        return prevCart; // Don't duplicate
+        // If product already exists, you might want to increase quantity instead of doing nothing
+        // For now, based on your original logic, it does nothing.
+        // If you want to increase quantity for existing items:
+        // return prevCart.map(item =>
+        //   item.product_id === product.product_id
+        //     ? { ...item, quantity: Math.min(item.quantity + 1, item.stock) }
+        //     : item
+        // );
+        return prevCart; // Don't duplicate, keep existing behavior for now
       }
       return [...prevCart, { ...product, quantity: 1 }];
     });
@@ -49,7 +58,8 @@ export const CartProvider = ({ children }) => {
     setCart((prevCart) =>
       prevCart.map((item) => {
         if (item.product_id === productId) {
-          if (item.quantity < item.stock) {
+          // Ensure item.stock exists before comparing
+          if (item.stock !== undefined && item.quantity < item.stock) {
             return { ...item, quantity: item.quantity + 1 };
           }
         }
