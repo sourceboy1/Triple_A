@@ -27,7 +27,7 @@ const FAQ = () => {
             </div>
 
             <div className={`faq-item ${isOpen(1) ? 'open' : ''}`}>
-                <h3 onClick={() => toggleDropdown(1)}>What steps does Nonsman take to prevent card fraud?</h3>
+                <h3 onClick={() => toggleDropdown(1)}>What steps does Triple A's technology take to prevent card fraud?</h3>
                 {isOpen(1) && <p>Fraud detection and prevention are very important to us. We take all steps to ensure that transactions are genuine and that our customer’s details are completely secure. Online payments are monitored continuously for suspicious activity, and some transactions are verified manually if we feel that it is not authorized by the owner of the card.</p>}
             </div>
 
@@ -38,7 +38,7 @@ const FAQ = () => {
 
             <div className={`faq-item ${isOpen(3) ? 'open' : ''}`}>
                 <h3 onClick={() => toggleDropdown(3)}>Do I need an account to purchase from Triple A's technology ?</h3>
-                {isOpen(3) && <p>No, you don’t need to have an account to shop on Nonsman. However, during checkout, an account will be created for you.</p>}
+                {isOpen(3) && <p>yes, you need to have an account to shop on Triple A's technology. </p>}
             </div>
 
             <div className={`faq-item ${isOpen(4) ? 'open' : ''}`}>

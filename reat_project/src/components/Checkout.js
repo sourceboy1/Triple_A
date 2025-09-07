@@ -12,6 +12,7 @@ import { useCart } from '../contexts/CartContext';
 import countryList from 'react-select-country-list';
 import api from '../Api';
 import 'react-phone-input-2/lib/style.css';
+import { useLoading } from '../contexts/LoadingContext'; // Import useLoading
 
 
 const Checkout = () => {
@@ -33,9 +34,10 @@ const Checkout = () => {
     const { cart, clearCart } = useCart();
     const [showTerms, setShowTerms] = useState(false);
     const { isLoggedIn, firstName: userFirstName, lastName: userLastName, email: userEmail } = useUser();
-    const token = localStorage.getItem('access_token')
+    const token = localStorage.getItem('access_token');
     const navigate = useNavigate();
     const options = countryList().getData();
+    const { loading, setLoading } = useLoading(); // Use the loading hook
 
     // Refs for scrolling
     const emailRef = useRef(null);
@@ -67,6 +69,12 @@ const Checkout = () => {
    const handlePlaceOrder = async () => {
     setEmailError('');
 
+    // Check if user is logged in
+    if (!isLoggedIn) {
+        setEmailError('Please log in or register to place your order. You can do so by clicking the "Click here to login" link above.');
+        return;
+    }
+
     if (!termsAgreed) {
         setEmailError('You must agree to the terms and conditions before placing the order.');
         return;
@@ -77,10 +85,13 @@ const Checkout = () => {
         return;
     }
 
+    setLoading(true); // Start loading
+
     const fullAddress = `${addressLine1}${addressLine2 ? ', ' + addressLine2 : ''}`;
     const userId = parseInt(localStorage.getItem('userId'), 10);
     if (!token || isNaN(userId)) {
         setEmailError('Authentication error. Please log in again.');
+        setLoading(false); // Stop loading on auth error
         return;
     }
 
@@ -137,6 +148,8 @@ const Checkout = () => {
     } catch (error) {
         console.error('Error placing the order:', error.response || error);
         setEmailError('There was an error placing your order. Please try again.');
+    } finally {
+        setLoading(false); // Stop loading regardless of success or failure
     }
 };
     
@@ -151,12 +164,12 @@ const Checkout = () => {
     const getShippingCost = () => {
         switch (shippingMethod) {
             case 'pickup': return 0;
-            case 'express': return 0.01;
+            case 'express': return 15000;
             case 'area1': return 10000;
             case 'satellite': return 12000;
             case 'area2': return 10000;
             case 'abule_egba': return 8000;
-            case 'ikeja': return 3000;
+            case 'ikeja': return 5000;
             case 'lagos_mainland': return 12000;
             default: return 0;
         }
@@ -187,21 +200,23 @@ const Checkout = () => {
                         placeholder="Email *"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        disabled={loading} // Disable input while loading
                     />
                     {emailError && <p className="error-message">{emailError}</p>}
                 </div>
 
                 <div>
                     <h2>Shipping Address</h2>
-                    <input ref={firstNameRef} type="text" placeholder="First name *" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-                    <input ref={lastNameRef} type="text" placeholder="Last name *" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                    <input ref={addressRef} type="text" placeholder="Address *" value={addressLine1} onChange={(e) => setAddressLine1(e.target.value)} />
-                    <input ref={cityRef} type="text" placeholder="City *" value={city} onChange={(e) => setCity(e.target.value)} />
-                    <input ref={stateRef} type="text" placeholder="State *" value={state} onChange={(e) => setState(e.target.value)} />
-                    <input ref={postalCodeRef} type="text" placeholder="Postal code *" value={postalCode} onChange={(e) => setPostalCode(e.target.value)} />
+                    <input ref={firstNameRef} type="text" placeholder="First name *" value={firstName} onChange={(e) => setFirstName(e.target.value)} disabled={loading} />
+                    <input ref={lastNameRef} type="text" placeholder="Last name *" value={lastName} onChange={(e) => setLastName(e.target.value)} disabled={loading} />
+                    <input ref={addressRef} type="text" placeholder="Address *" value={addressLine1} onChange={(e) => setAddressLine1(e.target.value)} disabled={loading} />
+                    <input ref={cityRef} type="text" placeholder="City *" value={city} onChange={(e) => setCity(e.target.value)} disabled={loading} />
+                    <input ref={stateRef} type="text" placeholder="State *" value={state} onChange={(e) => setState(e.target.value)} disabled={loading} />
+                    <input ref={postalCodeRef} type="text" placeholder="Postal code *" value={postalCode} onChange={(e) => setPostalCode(e.target.value)} disabled={loading} />
                     <select
                         value={country}
                         onChange={(e) => setCountry(e.target.value)}
+                        disabled={loading}
                     >
                         {options.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -209,7 +224,7 @@ const Checkout = () => {
                             </option>
                         ))}
                     </select>
-                    <PhoneInputComponent value={phone} onChange={setPhone} />
+                    <PhoneInputComponent value={phone} onChange={setPhone} disabled={loading} />
                 </div>
 
                 <div>
@@ -222,6 +237,7 @@ const Checkout = () => {
                                 value="pickup"
                                 checked={shippingMethod === 'pickup'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
+                                disabled={loading}
                             />
                             Store Pickup: Free
                         </label>
@@ -232,8 +248,9 @@ const Checkout = () => {
                                 value="express"
                                 checked={shippingMethod === 'express'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
+                                disabled={loading}
                             />
-                            Express/Same Day Delivery: ₦0.01
+                            Express/Same Day Delivery: ₦15,000
                         </label>
                         <label>
                             <input
@@ -242,6 +259,7 @@ const Checkout = () => {
                                 value="area1"
                                 checked={shippingMethod === 'area1'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
+                                disabled={loading}
                             />
                             Amuwo Odofin GRA/Festac: ₦10,000.00
                         </label>
@@ -252,6 +270,7 @@ const Checkout = () => {
                                 value="satellite"
                                 checked={shippingMethod === 'satellite'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
+                                disabled={loading}
                             />
                             Satellite town/Suru Alaba/Isolo/Maza maza: ₦12,000.00
                         </label>
@@ -262,6 +281,7 @@ const Checkout = () => {
                                 value="area2"
                                 checked={shippingMethod === 'area2'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
+                                disabled={loading}
                             />
                             Ajao Estate/Oshodi/Lawanson/Orile/Itire/Gbagada/Apapa/Surulere/Tradefair: ₦10,000.00
                         </label>
@@ -272,6 +292,7 @@ const Checkout = () => {
                                 value="abule_egba"
                                 checked={shippingMethod === 'abule_egba'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
+                                disabled={loading}
                             />
                             Abule Egba/ Iyana Ipaja/ Ayobo: ₦8,000.00
                         </label>
@@ -282,8 +303,9 @@ const Checkout = () => {
                                 value="ikeja"
                                 checked={shippingMethod === 'ikeja'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
+                                disabled={loading}
                             />
-                            IKEJA AXIS/ BARIGA/ALAGOMEJI/FADEYI/PALM GROOVE: ₦3,000.00
+                            IKEJA AXIS/ BARIGA/ALAGOMEJI/FADEYI/PALM GROOVE: ₦5,000.00
                         </label>
                         <label>
                             <input
@@ -292,6 +314,7 @@ const Checkout = () => {
                                 value="lagos_mainland"
                                 checked={shippingMethod === 'lagos_mainland'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
+                                disabled={loading}
                             />
                             LAGOS MAINLAND: ₦12,000.00
                         </label>
@@ -300,7 +323,7 @@ const Checkout = () => {
 
                 <div>
                     <h2>Order Note (Optional)</h2>
-                    <textarea placeholder="Note about your order" value={orderNote} onChange={(e) => setOrderNote(e.target.value)} />
+                    <textarea placeholder="Note about your order" value={orderNote} onChange={(e) => setOrderNote(e.target.value)} disabled={loading} />
                 </div>
 
                 
@@ -315,6 +338,7 @@ const Checkout = () => {
                     value="bank_transfer"
                     checked={paymentMethod === 'bank_transfer'}
                     onChange={(e) => setPaymentMethod(e.target.value)}
+                    disabled={loading}
                 />
                 Bank Transfer
             </label>
@@ -335,6 +359,7 @@ const Checkout = () => {
                     value="debit_credit_cards"
                     checked={paymentMethod === 'debit_credit_cards'}
                     onChange={(e) => setPaymentMethod(e.target.value)}
+                    disabled={loading}
                 />
                 Debit/Credit Cards
                 <img src={debitcardImage} alt="Debit/Credit Card" className="payment-icon" />
@@ -355,6 +380,7 @@ const Checkout = () => {
                         id="terms"
                         checked={termsAgreed}
                         onChange={() => setTermsAgreed(!termsAgreed)}
+                        disabled={loading}
                     />
                     <label htmlFor="terms">
                       I have read and agree to the website  <a href="#" onClick={toggleTerms}>terms and conditions</a>
@@ -381,7 +407,9 @@ const Checkout = () => {
                 )}
 
 
-                <button onClick={handlePlaceOrder}>Place Order</button>
+                <button onClick={handlePlaceOrder} disabled={loading}>
+                    {loading ? 'Placing Order...' : 'Place Order'}
+                </button>
             </div>
 
             <div className="order-summary">
