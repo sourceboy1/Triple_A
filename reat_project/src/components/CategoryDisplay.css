@@ -1,12 +1,15 @@
 /* CategoryDisplay.css */
 
 :root {
-  --background-color: white;
+  --background-color: #f7f7f7; /* Lighter background for the whole component */
   --category-title-color: #333;
   --card-background: white;
   --border-radius: 8px;
   --card-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   --primary-color: #007185;
+  --hover-color: #00465d;
+  --text-color-dark: #333;
+  --text-color-light: #555;
 }
 
 .category-display {
@@ -14,154 +17,246 @@
   background-color: var(--background-color);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px; /* Increased gap between rows */
+  max-width: 1200px; /* Constrain overall width */
+  margin: 20px auto; /* Center the entire display */
 }
 
-/* Row layout for two categories per row */
 .category-row {
   display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
+  justify-content: center; /* Center the category containers within the row */
+  gap: 30px; /* Gap between category containers in a row */
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
 }
 
-/* Each category container */
 .category-container {
-  width: 48%;
+  flex: 1; /* Allow containers to grow and shrink */
+  min-width: 300px; /* Minimum width before wrapping */
+  max-width: 550px; /* Max width to prevent them from becoming too wide */
   background-color: var(--card-background);
   border-radius: var(--border-radius);
   box-shadow: var(--card-shadow);
-  padding: 16px;
+  padding: 20px; /* Increased padding */
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-sizing: border-box;
+  box-sizing: border-box; /* Ensures padding doesn't add to overall width */
+  transition: transform 0.2s ease-in-out;
+}
+
+.category-container:hover {
+  transform: translateY(-5px); /* Subtle lift effect */
 }
 
 .category-title {
-  font-size: 1.5em;
-  color: var(--category-title-color);
-  margin-bottom: 12px;
-  font-weight: 600;
+  font-size: 1.8em; /* Slightly larger title */
+  color: darkgreen; /* Keep your dark green */
+  margin-bottom: 20px; /* More space below title */
+  font-weight: 700; /* Bolder title */
   text-align: center;
-  color: darkgreen;
+  width: 100%; /* Ensure title takes full width */
 }
 
-/* Grid for product cards within each category */
 .product-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  grid-template-columns: repeat(2, 1fr); /* Always 2 columns for wider views */
+  gap: 15px; /* Gap between product cards */
   width: 100%;
+  flex-grow: 1; /* Allow grid to take available vertical space */
 }
 
-/* Product card styling */
 .product-card {
   background-color: var(--card-background);
   border-radius: var(--border-radius);
-  box-shadow: var(--card-shadow);
-  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 8px; /* Lighter shadow for individual cards */
+  padding: 12px;
   cursor: pointer;
   text-align: center;
   transition: transform 0.2s, box-shadow 0.2s;
+  display: flex; /* Use flexbox for inner card content */
+  flex-direction: column;
+  justify-content: space-between; /* Push title to bottom if image is taller */
+  height: 100%; /* Ensure cards fill their grid cell height */
+  box-sizing: border-box;
 }
 
 .product-card:hover {
-  transform: scale(1.05);
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 8px 24px;
+  transform: translateY(-3px); /* Lift effect on hover */
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 15px; /* Stronger shadow on hover */
+}
+
+/* New wrapper for consistent image sizing */
+.product-image-wrapper {
+  width: 100%;
+  padding-bottom: 100%; /* Creates a square aspect ratio (1:1) */
+  position: relative;
+  margin-bottom: 10px; /* Space between image and title */
+  overflow: hidden; /* Hide anything that goes outside the square */
+  border-radius: var(--border-radius); /* Apply border-radius to the wrapper */
 }
 
 .product-image {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: auto;
-  max-height: 150px;
-  object-fit: cover;
-  border-radius: var(--border-radius);
-  margin-bottom: 8px;
+  height: 100%;
+  object-fit: cover; /* Ensures image covers the square area */
+  border-radius: var(--border-radius); /* Apply border-radius to the image as well */
+  transition: transform 0.3s ease-in-out; /* Smooth hover effect */
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.08); /* Slightly zoom image on hover */
 }
 
 .product-title {
-  font-size: 1em;
-  color: var(--primary-color);
-  font-weight: 500;
+  font-size: 0.95em; /* Slightly smaller for better fit */
+  color: var(--text-color-dark);
+  font-weight: 600; /* Bolder product title */
   margin: 0;
+  flex-grow: 0; /* Prevent title from growing excessively */
+  line-height: 1.3; /* Better readability */
+  height: 2.6em; /* Fixed height for 2 lines of text */
+  overflow: hidden; /* Hide overflow if text is too long */
+  text-overflow: ellipsis; /* Add ellipsis for overflowed text */
+  display: -webkit-box; /* For multi-line ellipsis */
+  -webkit-line-clamp: 2; /* Limit to 2 lines */
+  -webkit-box-orient: vertical;
 }
 
-/* "See More" link */
 .see-more-link {
   text-align: center;
   color: var(--primary-color);
   font-weight: bold;
   cursor: pointer;
-  margin-top: 10px;
-  transition: color 0.3s;
+  margin-top: 20px; /* More space above the link */
+  padding: 8px 15px;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  transition: all 0.3s ease;
 }
 
 .see-more-link:hover {
-  color: #00465d;
+  background-color: var(--primary-color);
+  color: white;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 10px;
 }
 
 /* Responsive styling */
-@media (max-width: 1024px) {
+
+/* Tablet and Smaller Desktops (e.g., 992px to 769px) */
+@media (max-width: 992px) {
+  .category-display {
+    padding: 15px;
+    gap: 25px;
+  }
+
   .category-row {
-    justify-content: center; /* Center categories on tablet */
+    gap: 25px;
   }
 
   .category-container {
-    width: 45%;
-    margin-bottom: 20px;
+    min-width: 280px;
+    max-width: 45%; /* Allow two containers per row to shrink more */
+    padding: 18px;
+  }
+
+  .category-title {
+    font-size: 1.6em;
   }
 
   .product-grid {
-    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .product-title {
+    font-size: 0.9em;
   }
 }
 
+/* Larger Phones and Small Tablets (e.g., 768px to 577px) */
 @media (max-width: 768px) {
+  .category-display {
+    padding: 10px;
+    gap: 20px;
+  }
+
   .category-row {
-    flex-direction: column;
-    align-items: center; /* Center all categories vertically */
+    flex-direction: column; /* Stack categories vertically */
+    align-items: center; /* Center them */
+    gap: 20px;
   }
 
   .category-container {
-    width: 80%; /* Center category blocks */
-    margin: 10px 0; /* Add vertical spacing */
+    width: 90%; /* Make each category container take more width */
+    max-width: 450px; /* Constrain max width for stacked containers */
+    padding: 15px;
+  }
+
+  .category-title {
+    font-size: 1.5em;
   }
 
   .product-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    grid-template-columns: repeat(2, 1fr); /* Still 2 columns for products within the stacked categories */
+    gap: 10px;
   }
 }
 
-@media (max-width: 480px) {
-  .category-row {
-    flex-direction: column;
-    align-items: center; /* Ensure categories are centered */
+/* Mobile Phones (e.g., 576px and below) */
+@media (max-width: 576px) {
+  .category-display {
+    padding: 10px;
+    gap: 15px;
   }
 
   .category-container {
-    width: 95%; /* Nearly full width but centered */
-    margin: 10px 20px 0px 0;
-  }
-
-  .product-grid {
-    grid-template-columns: 1fr; /* Single column for mobile */
-    gap: 10px;
+    width: 95%; /* Almost full width for mobile */
+    max-width: 350px; /* Further constrain for very small screens */
+    padding: 12px;
   }
 
   .category-title {
     font-size: 1.3em;
+    margin-bottom: 15px;
+  }
+
+  .product-grid {
+    grid-template-columns: 1fr; /* Single column for product cards on very small screens */
+    gap: 10px;
+  }
+
+  .product-image-wrapper {
+    padding-bottom: 75%; /* Adjust aspect ratio for portrait images on single column */
+  }
+
+  .product-title {
+    font-size: 0.85em;
+    height: auto; /* Allow title height to be dynamic for single column */
+    -webkit-line-clamp: unset; /* Remove line clamp for single column */
+  }
+
+  .see-more-link {
+    font-size: 0.9em;
+    padding: 6px 12px;
+    margin-top: 15px;
   }
 }
 
-@media (max-width: 320px) {
-  .category-container {
-    width: 95%;       /* almost full width */
-    margin: 10px 20px 12px 0;  /* top 10px, right 10px, bottom 10px, left 0 */
+/* Extra small phones (e.g., 375px and below) */
+@media (max-width: 375px) {
+  .category-display {
+    padding: 5px;
   }
-
-  .category-row {
-    justify-content: flex-start; /* align to start so margin-right takes effect */
+  .category-container {
+    width: 98%;
+    padding: 10px;
+  }
+  .category-title {
+    font-size: 1.2em;
+  }
+  .product-grid {
+    gap: 8px;
   }
 }

@@ -30,7 +30,7 @@ const CategoryDisplay = () => {
     const fetchProducts = async () => {
       try {
         const responses = await Promise.all(
-          categories.map(category => 
+          categories.map(category =>
             api.get(`products/?category_id=${category.id}`, {
               headers: { Authorization: `Bearer ${accessToken}` }
             })
@@ -47,11 +47,15 @@ const CategoryDisplay = () => {
         setProducts(productsObject);
       } catch (error) {
         console.error('Error fetching products:', error);
+        // Optionally, handle error state for the user
       }
     };
 
-    fetchProducts();
-  }, [accessToken]);
+    // Only fetch if accessToken is available
+    if (accessToken) {
+      fetchProducts();
+    }
+  }, [accessToken]); // Dependency array to re-run when accessToken changes
 
   const handleViewAll = (categoryId) => {
     navigate(`/search?category_id=${categoryId}`);
@@ -79,15 +83,17 @@ const CategoryDisplay = () => {
                       className="product-card"
                       onClick={() => handleProductClick(product.product_id)}
                       onMouseEnter={(e) => {
-                        const imgEl = e.currentTarget.querySelector('img');
-                        imgEl.src = secondaryImage;
+                        const imgEl = e.currentTarget.querySelector('.product-image'); // Target the specific image
+                        if (imgEl) imgEl.src = secondaryImage;
                       }}
                       onMouseLeave={(e) => {
-                        const imgEl = e.currentTarget.querySelector('img');
-                        imgEl.src = mainImage;
+                        const imgEl = e.currentTarget.querySelector('.product-image'); // Target the specific image
+                        if (imgEl) imgEl.src = mainImage;
                       }}
                     >
-                      <img src={mainImage} alt={product.name} className="product-image" />
+                      <div className="product-image-wrapper"> {/* New wrapper for consistent image sizing */}
+                        <img src={mainImage} alt={product.name} className="product-image" />
+                      </div>
                       <h4 className="product-title">{product.name}</h4>
                     </div>
                   );
