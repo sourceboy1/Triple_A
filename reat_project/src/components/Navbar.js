@@ -19,7 +19,7 @@ const Navbar = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [searchWidth, setSearchWidth] = useState('50%');
+  // const [searchWidth, setSearchWidth] = useState('50%'); // No longer needed for this specific behavior
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 425); 
   const categoryDropdownRef = useRef(null);
   const searchInputRef = useRef(null);
@@ -78,7 +78,8 @@ const Navbar = () => {
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
     setCategoryDropdownVisible(false);
-    setSearchWidth(category === 'All' ? '100%' : '50%');
+    // Removed this line to prevent search bar width change
+    // setSearchWidth(category === 'All' ? '100%' : '50%'); 
     scrollToTop();
   };
 
@@ -159,7 +160,7 @@ const Navbar = () => {
       </div>
 
       <div className="search-bar-container">
-        <div className="search-with-dropdown" style={{ width: searchWidth }}>
+        <div className="search-with-dropdown"> {/* Removed style={{ width: searchWidth }} */}
           <div
             className="all-dropdown"
             onClick={toggleCategoryDropdown}
