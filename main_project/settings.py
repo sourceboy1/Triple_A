@@ -156,26 +156,38 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
 
-# Database configuration
 if DEBUG:
-    # Local DB (commented out for production build)
-    # DATABASES = {
-    #     "default": {
-    #         "ENGINE": "django.db.backends.mysql",
-    #         "NAME": "my_triplea_ecommerce_db",
-    #         "USER": "triple_user",
-    #         "PASSWORD": "oluwaseun123$",
-    #         "HOST": "127.0.0.1",
-    #         "PORT": "3306",
-    #         "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
-    #     }
-    # }
-    pass
-else:
-    DATABASE_URL = os.environ.get("DATABASE_URL") or os.environ.get("MYSQL_PUBLIC_URL")
+    # Local MySQL Database configuration
     DATABASES = {
-        "default": dj_database_url.parse(DATABASE_URL, conn_max_age=600) # type: ignore
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": "my_triplea_ecommerce_db",
+            "USER": "triple_user",
+            "PASSWORD": "oluwaseun123$",
+            "HOST": "127.0.0.1",
+            "PORT": "3306",
+            "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
+        }
     }
+    # This block will run when DEBUG is True (local development).
+    # Ensure your .env.local has DEBUG=True and your local MySQL is running.
+else:
+    # Production Database configuration (e.g., Railway)
+    # The `DATABASE_URL` MUST be set in your Railway environment variables.
+    # Remove the `MYSQL_PUBLIC_URL` fallback as it might be confusing or incorrect.
+    database_url_from_env = os.environ.get("DATABASE_URL")
+
+    if not database_url_from_env:
+        # This means DATABASE_URL was not found. This will cause a crash.
+        # It's better to raise an explicit error here if it's not set.
+        raise Exception("DATABASE_URL environment variable is not set for production!")
+
+    DATABASES = {
+        "default": dj_database_url.parse(database_url_from_env, conn_max_age=600) # type: ignore
+    }
+    # This block will run when DEBUG is False (production deployment).
+    # Crucially, ensure that DATABASE_URL is correctly set in your Railway variables.
+
 
 
 # Password validation
