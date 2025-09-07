@@ -42,8 +42,8 @@ const Home = () => {
           src={homeVideo}
           autoPlay
           loop
-          muted
-          playsInline
+          muted // <--- This is crucial for mobile autoplay
+          playsInline // <--- This is also crucial for mobile autoplay
           preload="auto"
         >
           Your browser does not support the video tag.
