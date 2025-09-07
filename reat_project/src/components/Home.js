@@ -1,5 +1,5 @@
 // components/Home.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import homeVideo from '../pictures/home.mp4';
 import './Home.css';
 import { useNavigate } from 'react-router-dom';
@@ -16,18 +16,26 @@ import Loading from './Loading';
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
     }, 2000);
-
     return () => clearTimeout(timer);
   }, []);
 
   const handleShopNowClick = () => {
     navigate('/product-catalog');
+  };
+
+  const handlePlayClick = () => {
+    if (videoRef.current) {
+      videoRef.current.play();
+      setIsPlaying(true);
+    }
   };
 
   if (loading) {
@@ -38,9 +46,9 @@ const Home = () => {
     <div className="home">
       <div className="hero-video-container">
         <video
+          ref={videoRef}
           className="hero-video"
           src={homeVideo}
-          autoPlay
           loop
           muted
           playsInline
@@ -48,6 +56,14 @@ const Home = () => {
         >
           Your browser does not support the video tag.
         </video>
+
+        {/* Mobile Play Button Overlay */}
+        {!isPlaying && (
+          <div className="mobile-play-overlay" onClick={handlePlayClick}>
+            ►
+          </div>
+        )}
+
         <div className="hero-content-overlay">
           <h1 className="hero-title">Discover cutting-edge technology.</h1>
           <p className="hero-subtitle">Experience innovation with every product.</p>
@@ -57,8 +73,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Children render after loading finishes */}
-      {/* FeatureDisplay is the one we want to add space above */}
       <FeatureDisplay />
       <DealsOfTheDay />
       <CategoryDisplay />
