@@ -38,24 +38,18 @@ const CategoryDisplay = () => {
         );
 
         const productsData = responses.map(response => shuffleArray(response.data).slice(0, 4));
-
         const productsObject = categories.reduce((acc, category, index) => {
           acc[category.name] = productsData[index];
           return acc;
         }, {});
-
         setProducts(productsObject);
       } catch (error) {
         console.error('Error fetching products:', error);
-        // Optionally, handle error state for the user
       }
     };
 
-    // Only fetch if accessToken is available
-    if (accessToken) {
-      fetchProducts();
-    }
-  }, [accessToken]); // Dependency array to re-run when accessToken changes
+    fetchProducts();
+  }, [accessToken]);
 
   const handleViewAll = (categoryId) => {
     navigate(`/search?category_id=${categoryId}`);
@@ -76,24 +70,21 @@ const CategoryDisplay = () => {
                 {products[category.name] && products[category.name].map(product => {
                   const mainImage = product.image_urls?.medium || '/media/default.jpg';
                   const secondaryImage = product.secondary_image_urls?.medium || mainImage;
-
                   return (
                     <div
                       key={product.product_id}
                       className="product-card"
                       onClick={() => handleProductClick(product.product_id)}
                       onMouseEnter={(e) => {
-                        const imgEl = e.currentTarget.querySelector('.product-image'); // Target the specific image
-                        if (imgEl) imgEl.src = secondaryImage;
+                        const imgEl = e.currentTarget.querySelector('img');
+                        imgEl.src = secondaryImage;
                       }}
                       onMouseLeave={(e) => {
-                        const imgEl = e.currentTarget.querySelector('.product-image'); // Target the specific image
-                        if (imgEl) imgEl.src = mainImage;
+                        const imgEl = e.currentTarget.querySelector('img');
+                        imgEl.src = mainImage;
                       }}
                     >
-                      <div className="product-image-wrapper"> {/* New wrapper for consistent image sizing */}
-                        <img src={mainImage} alt={product.name} className="product-image" />
-                      </div>
+                      <img src={mainImage} alt={product.name} className="product-image" />
                       <h4 className="product-title">{product.name}</h4>
                     </div>
                   );
