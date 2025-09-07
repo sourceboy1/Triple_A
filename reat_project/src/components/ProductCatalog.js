@@ -4,7 +4,7 @@ import { TokenContext } from './TokenContext';
 import api from '../Api';
 import './ProductCatalog.css';
 
-const FEATURED_PRODUCT_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const FEATURED_PRODUCT_IDS = [22,23,24];
 
 const ProductCatalog = () => {
   const [products, setProducts] = useState([]);
