@@ -1,5 +1,5 @@
+// components/Home.jsx
 import React, { useState, useEffect } from 'react';
-import homeVideo from '../pictures/home.mp4';
 import './Home.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,62 +14,55 @@ import PhonesTabletsDisplay from './PhonesTabletsDisplay';
 import Loading from './Loading';
 
 const Home = () => {
-    const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setLoading(false);
-        }, 2000);
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
-        return () => clearTimeout(timer);
-    }, []);
+  const handleShopNowClick = () => {
+    navigate('/product-catalog');
+  };
 
-    const handleShopNowClick = () => {
-        navigate('/product-catalog');
-    };
+  if (loading) return <Loading />;
 
-    if (loading) {
-        return <Loading />;
-    }
+  return (
+    <div className="home">
+      <div className="hero-video-container">
+        <video
+          className="hero-video"
+          loop
+          muted
+          playsInline
+          preload="auto"
+          autoPlay
+          poster="/videos/home-poster.jpg" // optional fallback image for mobile
+        >
+          <source src="/videos/home.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
 
-    return (
-        <div className="home">
-            <div className="hero-video-container">
-                <video
-                    className="hero-video"
-                    loop
-                    muted
-                    playsInline
-                    preload="auto"
-                    // Added autoplay and controls attributes
-                    autoplay // Added for explicit autoplay attempt
-                    controls // Added to ensure controls (and play button) are visible if autoplay fails
-                    // Removed onCanPlay logic as 'autoplay' and 'controls' handle the intent
-                >
-                    <source src={homeVideo} type="video/mp4" />
-                    Your browser does not support the video tag.
-                </video>
-                <div className="hero-content-overlay">
-                    <h1 className="hero-title">Discover cutting-edge technology.</h1>
-                    <p className="hero-subtitle">Experience innovation with every product.</p>
-                    <button className="shop-button" onClick={handleShopNowClick}>
-                        Shop Now
-                    </button>
-                </div>
-            </div>
-
-            {/* Children render after loading finishes */}
-            {/* FeatureDisplay is the one we want to add space above */}
-            <FeatureDisplay />
-            <DealsOfTheDay />
-            <CategoryDisplay />
-            <PowerBankDisplay />
-            <LaptopDisplay />
-            <PhonesTabletsDisplay />
-            <ViewedProducts />
+        <div className="hero-content-overlay">
+          <h1 className="hero-title">Discover cutting-edge technology.</h1>
+          <p className="hero-subtitle">Experience innovation with every product.</p>
+          <button className="shop-button" onClick={handleShopNowClick}>
+            Shop Now
+          </button>
         </div>
-    );
+      </div>
+
+      {/* Sections after hero video */}
+      <FeatureDisplay />
+      <DealsOfTheDay />
+      <CategoryDisplay />
+      <PowerBankDisplay />
+      <LaptopDisplay />
+      <PhonesTabletsDisplay />
+      <ViewedProducts />
+    </div>
+  );
 };
 
 export default Home;
