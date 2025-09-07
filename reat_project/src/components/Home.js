@@ -39,13 +39,19 @@ const Home = () => {
       <div className="hero-video-container">
         <video
           className="hero-video"
-          src={homeVideo}
-          autoPlay
           loop
-          muted // <--- This is crucial for mobile autoplay
-          playsInline // <--- This is also crucial for mobile autoplay
+          muted
+          playsInline
           preload="auto"
+          onCanPlay={(e) => {
+            const video = e.currentTarget;
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+              playPromise.catch((error) => console.log("Autoplay prevented:", error));
+            }
+          }}
         >
+          <source src={homeVideo} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
         <div className="hero-content-overlay">
