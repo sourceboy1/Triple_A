@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useRef } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react'; 
 import { useCart } from '../contexts/CartContext';
 import { TokenContext } from './TokenContext';
 import api from '../Api';
@@ -96,7 +96,9 @@ const ProductCatalog = () => {
           {products.map(product => {
             const productName = product.name;
             const productTagline = product.is_new ? 'NEW' : (product.is_featured ? 'FEATURED' : 'APPLE INTELLIGENCE');
-            const formattedPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(product.price);
+            
+            // Format price in Nigerian Naira
+            const formattedPrice = new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(product.price);
 
             const images = [
               product.image_urls?.large,
