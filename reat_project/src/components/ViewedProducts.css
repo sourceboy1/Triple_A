@@ -1,14 +1,12 @@
 .viewed-products-container {
     padding-top: 30px;
     text-align: center;
-    /* margin-bottom: 10px; */
 }
 
 .viewed-products-container h2 {
     color: green;
     margin-bottom: 20px;
     text-decoration: none;
-
 }
 
 .viewed-products-container p {
@@ -16,87 +14,82 @@
     text-decoration: none;
 }
 
-/* Viewed Products List */
-.viewed-products-list {
-    display: flex;
-    flex-wrap: wrap; /* Allow items to wrap onto the next line */
+/* Single Product Display */
+.single-product-display {
+    display: flex; /* Use flexbox to center the single product */
     justify-content: center;
-    gap: 20px;
+    align-items: center;
+    min-height: 300px; /* Give it some height for better visual */
+    margin-bottom: 20px;
 }
 
-/* Viewed Product Item Styling */
+/* Viewed Product Item Styling (for the single product) */
 .viewed-product-item {
-    width: calc(12.5% - 20px); /* Default for 8 products per row, will be overridden by media queries */
+    width: 250px; /* Fixed width for the single product */
     background-color: #f9f9f9;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
     transition: transform 0.3s ease;
+    text-align: center;
 }
 
 .viewed-product-item:hover {
-    transform: scale(1.18);
+    transform: scale(1.05); /* Slightly less aggressive hover for single item */
     text-decoration: none;
 }
 
 .viewed-product-image {
     width: 100%;
-    height: auto;
-    object-fit: cover;
+    max-height: 200px; /* Constrain image height */
+    object-fit: contain; /* Ensure the whole image is visible */
     border-radius: 5px;
+    margin-bottom: 10px;
 }
 
-/* Pagination Controls Styling */
+.viewed-product-item p {
+    font-weight: bold;
+    color: #333;
+    font-size: 1.1em;
+}
+
+
+/* Pagination Controls Styling (re-purposed for single product scrolling) */
 .pagination-controls {
     margin-top: 20px;
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 30px; /* Increased gap for better spacing */
 }
 
-.arrow-btn {
-    background-color: transparent;
+.scroll-btn {
+    background-color: green; /* Green background for scroll buttons */
+    color: white;
     border: none;
+    border-radius: 50%; /* Make them circular */
     cursor: pointer;
-    padding: 10px;
+    padding: 15px 20px; /* Adjust padding for size */
+    font-size: 24px; /* Larger font for arrows */
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px; /* Fixed width and height for circular shape */
+    height: 60px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.arrow-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.arrow-icon {
-    width: 40px;
-    height: 40px;
-    transition: transform 0.3s ease;
-}
-
-.arrow-btn:hover .arrow-icon {
+.scroll-btn:hover {
+    background-color: darkgreen; /* Darker green on hover */
     transform: scale(1.1);
 }
 
-/* Responsive Breakpoints */
-@media (max-width: 375px) {
-    .viewed-product-item {
-        width: calc(50% - 20px); /* 2 items per row */
-    }
+.scroll-btn:disabled {
+    background-color: #cccccc; /* Grey out when disabled */
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
 }
 
-@media (min-width: 376px) and (max-width: 425px) {
-    .viewed-product-item {
-        width: calc(25% - 20px); /* 4 items per row */
-    }
-}
-
-@media (min-width: 426px) and (max-width: 768px) {
-    .viewed-product-item {
-        width: calc(20% - 20px); /* 5 items per row */
-    }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-    .viewed-product-item {
-        width: calc(16.67% - 20px); /* 6 items per row */
-    }
-}
+/* Remove all previous media queries as we are only displaying one item */
