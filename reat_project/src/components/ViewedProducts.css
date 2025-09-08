@@ -1,6 +1,7 @@
 .viewed-products-container {
     padding-top: 30px;
     text-align: center;
+    /* margin-bottom: 10px; */
 }
 
 .viewed-products-container h2 {
@@ -14,82 +15,92 @@
     text-decoration: none;
 }
 
-/* Single Product Display */
-.single-product-display {
-    display: flex; /* Use flexbox to center the single product */
-    justify-content: center;
-    align-items: center;
-    min-height: 300px; /* Give it some height for better visual */
-    margin-bottom: 20px;
+/* Viewed Products List - Now horizontally scrollable */
+.viewed-products-list {
+    display: flex; /* Use flex to lay out items */
+    overflow-x: auto; /* Enable horizontal scrolling */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    scroll-snap-type: x mandatory; /* Optional: for snapping to items */
+    padding-bottom: 15px; /* Space for scrollbar */
+    gap: 20px; /* Space between items */
+    justify-content: flex-start; /* Align items to the start */
 }
 
-/* Viewed Product Item Styling (for the single product) */
+/* Hide scrollbar for a cleaner look (optional, but common for carousels) */
+.viewed-products-list::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Chrome, Safari, Opera */
+}
+.viewed-products-list {
+    -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+
+
+/* Viewed Product Item Styling */
 .viewed-product-item {
-    width: 250px; /* Fixed width for the single product */
+    flex: 0 0 auto; /* Prevent items from growing/shrinking, allow scroll */
+    width: calc(16.67% - 20px); /* Default for 6 items per row (desktop) */
     background-color: #f9f9f9;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    text-align: center;
+    scroll-snap-align: start; /* Optional: for snapping to items */
+    text-align: center; /* Center text below image */
 }
 
 .viewed-product-item:hover {
-    transform: scale(1.05); /* Slightly less aggressive hover for single item */
+    transform: scale(1.05); /* Slightly reduced hover effect */
     text-decoration: none;
 }
 
 .viewed-product-image {
     width: 100%;
-    max-height: 200px; /* Constrain image height */
+    height: 150px; /* Fixed height for consistency */
     object-fit: contain; /* Ensure the whole image is visible */
     border-radius: 5px;
     margin-bottom: 10px;
 }
 
 .viewed-product-item p {
-    font-weight: bold;
-    color: #333;
-    font-size: 1.1em;
+    color: black;
+    font-size: 0.9em;
+    white-space: normal; /* Allow text to wrap within the item */
+    margin: 0;
 }
 
+/* Removed pagination-controls, arrow-btn, arrow-icon styles */
 
-/* Pagination Controls Styling (re-purposed for single product scrolling) */
-.pagination-controls {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 30px; /* Increased gap for better spacing */
+
+/* Responsive Breakpoints - Adjusted for scrolling */
+@media (max-width: 375px) {
+    .viewed-product-item {
+        width: calc(50% - 20px); /* 2 items per row visible, scroll for more */
+    }
 }
 
-.scroll-btn {
-    background-color: green; /* Green background for scroll buttons */
-    color: white;
-    border: none;
-    border-radius: 50%; /* Make them circular */
-    cursor: pointer;
-    padding: 15px 20px; /* Adjust padding for size */
-    font-size: 24px; /* Larger font for arrows */
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 60px; /* Fixed width and height for circular shape */
-    height: 60px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease, transform 0.2s ease;
+@media (min-width: 376px) and (max-width: 768px) {
+    .viewed-product-item {
+        width: calc(33.33% - 20px); /* 3 items per row visible, scroll for more */
+    }
 }
 
-.scroll-btn:hover {
-    background-color: darkgreen; /* Darker green on hover */
-    transform: scale(1.1);
+/* For larger tablets and small desktops, let's aim for 4 items */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .viewed-product-item {
+        width: calc(25% - 20px); /* 4 items per row visible, scroll for more */
+    }
 }
 
-.scroll-btn:disabled {
-    background-color: #cccccc; /* Grey out when disabled */
-    cursor: not-allowed;
-    box-shadow: none;
-    transform: none;
+/* For larger desktops, keep it at 5 or 6 */
+@media (min-width: 1025px) and (max-width: 1200px) {
+    .viewed-product-item {
+        width: calc(20% - 20px); /* 5 items per row visible */
+    }
 }
 
-/* Remove all previous media queries as we are only displaying one item */
+@media (min-width: 1201px) {
+    .viewed-product-item {
+        width: calc(16.67% - 20px); /* 6 items per row visible */
+    }
+}
