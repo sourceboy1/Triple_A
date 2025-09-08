@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useContext, useRef } from 'react'; 
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import { useCart } from '../contexts/CartContext';
 import { TokenContext } from './TokenContext';
 import api from '../Api';
 import './ProductCatalog.css';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
-const FEATURED_PRODUCT_IDS = [22,23,24];
+const FEATURED_PRODUCT_IDS = [22, 23, 24];
 
 const ProductCatalog = () => {
   const [products, setProducts] = useState([]);
@@ -12,8 +13,8 @@ const ProductCatalog = () => {
   const [error, setError] = useState(null);
   const { addItemToCart } = useCart();
   const accessToken = useContext(TokenContext);
+  const navigate = useNavigate(); // Initialize useNavigate
 
-  // hoverIntervals and hoverImageIndexes are completely removed as they are no longer needed
   const sliderRef = useRef(null);
 
   useEffect(() => {
@@ -44,7 +45,6 @@ const ProductCatalog = () => {
 
     return () => {
       isMounted = false;
-      // The line referencing hoverIntervals has been removed from the cleanup
     };
   }, [accessToken]);
 
@@ -53,7 +53,7 @@ const ProductCatalog = () => {
       const cartProduct = {
         product_id: product.product_id,
         name: product.name,
-        image_url: product.image_urls?.large || '/placeholder.jpg', // Ensure this points to the main image
+        image_url: product.image_urls?.large || '/placeholder.jpg',
         price: product.price,
         stock: product.stock,
         quantity: 1
@@ -65,11 +65,8 @@ const ProductCatalog = () => {
   };
 
   const handleProductClick = (productId) => {
-    window.location.href = `/product-details/${productId}`;
+    navigate(`/product-details/${productId}`); // Use navigate instead of window.location.href
   };
-
-  // handleMouseEnter and handleMouseLeave are no longer needed or used
-  // They are completely removed.
 
   if (loading) return <div className="product-catalog-loading">Loading products...</div>;
   if (error) return <div className="product-catalog-error">Error: {error.message}</div>;
@@ -83,26 +80,23 @@ const ProductCatalog = () => {
           {products.map(product => {
             const productName = product.name;
             const productTagline = product.is_new ? 'NEW' : (product.is_featured ? 'FEATURED' : 'APPLE INTELLIGENCE');
-            
-            // Format price in Nigerian Naira
+
             const formattedPrice = new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(product.price);
 
-            // Get only the main image for display in the catalog card
             const mainImage = product.image_urls?.large || product.secondary_image_urls?.large || '/placeholder.jpg';
 
             return (
               <div
                 key={product.product_id}
                 className="product-card"
-                onClick={() => handleProductClick(product.product_id)}
-                // Removed onMouseEnter and onMouseLeave props
+                onClick={() => handleProductClick(product.product_id)} // Correctly calls handleProductClick
               >
                 {productTagline && <p className="product-tagline">{productTagline}</p>}
                 <h2 className="product-name">{productName}</h2>
                 <p className="product-card-price">{formattedPrice}</p>
                 <div className="product-image-container">
                   <img
-                    src={mainImage} // Always display the main image
+                    src={mainImage}
                     alt={productName}
                     className="product-image"
                     onError={(e) => { e.target.src = '/placeholder.jpg'; }}
