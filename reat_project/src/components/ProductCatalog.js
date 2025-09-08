@@ -13,8 +13,7 @@ const ProductCatalog = () => {
   const { addItemToCart } = useCart();
   const accessToken = useContext(TokenContext);
 
-  const hoverIntervals = useRef({});
-  const [hoverImageIndexes, setHoverImageIndexes] = useState({});
+  // Removed hoverIntervals and hoverImageIndexes as they are no longer needed for the main image display
   const sliderRef = useRef(null);
 
   useEffect(() => {
@@ -45,7 +44,8 @@ const ProductCatalog = () => {
 
     return () => {
       isMounted = false;
-      Object.values(hoverIntervals.current).forEach(clearInterval);
+      // Clear any potential intervals if they were somehow set
+      Object.values(hoverIntervals.current || {}).forEach(clearInterval);
     };
   }, [accessToken]);
 
@@ -54,7 +54,7 @@ const ProductCatalog = () => {
       const cartProduct = {
         product_id: product.product_id,
         name: product.name,
-        image_url: product.image_urls?.large || '/placeholder.jpg',
+        image_url: product.image_urls?.large || '/placeholder.jpg', // Ensure this points to the main image
         price: product.price,
         stock: product.stock,
         quantity: 1
@@ -69,19 +69,15 @@ const ProductCatalog = () => {
     window.location.href = `/product-details/${productId}`;
   };
 
+  // These functions are no longer needed to cycle images, as only the main image is displayed.
+  // They are kept as placeholders in case you re-introduce hover effects in the future,
+  // but their logic for image cycling has been removed.
   const handleMouseEnter = (productId, images) => {
-    if (images.length < 2) return;
-    let currentImgIndex = 0;
-    hoverIntervals.current[productId] = setInterval(() => {
-      currentImgIndex = (currentImgIndex + 1) % images.length;
-      setHoverImageIndexes(prev => ({ ...prev, [productId]: currentImgIndex }));
-    }, 1000);
+    // No image cycling on hover
   };
 
   const handleMouseLeave = (productId) => {
-    clearInterval(hoverIntervals.current[productId]);
-    hoverIntervals.current[productId] = null;
-    setHoverImageIndexes(prev => ({ ...prev, [productId]: 0 }));
+    // No image cycling on hover
   };
 
   if (loading) return <div className="product-catalog-loading">Loading products...</div>;
@@ -100,29 +96,22 @@ const ProductCatalog = () => {
             // Format price in Nigerian Naira
             const formattedPrice = new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(product.price);
 
-            const images = [
-              product.image_urls?.large,
-              product.secondary_image_urls?.large,
-              product.tertiary_image_urls?.large,
-              product.quaternary_image_urls?.large
-            ].filter(Boolean);
-
-            const currentImg = images[hoverImageIndexes[product.product_id] || 0] || '/placeholder.jpg';
+            // Get only the main image for display in the catalog card
+            const mainImage = product.image_urls?.large || product.secondary_image_urls?.large || '/placeholder.jpg';
 
             return (
               <div
                 key={product.product_id}
                 className="product-card"
                 onClick={() => handleProductClick(product.product_id)}
-                onMouseEnter={() => handleMouseEnter(product.product_id, images)}
-                onMouseLeave={() => handleMouseLeave(product.product_id)}
+                // Removed onMouseEnter and onMouseLeave props to prevent image cycling
               >
                 {productTagline && <p className="product-tagline">{productTagline}</p>}
                 <h2 className="product-name">{productName}</h2>
                 <p className="product-card-price">{formattedPrice}</p>
                 <div className="product-image-container">
                   <img
-                    src={currentImg}
+                    src={mainImage} // Always display the main image
                     alt={productName}
                     className="product-image"
                     onError={(e) => { e.target.src = '/placeholder.jpg'; }}
