@@ -13,7 +13,7 @@ const ProductCatalog = () => {
   const { addItemToCart } = useCart();
   const accessToken = useContext(TokenContext);
 
-  // Removed hoverIntervals and hoverImageIndexes as they are no longer needed for the main image display
+  // hoverIntervals and hoverImageIndexes are completely removed as they are no longer needed
   const sliderRef = useRef(null);
 
   useEffect(() => {
@@ -44,8 +44,7 @@ const ProductCatalog = () => {
 
     return () => {
       isMounted = false;
-      // Clear any potential intervals if they were somehow set
-      Object.values(hoverIntervals.current || {}).forEach(clearInterval);
+      // The line referencing hoverIntervals has been removed from the cleanup
     };
   }, [accessToken]);
 
@@ -69,16 +68,8 @@ const ProductCatalog = () => {
     window.location.href = `/product-details/${productId}`;
   };
 
-  // These functions are no longer needed to cycle images, as only the main image is displayed.
-  // They are kept as placeholders in case you re-introduce hover effects in the future,
-  // but their logic for image cycling has been removed.
-  const handleMouseEnter = (productId, images) => {
-    // No image cycling on hover
-  };
-
-  const handleMouseLeave = (productId) => {
-    // No image cycling on hover
-  };
+  // handleMouseEnter and handleMouseLeave are no longer needed or used
+  // They are completely removed.
 
   if (loading) return <div className="product-catalog-loading">Loading products...</div>;
   if (error) return <div className="product-catalog-error">Error: {error.message}</div>;
@@ -104,7 +95,7 @@ const ProductCatalog = () => {
                 key={product.product_id}
                 className="product-card"
                 onClick={() => handleProductClick(product.product_id)}
-                // Removed onMouseEnter and onMouseLeave props to prevent image cycling
+                // Removed onMouseEnter and onMouseLeave props
               >
                 {productTagline && <p className="product-tagline">{productTagline}</p>}
                 <h2 className="product-name">{productName}</h2>
