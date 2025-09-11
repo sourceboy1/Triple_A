@@ -6,14 +6,13 @@ import fastShipIcon from '../icons/fast-ship-icon.jpg';
 import qualityAssuredIcon from '../icons/quality-assured-icon.jpg';
 import customerServiceIcon from '../icons/customer-service-icon.jpg';
 import debitcardImage from '../pictures/debitcard.jpg';
-import PhoneInputComponent from '../PhoneInput'; // Import PhoneInputComponent
+import PhoneInputComponent from '../PhoneInput';
 import { useUser } from '../contexts/UserContext';
 import { useCart } from '../contexts/CartContext';
 import countryList from 'react-select-country-list';
 import api from '../Api';
 import 'react-phone-input-2/lib/style.css';
-import { useLoading } from '../contexts/LoadingContext'; // Import useLoading
-
+import { useLoading } from '../contexts/LoadingContext';
 
 const Checkout = () => {
     const [email, setEmail] = useState('');
@@ -31,15 +30,15 @@ const Checkout = () => {
     const [orderNote, setOrderNote] = useState('');
     const [paymentMethod, setPaymentMethod] = useState('bank_transfer');
     const [termsAgreed, setTermsAgreed] = useState(false);
-    const { cart, clearCart } = useCart();
+    const { cart, clearCart, refreshCartItems } = useCart(); // Added refreshCartItems
     const [showTerms, setShowTerms] = useState(false);
     const { isLoggedIn, firstName: userFirstName, lastName: userLastName, email: userEmail } = useUser();
     const token = localStorage.getItem('access_token');
     const navigate = useNavigate();
     const options = countryList().getData();
-    const { loading, setLoading } = useLoading(); // Use the loading hook
+    const { loading, setLoading } = useLoading();
+    const [loadingCheckoutDetails, setLoadingCheckoutDetails] = useState(true); // New loading state for checkout data
 
-    // Refs for scrolling (not directly used for the login scroll, but good to keep)
     const emailRef = useRef(null);
     const firstNameRef = useRef(null);
     const lastNameRef = useRef(null);
@@ -51,21 +50,27 @@ const Checkout = () => {
 
      useEffect(() => {
         window.scrollTo(0, 0);
-         if (isLoggedIn) {
-             setEmail(userEmail || '');
-             setFirstName(userFirstName || '');
-             setLastName(userLastName || '');
-         }
-     }, [isLoggedIn, userEmail, userFirstName, userLastName]);
 
+        const initializeCheckout = async () => {
+            setLoadingCheckoutDetails(true);
+            await refreshCartItems(); // Refresh cart items on checkout load
+            if (isLoggedIn) {
+                setEmail(userEmail || '');
+                setFirstName(userFirstName || '');
+                setLastName(userLastName || '');
+            }
+            setLoadingCheckoutDetails(false);
+        };
 
+        initializeCheckout();
+
+     }, [isLoggedIn, userEmail, userFirstName, userLastName]); // Re-run if user login state changes
 
     const paymentMethodIds = {
         bank_transfer: 1,
         debit_credit_cards: 2,
     };
 
-    // Helper function to check if any cart item is from abroad
     const hasAbroadProduct = cart.some(item => item.is_abroad_order);
     const ABROAD_SHIPPING_SURCHARGE = 30000;
 
@@ -73,42 +78,52 @@ const Checkout = () => {
    const handlePlaceOrder = async () => {
     setEmailError('');
 
+    if (loading || loadingCheckoutDetails) return; // Prevent multiple submissions or submission while loading
+
     // Check if user is logged in
     if (!isLoggedIn) {
-        window.scrollTo(0, 0); // Scroll to the top
+        window.scrollTo(0, 0);
         setEmailError('Please log in or register to place your order. You can do so by clicking the "Click here to login" link above.');
         return;
     }
 
     if (!termsAgreed) {
-        window.scrollTo(0, 0); // Scroll to the top if terms not agreed
+        window.scrollTo(0, 0);
         setEmailError('You must agree to the terms and conditions before placing the order.');
         return;
     }
 
     if (!email || !firstName || !lastName || !addressLine1 || !city || !state || !postalCode || !country || !phone) {
-        window.scrollTo(0, 0); // Scroll to the top if fields are missing
+        window.scrollTo(0, 0);
         setEmailError('Please fill in all required fields.');
         return;
     }
 
-    setLoading(true); // Start loading
+    // Check for unavailable items in cart
+    const unavailableItems = cart.filter(item => item.stock === 0 || item.errorFetching);
+    if (unavailableItems.length > 0) {
+        window.scrollTo(0, 0);
+        setEmailError(`The following items are unavailable and cannot be ordered: ${unavailableItems.map(item => item.name).join(', ')}. Please remove them from your cart.`);
+        return;
+    }
+
+
+    setLoading(true);
 
     const fullAddress = `${addressLine1}${addressLine2 ? ', ' + addressLine2 : ''}`;
     const userId = parseInt(localStorage.getItem('userId'), 10);
     if (!token || isNaN(userId)) {
-        window.scrollTo(0, 0); // Scroll to the top on auth error
+        window.scrollTo(0, 0);
         setEmailError('Authentication error. Please log in again.');
-        setLoading(false); // Stop loading on auth error
+        setLoading(false);
         return;
     }
 
     const paymentMethodId = paymentMethodIds[paymentMethod] || 1;
-    const shippingCost = getShippingCost(); // Use the updated getShippingCost
+    const shippingCost = getShippingCost();
     const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const total = subtotal + shippingCost;
 
-    // Send cart items including name and image_url
     const orderData = {
         user_id: userId,
         email,
@@ -126,13 +141,13 @@ const Checkout = () => {
         shipping_cost: shippingCost,
         total_amount: total,
         cart_items: cart.map(item => ({
-            product: item.product_id,    // must be valid product ID
-            name: item.name,             // optional, write-only
-            image_url: item.image_url,   // optional, write-only
+            product: item.product_id,
+            name: item.name,
+            image_url: item.image_url,
             quantity: item.quantity,
-            price: item.price,           // optional, you can keep for reference
-            is_abroad_order: item.is_abroad_order, // Pass abroad status
-            abroad_delivery_days: item.abroad_delivery_days // Pass abroad delivery days
+            price: item.price,
+            is_abroad_order: item.is_abroad_order,
+            abroad_delivery_days: item.abroad_delivery_days
         }))
     };
 
@@ -152,19 +167,17 @@ const Checkout = () => {
                 subtotal,
                 shippingCost,
                 total,
-                products: cart // Pass the cart to retrieve item details on the payment page
+                products: cart
             }
         });
     } catch (error) {
         console.error('Error placing the order:', error.response || error);
-        window.scrollTo(0, 0); // Scroll to the top on error
+        window.scrollTo(0, 0);
         setEmailError('There was an error placing your order. Please try again.');
     } finally {
-        setLoading(false); // Stop loading regardless of success or failure
+        setLoading(false);
     }
 };
-
-
 
     const formatPrice = (price) => {
         return new Intl.NumberFormat().format(price);
@@ -186,7 +199,6 @@ const Checkout = () => {
             default: baseCost = 0;
         }
 
-        // Add abroad surcharge if applicable
         if (hasAbroadProduct) {
             baseCost += ABROAD_SHIPPING_SURCHARGE;
         }
@@ -201,7 +213,6 @@ const Checkout = () => {
         setShowTerms(!showTerms);
     };
 
-    // Function to generate the shipping label with abroad surcharge info
     const getShippingLabel = (method, basePrice) => {
         let label = '';
         const formattedSurcharge = `₦${formatPrice(ABROAD_SHIPPING_SURCHARGE)}`;
@@ -218,12 +229,27 @@ const Checkout = () => {
             default: label = '';
         }
 
-        // Only add abroad info if there's an abroad product and it's not pickup
         if (hasAbroadProduct && method !== 'pickup') {
              return `${formattedSurcharge} for goods coming from abroad + ${label}`;
         }
         return label;
     };
+
+    if (loadingCheckoutDetails) {
+        return <div className="checkout-container">Loading checkout details...</div>;
+    }
+
+    if (cart.length === 0 && !loadingCheckoutDetails) {
+        return (
+            <div className="checkout-container">
+                <div className="empty-cart-checkout">
+                    <h2>Your cart is empty.</h2>
+                    <p>Please add items to your cart before proceeding to checkout.</p>
+                    <button onClick={() => navigate('/')} className="return-button">Return to Shop</button>
+                </div>
+            </div>
+        );
+    }
 
 
     return (
@@ -236,28 +262,28 @@ const Checkout = () => {
                  <div>
                     <h2>Contact Information</h2>
                     <input
-                        ref={emailRef}  // Attach ref
+                        ref={emailRef}
                         type="email"
                         placeholder="Email *"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        disabled={loading} // Disable input while loading
+                        disabled={loading || loadingCheckoutDetails}
                     />
                     {emailError && <p className="error-message">{emailError}</p>}
                 </div>
 
                 <div>
                     <h2>Shipping Address</h2>
-                    <input ref={firstNameRef} type="text" placeholder="First name *" value={firstName} onChange={(e) => setFirstName(e.target.value)} disabled={loading} />
-                    <input ref={lastNameRef} type="text" placeholder="Last name *" value={lastName} onChange={(e) => setLastName(e.target.value)} disabled={loading} />
-                    <input ref={addressRef} type="text" placeholder="Address *" value={addressLine1} onChange={(e) => setAddressLine1(e.target.value)} disabled={loading} />
-                    <input ref={cityRef} type="text" placeholder="City *" value={city} onChange={(e) => setCity(e.target.value)} disabled={loading} />
-                    <input ref={stateRef} type="text" placeholder="State *" value={state} onChange={(e) => setState(e.target.value)} disabled={loading} />
-                    <input ref={postalCodeRef} type="text" placeholder="Postal code *" value={postalCode} onChange={(e) => setPostalCode(e.target.value)} disabled={loading} />
+                    <input ref={firstNameRef} type="text" placeholder="First name *" value={firstName} onChange={(e) => setFirstName(e.target.value)} disabled={loading || loadingCheckoutDetails} />
+                    <input ref={lastNameRef} type="text" placeholder="Last name *" value={lastName} onChange={(e) => setLastName(e.target.value)} disabled={loading || loadingCheckoutDetails} />
+                    <input ref={addressRef} type="text" placeholder="Address *" value={addressLine1} onChange={(e) => setAddressLine1(e.target.value)} disabled={loading || loadingCheckoutDetails} />
+                    <input ref={cityRef} type="text" placeholder="City *" value={city} onChange={(e) => setCity(e.target.value)} disabled={loading || loadingCheckoutDetails} />
+                    <input ref={stateRef} type="text" placeholder="State *" value={state} onChange={(e) => setState(e.target.value)} disabled={loading || loadingCheckoutDetails} />
+                    <input ref={postalCodeRef} type="text" placeholder="Postal code *" value={postalCode} onChange={(e) => setPostalCode(e.target.value)} disabled={loading || loadingCheckoutDetails} />
                     <select
                         value={country}
                         onChange={(e) => setCountry(e.target.value)}
-                        disabled={loading}
+                        disabled={loading || loadingCheckoutDetails}
                     >
                         {options.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -265,7 +291,7 @@ const Checkout = () => {
                             </option>
                         ))}
                     </select>
-                    <PhoneInputComponent value={phone} onChange={setPhone} disabled={loading} />
+                    <PhoneInputComponent value={phone} onChange={setPhone} disabled={loading || loadingCheckoutDetails} />
                 </div>
 
                 <div>
@@ -283,7 +309,7 @@ const Checkout = () => {
                                 value="pickup"
                                 checked={shippingMethod === 'pickup'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
-                                disabled={loading}
+                                disabled={loading || loadingCheckoutDetails}
                             />
                             {getShippingLabel('pickup', 0)}
                         </label>
@@ -294,7 +320,7 @@ const Checkout = () => {
                                 value="express"
                                 checked={shippingMethod === 'express'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
-                                disabled={loading}
+                                disabled={loading || loadingCheckoutDetails}
                             />
                             {getShippingLabel('express', 15000)}
                         </label>
@@ -305,7 +331,7 @@ const Checkout = () => {
                                 value="area1"
                                 checked={shippingMethod === 'area1'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
-                                disabled={loading}
+                                disabled={loading || loadingCheckoutDetails}
                             />
                             {getShippingLabel('area1', 10000)}
                         </label>
@@ -316,7 +342,7 @@ const Checkout = () => {
                                 value="satellite"
                                 checked={shippingMethod === 'satellite'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
-                                disabled={loading}
+                                disabled={loading || loadingCheckoutDetails}
                             />
                             {getShippingLabel('satellite', 12000)}
                         </label>
@@ -327,7 +353,7 @@ const Checkout = () => {
                                 value="area2"
                                 checked={shippingMethod === 'area2'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
-                                disabled={loading}
+                                disabled={loading || loadingCheckoutDetails}
                             />
                             {getShippingLabel('area2', 10000)}
                         </label>
@@ -338,7 +364,7 @@ const Checkout = () => {
                                 value="abule_egba"
                                 checked={shippingMethod === 'abule_egba'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
-                                disabled={loading}
+                                disabled={loading || loadingCheckoutDetails}
                             />
                             {getShippingLabel('abule_egba', 8000)}
                         </label>
@@ -349,7 +375,7 @@ const Checkout = () => {
                                 value="ikeja"
                                 checked={shippingMethod === 'ikeja'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
-                                disabled={loading}
+                                disabled={loading || loadingCheckoutDetails}
                             />
                             {getShippingLabel('ikeja', 5000)}
                         </label>
@@ -360,7 +386,7 @@ const Checkout = () => {
                                 value="lagos_mainland"
                                 checked={shippingMethod === 'lagos_mainland'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
-                                disabled={loading}
+                                disabled={loading || loadingCheckoutDetails}
                             />
                             {getShippingLabel('lagos_mainland', 12000)}
                         </label>
@@ -369,91 +395,91 @@ const Checkout = () => {
 
                 <div>
                     <h2>Order Note (Optional)</h2>
-                    <textarea placeholder="Note about your order" value={orderNote} onChange={(e) => setOrderNote(e.target.value)} disabled={loading} />
+                    <textarea placeholder="Note about your order" value={orderNote} onChange={(e) => setOrderNote(e.target.value)} disabled={loading || loadingCheckoutDetails} />
                 </div>
 
 
                 <div>
-    <h2>Payment Method</h2>
-    <div className="payment-method-container">
-        <div className="payment-method">
-            <label>
-                <input
-                    type="radio"
-                    name="paymentMethod"
-                    value="bank_transfer"
-                    checked={paymentMethod === 'bank_transfer'}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                    disabled={loading}
-                />
-                Bank Transfer
-            </label>
-            {paymentMethod === 'bank_transfer' && (
-                <p className="payment-instructions">
-                    Make your payment directly into our bank account. Please use your Order ID as the payment reference.
-                    Your order will not be shipped until the funds have cleared in our account.
-                    <br />
-                    Our account details for payment will be displayed after placing an order.
-                </p>
-            )}
-        </div>
-        <div className="payment-method">
-            <label>
-                <input
-                    type="radio"
-                    name="paymentMethod"
-                    value="debit_credit_cards"
-                    checked={paymentMethod === 'debit_credit_cards'}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                    disabled={loading}
-                />
-                Debit/Credit Cards
-                <img src={debitcardImage} alt="Debit/Credit Card" className="payment-icon" />
-            </label>
-        </div>
-    </div>
-
-    <p className="privacy-policy-text">
-        Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <Link to="/privacy-policy">privacy policy</Link>.
-    </p>
-</div>
-
-
-
-<div className="terms-and-conditions">
-                    <input
-                        type="checkbox"
-                        id="terms"
-                        checked={termsAgreed}
-                        onChange={() => setTermsAgreed(!termsAgreed)}
-                        disabled={loading}
-                    />
-                    <label htmlFor="terms">
-                      I have read and agree to the website  <a href="#" onClick={toggleTerms}>terms and conditions</a>
-                    </label>
-                </div>
-
-                {showTerms && (
-                    <div className="terms-content">
-                        <h3>Terms and Conditions</h3>
-                        <div className="terms-text">
-                            <p>
-                                <strong>Our Terms & Conditions</strong><br /><br />
-                                When visitors leave comments on the site we collect the data shown in the comments form, and also the visitor’s IP address and browser user agent string to help spam detection.<br /><br />
-                                An anonymized string created from your email address (also called a hash) may be provided to the Gravatar service to see if you are using it. The Gravatar service privacy policy is available here: <a href="https://automattic.com/privacy/" target="_blank" rel="noopener noreferrer">https://automattic.com/privacy/</a>. After approval of your comment, your profile picture is visible to the public in the context of your comment.<br /><br />
-                                <strong>Where does it come from?</strong><br /><br />
-                                Articles on this site may include embedded content (e.g. videos, images, articles, etc.). Embedded content from other websites behaves in the exact same way as if the visitor has visited the other website. These websites may collect data about you, use cookies, embed additional third-party tracking, and monitor your interaction with that embedded content, including tracking your interaction with the embedded content if you have an account and are logged in to that website.<br /><br />
-                                If you leave a comment, the comment and its metadata are retained indefinitely. This is so we can recognize and approve any follow-up comments automatically instead of holding them in a moderation queue. For users that register on our website (if any), we also store the personal information they provide in their user profile. All users can see, edit, or delete their personal information at any time (except they cannot change their username). Website administrators can also see and edit that information.<br /><br />
-                                <strong>Why do we use it?</strong><br /><br />
-                                If you have an account on this site, or have left comments, you can request to receive an exported file of the personal data we hold about you, including any data you have provided to us. You can also request that we erase any personal data we hold about you. This does not include any data we are obliged to keep for administrative, legal, or security purposes.<br /><br />
-                                Visitor comments may be checked through an automated spam detection service.
-                            </p>
+                    <h2>Payment Method</h2>
+                    <div className="payment-method-container">
+                        <div className="payment-method">
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="paymentMethod"
+                                    value="bank_transfer"
+                                    checked={paymentMethod === 'bank_transfer'}
+                                    onChange={(e) => setPaymentMethod(e.target.value)}
+                                    disabled={loading || loadingCheckoutDetails}
+                                />
+                                Bank Transfer
+                            </label>
+                            {paymentMethod === 'bank_transfer' && (
+                                <p className="payment-instructions">
+                                    Make your payment directly into our bank account. Please use your Order ID as the payment reference.
+                                    Your order will not be shipped until the funds have cleared in our account.
+                                    <br />
+                                    Our account details for payment will be displayed after placing an order.
+                                </p>
+                            )}
+                        </div>
+                        <div className="payment-method">
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="paymentMethod"
+                                    value="debit_credit_cards"
+                                    checked={paymentMethod === 'debit_credit_cards'}
+                                    onChange={(e) => setPaymentMethod(e.target.value)}
+                                    disabled={loading || loadingCheckoutDetails}
+                                />
+                                Debit/Credit Cards
+                                <img src={debitcardImage} alt="Debit/Credit Card" className="payment-icon" />
+                            </label>
                         </div>
                     </div>
-                )}
+
+                    <p className="privacy-policy-text">
+                        Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <Link to="/privacy-policy">privacy policy</Link>.
+                    </p>
+                </div>
 
 
-                <button onClick={handlePlaceOrder} disabled={loading}>
+
+                <div className="terms-and-conditions">
+                                    <input
+                                        type="checkbox"
+                                        id="terms"
+                                        checked={termsAgreed}
+                                        onChange={() => setTermsAgreed(!termsAgreed)}
+                                        disabled={loading || loadingCheckoutDetails}
+                                    />
+                                    <label htmlFor="terms">
+                                      I have read and agree to the website  <a href="#" onClick={toggleTerms}>terms and conditions</a>
+                                    </label>
+                                </div>
+
+                                {showTerms && (
+                                    <div className="terms-content">
+                                        <h3>Terms and Conditions</h3>
+                                        <div className="terms-text">
+                                            <p>
+                                                <strong>Our Terms & Conditions</strong><br /><br />
+                                                When visitors leave comments on the site we collect the data shown in the comments form, and also the visitor’s IP address and browser user agent string to help spam detection.<br /><br />
+                                                An anonymized string created from your email address (also called a hash) may be provided to the Gravatar service to see if you are using it. The Gravatar service privacy policy is available here: <a href="https://automattic.com/privacy/" target="_blank" rel="noopener noreferrer">https://automattic.com/privacy/</a>. After approval of your comment, your profile picture is visible to the public in the context of your comment.<br /><br />
+                                                <strong>Where does it come from?</strong><br /><br />
+                                                Articles on this site may include embedded content (e.g. videos, images, articles, etc.). Embedded content from other websites behaves in the exact same way as if the visitor has visited the other website. These websites may collect data about you, use cookies, embed additional third-party tracking, and monitor your interaction with that embedded content, including tracking your interaction with the embedded content if you have an account and be logged in to that website.<br /><br />
+                                                If you leave a comment, the comment and its metadata are retained indefinitely. This is so we can recognize and approve any follow-up comments automatically instead of holding them in a moderation queue. For users that register on our website (if any), we also store the personal information they provide in their user profile. All users can see, edit, or delete their personal information at any time (except they cannot change their username). Website administrators can also see and edit that information.<br /><br />
+                                                <strong>Why do we use it?</strong><br /><br />
+                                                If you have an account on this site, or have left comments, you can request to receive an exported file of the personal data we hold about you, including any data you have provided to us. You can also request that we erase any personal data we hold about you. This does not include any data we are obliged to keep for administrative, legal, or security purposes.<br /><br />
+                                                Visitor comments may be checked through an automated spam detection service.
+                                            </p>
+                                        </div>
+                                    </div>
+                                )}
+
+
+                <button onClick={handlePlaceOrder} disabled={loading || loadingCheckoutDetails}>
                     {loading ? 'Placing Order...' : 'Place Order'}
                 </button>
             </div>
@@ -462,12 +488,14 @@ const Checkout = () => {
                 <h2>Order Summary</h2>
                 <ul className="order-summary-items">
                     {cart.map((item) => {
-                        const deliveryDisplay = item.abroad_delivery_days === 14 ? '7-14' : (item.abroad_delivery_days || 7);
+                        // Consistent delivery display logic
+                        const deliveryDisplay = item.abroad_delivery_days === 14 ? '7-14' : (item.abroad_delivery_days ? `${item.abroad_delivery_days}` : '7-14');
+                        const isItemUnavailable = item.stock === 0 || item.errorFetching;
                         return (
-                            <li key={item.product_id} className="order-summary-item">
+                            <li key={item.product_id} className={`order-summary-item ${isItemUnavailable ? 'unavailable-item' : ''}`}>
                                 <img src={item.image_url} alt={item.name} className="order-summary-item-image" />
                                 <div className="order-summary-item-details">
-                                    <h3>{item.name}</h3>
+                                    <h3>{item.name} {isItemUnavailable && <span style={{color: 'red', fontSize: '0.8em'}}>(Unavailable)</span>}</h3>
                                     {item.is_abroad_order && (
                                         <p className="abroad-order-summary-message">
                                             <span role="img" aria-label="airplane">✈️</span> Shipped from Abroad (Est. {deliveryDisplay} days)

@@ -102,7 +102,8 @@ const ProductDetails = () => {
 
   const handleBuyNowOnWhatsApp = () => {
     if (product) {
-      const deliveryDays = product.abroad_delivery_days === 14 ? '7-14' : product.abroad_delivery_days || 7-14;
+      // Consistent delivery display logic for WhatsApp
+      const deliveryDays = product.abroad_delivery_days === 14 ? '7-14' : (product.abroad_delivery_days ? `${product.abroad_delivery_days}` : '7-14');
       let message = `Hello, I'm interested in buying ${product.name}.`;
       if (product.is_abroad_order) {
         message += ` This is an abroad order item with an estimated delivery of ${deliveryDays} business days.`;
@@ -112,6 +113,7 @@ const ProductDetails = () => {
       window.open(whatsappUrl, '_blank');
     }
   };
+
 
   if (!product) return <div className="loading-product-details">Loading product details...</div>;
 

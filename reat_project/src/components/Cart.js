@@ -6,17 +6,26 @@ import PriceAlertModal from './PriceAlertModal';
 import './Cart.css';
 
 const Cart = () => {
-  const { cart, removeItemFromCart, increaseQuantity, decreaseQuantity } = useCart();
+  const { cart, removeItemFromCart, increaseQuantity, decreaseQuantity, refreshCartItems } = useCart();
   const navigate = useNavigate();
   const [showPriceAlert, setShowPriceAlert] = useState(false);
+  const [loadingCart, setLoadingCart] = useState(true); // New loading state
 
   useEffect(() => {
-    // Only show price alert if the cart has items initially
-    if (cart.length > 0) {
+    const fetchAndRefreshCart = async () => {
+      setLoadingCart(true);
+      await refreshCartItems(); // Refresh cart items from API
+      setLoadingCart(false);
+    };
+
+    fetchAndRefreshCart();
+  }, []); // Run only once on mount to refresh cart
+
+  useEffect(() => {
+    if (!loadingCart && cart.length > 0) { // Only show price alert if cart is loaded and has items
       setShowPriceAlert(true);
     }
-  }, [cart.length]); // Added cart.length to dependency array to re-evaluate when cart changes
-
+  }, [cart.length, loadingCart]);
 
   const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
   const total = subtotal; // Assuming no shipping cost is calculated in the cart view itself
@@ -26,9 +35,6 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
-    // It's generally better to let the CartContext manage the cart state
-    // and rely on that state in the Checkout component.
-    // However, if you specifically need to store it in localStorage here, keep this line.
     localStorage.setItem('cartData', JSON.stringify(cart));
     navigate('/checkout');
   };
@@ -36,6 +42,10 @@ const Cart = () => {
   const handleReturnToShop = () => {
     navigate('/');
   };
+
+  if (loadingCart) {
+    return <div className="cart-container">Loading cart...</div>; // Show loading indicator
+  }
 
   return (
     <div className="cart-container">
@@ -51,15 +61,17 @@ const Cart = () => {
           <div className="cart-items-container">
             <ul className="cart-items">
               {cart.map((item) => {
-                const deliveryDisplay = item.abroad_delivery_days === 14 ? '7-14' : (item.abroad_delivery_days || 7);
+                // Consistent delivery display logic
+                const deliveryDisplay = item.abroad_delivery_days === 14 ? '7-14' : (item.abroad_delivery_days ? `${item.abroad_delivery_days}` : '7-14');
+                const isItemUnavailable = item.stock === 0 || item.errorFetching;
+
                 return (
-                <li key={item.product_id} className="cart-item">
+                <li key={item.product_id} className={`cart-item ${isItemUnavailable ? 'unavailable-item' : ''}`}>
                   <img src={item.image_url} alt={item.name} className="cart-item-image" />
                   <div className="cart-item-details">
-                    <h3>{item.name}</h3>
+                    <h3>{item.name} {isItemUnavailable && <span style={{color: 'red', fontSize: '0.8em'}}>(Unavailable)</span>}</h3>
                     <p>Price: ₦{formatPrice(item.price)}</p>
 
-                    {/* Display abroad order message if applicable */}
                     {item.is_abroad_order && (
                         <p className="abroad-order-cart-message">
                             <span role="img" aria-label="airplane">✈️</span> Shipped from Abroad (Est. {deliveryDisplay} days)
@@ -69,14 +81,14 @@ const Cart = () => {
                     <div className="cart-item-quantity">
                       <button
                         onClick={() => decreaseQuantity(item.product_id)}
-                        disabled={item.quantity <= 1}
+                        disabled={item.quantity <= 1 || isItemUnavailable}
                       >
                         -
                       </button>
                       <span>{item.quantity}</span>
                       <button
                         onClick={() => increaseQuantity(item.product_id)}
-                        disabled={item.quantity >= item.stock}
+                        disabled={item.quantity >= item.stock || isItemUnavailable}
                       >
                         +
                       </button>
