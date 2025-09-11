@@ -102,7 +102,7 @@ const ProductDetails = () => {
 
   const handleBuyNowOnWhatsApp = () => {
     if (product) {
-      const deliveryDays = product.abroad_delivery_days === 14 ? '7-14' : product.abroad_delivery_days || 10;
+      const deliveryDays = product.abroad_delivery_days === 14 ? '7-14' : product.abroad_delivery_days || 7-14;
       let message = `Hello, I'm interested in buying ${product.name}.`;
       if (product.is_abroad_order) {
         message += ` This is an abroad order item with an estimated delivery of ${deliveryDays} business days.`;

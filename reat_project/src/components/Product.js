@@ -30,7 +30,7 @@ const Product = ({ product_id, name, description, price, image_urls, stock, is_a
   };
 
   // Determine the delivery display
-  const deliveryDisplay = abroad_delivery_days === 14 ? '7-14 days' : `${abroad_delivery_days || 10} days`;
+  const deliveryDisplay = abroad_delivery_days === 14 ? '7-14 days' : `${abroad_delivery_days || 14} days`;
 
 
   return (

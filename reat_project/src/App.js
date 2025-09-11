@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { TokenProvider } from './components/TokenContext';
 import { CartProvider } from './contexts/CartContext';
-import { UserProvider, useUser } from './contexts/UserContext'; // ✅ import useUser
+import { UserProvider, useUser } from './contexts/UserContext';
 import { WishlistProvider } from './contexts/WishlistContext';
 import { LoadingProvider, useLoading } from './contexts/LoadingContext';
 import Loading from './components/Loading';
@@ -37,7 +37,10 @@ import UserOrderParent from './components/UserOrderParent';
 import FloatingNav from './components/FloatingNav';
 import NotFoundPage from './components/404Page';
 import ScrollToTop from './components/ScrollToTop';
-import Maintenance from './components/Maintenance'; // Import Maintenance component
+import Maintenance from './components/Maintenance';
+
+// Import ReactGA for tracking
+import ReactGA from 'react-ga4';
 
 const App = () => {
   return (
@@ -48,7 +51,7 @@ const App = () => {
             <LoadingProvider>
               <Router>
                 <ScrollToTop />
-                <MaintenanceWrapper /> {/* ✅ Use wrapper for maintenance check */}
+                <MaintenanceWrapper />
               </Router>
             </LoadingProvider>
           </WishlistProvider>
@@ -58,21 +61,14 @@ const App = () => {
   );
 };
 
-/**
- * This wrapper decides if maintenance mode should be applied
- * - If REACT_APP_MAINTENANCE_MODE=true and user is NOT staff → show Maintenance
- * - Otherwise → load normal app
- */
 const MaintenanceWrapper = () => {
-  const { user } = useUser(); // ✅ from UserContext
+  const { user } = useUser();
   const isMaintenanceMode = process.env.REACT_APP_MAINTENANCE_MODE === 'true';
 
-  // If maintenance mode is on AND user is not staff → show maintenance
   if (isMaintenanceMode && !(user && user.is_staff)) {
     return <Maintenance />;
   }
 
-  // Otherwise → show app content
   return <AppContent />;
 };
 
@@ -80,11 +76,19 @@ const AppContent = () => {
   const { loading, setLoading } = useLoading();
   const location = useLocation();
 
+  // Effect to handle loading state AND Google Analytics page views
   useEffect(() => {
+    // Start loading animation
     setLoading(true);
+
+    // Send page view to Google Analytics 4
+    // You can also send more detailed events here if needed
+    ReactGA.send({ hitType: "pageview", page: location.pathname + location.search, title: document.title });
+
+    // End loading animation after a delay
     const timer = setTimeout(() => setLoading(false), 1000);
     return () => clearTimeout(timer);
-  }, [location.pathname]);
+  }, [location.pathname, location.search, setLoading]); // Depend on location.pathname and location.search
 
   return (
     <>

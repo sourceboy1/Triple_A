@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "react-ga4": "^2.1.0",
     "react-paystack": "^6.0.0",
     "react-phone-input-2": "^2.15.1",
     "react-router-dom": "^6.25.1",
