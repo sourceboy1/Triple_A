@@ -429,7 +429,7 @@ const Checkout = () => {
                                 <h3>{item.name}</h3>
                                 {item.is_abroad_order && (
                                     <p className="abroad-order-summary-message">
-                                        <span role="img" aria-label="airplane">✈️</span> Shipped from Abroad (Est. {item.abroad_delivery_days || 10} days)
+                                        <span role="img" aria-label="airplane">✈️</span> Shipped from Abroad (Est. {item.abroad_delivery_days || 7-14} days)
                                     </p>
                                 )}
                                 <p>Price: ₦{formatPrice(item.price)}</p>

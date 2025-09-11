@@ -60,7 +60,7 @@ const Cart = () => {
                     {/* Display abroad order message if applicable */}
                     {item.is_abroad_order && (
                         <p className="abroad-order-cart-message">
-                            <span role="img" aria-label="airplane">✈️</span> Shipped from Abroad (Est. {item.abroad_delivery_days || 10} days)
+                            <span role="img" aria-label="airplane">✈️</span> Shipped from Abroad (Est. {item.abroad_delivery_days || 7-14} days)
                         </p>
                     )}
 
