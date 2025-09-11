@@ -27,6 +27,7 @@ const ProductDetails = () => {
         const response = await api.get(`products/${productId}/`);
         const productData = response.data;
 
+        // Ensure we always have an image, falling back to default
         const mainImage =
           productData.image_urls?.large ||
           productData.secondary_image_urls?.large ||
@@ -37,35 +38,50 @@ const ProductDetails = () => {
         setProduct(productData);
         saveToRecentlyViewed(productData, mainImage);
 
+        // Show price alert as the product details are loaded
         setShowPriceAlert(true);
       } catch (error) {
         console.error('Error fetching product:', error.response?.data || error.message || error);
+        setProduct(null); // Clear product data if fetch fails
+        // Optionally, you could redirect to a 404 page or display a specific error for the user
       }
     };
 
     fetchProduct();
-  }, [productId]);
+  }, [productId]); // Re-fetch when productId changes
 
   const saveToRecentlyViewed = (productData, mainImage) => {
     let viewedProducts = JSON.parse(localStorage.getItem('viewedProducts')) || [];
+    // Remove if already exists to move it to the front
     viewedProducts = viewedProducts.filter(p => p.product_id !== productData.product_id);
 
     viewedProducts.unshift({
       product_id: productData.product_id,
       name: productData.name,
-      image_url: mainImage || '/media/default.jpg',
+      image_url: mainImage || '/media/default.jpg', // Ensure default image if not present
       price: productData.price
     });
 
+    // Keep only the last 20 viewed products
     if (viewedProducts.length > 20) viewedProducts = viewedProducts.slice(0, 20);
     localStorage.setItem('viewedProducts', JSON.stringify(viewedProducts));
   };
 
   const handleIncrease = () => {
-    if (product && quantity < product.stock) setQuantity(quantity + 1);
+    // Only increase if product exists and quantity is less than available stock
+    if (product && quantity < product.stock) {
+      setQuantity(quantity + 1);
+    } else if (product && quantity >= product.stock) {
+      setStockMessage(`Cannot add more than available stock (${product.stock}).`);
+    }
   };
+
   const handleDecrease = () => {
-    if (quantity > 1) setQuantity(quantity - 1);
+    // Only decrease if quantity is greater than 1
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+      setStockMessage(''); // Clear stock message if quantity is now valid
+    }
   };
 
   const handleAddToCart = () => {
@@ -76,16 +92,18 @@ const ProductDetails = () => {
           name: product.name,
           image_url: selectedImage || '/media/default.jpg',
           price: product.price,
-          stock: product.stock,
+          stock: product.stock, // Pass stock for cart validation
           quantity: quantity,
           is_abroad_order: product.is_abroad_order, // Pass new prop to cart
           abroad_delivery_days: product.abroad_delivery_days // Pass new prop to cart
         };
         addItemToCart(cartProduct);
-        setStockMessage('');
-        setShowPriceAlert(true);
+        setStockMessage(''); // Clear any previous stock messages
+        setShowPriceAlert(true); // Show alert confirming item added to cart
+      } else if (product.stock === 0) {
+        setStockMessage('This item is currently out of stock.');
       } else {
-        setStockMessage('No available stock.');
+        setStockMessage(`Cannot add more than available stock (${product.stock}).`);
       }
     }
   };
@@ -102,7 +120,7 @@ const ProductDetails = () => {
 
   const handleBuyNowOnWhatsApp = () => {
     if (product) {
-      // Consistent delivery display logic for WhatsApp
+      // Consistent display for abroad delivery days for WhatsApp message
       const deliveryDays = product.abroad_delivery_days === 14 ? '7-14' : (product.abroad_delivery_days ? `${product.abroad_delivery_days}` : '7-14');
       let message = `Hello, I'm interested in buying ${product.name}.`;
       if (product.is_abroad_order) {
@@ -114,39 +132,44 @@ const ProductDetails = () => {
     }
   };
 
-
+  // Display loading state if product is null
   if (!product) return <div className="loading-product-details">Loading product details...</div>;
 
+  // --- Image Handling for Thumbnails ---
   const thumbnails = [];
-
   if (product.image_urls?.large) thumbnails.push(product.image_urls.large);
   if (product.secondary_image_urls?.large) thumbnails.push(product.secondary_image_urls.large);
 
+  // Add additional images, checking all possible URLs
   product.additional_images?.forEach(img => {
     const imageCandidates = [
       img.image_urls?.large,
       img.secondary_image_urls?.large,
       img.tertiary_image_urls?.large,
       img.quaternary_image_urls?.large
-    ].filter(Boolean);
+    ].filter(Boolean); // Filter out any null/undefined URLs
 
     imageCandidates.forEach(url => {
-      if (!thumbnails.includes(url)) {
+      if (url && !thumbnails.includes(url)) { // Ensure URL is valid and not a duplicate
         thumbnails.push(url);
       }
     });
   });
 
+  // Fallback for default image if no images are found
   if (thumbnails.length === 0) {
     thumbnails.push('/media/default.jpg');
   }
 
-  const uniqueThumbnails = [...new Set(thumbnails)];
+  const uniqueThumbnails = [...new Set(thumbnails)]; // Ensure only unique thumbnails are displayed
 
-  const formattedPrice = product.price ? new Intl.NumberFormat().format(product.price) : 'N/A';
-  const formattedOriginalPrice = product.original_price ? new Intl.NumberFormat().format(product.original_price) : 'N/A';
+  // --- Formatting Price ---
+  const formattedPrice = product.price !== undefined ? new Intl.NumberFormat().format(product.price) : 'N/A';
+  const formattedOriginalPrice = product.original_price !== undefined ? new Intl.NumberFormat().format(product.original_price) : 'N/A';
 
-  const deliveryDisplayDetail = product.abroad_delivery_days === 14 ? '7-14 business days' : `${product.abroad_delivery_days || 10} business days`;
+  // --- Consistent Abroad Delivery Display ---
+  // If abroad_delivery_days is 14, display "7-14 business days", otherwise display its value or a default "7-14"
+  const deliveryDisplayDetail = product.abroad_delivery_days === 14 ? '7-14 business days' : `${product.abroad_delivery_days || '7-14'} business days`;
 
 
   return (
@@ -184,19 +207,19 @@ const ProductDetails = () => {
                 src={selectedImage}
                 alt={product.name}
                 className={`product-detail-image ${isZoomed ? 'zoomed' : ''}`}
-                onClick={() => setIsZoomed(!isZoomed)}
+                onClick={() => setIsZoomed(!isZoomed)} // Toggle zoom on click
               />
             )}
             <div className="product-detail-controls">
               {uniqueThumbnails.map((url, index) => (
                 <img
                   key={index}
-                  src={url || '/media/default.jpg'}
+                  src={url || '/media/default.jpg'} // Fallback for thumbnail
                   alt={`Thumbnail ${index + 1}`}
                   className={`product-detail-controls-img ${selectedImage === url ? 'active' : ''}`}
                   onClick={() => {
                     setSelectedImage(url || '/media/default.jpg');
-                    setIsZoomed(false);
+                    setIsZoomed(false); // Reset zoom when changing image
                   }}
                 />
               ))}
@@ -219,12 +242,12 @@ const ProductDetails = () => {
             )}
 
             <div className="product-price">
-              {product.discount ? (
+              {product.discount ? ( // Display discounted price if discount exists
                 <>
                   <span className="discounted-price">₦{formattedPrice}</span>
-                  {product.original_price && <span className="original-price">₦{formattedOriginalPrice}</span>}
+                  {product.original_price !== undefined && <span className="original-price">₦{formattedOriginalPrice}</span>}
                 </>
-              ) : (
+              ) : ( // Otherwise, just display the regular price
                 <p>Price: ₦{formattedPrice}</p>
               )}
             </div>
@@ -242,7 +265,7 @@ const ProductDetails = () => {
             <button
               onClick={handleAddToCart}
               className="button is-primary"
-              disabled={product.stock === 0}
+              disabled={product.stock === 0} // Disable if out of stock
             >
               {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
             </button>
@@ -251,7 +274,7 @@ const ProductDetails = () => {
               onClick={handleBuyNowOnWhatsApp}
               className="button is-primary"
               style={{ marginTop: '10px' }}
-              disabled={!product}
+              disabled={!product} // Disable if product data isn't loaded
             >
               Buy Now on WhatsApp
             </button>
@@ -259,10 +282,11 @@ const ProductDetails = () => {
         </div>
       </div>
 
+      {/* Price Alert Modal */}
       <PriceAlertModal
         show={showPriceAlert}
         onClose={() => setShowPriceAlert(false)}
-        product={product ? { name: product.name } : null}
+        product={product ? { name: product.name } : null} // Pass product name if available
         type="product"
       />
     </div>
