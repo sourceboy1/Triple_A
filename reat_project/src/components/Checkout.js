@@ -169,14 +169,6 @@ const Checkout = () => {
     const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
     const getShippingCost = () => {
-        // Check if any item in the cart is an abroad order
-        const hasAbroadItems = cart.some(item => item.is_abroad_order);
-
-        // If there are abroad items, force the "Shipped from Abroad U.S." method
-        if (hasAbroadItems) {
-            return 30000; // Example cost for abroad shipping
-        }
-
         switch (shippingMethod) {
             case 'pickup': return 0;
             case 'express': return 15000;
@@ -186,7 +178,6 @@ const Checkout = () => {
             case 'abule_egba': return 8000;
             case 'ikeja': return 5000;
             case 'lagos_mainland': return 12000;
-            case 'abroad_us': return 30000; // New: Shipped from Abroad U.S.
             default: return 0;
         }
     };
@@ -246,7 +237,6 @@ const Checkout = () => {
                 <div>
                     <h2>Shipping Method</h2>
                     <div className="shipping-method-container">
-                        {/* Existing shipping methods */}
                         <label>
                             <input
                                 type="radio"
@@ -254,7 +244,7 @@ const Checkout = () => {
                                 value="pickup"
                                 checked={shippingMethod === 'pickup'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
-                                disabled={loading || cart.some(item => item.is_abroad_order)} // Disable if abroad items in cart
+                                disabled={loading}
                             />
                             Store Pickup: Free
                         </label>
@@ -265,7 +255,7 @@ const Checkout = () => {
                                 value="express"
                                 checked={shippingMethod === 'express'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
-                                disabled={loading || cart.some(item => item.is_abroad_order)} // Disable if abroad items in cart
+                                disabled={loading}
                             />
                             Express/Same Day Delivery: ₦15,000
                         </label>
@@ -276,7 +266,7 @@ const Checkout = () => {
                                 value="area1"
                                 checked={shippingMethod === 'area1'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
-                                disabled={loading || cart.some(item => item.is_abroad_order)} // Disable if abroad items in cart
+                                disabled={loading}
                             />
                             Amuwo Odofin GRA/Festac: ₦10,000.00
                         </label>
@@ -287,7 +277,7 @@ const Checkout = () => {
                                 value="satellite"
                                 checked={shippingMethod === 'satellite'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
-                                disabled={loading || cart.some(item => item.is_abroad_order)} // Disable if abroad items in cart
+                                disabled={loading}
                             />
                             Satellite town/Suru Alaba/Isolo/Maza maza: ₦12,000.00
                         </label>
@@ -298,7 +288,7 @@ const Checkout = () => {
                                 value="area2"
                                 checked={shippingMethod === 'area2'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
-                                disabled={loading || cart.some(item => item.is_abroad_order)} // Disable if abroad items in cart
+                                disabled={loading}
                             />
                             Ajao Estate/Oshodi/Lawanson/Orile/Itire/Gbagada/Apapa/Surulere/Tradefair: ₦10,000.00
                         </label>
@@ -309,7 +299,7 @@ const Checkout = () => {
                                 value="abule_egba"
                                 checked={shippingMethod === 'abule_egba'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
-                                disabled={loading || cart.some(item => item.is_abroad_order)} // Disable if abroad items in cart
+                                disabled={loading}
                             />
                             Abule Egba/ Iyana Ipaja/ Ayobo: ₦8,000.00
                         </label>
@@ -320,7 +310,7 @@ const Checkout = () => {
                                 value="ikeja"
                                 checked={shippingMethod === 'ikeja'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
-                                disabled={loading || cart.some(item => item.is_abroad_order)} // Disable if abroad items in cart
+                                disabled={loading}
                             />
                             IKEJA AXIS/ BARIGA/ALAGOMEJI/FADEYI/PALM GROOVE: ₦5,000.00
                         </label>
@@ -331,24 +321,9 @@ const Checkout = () => {
                                 value="lagos_mainland"
                                 checked={shippingMethod === 'lagos_mainland'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
-                                disabled={loading || cart.some(item => item.is_abroad_order)} // Disable if abroad items in cart
+                                disabled={loading}
                             />
                             LAGOS MAINLAND: ₦12,000.00
-                        </label>
-                        {/* New: Shipped from Abroad U.S. option */}
-                        <label>
-                            <input
-                                type="radio"
-                                name="shippingMethod"
-                                value="abroad_us"
-                                checked={shippingMethod === 'abroad_us' || cart.some(item => item.is_abroad_order)}
-                                onChange={(e) => setShippingMethod(e.target.value)}
-                                disabled={loading || !cart.some(item => item.is_abroad_order)} // Disable if no abroad items in cart
-                            />
-                            Shipped from Abroad U.S. (Est. 7-14 days): ₦30,000.00
-                            {cart.some(item => item.is_abroad_order) && (
-                                <span className="shipping-note"> (Selected automatically for abroad items)</span>
-                            )}
                         </label>
                     </div>
                 </div>
