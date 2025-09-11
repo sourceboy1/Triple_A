@@ -65,6 +65,10 @@ const Checkout = () => {
         debit_credit_cards: 2,
     };
 
+    // Helper function to check if any cart item is from abroad
+    const hasAbroadProduct = cart.some(item => item.is_abroad_order);
+    const ABROAD_SHIPPING_SURCHARGE = 30000;
+
 
    const handlePlaceOrder = async () => {
     setEmailError('');
@@ -100,7 +104,7 @@ const Checkout = () => {
     }
 
     const paymentMethodId = paymentMethodIds[paymentMethod] || 1;
-    const shippingCost = getShippingCost();
+    const shippingCost = getShippingCost(); // Use the updated getShippingCost
     const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const total = subtotal + shippingCost;
 
@@ -169,17 +173,24 @@ const Checkout = () => {
     const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
     const getShippingCost = () => {
+        let baseCost = 0;
         switch (shippingMethod) {
-            case 'pickup': return 0;
-            case 'express': return 15000;
-            case 'area1': return 10000;
-            case 'satellite': return 12000;
-            case 'area2': return 10000;
-            case 'abule_egba': return 8000;
-            case 'ikeja': return 5000;
-            case 'lagos_mainland': return 12000;
-            default: return 0;
+            case 'pickup': baseCost = 0; break;
+            case 'express': baseCost = 15000; break;
+            case 'area1': baseCost = 10000; break;
+            case 'satellite': baseCost = 12000; break;
+            case 'area2': baseCost = 10000; break;
+            case 'abule_egba': baseCost = 8000; break;
+            case 'ikeja': baseCost = 5000; break;
+            case 'lagos_mainland': baseCost = 12000; break;
+            default: baseCost = 0;
         }
+
+        // Add abroad surcharge if applicable
+        if (hasAbroadProduct) {
+            baseCost += ABROAD_SHIPPING_SURCHARGE;
+        }
+        return baseCost;
     };
 
     const shippingCost = getShippingCost();
@@ -190,6 +201,29 @@ const Checkout = () => {
         setShowTerms(!showTerms);
     };
 
+    // Function to generate the shipping label with abroad surcharge info
+    const getShippingLabel = (method, basePrice) => {
+        let label = '';
+        const abroadInfo = hasAbroadProduct ? ` (₦${formatPrice(ABROAD_SHIPPING_SURCHARGE)} for abroad goods)` : '';
+
+        switch (method) {
+            case 'pickup': label = 'Store Pickup: Free'; break;
+            case 'express': label = `Express/Same Day Delivery: ₦${formatPrice(basePrice)}`; break;
+            case 'area1': label = `Amuwo Odofin GRA/Festac: ₦${formatPrice(basePrice)}`; break;
+            case 'satellite': label = `Satellite town/Suru Alaba/Isolo/Maza maza: ₦${formatPrice(basePrice)}`; break;
+            case 'area2': label = `Ajao Estate/Oshodi/Lawanson/Orile/Itire/Gbagada/Apapa/Surulere/Tradefair: ₦${formatPrice(basePrice)}`; break;
+            case 'abule_egba': label = `Abule Egba/ Iyana Ipaja/ Ayobo: ₦${formatPrice(basePrice)}`; break;
+            case 'ikeja': label = `IKEJA AXIS/ BARIGA/ALAGOMEJI/FADEYI/PALM GROOVE: ₦${formatPrice(basePrice)}`; break;
+            case 'lagos_mainland': label = `LAGOS MAINLAND: ₦${formatPrice(basePrice)}`; break;
+            default: label = '';
+        }
+
+        // Only add abroad info if the method is not 'pickup' and there's an abroad product
+        if (method !== 'pickup' && hasAbroadProduct) {
+             return `30,000 for goods coming from abroad + ${label}`;
+        }
+        return label;
+    };
 
 
     return (
@@ -236,6 +270,11 @@ const Checkout = () => {
 
                 <div>
                     <h2>Shipping Method</h2>
+                    {hasAbroadProduct && (
+                        <p className="abroad-shipping-info">
+                            <span role="img" aria-label="info">ℹ️</span> An additional ₦{formatPrice(ABROAD_SHIPPING_SURCHARGE)} will be added to your chosen shipping method for goods coming from abroad.
+                        </p>
+                    )}
                     <div className="shipping-method-container">
                         <label>
                             <input
@@ -246,7 +285,7 @@ const Checkout = () => {
                                 onChange={(e) => setShippingMethod(e.target.value)}
                                 disabled={loading}
                             />
-                            Store Pickup: Free
+                            {getShippingLabel('pickup', 0)}
                         </label>
                         <label>
                             <input
@@ -257,7 +296,7 @@ const Checkout = () => {
                                 onChange={(e) => setShippingMethod(e.target.value)}
                                 disabled={loading}
                             />
-                            Express/Same Day Delivery: ₦15,000
+                            {getShippingLabel('express', 15000)}
                         </label>
                         <label>
                             <input
@@ -268,7 +307,7 @@ const Checkout = () => {
                                 onChange={(e) => setShippingMethod(e.target.value)}
                                 disabled={loading}
                             />
-                            Amuwo Odofin GRA/Festac: ₦10,000.00
+                            {getShippingLabel('area1', 10000)}
                         </label>
                         <label>
                             <input
@@ -279,7 +318,7 @@ const Checkout = () => {
                                 onChange={(e) => setShippingMethod(e.target.value)}
                                 disabled={loading}
                             />
-                            Satellite town/Suru Alaba/Isolo/Maza maza: ₦12,000.00
+                            {getShippingLabel('satellite', 12000)}
                         </label>
                         <label>
                             <input
@@ -290,7 +329,7 @@ const Checkout = () => {
                                 onChange={(e) => setShippingMethod(e.target.value)}
                                 disabled={loading}
                             />
-                            Ajao Estate/Oshodi/Lawanson/Orile/Itire/Gbagada/Apapa/Surulere/Tradefair: ₦10,000.00
+                            {getShippingLabel('area2', 10000)}
                         </label>
                         <label>
                             <input
@@ -301,7 +340,7 @@ const Checkout = () => {
                                 onChange={(e) => setShippingMethod(e.target.value)}
                                 disabled={loading}
                             />
-                            Abule Egba/ Iyana Ipaja/ Ayobo: ₦8,000.00
+                            {getShippingLabel('abule_egba', 8000)}
                         </label>
                         <label>
                             <input
@@ -312,7 +351,7 @@ const Checkout = () => {
                                 onChange={(e) => setShippingMethod(e.target.value)}
                                 disabled={loading}
                             />
-                            IKEJA AXIS/ BARIGA/ALAGOMEJI/FADEYI/PALM GROOVE: ₦5,000.00
+                            {getShippingLabel('ikeja', 5000)}
                         </label>
                         <label>
                             <input
@@ -323,7 +362,7 @@ const Checkout = () => {
                                 onChange={(e) => setShippingMethod(e.target.value)}
                                 disabled={loading}
                             />
-                            LAGOS MAINLAND: ₦12,000.00
+                            {getShippingLabel('lagos_mainland', 12000)}
                         </label>
                     </div>
                 </div>
