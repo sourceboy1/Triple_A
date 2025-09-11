@@ -11,19 +11,24 @@ const Cart = () => {
   const [showPriceAlert, setShowPriceAlert] = useState(false);
 
   useEffect(() => {
+    // Only show price alert if the cart has items initially
     if (cart.length > 0) {
       setShowPriceAlert(true);
     }
-  }, []);
+  }, [cart.length]); // Added cart.length to dependency array to re-evaluate when cart changes
+
 
   const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
-  const total = subtotal;
+  const total = subtotal; // Assuming no shipping cost is calculated in the cart view itself
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat().format(price);
   };
 
   const handleCheckout = () => {
+    // It's generally better to let the CartContext manage the cart state
+    // and rely on that state in the Checkout component.
+    // However, if you specifically need to store it in localStorage here, keep this line.
     localStorage.setItem('cartData', JSON.stringify(cart));
     navigate('/checkout');
   };
@@ -85,6 +90,12 @@ const Cart = () => {
           <div className="cart-summary-container">
             <div className="cart-summary">
               <h3>Cart Summary</h3>
+              {cart.some(item => item.is_abroad_order) && (
+                  <p className="abroad-cart-warning">
+                      <span role="img" aria-label="info">ℹ️</span> Note: Your order includes items shipped from abroad.
+                      Final shipping costs will be calculated at checkout.
+                  </p>
+              )}
               <div className="cart-totals">
                 <div className="subtotal">
                   <span>Subtotal:</span>
