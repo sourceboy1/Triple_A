@@ -102,9 +102,10 @@ const ProductDetails = () => {
 
   const handleBuyNowOnWhatsApp = () => {
     if (product) {
+      const deliveryDays = product.abroad_delivery_days === 14 ? '7-14' : product.abroad_delivery_days || 10;
       let message = `Hello, I'm interested in buying ${product.name}.`;
       if (product.is_abroad_order) {
-        message += ` This is an abroad order item with an estimated delivery of ${product.abroad_delivery_days || 10} days.`;
+        message += ` This is an abroad order item with an estimated delivery of ${deliveryDays} business days.`;
       }
       message += ` Please provide more details.`;
       const whatsappUrl = `https://wa.me/2348034593459?text=${encodeURIComponent(message)}`;
@@ -142,6 +143,9 @@ const ProductDetails = () => {
 
   const formattedPrice = product.price ? new Intl.NumberFormat().format(product.price) : 'N/A';
   const formattedOriginalPrice = product.original_price ? new Intl.NumberFormat().format(product.original_price) : 'N/A';
+
+  const deliveryDisplayDetail = product.abroad_delivery_days === 14 ? '7-14 business days' : `${product.abroad_delivery_days || 10} business days`;
+
 
   return (
     <div className="product-detail-page-wrapper">
@@ -207,7 +211,7 @@ const ProductDetails = () => {
                 <div className="abroad-order-detail-message">
                     <p>
                         <span role="img" aria-label="airplane">✈️</span> This item is ordered from abroad.
-                        Estimated delivery: **{product.abroad_delivery_days || 10} business days.**
+                        Estimated delivery: **{deliveryDisplayDetail}.**
                     </p>
                 </div>
             )}

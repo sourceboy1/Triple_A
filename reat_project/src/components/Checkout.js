@@ -204,7 +204,7 @@ const Checkout = () => {
     // Function to generate the shipping label with abroad surcharge info
     const getShippingLabel = (method, basePrice) => {
         let label = '';
-        const abroadInfo = hasAbroadProduct ? ` (₦${formatPrice(ABROAD_SHIPPING_SURCHARGE)} for abroad goods)` : '';
+        const formattedSurcharge = `₦${formatPrice(ABROAD_SHIPPING_SURCHARGE)}`;
 
         switch (method) {
             case 'pickup': label = 'Store Pickup: Free'; break;
@@ -218,9 +218,9 @@ const Checkout = () => {
             default: label = '';
         }
 
-        // Only add abroad info if the method is not 'pickup' and there's an abroad product
-        if (method !== 'pickup' && hasAbroadProduct) {
-             return `30,000 for goods coming from abroad + ${label}`;
+        // Only add abroad info if there's an abroad product and it's not pickup
+        if (hasAbroadProduct && method !== 'pickup') {
+             return `${formattedSurcharge} for goods coming from abroad + ${label}`;
         }
         return label;
     };
@@ -461,22 +461,25 @@ const Checkout = () => {
             <div className="order-summary">
                 <h2>Order Summary</h2>
                 <ul className="order-summary-items">
-                    {cart.map((item) => (
-                        <li key={item.product_id} className="order-summary-item">
-                            <img src={item.image_url} alt={item.name} className="order-summary-item-image" />
-                            <div className="order-summary-item-details">
-                                <h3>{item.name}</h3>
-                                {item.is_abroad_order && (
-                                    <p className="abroad-order-summary-message">
-                                        <span role="img" aria-label="airplane">✈️</span> Shipped from Abroad (Est. {item.abroad_delivery_days || 7-14} days)
-                                    </p>
-                                )}
-                                <p>Price: ₦{formatPrice(item.price)}</p>
-                                <p>Quantity: {item.quantity}</p>
-                                <p>Total: ₦{formatPrice(item.price * item.quantity)}</p>
-                            </div>
-                        </li>
-                    ))}
+                    {cart.map((item) => {
+                        const deliveryDisplay = item.abroad_delivery_days === 14 ? '7-14' : (item.abroad_delivery_days || 7);
+                        return (
+                            <li key={item.product_id} className="order-summary-item">
+                                <img src={item.image_url} alt={item.name} className="order-summary-item-image" />
+                                <div className="order-summary-item-details">
+                                    <h3>{item.name}</h3>
+                                    {item.is_abroad_order && (
+                                        <p className="abroad-order-summary-message">
+                                            <span role="img" aria-label="airplane">✈️</span> Shipped from Abroad (Est. {deliveryDisplay} days)
+                                        </p>
+                                    )}
+                                    <p>Price: ₦{formatPrice(item.price)}</p>
+                                    <p>Quantity: {item.quantity}</p>
+                                    <p>Total: ₦{formatPrice(item.price * item.quantity)}</p>
+                                </div>
+                            </li>
+                        );
+                    })}
                 </ul>
                 <div className="total">
                     <span>Subtotal:</span>

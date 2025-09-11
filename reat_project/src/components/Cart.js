@@ -50,7 +50,9 @@ const Cart = () => {
         <div className="cart-content">
           <div className="cart-items-container">
             <ul className="cart-items">
-              {cart.map((item) => (
+              {cart.map((item) => {
+                const deliveryDisplay = item.abroad_delivery_days === 14 ? '7-14' : (item.abroad_delivery_days || 7);
+                return (
                 <li key={item.product_id} className="cart-item">
                   <img src={item.image_url} alt={item.name} className="cart-item-image" />
                   <div className="cart-item-details">
@@ -60,7 +62,7 @@ const Cart = () => {
                     {/* Display abroad order message if applicable */}
                     {item.is_abroad_order && (
                         <p className="abroad-order-cart-message">
-                            <span role="img" aria-label="airplane">✈️</span> Shipped from Abroad (Est. {item.abroad_delivery_days || 7-14} days)
+                            <span role="img" aria-label="airplane">✈️</span> Shipped from Abroad (Est. {deliveryDisplay} days)
                         </p>
                     )}
 
@@ -83,7 +85,8 @@ const Cart = () => {
                     <button onClick={() => removeItemFromCart(item.product_id)} className="remove-button">Remove</button>
                   </div>
                 </li>
-              ))}
+              );
+            })}
             </ul>
           </div>
 

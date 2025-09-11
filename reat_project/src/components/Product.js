@@ -1,4 +1,3 @@
-// Product.jsx
 import React, { useState } from 'react'; // Import useState
 import { Link } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
@@ -30,6 +29,10 @@ const Product = ({ product_id, name, description, price, image_urls, stock, is_a
     setShowPriceAlert(true); // Show alert when clicking on product name/link
   };
 
+  // Determine the delivery display
+  const deliveryDisplay = abroad_delivery_days === 14 ? '7-14 days' : `${abroad_delivery_days || 10} days`;
+
+
   return (
     <div className="product-card">
       {image_urls && image_urls.large ? (
@@ -50,7 +53,7 @@ const Product = ({ product_id, name, description, price, image_urls, stock, is_a
       {is_abroad_order && (
         <div className="abroad-order-tag">
           <span role="img" aria-label="globe">🌍</span> Order from Abroad
-          {abroad_delivery_days && ` (~${abroad_delivery_days} days)`}
+          {abroad_delivery_days && ` (~${deliveryDisplay})`}
         </div>
       )}
 
