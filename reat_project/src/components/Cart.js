@@ -1,22 +1,20 @@
-// Cart.jsx
-import React, { useState, useEffect } from 'react'; // Import useState and useEffect
+import React, { useState, useEffect } from 'react';
 import { useCart } from '../contexts/CartContext';
 import emptyCartImage from '../pictures/emptycart.jpg';
 import { useNavigate } from 'react-router-dom';
-import PriceAlertModal from './PriceAlertModal'; // Import the modal
+import PriceAlertModal from './PriceAlertModal';
 import './Cart.css';
 
 const Cart = () => {
   const { cart, removeItemFromCart, increaseQuantity, decreaseQuantity } = useCart();
   const navigate = useNavigate();
-  const [showPriceAlert, setShowPriceAlert] = useState(false); // State for modal visibility
+  const [showPriceAlert, setShowPriceAlert] = useState(false);
 
-  // Show the price alert when the Cart component mounts
   useEffect(() => {
-    if (cart.length > 0) { // Only show if there are items in the cart
+    if (cart.length > 0) {
       setShowPriceAlert(true);
     }
-  }, []); // Empty dependency array means this runs once on mount
+  }, []);
 
   const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
   const total = subtotal;
@@ -53,6 +51,14 @@ const Cart = () => {
                   <div className="cart-item-details">
                     <h3>{item.name}</h3>
                     <p>Price: ₦{formatPrice(item.price)}</p>
+
+                    {/* Display abroad order message if applicable */}
+                    {item.is_abroad_order && (
+                        <p className="abroad-order-cart-message">
+                            <span role="img" aria-label="airplane">✈️</span> Shipped from Abroad (Est. {item.abroad_delivery_days || 10} days)
+                        </p>
+                    )}
+
                     <div className="cart-item-quantity">
                       <button
                         onClick={() => decreaseQuantity(item.product_id)}
@@ -95,11 +101,10 @@ const Cart = () => {
         </div>
       )}
 
-      {/* Price Alert Modal for Cart */}
       <PriceAlertModal
         show={showPriceAlert}
         onClose={() => setShowPriceAlert(false)}
-        type="cart" // Indicate this is from the cart
+        type="cart"
       />
     </div>
   );

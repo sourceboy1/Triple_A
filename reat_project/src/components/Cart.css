@@ -148,6 +148,36 @@
   background-color: #45a049;
 }
 
+/* Existing Cart.css styles... */
+
+.abroad-order-cart-message {
+  font-size: 0.9em;
+  color: #005000; /* Dark green for visibility */
+  background-color: #e6ffe6; /* Light green background */
+  padding: 5px 8px;
+  border-radius: 4px;
+  margin-top: 5px;
+  display: inline-block; /* To make background fit content */
+  font-weight: bold;
+}
+
+/* Add or adjust existing media queries for the new message if needed */
+@media screen and (max-width: 768px) {
+  /* ... existing styles ... */
+  .abroad-order-cart-message {
+    font-size: 0.8em;
+    padding: 3px 6px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  /* ... existing styles ... */
+  .abroad-order-cart-message {
+    font-size: 0.75em;
+    padding: 2px 4px;
+  }
+}
+
 /* Mobile responsiveness */
 @media screen and (max-width: 768px) {
   .cart-container {

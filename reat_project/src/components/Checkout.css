@@ -411,17 +411,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 /* Section under order summary */
 .additional-info {
     margin-top: 30px;
@@ -458,6 +447,42 @@
 }
 
 
+/* Existing Checkout.css styles... */
+
+.abroad-order-summary-message {
+  font-size: 0.85em;
+  color: #005000; /* Dark green for visibility */
+  background-color: #e6ffe6; /* Light green background */
+  padding: 4px 7px;
+  border-radius: 4px;
+  margin-top: 5px;
+  margin-bottom: 5px; /* Add some space around it */
+  display: inline-block; /* To make background fit content */
+  font-weight: bold;
+}
+
+/* Adjustments for responsiveness for the new message */
+@media (max-width: 768px) {
+    .abroad-order-summary-message {
+        font-size: 0.8em;
+        padding: 3px 6px;
+    }
+}
+
+@media (max-width: 425px) {
+    .abroad-order-summary-message {
+        font-size: 0.75em;
+        padding: 2px 5px;
+    }
+}
+
+/* Ensure the total/shipping cost lines have enough space */
+.total,
+.shipping-cost,
+.total-amount {
+    margin-top: 10px; /* Adjusted from 1rem to 10px for consistency */
+    margin-bottom: 10px;
+}
 
 
 @media (max-width: 768px) {

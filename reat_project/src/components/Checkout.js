@@ -57,14 +57,14 @@ const Checkout = () => {
              setLastName(userLastName || '');
          }
      }, [isLoggedIn, userEmail, userFirstName, userLastName]);
-    
+
 
 
     const paymentMethodIds = {
         bank_transfer: 1,
         debit_credit_cards: 2,
     };
-    
+
 
    const handlePlaceOrder = async () => {
     setEmailError('');
@@ -126,7 +126,9 @@ const Checkout = () => {
             name: item.name,             // optional, write-only
             image_url: item.image_url,   // optional, write-only
             quantity: item.quantity,
-            price: item.price            // optional, you can keep for reference
+            price: item.price,           // optional, you can keep for reference
+            is_abroad_order: item.is_abroad_order, // Pass abroad status
+            abroad_delivery_days: item.abroad_delivery_days // Pass abroad delivery days
         }))
     };
 
@@ -146,7 +148,7 @@ const Checkout = () => {
                 subtotal,
                 shippingCost,
                 total,
-                products: cart
+                products: cart // Pass the cart to retrieve item details on the payment page
             }
         });
     } catch (error) {
@@ -157,8 +159,8 @@ const Checkout = () => {
         setLoading(false); // Stop loading regardless of success or failure
     }
 };
-    
-    
+
+
 
     const formatPrice = (price) => {
         return new Intl.NumberFormat().format(price);
@@ -188,7 +190,7 @@ const Checkout = () => {
         setShowTerms(!showTerms);
     };
 
-    
+
 
     return (
         <div className="checkout-container">
@@ -331,7 +333,7 @@ const Checkout = () => {
                     <textarea placeholder="Note about your order" value={orderNote} onChange={(e) => setOrderNote(e.target.value)} disabled={loading} />
                 </div>
 
-                
+
                 <div>
     <h2>Payment Method</h2>
     <div className="payment-method-container">
@@ -425,6 +427,11 @@ const Checkout = () => {
                             <img src={item.image_url} alt={item.name} className="order-summary-item-image" />
                             <div className="order-summary-item-details">
                                 <h3>{item.name}</h3>
+                                {item.is_abroad_order && (
+                                    <p className="abroad-order-summary-message">
+                                        <span role="img" aria-label="airplane">✈️</span> Shipped from Abroad (Est. {item.abroad_delivery_days || 10} days)
+                                    </p>
+                                )}
                                 <p>Price: ₦{formatPrice(item.price)}</p>
                                 <p>Quantity: {item.quantity}</p>
                                 <p>Total: ₦{formatPrice(item.price * item.quantity)}</p>

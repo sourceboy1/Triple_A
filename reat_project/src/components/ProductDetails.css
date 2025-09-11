@@ -236,6 +236,7 @@
   margin-bottom: 10px;
   display: inline-block; /* Make it fit its content */
   font-weight: bold;
+  white-space: nowrap; /* Prevent breaking on small screens */
 }
 
 /* Style for the abroad order message on the product details page */
@@ -252,11 +253,46 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap; /* ✅ allow wrapping on smaller screens */
 }
 
 .abroad-order-detail-message p {
   margin: 0; /* Remove default paragraph margin */
 }
+
+/* ---------------------------- */
+/* ✅ Mobile Responsiveness */
+/* ---------------------------- */
+
+/* Small devices (phones < 480px) */
+@media (max-width: 480px) {
+  .abroad-order-tag {
+    font-size: 0.75em; /* Slightly smaller */
+    padding: 4px 6px;
+  }
+
+  .abroad-order-detail-message {
+    font-size: 0.9em;
+    padding: 12px;
+    gap: 6px;
+    flex-direction: column; /* Stack content vertically */
+    align-items: flex-start;
+  }
+}
+
+/* Medium devices (tablets < 768px) */
+@media (max-width: 768px) {
+  .abroad-order-tag {
+    font-size: 0.8em;
+    padding: 5px 7px;
+  }
+
+  .abroad-order-detail-message {
+    font-size: 0.95em;
+    padding: 14px;
+  }
+}
+
 
 /* Ensure icons within the message are styled */
 .abroad-order-detail-message span[role="img"] {
