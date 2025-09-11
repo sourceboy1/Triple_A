@@ -11,6 +11,9 @@ COPY reat_project/package*.json ./
 # Install dependencies
 RUN npm install
 
+# --- ADD THIS LINE FOR DEBUGGING ---
+RUN ls -R node_modules/react-ga4
+
 # Copy the rest of React code
 COPY reat_project/ ./
 
