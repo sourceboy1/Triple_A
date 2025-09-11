@@ -12,7 +12,7 @@ COPY reat_project/package*.json ./
 RUN npm install
 
 # --- ADD THIS LINE FOR DEBUGGING ---
-RUN ls -R node_modules/react-ga4
+RUN ls -R node_modules/react-ga4 || echo "react-ga4 not found"
 
 # Copy the rest of React code
 COPY reat_project/ ./
