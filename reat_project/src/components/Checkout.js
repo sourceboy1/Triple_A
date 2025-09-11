@@ -101,7 +101,7 @@ const Checkout = () => {
 
     const paymentMethodId = paymentMethodIds[paymentMethod] || 1;
     const shippingCost = getShippingCost();
-    const subtotal = cart.reduce((acc, item) + item.price * item.quantity, 0);
+    const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const total = subtotal + shippingCost;
 
     // Send cart items including name and image_url
