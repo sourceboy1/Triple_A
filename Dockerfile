@@ -8,13 +8,11 @@ WORKDIR /app/frontend
 # Copy package.json and package-lock.json first for caching
 COPY reat_project/package*.json ./
 
-# Install dependencies with verbose output
-RUN npm install --verbose
+# Install dependencies
+RUN npm install
 
-# --- Debugging: List contents of node_modules after installation ---
-RUN echo "Listing react-ga4 in node_modules:" && ls -l node_modules/react-ga4 || echo "react-ga4 directory not found after install"
-RUN echo "Listing react-ga4 package.json:" && cat node_modules/react-ga4/package.json || echo "react-ga4 package.json not found"
-
+# --- ADD THIS LINE FOR DEBUGGING ---
+RUN ls -R node_modules/react-ga4 || echo "react-ga4 not found"
 
 # Copy the rest of React code
 COPY reat_project/ ./
