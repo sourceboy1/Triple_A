@@ -8,7 +8,7 @@ import FacebookIcon from '../pictures/facebook.jpg';
 import InstagramIcon from '../pictures/instagram.jpg';
 import TiktokIcon from '../pictures/tiktok.jpg';
 import YoutubeIcon from '../pictures/youtube.jpg';
-import WhatsappIcon from '../pictures/whatsapp_icon.jpg'; // Import the WhatsApp icon
+import WhatsappIcon from '../pictures/whatsapp.jpg'; // Import the WhatsApp icon
 import Newsletter from './Newsletter';
 import FooterSection from './FooterSection'; // Import the FooterSection component
 
