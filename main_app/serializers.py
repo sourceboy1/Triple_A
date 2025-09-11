@@ -175,6 +175,7 @@ class ProductSerializer(serializers.ModelSerializer):
     image_urls = serializers.SerializerMethodField()
     secondary_image_urls = serializers.SerializerMethodField()
     category_id = serializers.IntegerField(source='category.id', read_only=True)
+    # Assuming 'additional_images' is a related name for ProductImage instances
     additional_images = ProductImageSerializer(many=True, read_only=True)
 
     class Meta:
@@ -182,17 +183,19 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = [
             'product_id', 'name', 'description', 'price', 'original_price',
             'discount', 'stock', 'category', 'category_id', 'image_urls',
-            'secondary_image_urls', 'additional_images', 'created_at'
+            'secondary_image_urls', 'additional_images', 'created_at',
+            'is_abroad_order', 'abroad_delivery_days' # Add new fields here
         ]
 
     def get_image_urls(self, obj):
         """Return main product image URLs from Cloudinary"""
+        # Assuming ProductImageSerializer is correctly initialized and has get_cloudinary_urls method
         return ProductImageSerializer(context=self.context).get_cloudinary_urls(obj.image) # type: ignore
 
     def get_secondary_image_urls(self, obj):
         """Return first additional image's secondary image or fallback"""
         first_additional_image = obj.additional_images.first()
-        if first_additional_image and first_additional_image.secondary_image:
+        if first_additional_image and hasattr(first_additional_image, 'secondary_image') and first_additional_image.secondary_image:
             return ProductImageSerializer(context=self.context).get_cloudinary_urls( # type: ignore
                 first_additional_image.secondary_image
             )

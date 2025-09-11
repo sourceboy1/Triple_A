@@ -77,7 +77,9 @@ const ProductDetails = () => {
           image_url: selectedImage || '/media/default.jpg',
           price: product.price,
           stock: product.stock,
-          quantity: quantity
+          quantity: quantity,
+          is_abroad_order: product.is_abroad_order, // Pass new prop to cart
+          abroad_delivery_days: product.abroad_delivery_days // Pass new prop to cart
         };
         addItemToCart(cartProduct);
         setStockMessage('');
@@ -100,7 +102,11 @@ const ProductDetails = () => {
 
   const handleBuyNowOnWhatsApp = () => {
     if (product) {
-      const message = `Hello, I'm interested in buying ${product.name}. Please provide more details.`;
+      let message = `Hello, I'm interested in buying ${product.name}.`;
+      if (product.is_abroad_order) {
+        message += ` This is an abroad order item with an estimated delivery of ${product.abroad_delivery_days || 10} days.`;
+      }
+      message += ` Please provide more details.`;
       const whatsappUrl = `https://wa.me/2348034593459?text=${encodeURIComponent(message)}`;
       window.open(whatsappUrl, '_blank');
     }
@@ -195,6 +201,16 @@ const ProductDetails = () => {
           <div className="product-detail-info">
             <h2 className="product-title">{product.name}</h2>
             <p className="product-description">{product.description}</p>
+
+            {/* Abroad Order Message */}
+            {product.is_abroad_order && (
+                <div className="abroad-order-detail-message">
+                    <p>
+                        <span role="img" aria-label="airplane">✈️</span> This item is ordered from abroad.
+                        Estimated delivery: **{product.abroad_delivery_days || 10} business days.**
+                    </p>
+                </div>
+            )}
 
             <div className="product-price">
               {product.discount ? (

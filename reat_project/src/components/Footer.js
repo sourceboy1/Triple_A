@@ -1,4 +1,4 @@
-import React from 'react';  
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Import Link for navigation
 import './Footer.css';
 import { useUser } from '../contexts/UserContext'; // Import the UserContext
@@ -8,6 +8,7 @@ import FacebookIcon from '../pictures/facebook.jpg';
 import InstagramIcon from '../pictures/instagram.jpg';
 import TiktokIcon from '../pictures/tiktok.jpg';
 import YoutubeIcon from '../pictures/youtube.jpg';
+import WhatsappIcon from '../pictures/whatsapp_icon.jpg'; // Import the WhatsApp icon
 import Newsletter from './Newsletter';
 import FooterSection from './FooterSection'; // Import the FooterSection component
 
@@ -52,8 +53,8 @@ const Footer = () => {
                     <p>Call us 24/7</p>
                     <p>+2348034593459</p>
                     <p>+2348023975782</p>
-                    <p>2 Oba Akran, Ikeja, Lagos.</p>
-                    <p>Tripleastech518@gmail.com</p>
+                    <p>Address: 2 Oba Akran, Ikeja, Lagos.</p>
+                    <p>Email: tripleastech518@gmail.com</p>
                 </div>
                 <div className="footer-section">
                     <h3>INFORMATION</h3>
@@ -88,6 +89,9 @@ const Footer = () => {
                 </a>
                 <a href="https://youtube.com/@tripleastech-n9u?si=9XbMK9e1O9YCFtmo" target="_blank" rel="noopener noreferrer">
                     <img src={YoutubeIcon} alt="YouTube" className="social-icon" />
+                </a>
+                <a href="https://wa.me/2348034593459" target="_blank" rel="noopener noreferrer">
+                    <img src={WhatsappIcon} alt="WhatsApp" className="social-icon" />
                 </a>
             </div>
 

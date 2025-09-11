@@ -5,7 +5,7 @@ import { useCart } from '../contexts/CartContext';
 import PriceAlertModal from './PriceAlertModal'; // Import the modal
 import './Styling.css'; // Assuming your general styling
 
-const Product = ({ product_id, name, description, price, image_urls, stock }) => {
+const Product = ({ product_id, name, description, price, image_urls, stock, is_abroad_order, abroad_delivery_days }) => {
   const { addItemToCart } = useCart();
   const [showPriceAlert, setShowPriceAlert] = useState(false); // State for modal visibility
 
@@ -14,7 +14,7 @@ const Product = ({ product_id, name, description, price, image_urls, stock }) =>
 
   const handleAddToCart = () => {
     if (stock > 0) {
-      const productToAdd = { product_id, name, description, price, image_url: image_urls.large, stock }; // Pass stock
+      const productToAdd = { product_id, name, description, price, image_url: image_urls.large, stock, is_abroad_order, abroad_delivery_days }; // Pass new props to cart
       addItemToCart(productToAdd);
       setShowPriceAlert(true); // Show alert after adding to cart
     } else {
@@ -24,6 +24,9 @@ const Product = ({ product_id, name, description, price, image_urls, stock }) =>
 
   // Function to view product details and show alert
   const handleProductClick = () => {
+    // You might want to consider if you still want to show a price alert here
+    // or if it's more appropriate on the actual product details page after fetch.
+    // For now, keeping your original logic.
     setShowPriceAlert(true); // Show alert when clicking on product name/link
   };
 
@@ -36,13 +39,20 @@ const Product = ({ product_id, name, description, price, image_urls, stock }) =>
       )}
 
       <h2 className="product-title">
-        {/* Wrap Link in an onClick to show the alert */}
         <Link to={`/product-details/${product_id}`} onClick={handleProductClick}>
           {name}
         </Link>
       </h2>
 
       <p className="product-description">{description}</p>
+
+      {/* Abroad Order Indicator */}
+      {is_abroad_order && (
+        <div className="abroad-order-tag">
+          <span role="img" aria-label="globe">🌍</span> Order from Abroad
+          {abroad_delivery_days && ` (~${abroad_delivery_days} days)`}
+        </div>
+      )}
 
       <p className="product-price">₦{formattedPrice}</p>
 

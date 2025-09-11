@@ -222,6 +222,50 @@
   font-weight: bold;
 }
 
+/* Styling.css or ProductDetails.css */
+
+/* Style for the abroad order tag on product cards */
+.abroad-order-tag {
+  background-color: #f0f8ff; /* Light blue background */
+  color: #007bff; /* Blue text */
+  border: 1px solid #b0e0e6;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 0.85em;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  display: inline-block; /* Make it fit its content */
+  font-weight: bold;
+}
+
+/* Style for the abroad order message on the product details page */
+.abroad-order-detail-message {
+  background-color: #fff3cd; /* Light yellow background */
+  color: #856404; /* Dark yellow/brown text */
+  border: 1px solid #ffeeba;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  font-size: 1em;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.abroad-order-detail-message p {
+  margin: 0; /* Remove default paragraph margin */
+}
+
+/* Ensure icons within the message are styled */
+.abroad-order-detail-message span[role="img"] {
+  font-size: 1.2em; /* Make the emoji slightly larger */
+}
+
+/* Other existing styles for product cards and details should remain */
+/* ... (your existing .product-card, .product-image, .product-title, etc.) */
+
 /* --- Media Queries --- */
 
 /* For screens larger than 768px (Desktop/Tablet landscape) */

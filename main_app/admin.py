@@ -51,10 +51,24 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('product_id', 'name', 'price', 'original_price', 'discount', 'stock', 'category', 'is_deal_of_the_day', 'created_at', 'image')
+    list_display = (
+        'product_id', 'name', 'price', 'original_price', 'discount', 'stock',
+        'category', 'is_deal_of_the_day', 'is_abroad_order', 'abroad_delivery_days', # Add to list display
+        'created_at', 'image'
+    )
     search_fields = ('name', 'description', 'category__name')
-    list_filter = ('category', 'created_at', 'is_deal_of_the_day')
-    fields = ('name', 'description', 'price', 'original_price', 'discount', 'stock', 'category', 'image', 'is_deal_of_the_day')
+    list_filter = ('category', 'created_at', 'is_deal_of_the_day', 'is_abroad_order') # Add to list filter
+    fields = (
+        'name', 'description', 'price', 'original_price', 'discount', 'stock',
+        'category', 'image', 'is_deal_of_the_day',
+        'is_abroad_order', 'abroad_delivery_days' # Add to editable fields
+    )
+
+# If Category is not already registered
+# @admin.register(Category)
+# class CategoryAdmin(admin.ModelAdmin):
+#     list_display = ('name',)
+#     search_fields = ('name',)
 
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):

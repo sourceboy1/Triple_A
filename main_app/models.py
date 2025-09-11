@@ -108,6 +108,13 @@ class Product(models.Model):
     is_deal_of_the_day = models.BooleanField(default=False)
     is_featured = models.BooleanField(default=False)
     is_new = models.BooleanField(default=False)
+    # New fields for abroad orders
+    is_abroad_order = models.BooleanField(default=False)
+    abroad_delivery_days = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+        help_text="Estimated delivery days for orders from abroad. Only applies if 'Is Abroad Order' is checked."
+    )
 
     class Meta:
         managed = True
