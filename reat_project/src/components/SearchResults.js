@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../Api'; // ✅ Centralized API import
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom'; // <-- Added Link
 import './SearchResults.css';
 import Loading from './Loading';
 
@@ -68,11 +68,12 @@ const SearchResults = () => {
               />
 
               <div className="result-info">
-                <a href={`/product-details/${product.product_id}`}>
+                {/* ✅ Use Link instead of <a> */}
+                <Link to={`/product-details/${product.product_id}`}>
                   <h3>{product.name}</h3>
                   <p className="description">{product.description}</p>
                   <p className="price">₦{new Intl.NumberFormat().format(product.price)}</p>
-                </a>
+                </Link>
               </div>
             </div>
           ))

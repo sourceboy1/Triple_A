@@ -11,9 +11,6 @@ COPY reat_project/package*.json ./
 # Install dependencies
 RUN npm install
 
-# --- ADD THIS LINE FOR DEBUGGING ---
-RUN ls -R node_modules/react-ga4 || echo "react-ga4 not found"
-
 # Copy the rest of React code
 COPY reat_project/ ./
 
@@ -34,6 +31,7 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
     libpq-dev \
+    # Add any other system dependencies for your project
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -42,17 +40,20 @@ WORKDIR /app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy Django project files
+# Copy Django project files (make sure this copies your main_project/ folder etc.)
+# If your Django project is in `main_project` relative to the Dockerfile, this is fine
 COPY . ./
 
-# Copy built React frontend into Django static directory
+# ✅ IMPORTANT: Copy built React frontend into the correct Django static directory
+# This copies the entire `build` folder into `reat_project/build` within the Django app
 COPY --from=frontend /app/frontend/build ./reat_project/build
 
 # Run Django checks (optional)
 RUN python -m django --version
 RUN python manage.py check
 
-# Collect static files
+# ✅ Crucial: Collect static files after React build is copied
+# This will gather all static files, including those from FRONTEND_DIR / "static"
 RUN python manage.py collectstatic --noinput
 
 # Expose port (Railway or local)
