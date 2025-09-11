@@ -11,6 +11,8 @@ import wishlistActiveImg from '../pictures/wishlist-active.jpg';
 const ProductDetails = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true); // Added loading state
+  const [error, setError] = useState(null); // Added error state
   const [selectedImage, setSelectedImage] = useState('');
   const [quantity, setQuantity] = useState(1);
   const { addItemToCart } = useCart();
@@ -21,8 +23,14 @@ const ProductDetails = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      if (!productId) return;
+      if (!productId) {
+        setError("Product ID is missing from the URL.");
+        setLoading(false);
+        return;
+      }
 
+      setLoading(true); // Start loading
+      setError(null);    // Clear any previous errors
       try {
         const response = await api.get(`products/${productId}/`);
         const productData = response.data;
@@ -38,12 +46,18 @@ const ProductDetails = () => {
         setProduct(productData);
         saveToRecentlyViewed(productData, mainImage);
 
-        // Show price alert as the product details are loaded
-        setShowPriceAlert(true);
+        // Show price alert only if product successfully loaded
+        // Assuming this is for a general product alert, not cart addition.
+        // If it's specifically for cart, move it into handleAddToCart.
+        // For product details load, you might want to consider if this alert is relevant.
+        // setShowPriceAlert(true); // Decide if you want this here or only on add to cart.
+
       } catch (error) {
         console.error('Error fetching product:', error.response?.data || error.message || error);
         setProduct(null); // Clear product data if fetch fails
-        // Optionally, you could redirect to a 404 page or display a specific error for the user
+        setError('Failed to load product details. Please try again.'); // Set user-friendly error
+      } finally {
+        setLoading(false); // End loading
       }
     };
 
@@ -70,7 +84,8 @@ const ProductDetails = () => {
   const handleIncrease = () => {
     // Only increase if product exists and quantity is less than available stock
     if (product && quantity < product.stock) {
-      setQuantity(quantity + 1);
+      setQuantity(prevQuantity => prevQuantity + 1);
+      setStockMessage(''); // Clear stock message
     } else if (product && quantity >= product.stock) {
       setStockMessage(`Cannot add more than available stock (${product.stock}).`);
     }
@@ -79,7 +94,7 @@ const ProductDetails = () => {
   const handleDecrease = () => {
     // Only decrease if quantity is greater than 1
     if (quantity > 1) {
-      setQuantity(quantity - 1);
+      setQuantity(prevQuantity => prevQuantity - 1);
       setStockMessage(''); // Clear stock message if quantity is now valid
     }
   };
@@ -132,8 +147,14 @@ const ProductDetails = () => {
     }
   };
 
-  // Display loading state if product is null
-  if (!product) return <div className="loading-product-details">Loading product details...</div>;
+  // Display loading state
+  if (loading) return <div className="loading-product-details">Loading product details...</div>;
+
+  // Display error state if product couldn't be loaded
+  if (error) return <div className="error-product-details" style={{ color: 'red', textAlign: 'center', padding: '20px' }}>{error}</div>;
+
+  // If not loading and no product (which means error but not caught or productId was missing)
+  if (!product) return <div className="error-product-details" style={{ color: 'orange', textAlign: 'center', padding: '20px' }}>Product not found.</div>;
 
   // --- Image Handling for Thumbnails ---
   const thumbnails = [];
@@ -287,7 +308,7 @@ const ProductDetails = () => {
         show={showPriceAlert}
         onClose={() => setShowPriceAlert(false)}
         product={product ? { name: product.name } : null} // Pass product name if available
-        type="product"
+        type="price" // Changed type here, confirm if this is correct for your modal
       />
     </div>
   );
