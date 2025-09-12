@@ -80,8 +80,8 @@
 
 .product-image {
   width: 100%; /* Image takes full width of its card's content area */
-  max-width: 150px; /* Max width for images to prevent them from becoming too large */
-  height: 120px; /* Fixed height for consistent card sizing */
+  max-width: 170px; /* Max width for images to prevent them from becoming too large */
+  height: 135px; /* Fixed height for consistent card sizing */
   object-fit: contain; /* Ensures the whole image is visible */
   border-radius: var(--border-radius);
   margin-bottom: 10px;
