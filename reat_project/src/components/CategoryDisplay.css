@@ -89,7 +89,7 @@
 }
 
 .product-title {
-  font-size: 0.5em; /* Reduced from 0.35em to 0.9em for better readability and smaller overall size */
+  font-size: 0.4em; /* Significantly reduced to 0.4em */
   color: var(--primary-color);
   font-weight: 400;
   margin: 0;
@@ -101,6 +101,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis; /* Add ellipsis for truncated text */
+  -webkit-line-clamp: 2; /* Limit to 2 lines for very small text */
 }
 
 /* "See More" link */
@@ -141,13 +142,13 @@
     gap: 10px;
   }
   .product-image {
-    /* Maintain fixed height and object-fit for consistency */
     height: 100px; /* Adjusted height for tablets */
     max-width: 100%; /* Ensure it doesn't overflow its new container width */
     object-fit: contain;
   }
   .product-title {
-    font-size: 0.4em; /* Adjusted for tablets */
+    font-size: 0.35em; /* Significantly reduced for tablets */
+    -webkit-line-clamp: 2;
   }
 }
 
@@ -179,7 +180,6 @@
     padding: 8px;
   }
   .product-image {
-    /* --- KEY CHANGES HERE --- */
     width: 80px; /* Fixed width for consistent side-by-side display */
     height: 80px; /* Fixed height to match width and maintain aspect ratio */
     margin-bottom: 0;
@@ -188,9 +188,10 @@
     object-fit: contain; /* Ensure the full image is shown within the 80x80 space */
   }
   .product-title {
-    font-size: 0.4em; /* Adjusted for mobile view, slightly larger for readability */
+    font-size: 0.35em; /* Significantly reduced for mobile row view */
     flex-grow: 1; /* Allow title to take remaining space */
     text-align: left; /* Ensure text is left-aligned here */
+    -webkit-line-clamp: 3; /* Allow more lines for side-by-side on small screens */
   }
 }
 
@@ -207,13 +208,13 @@
     padding: 5px;
   }
   .product-image {
-    /* --- KEY CHANGES HERE --- */
     width: 70px; /* Smaller fixed width */
     height: 70px; /* Smaller fixed height */
     margin-right: 8px;
     object-fit: contain; /* Ensure full image is visible */
   }
   .product-title {
-    font-size: 0.3em;
+    font-size: 0.3em; /* Keep at 0.3em, ensuring it's as small as feasible */
+    -webkit-line-clamp: 3;
   }
 }
