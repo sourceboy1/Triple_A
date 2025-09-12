@@ -147,7 +147,7 @@
     object-fit: contain;
   }
   .product-title {
-    font-size: 0.85em; /* Adjusted for tablets */
+    font-size: 0.4em; /* Adjusted for tablets */
   }
 }
 
@@ -188,7 +188,7 @@
     object-fit: contain; /* Ensure the full image is shown within the 80x80 space */
   }
   .product-title {
-    font-size: 0.9em; /* Adjusted for mobile view, slightly larger for readability */
+    font-size: 0.4em; /* Adjusted for mobile view, slightly larger for readability */
     flex-grow: 1; /* Allow title to take remaining space */
     text-align: left; /* Ensure text is left-aligned here */
   }
@@ -214,6 +214,6 @@
     object-fit: contain; /* Ensure full image is visible */
   }
   .product-title {
-    font-size: 0.85em;
+    font-size: 0.3em;
   }
 }
