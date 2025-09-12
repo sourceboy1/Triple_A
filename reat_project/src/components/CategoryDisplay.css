@@ -141,8 +141,10 @@
     gap: 10px;
   }
   .product-image {
-    height: 100px;
-    max-width: 120px; /* Adjusted max-width for images on tablets */
+    /* Maintain fixed height and object-fit for consistency */
+    height: 100px; /* Adjusted height for tablets */
+    max-width: 100%; /* Ensure it doesn't overflow its new container width */
+    object-fit: contain;
   }
   .product-title {
     font-size: 0.85em; /* Adjusted for tablets */
@@ -177,12 +179,13 @@
     padding: 8px;
   }
   .product-image {
-    width: 80px;
-    height: 80px;
+    /* --- KEY CHANGES HERE --- */
+    width: 80px; /* Fixed width for consistent side-by-side display */
+    height: 80px; /* Fixed height to match width and maintain aspect ratio */
     margin-bottom: 0;
     margin-right: 10px;
     flex-shrink: 0;
-    object-fit: cover; /* Use cover for better look in small side-by-side view */
+    object-fit: contain; /* Ensure the full image is shown within the 80x80 space */
   }
   .product-title {
     font-size: 0.9em; /* Adjusted for mobile view, slightly larger for readability */
@@ -204,9 +207,11 @@
     padding: 5px;
   }
   .product-image {
-    width: 70px;
-    height: 70px;
+    /* --- KEY CHANGES HERE --- */
+    width: 70px; /* Smaller fixed width */
+    height: 70px; /* Smaller fixed height */
     margin-right: 8px;
+    object-fit: contain; /* Ensure full image is visible */
   }
   .product-title {
     font-size: 0.85em;
