@@ -39,10 +39,12 @@ const OrderDetails = ({ orderId: propOrderId, onBack }) => {
   const formatPrice = (price) =>
     Number(price).toLocaleString('en-NG', { style: 'currency', currency: 'NGN' });
 
+  // UPDATED: This function now uses the IDs from your Checkout component
   const getPaymentMethodName = (paymentMethodId) => {
     switch (paymentMethodId) {
-      case 4: return 'Direct Bank Transfer';
-      case 3: return 'Debit/Credit Card';
+      case 1: return 'Bank Transfer'; // Matches ID 1 from Checkout
+      case 2: return 'Debit/Credit Cards'; // Matches ID 2 from Checkout
+      // If you have other payment methods with different IDs, add them here
       default: return 'Unknown Payment Method';
     }
   };
@@ -91,6 +93,7 @@ const OrderDetails = ({ orderId: propOrderId, onBack }) => {
         <tbody>
           <tr><td>Subtotal</td><td>{formatPrice(order.total_amount)}</td></tr>
           <tr><td>Shipping</td><td>{order.shipping_method === 'store_pickup' ? 'Store Pickup' : 'Standard Shipping'}</td></tr>
+          {/* Ensure payment_method_id is available in order object */}
           <tr><td>Payment method</td><td>{getPaymentMethodName(order.payment_method_id)}</td></tr>
           <tr className="total-row"><td>Total</td><td>{formatPrice(order.total_amount)}</td></tr>
           <tr><td>Note</td><td>{order.order_note || 'No additional notes'}</td></tr>

@@ -3,6 +3,28 @@ import { useUser } from '../contexts/UserContext'; // ✅ use UserContext
 import api from '../Api';
 import './UserOrders.css';
 
+// New LoadingDots component
+const LoadingDots = () => {
+  const [dots, setDots] = useState('');
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDots(prevDots => {
+        if (prevDots.length === 3) {
+          return '';
+        }
+        return prevDots + '.';
+      });
+    }, 300); // Change dot every 300ms
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <span>Loading{dots}</span>
+  );
+};
+
+
 const UserOrders = ({ onViewOrder }) => {
   const { token } = useUser(); // ✅ get token
   const [orders, setOrders] = useState([]);
@@ -83,7 +105,7 @@ const UserOrders = ({ onViewOrder }) => {
     <div className="orders-container">
       <h2>Your Orders</h2>
 
-      {loading && <p>Loading...</p>}
+      {loading && <p><LoadingDots /></p>} {/* Use the new component here */}
       {!loading && error && <p className="error">{error}</p>}
       {!loading && !error && orders.length === 0 && <p>No orders found.</p>}
 
