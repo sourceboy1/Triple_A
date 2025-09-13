@@ -105,7 +105,8 @@ const UserOrders = ({ onViewOrder }) => {
               <div>{formatPrice(order.total_amount)}</div>
               <div className="order-actions">
                 <button onClick={() => onViewOrder(order.order_id)}>View</button>
-                {order.status !== 'Cancelled' && order.status !== 'Delivered' && (
+                {/* Changed condition here to hide Cancel for 'Cancelled', 'Delivered', and 'Shipped' */}
+                {order.status !== 'Cancelled' && order.status !== 'Delivered' && order.status !== 'Shipped' && (
                   <button onClick={() => {
                     setCancelOrderId(order.order_id);
                     setIsCanceling(true);
