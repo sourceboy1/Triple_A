@@ -306,8 +306,7 @@
 /* For screens smaller than 480px (typical small phones) */
 @media screen and (max-width: 480px) {
   .account-container {
-    margin: 10px;
-    margin-top: 70px;
+    margin: 100px auto;
   }
 
   .sidebar {
