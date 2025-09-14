@@ -535,7 +535,7 @@ h2 svg {
     .payment-transfer-container {
         width: 95%;
         padding: 25px;
-        margin: 25px auto;
+        margin: 80px auto;
     }
 
     .header-section h1 {
@@ -615,7 +615,8 @@ h2 svg {
 @media (max-width: 480px) {
     .payment-transfer-container {
         padding: 15px;
-        margin: 100px 10px 50px 0px;
+        margin: 100px auto 65px auto; /* Changed margin-left to auto for centering */
+        width: 85%; /* Ensure it's not too wide */
     }
 
     .header-section h1 {
