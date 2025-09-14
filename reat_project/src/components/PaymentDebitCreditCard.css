@@ -668,18 +668,20 @@ body {
 @media (max-width: 480px) {
     .payment-page-container {
         padding: 15px;
-        margin: 100px auto 65px auto;
-        width: 85%; /* This remains at 85% as requested */
-        box-sizing: border-box; 
+        margin: 100px auto 65px auto; /* Changed margin-left to auto for centering */
+        width: 85%; /* Ensure it's not too wide */
     }
 
-    /* Set the inner content elements to 75% width and center them */
-    .header-section,
-    .content-wrapper,
+    .header-section {
+        width: 75%; /* Reset to 100% within the 85% container */
+    }
+
+    .content-wrapper {
+        width: 75%; /* Reset to 100% within the 85% container */
+    }
+
     .action-buttons-footer {
-        width: 75%; /* These will now be 75% of the 85% parent */
-        margin-left: auto; /* Center them within the parent */
-        margin-right: auto; /* Center them within the parent */
+        width: 75%; /* Reset to 100% within the 85% container */
     }
 
     .header-section h1 {
@@ -695,8 +697,7 @@ body {
     .order-details-card,
     .customer-info-card {
         padding: 20px;
-        min-width: unset;
-        max-width: 100%; /* Ensure cards fit within their 75% parent */
+        min-width: unset; /* Remove min-width for very small screens */
     }
 
     .order-details-card h2,
@@ -724,8 +725,8 @@ body {
     }
 
     .item-total {
-        align-self: flex-end;
-        margin-top: -30px;
+        align-self: flex-end; /* Align total to the right in column layout */
+        margin-top: -30px; /* Adjust position */
         font-size: 1em;
     }
 
