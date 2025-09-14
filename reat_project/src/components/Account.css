@@ -1,168 +1,388 @@
 /* Account.css */
 
+:root {
+  --primary-green: #4CAF50; /* A pleasant shade of green */
+  --dark-green: #388E3C;
+  --light-green: #E8F5E9;
+  --text-dark: #333;
+  --text-medium: #555;
+  --text-light: #777;
+  --border-color: #ddd;
+  --background-light: #f9f9f9;
+  --background-white: #ffffff;
+  --shadow-light: rgba(0, 0, 0, 0.08);
+  --transition-speed: 0.3s ease;
+}
+
 .account-container {
-    display: flex;
-    min-height: 80vh;
-    background-color: white;
-    margin: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-top: 85px;
-    flex-wrap: wrap; /* Allow flex items to wrap */
+  display: flex;
+  min-height: 80vh;
+  background-color: var(--background-white);
+  margin: 30px auto; /* Centered with more top/bottom margin */
+  max-width: 1200px; /* Max width for larger screens */
+  border: 1px solid var(--border-color);
+  border-radius: 12px; /* Slightly more rounded corners */
+  overflow: hidden;
+  margin-top: 100px; /* Adjusted top margin for potential header */
+  box-shadow: 0 4px 15px var(--shadow-light); /* Softer shadow */
 }
 
 .sidebar {
-    min-width: 200px;
-    background-color: #fbfef9;
-    border-right: 2px solid green;
-    padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  flex-basis: 250px; /* Fixed width for sidebar */
+  flex-shrink: 0; /* Prevent shrinking */
+  background-color: var(--background-light);
+  border-right: 1px solid var(--border-color);
+  padding: 25px 0; /* Adjusted padding */
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05); /* Lighter shadow for sidebar */
 }
 
 .account-options {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .option-item {
-    padding: 10px 15px;
-    margin: 5px 0;
-    border: 1px solid green;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    border-radius: 4px;
-    text-align: left;
+  padding: 15px 30px; /* More generous padding */
+  margin: 0; /* Remove vertical margin here */
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: background-color var(--transition-speed), color var(--transition-speed);
+  font-size: 1.05em; /* Slightly larger font */
+  border-bottom: 1px solid #eee; /* Subtle separator */
 }
 
-.option-item:hover,
-.option-item.active {
-    background-color: darkgreen;
-    color: white;
+.option-item:last-child {
+  border-bottom: none;
 }
+
+.option-item:hover {
+  background-color: var(--light-green);
+  color: var(--primary-green);
+}
+
+.option-item.active {
+  background-color: var(--primary-green);
+  color: white;
+  font-weight: 600; /* Bolder for active state */
+  position: relative;
+}
+
+/* Optional: Add a subtle indicator for active item */
+.option-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background-color: var(--dark-green);
+  border-radius: 0 3px 3px 0;
+}
+
 
 .content-section {
-    flex: 1;
-    padding: 20px;
-    border-top: 2px solid green;
-    border-left: 2px solid green;
-    min-width: 200px; /* Prevents content from shrinking too much */
+  flex: 1;
+  padding: 30px; /* More padding */
+  background-color: var(--background-white);
 }
 
 .content-section > div {
-    font-family: Arial, sans-serif;
-    font-size: 19px; /* Reduced text size */
-    color: #52534f;
-}
-
-.not-you {
-    font-size: 25px; /* Slightly smaller text for the additional note */
-    color: rgb(78, 76, 76);
-}
-
-.logout-link {
-    color: green;
-    text-decoration: none;
-}
-
-.logout-link:hover {
-    text-decoration: underline;
+  font-family: 'Open Sans', sans-serif; /* Modern, readable font */
+  font-size: 1em; /* Base font size */
+  line-height: 1.6;
+  color: var(--text-medium);
 }
 
 .dashboard {
-    font-size: 28px;
+  font-size: 2em; /* Larger heading */
+  color: var(--text-dark);
+  margin-bottom: 15px;
+  font-weight: 700;
 }
 
+.not-you {
+  font-size: 0.8em; /* Relative to dashboard heading */
+  color: var(--text-light);
+  font-weight: normal;
+}
+
+.logout-link {
+  color: var(--primary-green);
+  text-decoration: none;
+  transition: color var(--transition-speed);
+}
+
+.logout-link:hover {
+  color: var(--dark-green);
+  text-decoration: underline;
+}
+
+/* General link styling within content */
+.content-section a {
+  color: var(--primary-green);
+  text-decoration: none;
+  transition: color var(--transition-speed);
+}
+
+.content-section a:hover {
+  color: var(--dark-green);
+  text-decoration: underline;
+}
+
+/* Form Styling (AccountDetails) */
 .account-details-form {
-    display: flex;
-    flex-direction: column;
-    width: 300px;
-    gap: 15px;
+  display: flex;
+  flex-direction: column;
+  max-width: 450px; /* Slightly wider forms */
+  gap: 20px; /* Increased gap for better spacing */
+  margin-top: 20px;
 }
 
 .account-details-form label {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95em;
+  color: var(--text-dark);
+  font-weight: 600;
 }
 
-.account-details-form input {
-    padding: 8px;
-    font-size: 14px;
+.account-details-form input[type="text"],
+.account-details-form input[type="email"],
+.account-details-form input[type="password"] {
+  padding: 12px; /* More padding in inputs */
+  font-size: 1em;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  margin-top: 8px;
+  width: 100%; /* Ensure inputs take full width of their container */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.account-details-form input[type="text"]:focus,
+.account-details-form input[type="email"]:focus,
+.account-details-form input[type="password"]:focus {
+  border-color: var(--primary-green);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2); /* Focus glow */
 }
 
 .save-account-details {
-    background-color: #28a745;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
-    border-radius: 3px;
-    align-self: flex-start;
+  background-color: var(--primary-green);
+  color: white;
+  padding: 12px 25px; /* More padding for button */
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  align-self: flex-start;
+  font-size: 1.05em;
+  font-weight: 600;
+  transition: background-color var(--transition-speed), transform 0.2s ease;
 }
 
 .save-account-details:hover {
-    background-color: #218838;
+  background-color: var(--dark-green);
+  transform: translateY(-2px); /* Subtle lift effect */
 }
 
-/* Mobile responsiveness for screens up to 768px */
+/* --- Mobile Responsiveness --- */
+
+/* For screens smaller than 992px (typical tablet landscape) */
+@media screen and (max-width: 992px) {
+  .account-container {
+    margin: 20px auto;
+    margin-top: 90px;
+    border-radius: 8px;
+  }
+
+  .sidebar {
+    flex-basis: 200px; /* Slightly narrower sidebar */
+    padding: 20px 0;
+  }
+
+  .option-item {
+    padding: 12px 20px;
+    font-size: 1em;
+  }
+
+  .content-section {
+    padding: 25px;
+  }
+
+  .dashboard {
+    font-size: 1.8em;
+  }
+}
+
+
+/* For screens smaller than 768px (typical tablet portrait and large phones) */
 @media screen and (max-width: 768px) {
-    .account-container {
-        flex-direction: column; /* Stack sidebar and content section vertically */
-        margin: 10px; /* Reduce margin */
-        margin-top: 125px;
-    }
+  .account-container {
+    flex-direction: column; /* Stack sidebar and content vertically */
+    margin: 15px;
+    margin-top: 80px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px var(--shadow-light); /* Lighter shadow for mobile */
+  }
 
-    .sidebar {
-        min-width: 100%;
-        border-right: none; /* Remove right border for better layout */
-        margin-bottom: 20px; /* Add space below sidebar */
-    }
+  .sidebar {
+    min-width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color); /* Add bottom border */
+    padding: 0; /* Remove vertical padding */
+    box-shadow: none; /* No shadow needed here */
+  }
 
-    .content-section {
-        min-width: 100%; /* Ensure content section takes full width */
-        border-left: none; /* Remove left border on smaller screens */
-        padding: 15px; /* Adjust padding for mobile screens */
-    }
+  .account-options {
+    display: flex; /* Make options horizontal */
+    overflow-x: auto; /* Allow horizontal scrolling if many options */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
+    white-space: nowrap; /* Prevent items from wrapping */
+    padding: 10px 0;
+  }
 
-    .account-details-form {
-        width: 100%; /* Make form take full width on smaller screens */
-        gap: 10px; /* Reduced gap between form elements */
-    }
+  .option-item {
+    flex-shrink: 0; /* Prevent items from shrinking */
+    padding: 10px 15px;
+    margin: 0 5px; /* Space between horizontal items */
+    border: 1px solid var(--border-color);
+    border-radius: 20px; /* Pill-shaped buttons */
+    background-color: var(--background-white);
+    font-size: 0.9em;
+    border-bottom: none; /* Remove individual item bottom border */
+  }
 
-    .account-details-form input {
-        font-size: 16px; /* Increase input font size for better readability */
-    }
+  .option-item:first-child {
+    margin-left: 15px; /* Margin for first item */
+  }
 
-    .save-account-details {
-        width: 100%; /* Make the button full-width */
-    }
+  .option-item:last-child {
+    margin-right: 15px; /* Margin for last item */
+  }
+
+  .option-item.active {
+    background-color: var(--primary-green);
+    color: white;
+    border-color: var(--primary-green);
+  }
+
+  .option-item.active::before {
+    display: none; /* Hide active indicator line for mobile */
+  }
+
+  .content-section {
+    min-width: 100%;
+    padding: 20px;
+  }
+
+  .dashboard {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+
+  .not-you {
+    font-size: 0.75em;
+  }
+
+  .account-details-form {
+    max-width: 100%;
+    gap: 15px;
+  }
+
+  .account-details-form input {
+    padding: 10px;
+    font-size: 0.95em;
+  }
+
+  .save-account-details {
+    width: 100%; /* Full width button */
+    padding: 10px 15px;
+    font-size: 1em;
+    align-self: stretch; /* Stretch to full width */
+  }
 }
 
-/* Mobile responsiveness for screens up to 480px */
+/* For screens smaller than 480px (typical small phones) */
 @media screen and (max-width: 480px) {
-    .account-container {
-        margin: 5px; /* Smaller margin for very small screens */
-        margin-top: 100px;
-    }
+  .account-container {
+    margin: 10px;
+    margin-top: 70px;
+  }
 
-    .sidebar {
-        padding: 15px; /* Less padding */
-    }
+  .sidebar {
+    padding: 5px 0;
+  }
 
-    .content-section {
-        padding: 10px; /* Less padding for small screens */
-    }
+  .account-options {
+    padding: 8px 0;
+  }
 
-    .account-details-form {
-        width: 100%; /* Ensure form takes up the full width */
-    }
+  .option-item {
+    padding: 8px 12px;
+    margin: 0 4px;
+    font-size: 0.85em;
+  }
 
-    .account-details-form input {
-        font-size: 15px; /* Smaller input font size */
-    }
+  .option-item:first-child {
+    margin-left: 10px;
+  }
 
-    .save-account-details {
-        padding: 8px 12px; /* Smaller button size */
-    }
+  .option-item:last-child {
+    margin-right: 10px;
+  }
+
+  .content-section {
+    padding: 15px;
+  }
+
+  .dashboard {
+    font-size: 1.3em;
+  }
+}
+
+/* Basic styling for UserOrders, AccountDetails, Wishlist to look good */
+/* You'll likely want to further style these components individually */
+.user-orders-container, .account-details-container, .wishlist-container {
+  padding: 10px 0;
+}
+
+.user-orders-container h3, .account-details-container h3, .wishlist-container h3 {
+  font-size: 1.7em;
+  color: var(--text-dark);
+  margin-bottom: 20px;
+}
+
+.user-orders-list, .wishlist-items {
+  list-style: none;
+  padding: 0;
+}
+
+.order-item, .wishlist-item {
+  background-color: var(--background-light);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-item-details, .wishlist-item-details {
+  flex-grow: 1;
+}
+
+.view-order-button, .remove-from-wishlist-button {
+  background-color: var(--primary-green);
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color var(--transition-speed);
+}
+
+.view-order-button:hover, .remove-from-wishlist-button:hover {
+  background-color: var(--dark-green);
 }
