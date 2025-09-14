@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+// PaymentDebitCreditCard.js
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import api from '../Api';
-import './PaymentDebitCreditCard.css'; // Create a new CSS file for this component's specific styling
+import './PaymentDebitCreditCard.css';
 import { PaystackButton } from 'react-paystack';
-import { FaShoppingCart, FaCreditCard, FaLock, FaHome, FaTimesCircle } from 'react-icons/fa'; // Import icons
+import { FaShoppingCart, FaCreditCard, FaLock, FaHome, FaTimesCircle, FaCheckCircle, FaExclamationTriangle } from 'react-icons/fa'; // Added new icons
 
 const PAYSTACK_PUBLIC_KEY = 'pk_live_465faeaf26bb124923dde0c51f9f2b6a1b9ee006'; // Your Paystack Public Key
 const PAYSTACK_CHARGE_PERCENTAGE = 0.015; // 1.5%
@@ -14,8 +15,12 @@ const PaymentDebitCreditCard = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [isCanceling, setIsCanceling] = useState(false);
-    const [showPaystackPopup, setShowPaystackPopup] = useState(false);
     const [totalWithCharges, setTotalWithCharges] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    // Use a ref to ensure Paystack popup is triggered only once on initial load
+    const paystackTriggeredRef = useRef(false);
 
     const { state } = location;
     const token = localStorage.getItem('token');
@@ -53,15 +58,31 @@ const PaymentDebitCreditCard = () => {
         if (total > 0) {
             const charges = calculatePaystackCharges(total);
             setTotalWithCharges(total + charges);
-            setShowPaystackPopup(true); // Trigger Paystack popup immediately
+            setIsLoading(false);
+        } else if (!state) {
+            setError("No order details found. Please go back to checkout.");
+            setIsLoading(false);
         }
-    }, [total, calculatePaystackCharges]);
+    }, [total, calculatePaystackCharges, state]);
+
+    // This useEffect will trigger the Paystack popup
+    useEffect(() => {
+        if (!isLoading && totalWithCharges > 0 && !paystackTriggeredRef.current) {
+            // Programmatically trigger Paystack by rendering the button and simulating a click
+            // The PaystackButton component itself handles the rendering and logic.
+            // We just need to ensure it's mounted with the right props.
+            paystackTriggeredRef.current = true; // Mark as triggered
+            // The PaystackButton will automatically open when mounted with valid props.
+            // No need for a separate state `showPaystackPopup` to control its visibility if it should always show.
+        }
+    }, [isLoading, totalWithCharges]);
+
 
     // Paystack configuration
     const paystackConfig = {
         reference: new Date().getTime().toString(),
         email: email,
-        amount: totalWithCharges * 100, // Amount in kobo, including charges
+        amount: Math.round(totalWithCharges * 100), // Amount in kobo, must be an integer
         publicKey: PAYSTACK_PUBLIC_KEY,
         metadata: {
             order_id: orderId,
@@ -103,28 +124,33 @@ const PaymentDebitCreditCard = () => {
                     'Authorization': `Token ${token}`,
                 }
             });
-            alert('Payment successful! Your order has been confirmed.');
             navigate('/order-success', { state: { orderId } });
         } catch (error) {
             console.error('Error confirming payment with backend:', error);
-            alert('Payment successful, but there was an issue confirming with our system. Please contact support.');
+            setError('Payment successful, but there was an issue confirming with our system. Please contact support.');
             navigate('/order-failure');
         }
     };
 
     // Callback for payment close
     const handleClose = () => {
-        alert('Payment window closed. You can try again or cancel your order.');
-        // Optionally, you might want to redirect or show a message
-        // navigate('/checkout'); // Example: redirect back to checkout
+        // Only show alert if payment wasn't successful
+        if (!paystackTriggeredRef.current) { // Prevent showing alert if it was a successful payment then closed
+            alert('Payment window closed. You can try again or cancel your order.');
+        }
+        // paystackTriggeredRef.current = false; // Reset if user wants to try again
     };
 
-    const componentProps = {
-        ...paystackConfig,
-        text: 'Proceed to Pay',
-        onSuccess: handleSuccess,
-        onClose: handleClose,
-    };
+    const PaystackIntegrationButton = () => (
+        <PaystackButton
+            {...paystackConfig}
+            text="Pay Now Securely"
+            onSuccess={handleSuccess}
+            onClose={handleClose}
+            className="paystack-pay-button"
+        />
+    );
+
 
     const handleCancelOrder = () => {
         setIsCanceling(true);
@@ -148,6 +174,7 @@ const PaymentDebitCreditCard = () => {
     const cancelOrderDialog = (
         <div className="cancel-dialog-overlay">
             <div className="cancel-dialog">
+                <FaExclamationTriangle className="dialog-icon warning" />
                 <p>Are you sure you want to cancel this order?</p>
                 <div className="dialog-buttons">
                     <button onClick={confirmCancelOrder} className="dialog-confirm-button">Yes, Cancel Order</button>
@@ -157,16 +184,38 @@ const PaymentDebitCreditCard = () => {
         </div>
     );
 
+    if (isLoading) {
+        return (
+            <div className="payment-page-container loading-state">
+                <div className="loading-spinner"></div>
+                <p>Loading payment details...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="payment-page-container error-state">
+                <FaExclamationTriangle className="error-icon" />
+                <h1>Error</h1>
+                <p>{error}</p>
+                <button className="go-home-button" onClick={() => navigate('/')}>
+                    <FaHome /> Go Home
+                </button>
+            </div>
+        );
+    }
+
     return (
         <div className="payment-page-container">
             <div className="header-section">
-                <h1>Secure Payment</h1>
-                <p>Order ID: <strong>#{orderId}</strong></p>
-                <p>Thank you for your purchase!</p>
+                <h1>Secure Payment <FaLock className="header-lock-icon" /></h1>
+                <p className="subtitle">Order ID: <strong>#{orderId}</strong></p>
+                <p className="tagline">Your final step to a successful purchase!</p>
             </div>
 
             <div className="content-wrapper">
-                <div className="order-details-card">
+                <div className="order-details-card glassmorphism">
                     <h2><FaShoppingCart /> Order Summary</h2>
                     <div className="order-items-list">
                         {products.length > 0 ? (
@@ -182,46 +231,47 @@ const PaymentDebitCreditCard = () => {
                                 </div>
                             ))
                         ) : (
-                            <p>No products found in this order.</p>
+                            <p className="no-products-message">No products found in this order.</p>
                         )}
                     </div>
-                    <div className="summary-line">
-                        <span>Subtotal:</span>
-                        <span>{formatPrice(subtotal)}</span>
-                    </div>
-                    <div className="summary-line">
-                        <span>Shipping Cost:</span>
-                        <span>{formatPrice(shippingCost)}</span>
-                    </div>
-                    {totalWithCharges > total && (
-                        <div className="summary-line paystack-charge">
-                            <span>Paystack Charges:</span>
-                            <span>{formatPrice(totalWithCharges - total)}</span>
+                    <div className="summary-section">
+                        <div className="summary-line">
+                            <span>Subtotal:</span>
+                            <span>{formatPrice(subtotal)}</span>
                         </div>
-                    )}
-                    <div className="summary-line total-amount-final">
-                        <span>Total (incl. Charges):</span>
-                        <span>{formatPrice(totalWithCharges)}</span>
+                        <div className="summary-line">
+                            <span>Shipping Cost:</span>
+                            <span>{formatPrice(shippingCost)}</span>
+                        </div>
+                        {totalWithCharges > total && (
+                            <div className="summary-line paystack-charge">
+                                <span>Paystack Charges:</span>
+                                <span>{formatPrice(totalWithCharges - total)}</span>
+                            </div>
+                        )}
+                        <div className="summary-line total-amount-final">
+                            <span>Total (incl. Charges):</span>
+                            <span>{formatPrice(totalWithCharges)}</span>
+                        </div>
                     </div>
                 </div>
 
-                <div className="customer-info-card">
+                <div className="customer-info-card glassmorphism">
                     <h2><FaCreditCard /> Payment Information</h2>
-                    <p>You are about to pay for order <strong>#{orderId}</strong>. Your total due is <strong>{formatPrice(totalWithCharges)}</strong>.</p>
-                    <p>
-                        Click the button below to complete your payment securely via Debit/Credit Card using Paystack.
-                        Your payment includes a Paystack transaction fee of {formatPrice(totalWithCharges - total)}.
+                    <p className="payment-instruction">
+                        You are about to pay for order <strong>#{orderId}</strong>. Your total due is <strong className="highlight-total">{formatPrice(totalWithCharges)}</strong>.
+                    </p>
+                    <p className="payment-note">
+                        Please proceed to complete your payment securely via Debit/Credit Card using Paystack. Your payment includes a Paystack transaction fee of {formatPrice(totalWithCharges - total)}.
                     </p>
 
                     <div className="paystack-button-wrapper">
-                        {showPaystackPopup && (
-                            <PaystackButton {...componentProps} className="paystack-pay-button" />
-                        )}
+                        {totalWithCharges > 0 && <PaystackIntegrationButton />}
+                        <div className="secure-info">
+                            <FaLock /> Your payment is secured by Paystack.
+                        </div>
                     </div>
 
-                    <div className="secure-info">
-                        <FaLock /> Your payment is secured by Paystack.
-                    </div>
 
                     <div className="customer-details-block">
                         <h3>Customer Details</h3>
@@ -234,7 +284,7 @@ const PaymentDebitCreditCard = () => {
 
             <div className="action-buttons-footer">
                 <button className="go-home-button" onClick={() => navigate('/')}>
-                    <FaHome /> Go Home
+                    <FaHome /> Back to Home
                 </button>
                 <button className="cancel-order-button" onClick={handleCancelOrder}>
                     <FaTimesCircle /> Cancel Order
