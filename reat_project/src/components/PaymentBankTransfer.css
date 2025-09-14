@@ -627,20 +627,21 @@ h2 svg {
 @media (max-width: 480px) {
     .payment-transfer-container {
         padding: 15px;
-        margin: 100px auto 65px auto;
-        width: 85%;
+        margin: 100px auto 65px auto; /* Changed margin-left to auto for centering */
+        width: 90%; /* Ensure it's not too wide */
     }
 
     .header-section {
-        width: 100%; /* Reset to 100% within the 85% container */
+        width: 75%; /* Reset to 100% within the 85% container */
     }
 
     .content-wrapper {
-        width: 100%; /* Reset to 100% within the 85% container */
+        width: 45%; /* Reset to 100% within the 85% container */
+        margin-right: 50px;
     }
 
     .action-buttons-footer {
-        width: 100%; /* Reset to 100% within the 85% container */
+        width: 75%; /* Reset to 100% within the 85% container */
     }
 
     .header-section h1 {
