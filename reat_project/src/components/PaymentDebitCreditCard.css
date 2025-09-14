@@ -669,7 +669,7 @@ body {
     .payment-page-container {
         padding: 15px;
         margin: 100px auto 65px auto; /* Changed margin-left to auto for centering */
-        width: 85%; /* Ensure it's not too wide */
+        width: 100%; /* Ensure it's not too wide */
     }
 
     .header-section {
@@ -678,7 +678,7 @@ body {
 
     .content-wrapper {
         width: 45%; /* Reset to 100% within the 85% container */
-        margin-right: 55px;
+        margin-right: 48px;
     }
 
     .action-buttons-footer {
