@@ -677,7 +677,8 @@ body {
     }
 
     .content-wrapper {
-        width: 75%; /* Reset to 100% within the 85% container */
+        width: 55%; /* Reset to 100% within the 85% container */
+        margin-right: 30px;
     }
 
     .action-buttons-footer {
