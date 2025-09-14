@@ -6,12 +6,14 @@ FROM node:20 AS frontend
 WORKDIR /app/frontend
 
 # Copy package.json and package-lock.json first for caching
+# Assuming your React project is in a subfolder like 'frontend_react_app'
 COPY reat_project/package*.json ./
 
 # Install dependencies
 RUN npm install
 
 # Copy the rest of React code
+# Ensure this path is correct for your React project's root
 COPY reat_project/ ./
 
 # Build React production files
