@@ -110,7 +110,7 @@ const Transfer = () => {
                 <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.</p>
                 <p><strong>Our Bank Details:</strong></p>
                 <p><strong>Bank:</strong> Guaranty Trust Bank</p>
-                <p><strong>Account Number:</strong> 0273759604</p>
+                <p><strong>Account Number:</strong> 3001110047</p>
                 <p><strong>Account Name:</strong> Triple A's Technology</p>
             </div>
             <div className="action-buttons">
