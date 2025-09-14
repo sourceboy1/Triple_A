@@ -668,7 +668,7 @@ body {
 @media (max-width: 480px) {
     .payment-page-container {
         padding: 15px;
-        margin: 15px auto;
+        margin: 100px 20px 0px 0px;
     }
 
     .header-section h1 {
