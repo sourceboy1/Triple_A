@@ -673,15 +673,15 @@ body {
     }
 
     .header-section {
-        width: 100%; /* Reset to 100% within the 85% container */
+        width: 75%; /* Reset to 100% within the 85% container */
     }
 
     .content-wrapper {
-        width: 100%; /* Reset to 100% within the 85% container */
+        width: 75%; /* Reset to 100% within the 85% container */
     }
 
     .action-buttons-footer {
-        width: 100%; /* Reset to 100% within the 85% container */
+        width: 75%; /* Reset to 100% within the 85% container */
     }
 
     .header-section h1 {
