@@ -668,20 +668,16 @@ body {
 @media (max-width: 480px) {
     .payment-page-container {
         padding: 15px;
-        margin: 100px auto 65px auto; /* Changed margin-left to auto for centering */
-        width: 85%; /* Ensure it's not too wide */
+        margin: 100px auto 65px auto;
+        width: 85%; /* Keep this to ensure the overall container is 85% */
+        box-sizing: border-box; /* Add this to include padding in the width calculation */
     }
 
-    .header-section {
-        width: 75%; /* Reset to 100% within the 85% container */
-    }
-
-    .content-wrapper {
-        width: 75%; /* Reset to 100% within the 85% container */
-    }
-
+    /* Reset widths for child elements that might have been constrained */
+    .header-section,
+    .content-wrapper,
     .action-buttons-footer {
-        width: 75%; /* Reset to 100% within the 85% container */
+        width: 100%; /* Make these fill the 85% width of the container */
     }
 
     .header-section h1 {
@@ -698,6 +694,7 @@ body {
     .customer-info-card {
         padding: 20px;
         min-width: unset; /* Remove min-width for very small screens */
+        max-width: 100%; /* Ensure cards don't exceed parent width */
     }
 
     .order-details-card h2,
