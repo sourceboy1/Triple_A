@@ -299,6 +299,7 @@ p {
         flex-wrap: wrap; /* Allows sections to wrap */
         justify-content: space-between;
         padding: 40px;
+        margin-top: 40px;
     }
 
     .order-details-card,

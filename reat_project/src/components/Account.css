@@ -3,7 +3,7 @@
 .account-container {
     display: flex;
     min-height: 80vh;
-    background-color: #f9fbf2;
+    background-color: white;
     margin: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
