@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import api from './api'; // Import your custom axios instance
+import api from './Api'; // Import your custom axios instance
 import './SignUpForm.css';
 import eyeIcon from './pictures/eye.jpg';
 import closedEyeIcon from './pictures/eye-closed.jpg';
