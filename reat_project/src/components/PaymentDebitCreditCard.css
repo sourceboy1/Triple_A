@@ -73,7 +73,7 @@
 }
 
 .payment-page-container .header-lock-icon {
-    color: var(--secondary-color);
+    color: var(--primary-color);
     font-size: 0.8em;
 }
 
@@ -90,7 +90,7 @@
 }
 
 .payment-page-container .header-section p strong {
-    color: var(--secondary-color);
+    color: var(--primary-color);
     font-weight: 700;
 }
 
@@ -341,7 +341,7 @@
 }
 
 .payment-page-container .secure-info svg {
-    color: var(--secondary-color);
+    color: var(--primary-color);
     font-size: 1.1em;
 }
 

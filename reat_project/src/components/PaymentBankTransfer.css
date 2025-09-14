@@ -35,7 +35,7 @@
 
 /* Headings */
 h2 {
-    color: #007bff; /* Blue */
+    color: green; 
     font-size: 1.8em;
     margin-bottom: 15px;
     border-bottom: 2px solid #e0e0e0;
@@ -154,10 +154,10 @@ p {
 .total-amount {
     font-size: 1.2em;
     font-weight: bold;
-    color: #007bff; /* Blue for total */
+    color: green; /* Blue for total */
     padding-top: 15px;
     margin-top: 10px;
-    border-top: 2px solid #007bff;
+    border-top: 2px solid rgb(4, 146, 4);
 }
 
 .bank-details {
