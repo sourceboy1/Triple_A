@@ -1,139 +1,186 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import api from '../Api';
-import './PhonesTabletsDisplay.css';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import api from '../Api'; // ✅ Unified API import
+import './PaymentBankTransfer.css'; // Using the same CSS for consistency
+import { PaystackButton } from 'react-paystack'; // Import PaystackButton
 
-const PhonesTabletsDisplay = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const fetchCount = 30;
-  const navigate = useNavigate();
-  const sliderRef = useRef(null);
-  const hoverIntervals = useRef({});
+const PaymentDebitCreditCard = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [isCanceling, setIsCanceling] = useState(false);
+    const { state } = location;
+    const token = localStorage.getItem('token');
+    const paystackPublicKey = 'pk_live_465faeaf26bb124923dde0c51f9f2b6a1b9ee006'; // Your Paystack Public Key
 
-  const shuffleArray = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  };
+    const {
+        orderId = 'N/A',
+        email = 'N/A',
+        phone = 'N/A',
+        address = 'N/A',
+        subtotal = 0,
+        shippingCost = 0,
+        total = 0,
+        products = []
+    } = state || {};
 
-  useEffect(() => {
-    const fetchPhonesAndTablets = async () => {
-      try {
-        const response = await api.get(`products/?category_id=2`);
-        const data = response.data;
+    const formatPrice = (amount) => amount.toLocaleString();
 
-        if (!Array.isArray(data)) {
-          console.error('Unexpected API response:', data);
-          setLoading(false);
-          return;
-        }
-
-        const shuffledProducts = shuffleArray(data.slice(0, fetchCount));
-        setProducts(shuffledProducts);
-      } catch (error) {
-        console.error('Error fetching phones and tablets:', error);
-      } finally {
-        setLoading(false);
-      }
+    // Paystack configuration
+    const config = {
+        reference: new Date().getTime().toString(), // Unique reference for each transaction
+        email: email,
+        amount: total * 100, // Amount in kobo
+        publicKey: paystackPublicKey,
+        metadata: {
+            order_id: orderId,
+            custom_fields: [
+                {
+                    display_name: "Order ID",
+                    variable_name: "order_id",
+                    value: orderId,
+                },
+                {
+                    display_name: "Customer Email",
+                    variable_name: "customer_email",
+                    value: email,
+                },
+            ],
+        },
     };
 
-    fetchPhonesAndTablets();
+    // Callback for successful payment
+    const handleSuccess = async (response) => {
+        // Send payment confirmation to your backend
+        try {
+            await api.post(`/orders/${orderId}/confirm_payment/`, {
+                transaction_reference: response.reference,
+                payment_method: 'card',
+                // You might need to send other details like status, channel etc.
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${token}`,
+                }
+            });
+            alert('Payment successful! Your order has been confirmed.');
+            navigate('/order-success', { state: { orderId } }); // Navigate to a success page or home
+        } catch (error) {
+            console.error('Error confirming payment with backend:', error);
+            alert('Payment successful, but there was an issue confirming with our system. Please contact support.');
+            navigate('/order-failure'); // Navigate to a failure page
+        }
+    };
 
-    const interval = setInterval(() => {
-      setProducts((prev) => {
-        if (prev.length === 0) return prev;
-        const firstItem = prev[0];
-        return [...prev.slice(1), firstItem];
-      });
-    }, 12000);
+    // Callback for payment close
+    const handleClose = () => {
+        alert('Payment window closed. You can try again or cancel your order.');
+    };
 
-    return () => clearInterval(interval);
-  }, []);
+    const componentProps = {
+        ...config,
+        text: 'Pay with Card',
+        onSuccess: (response) => handleSuccess(response),
+        onClose: handleClose,
+    };
 
-  const handleProductClick = (product_id) => {
-    navigate(`/product-details/${product_id}`);
-  };
+    const handleCancelOrder = () => {
+        setIsCanceling(true);
+    };
 
-  const handleMouseEnter = (index) => {
-    const product = products[index];
-    const images = [
-      product.image_urls?.medium,
-      product.secondary_image_urls?.medium,
-      product.tertiary_image_urls?.medium,
-      product.quaternary_image_urls?.medium,
-    ].filter(Boolean);
+    const confirmCancelOrder = async () => {
+        try {
+            await api.post(`/orders/${orderId}/cancel/`, {}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${token}`,
+                }
+            });
+            navigate('/');
+        } catch (error) {
+            console.error('Error canceling order:', error);
+        }
+    };
 
-    if (images.length < 2) return;
+    const cancelOrderDialog = (
+        <div className="cancel-dialog">
+            <p>Are you sure you want to cancel this order?</p>
+            <button onClick={confirmCancelOrder} className="dialog-confirm-button">Yes, Cancel Order</button>
+            <button onClick={() => setIsCanceling(false)} className="dialog-cancel-button">No, Keep Order</button>
+        </div>
+    );
 
-    let currentImgIndex = 0;
-    hoverIntervals.current[index] = setInterval(() => {
-      const imgElement = document.querySelectorAll('.phones-tablets-item img')[index];
-      if (imgElement) {
-        imgElement.src = images[currentImgIndex];
-        currentImgIndex = (currentImgIndex + 1) % images.length;
-      }
-    }, 1000);
-  };
+    return (
+        <div className="transfer-container"> {/* Reusing the transfer-container styling */}
+            <div className="order-section">
+                <h2>Order #{orderId}</h2>
+                <h3>Thank You!</h3>
+                <p>Your order is confirmed</p>
+                <p>
+                    We have accepted your order and are getting it ready. A confirmation email has been sent to
+                    <strong> {email}</strong>.
+                </p>
 
-  const handleMouseLeave = (index) => {
-    clearInterval(hoverIntervals.current[index]);
-    hoverIntervals.current[index] = null;
+                <div className="customer-details">
+                    <h4>Customer Details</h4>
+                    <p><strong>Email:</strong> {email}</p>
+                    <p><strong>Phone:</strong> {phone}</p>
+                    <p><strong>Billing Address:</strong></p>
+                    <p>{address}</p>
 
-    const product = products[index];
-    const primaryImg = product.image_urls?.medium || '/placeholder.jpg';
-    const imgElement = document.querySelectorAll('.phones-tablets-item img')[index];
-    if (imgElement) imgElement.src = primaryImg;
-  };
-
-  const formatPrice = (price) => {
-    if (isNaN(price)) return 'N/A';
-    return new Intl.NumberFormat('en-NG', {
-      style: 'currency',
-      currency: 'NGN',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(price);
-  };
-
-  return (
-    <div className="phones-tablets-container">
-      <h2>Featured Phones & Tablets</h2>
-      <div className="phones-tablets-display" ref={sliderRef}>
-        {loading ? (
-          <p>Loading phones and tablets...</p>
-        ) : products.length === 0 ? (
-          <p>No phones or tablets available at the moment.</p>
-        ) : (
-          <div className="phones-tablets-slider">
-            {products.map((product, index) => {
-              if (!product || !product.image_urls?.medium) return null;
-
-              return (
-                <div
-                  className="phones-tablets-item"
-                  key={product.product_id}
-                  onClick={() => handleProductClick(product.product_id)}
-                  onMouseEnter={() => handleMouseEnter(index)}
-                  onMouseLeave={() => handleMouseLeave(index)}
-                >
-                  <img
-                    src={product.image_urls?.medium || '/placeholder.jpg'}
-                    alt={product.name || 'Phone/Tablet'}
-                    className="phones-tablets-image"
-                  />
-                  <h3 className="phones-tablets-name">{product.name}</h3>
-                  <p className="phones-tablets-price">{formatPrice(parseFloat(product.price))}</p>
+                    <p><strong>Shipping Address:</strong></p>
+                    <p>{address}</p>
                 </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+            </div>
+
+            <div className="order-summary">
+                <h2>Order Summary</h2>
+                <ul className="order-summary-items">
+                    {products.length > 0 ? (
+                        products.map((item) => (
+                            <li key={item.product_id} className="order-summary-item">
+                                <img
+                                    src={item.image_url}
+                                    alt={item.name}
+                                    className="order-summary-item-image"
+                                />
+                                <div className="order-summary-item-details">
+                                    <h3>{item.name}</h3>
+                                    <p>Price: ₦{formatPrice(item.price)}</p>
+                                    <p>Quantity: {item.quantity}</p>
+                                    <p>Total: ₦{formatPrice(item.price * item.quantity)}</p>
+                                </div>
+                            </li>
+                        ))
+                    ) : (
+                        <li>No products found</li>
+                    )}
+                </ul>
+                <div className="total">
+                    <span>Subtotal:</span>
+                    <span>₦{formatPrice(subtotal)}</span>
+                </div>
+                <div className="shipping-cost">
+                    <span>Shipping Cost:</span>
+                    <span>₦{formatPrice(shippingCost)}</span>
+                </div>
+                <div className="total-amount">
+                    <span>Total:</span>
+                    <span>₦{formatPrice(total)}</span>
+                </div>
+                <p>
+                    Click the button below to complete your payment securely via Debit/Credit Card using Paystack.
+                </p>
+                <div className="paystack-button-container">
+                    <PaystackButton {...componentProps} className="paystack-button" />
+                </div>
+            </div>
+            <div className="action-buttons">
+                <button className="go-home-button" onClick={() => navigate('/')}>Go Home</button>
+                <button className="cancel-order-button" onClick={handleCancelOrder}>Cancel Order</button>
+            </div>
+            {isCanceling && cancelOrderDialog}
+        </div>
+    );
 };
 
-export default PhonesTabletsDisplay;
+export default PaymentDebitCreditCard;
