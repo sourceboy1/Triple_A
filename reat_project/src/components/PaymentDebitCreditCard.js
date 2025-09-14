@@ -227,7 +227,6 @@ const PaymentDebitCreditCard = () => {
                                         <p>Quantity: {item.quantity}</p>
                                         <p>Price: {formatPrice(item.price)}</p>
                                     </div>
-                                    <span className="item-total">{formatPrice(item.price * item.quantity)}</span>
                                 </div>
                             ))
                         ) : (
