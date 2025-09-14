@@ -159,7 +159,7 @@ const Checkout = () => {
 
         const redirectPath = paymentMethod === 'debit_credit_cards' ? '/payment/debit-credit-card' : '/payment/bank-transfer';
         navigate(redirectPath, {
-            state: {
+             state: {
                 orderId: response.data.order_id,
                 email,
                 phone,
@@ -167,9 +167,10 @@ const Checkout = () => {
                 subtotal,
                 shippingCost,
                 total,
-                products: cart
-            }
-        });
+                products: cart,
+                shippingMethod: shippingMethod // Make sure this is passed
+    }
+});
     } catch (error) {
         console.error('Error placing the order:', error.response || error);
         window.scrollTo(0, 0);

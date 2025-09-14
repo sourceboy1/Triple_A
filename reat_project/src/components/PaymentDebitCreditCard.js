@@ -18,6 +18,8 @@ const PaymentDebitCreditCard = () => {
     const [totalWithCharges, setTotalWithCharges] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [paymentConfirmed, setPaymentConfirmed] = useState(false); // New state for payment confirmation
+    const [confirmationMessage, setConfirmationMessage] = useState(''); // New state for confirmation message
 
     // Use a ref to ensure Paystack popup is triggered only once on initial load
     const paystackTriggeredRef = useRef(false);
@@ -33,7 +35,8 @@ const PaymentDebitCreditCard = () => {
         subtotal = 0,
         shippingCost = 0,
         total = 0,
-        products = []
+        products = [],
+        shippingMethod = 'N/A' // Added shippingMethod from state
     } = state || {};
 
     const formatPrice = (amount) => amount.toLocaleString('en-NG', { style: 'currency', currency: 'NGN' });
@@ -67,15 +70,11 @@ const PaymentDebitCreditCard = () => {
 
     // This useEffect will trigger the Paystack popup
     useEffect(() => {
-        if (!isLoading && totalWithCharges > 0 && !paystackTriggeredRef.current) {
-            // Programmatically trigger Paystack by rendering the button and simulating a click
-            // The PaystackButton component itself handles the rendering and logic.
-            // We just need to ensure it's mounted with the right props.
+        if (!isLoading && totalWithCharges > 0 && !paystackTriggeredRef.current && !paymentConfirmed) {
             paystackTriggeredRef.current = true; // Mark as triggered
             // The PaystackButton will automatically open when mounted with valid props.
-            // No need for a separate state `showPaystackPopup` to control its visibility if it should always show.
         }
-    }, [isLoading, totalWithCharges]);
+    }, [isLoading, totalWithCharges, paymentConfirmed]);
 
 
     // Paystack configuration
@@ -124,21 +123,32 @@ const PaymentDebitCreditCard = () => {
                     'Authorization': `Token ${token}`,
                 }
             });
-            navigate('/order-success', { state: { orderId } });
+
+            setPaymentConfirmed(true); // Set payment as confirmed
+
+            // Determine confirmation message based on shipping method
+            if (shippingMethod === 'pickup') {
+                setConfirmationMessage('Payment confirmed! Your order is ready for pickup at our store. You will receive an email notification shortly.');
+            } else {
+                setConfirmationMessage('Payment confirmed! Your order will be available for shipment soon. You will receive an email with tracking details once it\'s shipped.');
+            }
+
+            // You can optionally navigate after a short delay or let the user click a button
+            // For now, let's keep the message on this page.
+            // navigate('/order-success', { state: { orderId } });
         } catch (error) {
             console.error('Error confirming payment with backend:', error);
             setError('Payment successful, but there was an issue confirming with our system. Please contact support.');
-            navigate('/order-failure');
+            navigate('/order-failure'); // Still navigate to failure page if backend confirmation fails
         }
     };
 
     // Callback for payment close
     const handleClose = () => {
-        // Only show alert if payment wasn't successful
-        if (!paystackTriggeredRef.current) { // Prevent showing alert if it was a successful payment then closed
+        // Only show alert if payment wasn't successful and not already confirmed
+        if (!paymentConfirmed) {
             alert('Payment window closed. You can try again or cancel your order.');
         }
-        // paystackTriggeredRef.current = false; // Reset if user wants to try again
     };
 
     const PaystackIntegrationButton = () => (
@@ -148,6 +158,7 @@ const PaymentDebitCreditCard = () => {
             onSuccess={handleSuccess}
             onClose={handleClose}
             className="paystack-pay-button"
+            disabled={paymentConfirmed} // Disable button if payment is confirmed
         />
     );
 
@@ -257,38 +268,52 @@ const PaymentDebitCreditCard = () => {
 
                 <div className="customer-info-card glassmorphism">
                     <h2><FaCreditCard /> Payment Information</h2>
-                    <p className="payment-instruction">
-                        You are about to pay for order <strong>#{orderId}</strong>. Your total due is <strong className="highlight-total">{formatPrice(totalWithCharges)}</strong>.
-                    </p>
-                    <p className="payment-note">
-                        Please proceed to complete your payment securely via Debit/Credit Card using Paystack. Your payment includes a Paystack transaction fee of {formatPrice(totalWithCharges - total)}.
-                    </p>
-
-                    <div className="paystack-button-wrapper">
-                        {totalWithCharges > 0 && <PaystackIntegrationButton />}
-                        <div className="secure-info">
-                            <FaLock /> Your payment is secured by Paystack.
+                    {paymentConfirmed ? (
+                        <div className="payment-success-message">
+                            <FaCheckCircle className="success-icon" />
+                            <p>{confirmationMessage}</p>
+                            <button className="go-home-button" onClick={() => navigate('/')}>
+                                <FaHome /> Continue Shopping
+                            </button>
                         </div>
-                    </div>
+                    ) : (
+                        <>
+                            <p className="payment-instruction">
+                                You are about to pay for order <strong>#{orderId}</strong>. Your total due is <strong className="highlight-total">{formatPrice(totalWithCharges)}</strong>.
+                            </p>
+                            <p className="payment-note">
+                                Please proceed to complete your payment securely via Debit/Credit Card using Paystack. Your payment includes a Paystack transaction fee of {formatPrice(totalWithCharges - total)}.
+                            </p>
 
+                            <div className="paystack-button-wrapper">
+                                {totalWithCharges > 0 && <PaystackIntegrationButton />}
+                                <div className="secure-info">
+                                    <FaLock /> Your payment is secured by Paystack.
+                                </div>
+                            </div>
+                        </>
+                    )}
 
                     <div className="customer-details-block">
                         <h3>Customer Details</h3>
                         <p><strong>Email:</strong> {email}</p>
                         <p><strong>Phone:</strong> {phone}</p>
                         <p><strong>Billing/Shipping Address:</strong> {address}</p>
+                        <p><strong>Shipping Method:</strong> {shippingMethod === 'pickup' ? 'Store Pickup' : 'Delivery'}</p>
                     </div>
                 </div>
             </div>
 
-            <div className="action-buttons-footer">
-                <button className="go-home-button" onClick={() => navigate('/')}>
-                    <FaHome /> Back to Home
-                </button>
-                <button className="cancel-order-button" onClick={handleCancelOrder}>
-                    <FaTimesCircle /> Cancel Order
-                </button>
-            </div>
+            {!paymentConfirmed && ( // Only show action buttons if payment isn't confirmed
+                <div className="action-buttons-footer">
+                    <button className="go-home-button" onClick={() => navigate('/')}>
+                        <FaHome /> Back to Home
+                    </button>
+                    <button className="cancel-order-button" onClick={handleCancelOrder}>
+                        <FaTimesCircle /> Cancel Order
+                    </button>
+                </div>
+            )}
 
             {isCanceling && cancelOrderDialog}
         </div>
