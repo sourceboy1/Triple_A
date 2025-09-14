@@ -11,7 +11,7 @@ import cartIcon from '../pictures/cart.jpg';
 import userIcon from '../icons/usericon.jpg';
 import phoneIcon from '../icons/phone-icon.jpg';
 import wishlistIcon from '../pictures/wishlist.jpg';
-import api from './Api'; 
+import api from '../Api'; 
 
 const Navbar = () => {
   const [products, setProducts] = useState([]);
