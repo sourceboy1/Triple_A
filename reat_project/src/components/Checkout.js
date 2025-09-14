@@ -30,14 +30,14 @@ const Checkout = () => {
     const [orderNote, setOrderNote] = useState('');
     const [paymentMethod, setPaymentMethod] = useState('bank_transfer');
     const [termsAgreed, setTermsAgreed] = useState(false);
-    const { cart, clearCart, refreshCartItems } = useCart();
+    const { cart, clearCart, refreshCartItems } = useCart(); // Added refreshCartItems
     const [showTerms, setShowTerms] = useState(false);
     const { isLoggedIn, firstName: userFirstName, lastName: userLastName, email: userEmail } = useUser();
     const token = localStorage.getItem('access_token');
     const navigate = useNavigate();
     const options = countryList().getData();
     const { loading, setLoading } = useLoading();
-    const [loadingCheckoutDetails, setLoadingCheckoutDetails] = useState(true);
+    const [loadingCheckoutDetails, setLoadingCheckoutDetails] = useState(true); // New loading state for checkout data
 
     const emailRef = useRef(null);
     const firstNameRef = useRef(null);
@@ -48,12 +48,12 @@ const Checkout = () => {
     const postalCodeRef = useRef(null);
     const phoneRef = useRef(null);
 
-    useEffect(() => {
+     useEffect(() => {
         window.scrollTo(0, 0);
 
         const initializeCheckout = async () => {
             setLoadingCheckoutDetails(true);
-            await refreshCartItems();
+            await refreshCartItems(); // Refresh cart items on checkout load
             if (isLoggedIn) {
                 setEmail(userEmail || '');
                 setFirstName(userFirstName || '');
@@ -64,7 +64,7 @@ const Checkout = () => {
 
         initializeCheckout();
 
-    }, [isLoggedIn, userEmail, userFirstName, userLastName, refreshCartItems]); // Added refreshCartItems to dependency array
+     }, [isLoggedIn, userEmail, userFirstName, userLastName]); // Re-run if user login state changes
 
     const paymentMethodIds = {
         bank_transfer: 1,
@@ -73,6 +73,117 @@ const Checkout = () => {
 
     const hasAbroadProduct = cart.some(item => item.is_abroad_order);
     const ABROAD_SHIPPING_SURCHARGE = 30000;
+
+
+   const handlePlaceOrder = async () => {
+    setEmailError('');
+
+    if (loading || loadingCheckoutDetails) return; // Prevent multiple submissions or submission while loading
+
+    // Check if user is logged in
+    if (!isLoggedIn) {
+        window.scrollTo(0, 0);
+        setEmailError('Please log in or register to place your order. You can do so by clicking the "Click here to login" link above.');
+        return;
+    }
+
+    if (!termsAgreed) {
+        window.scrollTo(0, 0);
+        setEmailError('You must agree to the terms and conditions before placing the order.');
+        return;
+    }
+
+    if (!email || !firstName || !lastName || !addressLine1 || !city || !state || !postalCode || !country || !phone) {
+        window.scrollTo(0, 0);
+        setEmailError('Please fill in all required fields.');
+        return;
+    }
+
+    // Check for unavailable items in cart
+    const unavailableItems = cart.filter(item => item.stock === 0 || item.errorFetching);
+    if (unavailableItems.length > 0) {
+        window.scrollTo(0, 0);
+        setEmailError(`The following items are unavailable and cannot be ordered: ${unavailableItems.map(item => item.name).join(', ')}. Please remove them from your cart.`);
+        return;
+    }
+
+
+    setLoading(true);
+
+    const fullAddress = `${addressLine1}${addressLine2 ? ', ' + addressLine2 : ''}`;
+    const userId = parseInt(localStorage.getItem('userId'), 10);
+    if (!token || isNaN(userId)) {
+        window.scrollTo(0, 0);
+        setEmailError('Authentication error. Please log in again.');
+        setLoading(false);
+        return;
+    }
+
+    const paymentMethodId = paymentMethodIds[paymentMethod] || 1;
+    const shippingCost = getShippingCost();
+    const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const total = subtotal + shippingCost;
+
+    const orderData = {
+        user_id: userId,
+        email,
+        first_name: firstName,
+        last_name: lastName,
+        address: fullAddress,
+        city,
+        state,
+        postal_code: postalCode,
+        country,
+        phone,
+        shipping_method: shippingMethod,
+        order_note: orderNote,
+        payment_method_id: paymentMethodId,
+        shipping_cost: shippingCost,
+        total_amount: total,
+        cart_items: cart.map(item => ({
+            product: item.product_id,
+            name: item.name,
+            image_url: item.image_url,
+            quantity: item.quantity,
+            price: item.price,
+            is_abroad_order: item.is_abroad_order,
+            abroad_delivery_days: item.abroad_delivery_days
+        }))
+    };
+
+    try {
+        console.log('Order data being sent:', orderData);
+        const response = await api.post('/orders/', orderData);
+
+        clearCart();
+
+        const redirectPath = paymentMethod === 'debit_credit_cards' ? '/payment/debit-credit-card' : '/payment/bank-transfer';
+        navigate(redirectPath, {
+            state: {
+                orderId: response.data.order_id,
+                email,
+                phone,
+                address: fullAddress,
+                subtotal,
+                shippingCost,
+                total,
+                products: cart
+            }
+        });
+    } catch (error) {
+        console.error('Error placing the order:', error.response || error);
+        window.scrollTo(0, 0);
+        setEmailError('There was an error placing your order. Please try again.');
+    } finally {
+        setLoading(false);
+    }
+};
+
+    const formatPrice = (price) => {
+        return new Intl.NumberFormat().format(price);
+    };
+
+    const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
     const getShippingCost = () => {
         let baseCost = 0;
@@ -94,121 +205,8 @@ const Checkout = () => {
         return baseCost;
     };
 
-
-    const handlePlaceOrder = async () => {
-        setEmailError('');
-
-        if (loading || loadingCheckoutDetails) return;
-
-        if (!isLoggedIn) {
-            window.scrollTo(0, 0);
-            setEmailError('Please log in or register to place your order. You can do so by clicking the "Click here to login" link above.');
-            return;
-        }
-
-        if (!termsAgreed) {
-            window.scrollTo(0, 0);
-            setEmailError('You must agree to the terms and conditions before placing the order.');
-            return;
-        }
-
-        if (!email || !firstName || !lastName || !addressLine1 || !city || !state || !postalCode || !country || !phone) {
-            window.scrollTo(0, 0);
-            setEmailError('Please fill in all required fields.');
-            return;
-        }
-
-        const unavailableItems = cart.filter(item => item.stock === 0 || item.errorFetching);
-        if (unavailableItems.length > 0) {
-            window.scrollTo(0, 0);
-            setEmailError(`The following items are unavailable and cannot be ordered: ${unavailableItems.map(item => item.name).join(', ')}. Please remove them from your cart.`);
-            return;
-        }
-
-
-        setLoading(true);
-
-        const fullAddress = `${addressLine1}${addressLine2 ? ', ' + addressLine2 : ''}`;
-        const userId = parseInt(localStorage.getItem('userId'), 10);
-        if (!token || isNaN(userId)) {
-            window.scrollTo(0, 0);
-            setEmailError('Authentication error. Please log in again.');
-            setLoading(false);
-            return;
-        }
-
-        const paymentMethodId = paymentMethodIds[paymentMethod] || 1;
-        // Correctly define currentShippingCost here
-        const currentShippingCost = getShippingCost();
-        const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-        const total = subtotal + currentShippingCost;
-
-        const orderData = {
-            user_id: userId,
-            email,
-            first_name: firstName,
-            last_name: lastName,
-            address: fullAddress,
-            city,
-            state,
-            postal_code: postalCode,
-            country,
-            phone,
-            // Only include shipping_method if currentShippingCost is not 0
-            ...(currentShippingCost > 0 && { shipping_method: shippingMethod }),
-            order_note: orderNote,
-            payment_method_id: paymentMethodId,
-            shipping_cost: currentShippingCost, // Use currentShippingCost
-            total_amount: total, // Use the calculated total
-            cart_items: cart.map(item => ({
-                product: item.product_id,
-                name: item.name,
-                image_url: item.image_url,
-                quantity: item.quantity,
-                price: item.price,
-                is_abroad_order: item.is_abroad_order,
-                abroad_delivery_days: item.abroad_delivery_days
-            }))
-        };
-
-        try {
-            console.log('Order data being sent:', orderData);
-            const response = await api.post('/orders/', orderData);
-
-            clearCart();
-
-            const redirectPath = paymentMethod === 'debit_credit_cards' ? '/payment/debit-credit-card' : '/payment/bank-transfer';
-            navigate(redirectPath, {
-                state: {
-                    orderId: response.data.order_id,
-                    email,
-                    phone,
-                    address: fullAddress,
-                    subtotal,
-                    shippingCost: currentShippingCost, // Pass currentShippingCost
-                    total, // Pass the calculated total
-                    products: cart,
-                    shippingMethod: shippingMethod // Make sure to pass shippingMethod
-                }
-            });
-        } catch (error) {
-            console.error('Error placing the order:', error.response || error);
-            window.scrollTo(0, 0);
-            setEmailError('There was an error placing your order. Please try again.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const formatPrice = (price) => {
-        return new Intl.NumberFormat().format(price);
-    };
-
-    // Use a memoized version or re-calculate for display purposes
-    const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
-    const displayShippingCost = getShippingCost(); // Use a separate variable for display
-    const displayTotal = subtotal + displayShippingCost;
-
+    const shippingCost = getShippingCost();
+    const total = subtotal + shippingCost;
 
     const toggleTerms = (e) => {
         e.preventDefault();
@@ -490,6 +488,7 @@ const Checkout = () => {
                 <h2>Order Summary</h2>
                 <ul className="order-summary-items">
                     {cart.map((item) => {
+                        // Consistent delivery display logic
                         const deliveryDisplay = item.abroad_delivery_days === 14 ? '7-14' : (item.abroad_delivery_days ? `${item.abroad_delivery_days}` : '7-14');
                         const isItemUnavailable = item.stock === 0 || item.errorFetching;
                         return (
@@ -516,11 +515,11 @@ const Checkout = () => {
                 </div>
                 <div className="shipping-cost">
                     <span>Shipping Cost:</span>
-                    <span>₦{formatPrice(displayShippingCost)}</span> {/* Use displayShippingCost */}
+                    <span>₦{formatPrice(shippingCost)}</span>
                 </div>
                 <div className="total-amount">
                     <span>Total:</span>
-                    <span>₦{formatPrice(displayTotal)}</span> {/* Use displayTotal */}
+                    <span>₦{formatPrice(total)}</span>
                 </div>
                 <div className="additional-info">
                     <div className="info-item">
