@@ -14,6 +14,12 @@
   --transition-speed: 0.3s ease;
 }
 
+body {
+  font-family: 'Open Sans', sans-serif; /* Apply a consistent font */
+  margin: 0;
+  background-color: var(--background-light); /* Give body a light background */
+}
+
 .account-container {
   display: flex;
   min-height: 80vh;
@@ -186,7 +192,7 @@
   transform: translateY(-2px); /* Subtle lift effect */
 }
 
-/* --- Mobile Responsiveness --- */
+/* --- Responsive Adjustments --- */
 
 /* For screens smaller than 992px (typical tablet landscape) */
 @media screen and (max-width: 992px) {
@@ -227,8 +233,8 @@
   }
 
   .sidebar {
-    min-width: 100%;
-    border-right: none;
+    min-width: 100%; /* Take full width */
+    border-right: none; /* Remove right border */
     border-bottom: 1px solid var(--border-color); /* Add bottom border */
     padding: 0; /* Remove vertical padding */
     box-shadow: none; /* No shadow needed here */
@@ -239,14 +245,14 @@
     overflow-x: auto; /* Allow horizontal scrolling if many options */
     -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
     white-space: nowrap; /* Prevent items from wrapping */
-    padding: 10px 0;
+    padding: 10px 0; /* Vertical padding for the scrollable area */
   }
 
   .option-item {
     flex-shrink: 0; /* Prevent items from shrinking */
     padding: 10px 15px;
     margin: 0 5px; /* Space between horizontal items */
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border-color); /* Add border for pill shape */
     border-radius: 20px; /* Pill-shaped buttons */
     background-color: var(--background-white);
     font-size: 0.9em;
@@ -264,7 +270,7 @@
   .option-item.active {
     background-color: var(--primary-green);
     color: white;
-    border-color: var(--primary-green);
+    border-color: var(--primary-green); /* Active pill border */
   }
 
   .option-item.active::before {
@@ -272,7 +278,7 @@
   }
 
   .content-section {
-    min-width: 100%;
+    min-width: 100%; /* Take full width */
     padding: 20px;
   }
 
@@ -286,7 +292,7 @@
   }
 
   .account-details-form {
-    max-width: 100%;
+    max-width: 100%; /* Allow form to take full width */
     gap: 15px;
   }
 
@@ -307,7 +313,7 @@
 @media screen and (max-width: 480px) {
   .account-container {
     margin: 10px;
-    margin-top: 120px;
+    margin-top: 120px; /* More top margin if header is taller */
   }
 
   .sidebar {
