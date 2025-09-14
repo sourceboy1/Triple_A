@@ -11,7 +11,7 @@ import cartIcon from '../pictures/cart.jpg';
 import userIcon from '../icons/usericon.jpg';
 import phoneIcon from '../icons/phone-icon.jpg';
 import wishlistIcon from '../pictures/wishlist.jpg';
-import api from '../Api'; // ✅ Unified API import
+import api from './Api'; 
 
 const Navbar = () => {
   const [products, setProducts] = useState([]);
@@ -173,7 +173,7 @@ const Navbar = () => {
             />
             {categoryDropdownVisible && (
               <div className="dropdown-content show">
-                {["All", 'Phones & Tablets', 'Headsets & AirPods', 'Laptops', 'Pouches & Guide', 'Powerbanks', 'Watches', 'Games', 'Accessories'].map((cat) => (
+                {["All", 'Phones & Tablets', 'Headsets & AirPods', 'Laptops', 'Pouches & Guide', 'Powerbanks', 'Watches & Smartwatches', 'Games', 'Accessories'].map((cat) => (
                   <a href="#" key={cat} onClick={() => handleCategoryClick(cat)}>
                     {cat}
                   </a>
