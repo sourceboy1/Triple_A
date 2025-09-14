@@ -37,9 +37,9 @@ const Account = () => {
             </h2>
             <p>
               From your account dashboard you can view your{' '}
-              <a href="#">recent orders</a>,<br />
+              <a>recent orders</a>,<br />
               manage your{' '}
-              <a href="#">edit your password and account details</a>.
+              <a>edit your password and account details</a>.
             </p>
           </div>
         );
