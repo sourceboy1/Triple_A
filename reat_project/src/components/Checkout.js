@@ -495,7 +495,7 @@ const Checkout = () => {
                             <li key={item.product_id} className={`order-summary-item ${isItemUnavailable ? 'unavailable-item' : ''}`}>
                                 <img src={item.image_url} alt={item.name} className="order-summary-item-image" />
                                 <div className="order-summary-item-details">
-                                    <h3>{item.name} {isItemUnavailable && <span style={{color: 'red', fontSize: '0.8em'}}>(Unavailable)</span>}</h3>
+                                    <h3>{item.name}</h3>
                                     {item.is_abroad_order && (
                                         <p className="abroad-order-summary-message">
                                             <span role="img" aria-label="airplane">✈️</span> Shipped from Abroad (Est. {deliveryDisplay} days)
