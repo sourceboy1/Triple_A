@@ -1,26 +1,39 @@
 /* PaymentDebitCreditCard.css */
 
 /* Variables for easy theme changes */
-
-
-body {
-    background-color: var(--background-light);
-    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: var(--text-dark);
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+:root {
+    --primary-color: #4CAF50; /* A fresh green */
+    --primary-dark: #388E3C;
+    --secondary-color: #2196F3; /* Blue for highlights */
+    --background-light: #f4f7f6;
+    --card-background: #ffffff;
+    --text-dark: #333;
+    --text-medium: #555;
+    --text-light: #7f8c8d;
+    --border-color: #e0e6ed;
+    --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.08);
+    --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.12);
+    --paystack-green: #28a745;
+    --paystack-green-dark: #218838;
+    --cancel-red: #dc3545;
+    --cancel-red-dark: #c82333;
+    --home-blue: #007bff;
+    --home-blue-dark: #0056b3;
 }
 
+/* Scoped to the component's root container */
 .payment-page-container {
+    background-color: var(--background-light); /* Apply background here instead of body */
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-dark);
+    margin: 40px auto; /* Adjust margin for centering the container itself */
+    padding: 30px;
+    width: 90%;
+    max-width: 1300px;
+    box-sizing: border-box; /* Ensures padding doesn't add to the width */
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 90%;
-    max-width: 1300px;
-    margin: 40px auto;
-    padding: 30px;
-    background-color: var(--card-background);
     border-radius: 16px;
     box-shadow: var(--shadow-medium);
     animation: fadeIn 0.8s ease-out;
@@ -32,7 +45,7 @@ body {
 }
 
 /* Glassmorphism Effect */
-.glassmorphism {
+.payment-page-container .glassmorphism {
     background: rgba(255, 255, 255, 0.8);
     border-radius: 16px;
     backdrop-filter: blur(10px);
@@ -42,13 +55,13 @@ body {
 }
 
 
-.header-section {
+.payment-page-container .header-section {
     text-align: center;
     margin-bottom: 40px;
     width: 100%;
 }
 
-.header-section h1 {
+.payment-page-container .header-section h1 {
     font-size: 3em;
     color: var(--primary-color);
     margin-bottom: 10px;
@@ -59,29 +72,29 @@ body {
     gap: 15px;
 }
 
-.header-lock-icon {
+.payment-page-container .header-lock-icon {
     color: var(--secondary-color);
     font-size: 0.8em;
 }
 
-.header-section .subtitle {
+.payment-page-container .header-section .subtitle {
     font-size: 1.2em;
     color: var(--text-medium);
     margin-bottom: 5px;
 }
 
-.header-section .tagline {
+.payment-page-container .header-section .tagline {
     font-size: 1em;
     color: var(--text-light);
     font-style: italic;
 }
 
-.header-section p strong {
+.payment-page-container .header-section p strong {
     color: var(--secondary-color);
     font-weight: 700;
 }
 
-.content-wrapper {
+.payment-page-container .content-wrapper {
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -89,22 +102,22 @@ body {
     flex-wrap: wrap;
 }
 
-.order-details-card,
-.customer-info-card {
+.payment-page-container .order-details-card,
+.payment-page-container .customer-info-card {
     flex: 1;
     min-width: 350px;
     padding: 30px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.order-details-card:hover,
-.customer-info-card:hover {
+.payment-page-container .order-details-card:hover,
+.payment-page-container .customer-info-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
-.order-details-card h2,
-.customer-info-card h2 {
+.payment-page-container .order-details-card h2,
+.payment-page-container .customer-info-card h2 {
     font-size: 2em;
     color: var(--primary-dark);
     margin-bottom: 25px;
@@ -116,13 +129,13 @@ body {
     font-weight: 700;
 }
 
-.order-details-card h2 svg,
-.customer-info-card h2 svg {
+.payment-page-container .order-details-card h2 svg,
+.payment-page-container .customer-info-card h2 svg {
     color: var(--primary-color);
     font-size: 1.3em;
 }
 
-.order-items-list {
+.payment-page-container .order-items-list {
     margin-bottom: 25px;
     max-height: 350px;
     overflow-y: auto;
@@ -132,21 +145,21 @@ body {
 }
 
 /* Custom Scrollbar for Webkit browsers */
-.order-items-list::-webkit-scrollbar {
+.payment-page-container .order-items-list::-webkit-scrollbar {
     width: 8px;
 }
-.order-items-list::-webkit-scrollbar-track {
+.payment-page-container .order-items-list::-webkit-scrollbar-track {
     background: rgba(0,0,0,0.05);
     border-radius: 10px;
 }
-.order-items-list::-webkit-scrollbar-thumb {
+.payment-page-container .order-items-list::-webkit-scrollbar-thumb {
     background-color: var(--secondary-color);
     border-radius: 10px;
     border: 2px solid var(--card-background);
 }
 
 
-.order-item {
+.payment-page-container .order-item {
     display: flex;
     align-items: center;
     gap: 20px;
@@ -157,9 +170,9 @@ body {
     opacity: 0;
 }
 
-.order-item:nth-child(1) { animation-delay: 0.1s; }
-.order-item:nth-child(2) { animation-delay: 0.2s; }
-.order-item:nth-child(3) { animation-delay: 0.3s; }
+.payment-page-container .order-item:nth-child(1) { animation-delay: 0.1s; }
+.payment-page-container .order-item:nth-child(2) { animation-delay: 0.2s; }
+.payment-page-container .order-item:nth-child(3) { animation-delay: 0.3s; }
 /* Add more for more items if needed */
 
 @keyframes slideIn {
@@ -168,13 +181,13 @@ body {
 }
 
 
-.order-item:last-child {
+.payment-page-container .order-item:last-child {
     border-bottom: none;
     margin-bottom: 0;
     padding-bottom: 0;
 }
 
-.order-item img {
+.payment-page-container .order-item img {
     width: 80px;
     height: 80px;
     object-fit: cover;
@@ -183,58 +196,58 @@ body {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.item-info {
+.payment-page-container .item-info {
     flex-grow: 1;
 }
 
-.item-info h3 {
+.payment-page-container .item-info h3 {
     font-size: 1.2em;
     margin: 0 0 8px 0;
     color: var(--text-dark);
     font-weight: 600;
 }
 
-.item-info p {
+.payment-page-container .item-info p {
     font-size: 0.95em;
     color: var(--text-light);
     margin: 4px 0;
 }
 
-.item-total {
+.payment-page-container .item-total {
     font-weight: 700;
     color: var(--primary-dark);
     font-size: 1.1em;
 }
 
-.no-products-message {
+.payment-page-container .no-products-message {
     text-align: center;
     font-style: italic;
     color: var(--text-light);
     padding: 20px;
 }
 
-.summary-section {
+.payment-page-container .summary-section {
     border-top: 2px solid var(--border-color);
     padding-top: 20px;
 }
 
-.summary-line {
+.payment-page-container .summary-line {
     display: flex;
     justify-content: space-between;
     padding: 10px 0;
     font-size: 1.1em;
 }
 
-.summary-line span:first-child {
+.payment-page-container .summary-line span:first-child {
     color: var(--text-medium);
 }
 
-.summary-line span:last-child {
+.payment-page-container .summary-line span:last-child {
     font-weight: 600;
     color: var(--text-dark);
 }
 
-.paystack-charge {
+.payment-page-container .paystack-charge {
     color: #e67e22; /* Orange for charges */
     font-weight: bold;
     border-top: 1px dashed rgba(230, 126, 34, 0.3);
@@ -242,7 +255,7 @@ body {
     margin-top: 5px;
 }
 
-.total-amount-final {
+.payment-page-container .total-amount-final {
     font-size: 1.5em;
     font-weight: 800;
     color: var(--paystack-green);
@@ -251,14 +264,14 @@ body {
     margin-top: 20px;
 }
 
-.customer-info-card .payment-instruction {
+.payment-page-container .customer-info-card .payment-instruction {
     margin-bottom: 20px;
     line-height: 1.8;
     font-size: 1.05em;
     color: var(--text-dark);
 }
 
-.customer-info-card .payment-note {
+.payment-page-container .customer-info-card .payment-note {
     font-size: 0.95em;
     color: var(--text-medium);
     margin-bottom: 25px;
@@ -271,19 +284,19 @@ body {
 }
 
 
-.customer-info-card .highlight-total {
+.payment-page-container .customer-info-card .highlight-total {
     color: var(--paystack-green);
     font-size: 1.1em;
 }
 
-.paystack-button-wrapper {
+.payment-page-container .paystack-button-wrapper {
     margin-top: 30px;
     margin-bottom: 30px;
     text-align: center;
     position: relative; /* For secure-info positioning */
 }
 
-.paystack-pay-button {
+.payment-page-container .paystack-pay-button {
     background-color: var(--paystack-green);
     color: white;
     padding: 18px 35px;
@@ -304,18 +317,18 @@ body {
     margin: 0 auto;
 }
 
-.paystack-pay-button:hover {
+.payment-page-container .paystack-pay-button:hover {
     background-color: var(--paystack-green-dark);
     transform: translateY(-3px) scale(1.02);
     box-shadow: 0 8px 20px rgba(40, 167, 69, 0.5);
 }
 
-.paystack-pay-button:active {
+.payment-page-container .paystack-pay-button:active {
     transform: translateY(0);
     box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
 }
 
-.secure-info {
+.payment-page-container .secure-info {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -327,12 +340,12 @@ body {
     opacity: 0;
 }
 
-.secure-info svg {
+.payment-page-container .secure-info svg {
     color: var(--secondary-color);
     font-size: 1.1em;
 }
 
-.customer-details-block {
+.payment-page-container .customer-details-block {
     background-color: rgba(33, 150, 243, 0.08);
     border-left: 6px solid var(--secondary-color);
     padding: 20px;
@@ -341,24 +354,24 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-.customer-details-block h3 {
+.payment-page-container .customer-details-block h3 {
     color: var(--home-blue-dark);
     margin-bottom: 12px;
     font-size: 1.4em;
     font-weight: 700;
 }
 
-.customer-details-block p {
+.payment-page-container .customer-details-block p {
     margin: 8px 0;
     font-size: 1em;
     color: var(--text-medium);
 }
 
-.customer-details-block p strong {
+.payment-page-container .customer-details-block p strong {
     color: var(--text-dark);
 }
 
-.action-buttons-footer {
+.payment-page-container .action-buttons-footer {
     display: flex;
     justify-content: center;
     gap: 30px;
@@ -366,8 +379,8 @@ body {
     width: 100%;
 }
 
-.go-home-button,
-.cancel-order-button {
+.payment-page-container .go-home-button,
+.payment-page-container .cancel-order-button {
     padding: 15px 30px;
     border-radius: 10px;
     font-size: 1.15em;
@@ -380,32 +393,32 @@ body {
     border: none;
 }
 
-.go-home-button {
+.payment-page-container .go-home-button {
     background-color: var(--home-blue);
     color: white;
     box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
 }
 
-.go-home-button:hover {
+.payment-page-container .go-home-button:hover {
     background-color: var(--home-blue-dark);
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(0, 123, 255, 0.5);
 }
 
-.cancel-order-button {
+.payment-page-container .cancel-order-button {
     background-color: var(--cancel-red);
     color: white;
     box-shadow: 0 6px 15px rgba(220, 53, 69, 0.4);
 }
 
-.cancel-order-button:hover {
+.payment-page-container .cancel-order-button:hover {
     background-color: var(--cancel-red-dark);
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(220, 53, 69, 0.5);
 }
 
 /* Cancel Dialog Styling */
-.cancel-dialog-overlay {
+.payment-page-container .cancel-dialog-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -419,7 +432,7 @@ body {
     animation: fadeIn 0.3s ease-out;
 }
 
-.cancel-dialog {
+.payment-page-container .cancel-dialog {
     background-color: var(--card-background);
     padding: 40px;
     border-radius: 15px;
@@ -435,30 +448,30 @@ body {
     to { opacity: 1; transform: scale(1); }
 }
 
-.cancel-dialog .dialog-icon {
+.payment-page-container .cancel-dialog .dialog-icon {
     font-size: 3em;
     margin-bottom: 20px;
 }
 
-.cancel-dialog .dialog-icon.warning {
+.payment-page-container .cancel-dialog .dialog-icon.warning {
     color: #ffc107;
 }
 
-.cancel-dialog p {
+.payment-page-container .cancel-dialog p {
     font-size: 1.3em;
     color: var(--text-dark);
     margin-bottom: 30px;
     font-weight: 500;
 }
 
-.dialog-buttons {
+.payment-page-container .dialog-buttons {
     display: flex;
     justify-content: center;
     gap: 20px;
 }
 
-.dialog-confirm-button,
-.dialog-cancel-button {
+.payment-page-container .dialog-confirm-button,
+.payment-page-container .dialog-cancel-button {
     padding: 12px 25px;
     border-radius: 8px;
     font-size: 1.1em;
@@ -468,22 +481,22 @@ body {
     font-weight: 600;
 }
 
-.dialog-confirm-button {
+.payment-page-container .dialog-confirm-button {
     background-color: var(--cancel-red);
     color: white;
 }
 
-.dialog-confirm-button:hover {
+.payment-page-container .dialog-confirm-button:hover {
     background-color: var(--cancel-red-dark);
     transform: translateY(-2px);
 }
 
-.dialog-cancel-button {
+.payment-page-container .dialog-cancel-button {
     background-color: var(--text-light);
     color: white;
 }
 
-.dialog-cancel-button:hover {
+.payment-page-container .dialog-cancel-button:hover {
     background-color: #5a6268;
     transform: translateY(-2px);
 }
@@ -501,7 +514,7 @@ body {
     flex-direction: column;
 }
 
-.loading-spinner {
+.payment-page-container .loading-spinner {
     border: 8px solid var(--border-color);
     border-top: 8px solid var(--primary-color);
     border-radius: 50%;
@@ -515,19 +528,19 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-.error-state .error-icon {
+.payment-page-container .error-state .error-icon {
     font-size: 4em;
     color: var(--cancel-red);
     margin-bottom: 20px;
 }
 
-.error-state h1 {
+.payment-page-container .error-state h1 {
     color: var(--cancel-red);
     margin-bottom: 10px;
     font-size: 2.5em;
 }
 
-.error-state p {
+.payment-page-container .error-state p {
     font-size: 1.2em;
     text-align: center;
     max-width: 600px;
@@ -535,7 +548,7 @@ body {
     margin-bottom: 30px;
 }
 
-.error-state .go-home-button {
+.payment-page-container .error-state .go-home-button {
     padding: 15px 30px;
     font-size: 1.1em;
 }
@@ -543,19 +556,19 @@ body {
 
 /* --- Responsive Design --- */
 @media (max-width: 992px) {
-    .content-wrapper {
+    .payment-page-container .content-wrapper {
         flex-direction: column;
         align-items: center;
     }
 
-    .order-details-card,
-    .customer-info-card {
+    .payment-page-container .order-details-card,
+    .payment-page-container .customer-info-card {
         width: 100%;
         max-width: 700px; /* Limit width for cards on smaller screens */
         margin-bottom: 30px;
     }
 
-    .header-section h1 {
+    .payment-page-container .header-section h1 {
         font-size: 2.5em;
     }
 }
@@ -567,64 +580,64 @@ body {
         margin: 80px auto;
     }
 
-    .header-section h1 {
+    .payment-page-container .header-section h1 {
         font-size: 2em;
         gap: 10px;
     }
 
-    .header-section .subtitle {
+    .payment-page-container .header-section .subtitle {
         font-size: 1.1em;
     }
 
-    .order-details-card h2,
-    .customer-info-card h2 {
+    .payment-page-container .order-details-card h2,
+    .payment-page-container .customer-info-card h2 {
         font-size: 1.8em;
         gap: 10px;
         padding-bottom: 15px;
         margin-bottom: 20px;
     }
 
-    .order-details-card,
-    .customer-info-card {
+    .payment-page-container .order-details-card,
+    .payment-page-container .customer-info-card {
         padding: 25px;
     }
 
-    .item-info h3 {
+    .payment-page-container .item-info h3 {
         font-size: 1.1em;
     }
 
-    .item-info p {
+    .payment-page-container .item-info p {
         font-size: 0.9em;
     }
 
-    .item-total {
+    .payment-page-container .item-total {
         font-size: 1em;
     }
 
-    .summary-line {
+    .payment-page-container .summary-line {
         font-size: 1em;
     }
 
-    .total-amount-final {
+    .payment-page-container .total-amount-final {
         font-size: 1.3em;
         padding-top: 15px;
         margin-top: 15px;
     }
 
-    .paystack-pay-button {
+    .payment-page-container .paystack-pay-button {
         font-size: 1.2em;
         padding: 16px 30px;
         max-width: 280px;
     }
 
-    .action-buttons-footer {
+    .payment-page-container .action-buttons-footer {
         flex-direction: column;
         gap: 20px;
         margin-top: 40px;
     }
 
-    .go-home-button,
-    .cancel-order-button {
+    .payment-page-container .go-home-button,
+    .payment-page-container .cancel-order-button {
         width: 100%;
         max-width: 350px;
         margin: 0 auto;
@@ -633,16 +646,16 @@ body {
         padding: 14px 25px;
     }
 
-    .cancel-dialog {
+    .payment-page-container .cancel-dialog {
         padding: 30px;
     }
 
-    .cancel-dialog p {
+    .payment-page-container .cancel-dialog p {
         font-size: 1.1em;
         margin-bottom: 25px;
     }
 
-    .dialog-buttons {
+    .payment-page-container .dialog-buttons {
         gap: 15px;
     }
 }
@@ -650,47 +663,42 @@ body {
 @media (max-width: 480px) {
     .payment-page-container {
         padding: 15px;
-        margin: 100px auto 65px auto; /* Changed margin-left to auto for centering */
-        width: 90%; /* Ensure it's not too wide */
+        margin: 100px auto 65px auto;
+        width: 90%;
     }
 
-    .header-section {
-        width: 75%; /* Reset to 100% within the 85% container */
+    /* Remove specific width overrides for internal sections, let them follow 100% of container */
+    .payment-page-container .header-section,
+    .payment-page-container .content-wrapper,
+    .payment-page-container .action-buttons-footer {
+        width: 100%;
+        margin-right: 0; /* Ensure no extra margin */
     }
 
-    .content-wrapper {
-        width: 45%; /* Reset to 100% within the 85% container */
-        margin-right: 50px;
-    }
-
-    .action-buttons-footer {
-        width: 75%; /* Reset to 100% within the 85% container */
-    }
-
-    .header-section h1 {
+    .payment-page-container .header-section h1 {
         font-size: 1.8em;
         gap: 8px;
     }
 
-    .header-section .subtitle,
-    .header-section .tagline {
+    .payment-page-container .header-section .subtitle,
+    .payment-page-container .tagline {
         font-size: 0.9em;
     }
 
-    .order-details-card,
-    .customer-info-card {
+    .payment-page-container .order-details-card,
+    .payment-page-container .customer-info-card {
         padding: 20px;
         min-width: unset; /* Remove min-width for very small screens */
     }
 
-    .order-details-card h2,
-    .customer-info-card h2 {
+    .payment-page-container .order-details-card h2,
+    .payment-page-container .customer-info-card h2 {
         font-size: 1.6em;
         padding-bottom: 12px;
         margin-bottom: 15px;
     }
 
-    .order-item {
+    .payment-page-container .order-item {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
@@ -698,95 +706,95 @@ body {
         margin-bottom: 15px;
     }
 
-    .order-item img {
+    .payment-page-container .order-item img {
         width: 60px;
         height: 60px;
     }
 
-    .item-info h3 {
+    .payment-page-container .item-info h3 {
         font-size: 1em;
     }
 
-    .item-total {
+    .payment-page-container .item-total {
         align-self: flex-end; /* Align total to the right in column layout */
         margin-top: -30px; /* Adjust position */
         font-size: 1em;
     }
 
 
-    .summary-section {
+    .payment-page-container .summary-section {
         padding-top: 15px;
     }
 
-    .summary-line {
+    .payment-page-container .summary-line {
         font-size: 0.95em;
         padding: 8px 0;
     }
 
-    .total-amount-final {
+    .payment-page-container .total-amount-final {
         font-size: 1.2em;
         padding-top: 12px;
         margin-top: 12px;
     }
 
-    .customer-info-card .payment-instruction,
-    .customer-info-card .payment-note {
+    .payment-page-container .customer-info-card .payment-instruction,
+    .payment-page-container .customer-info-card .payment-note {
         font-size: 0.9em;
         margin-bottom: 15px;
     }
 
-    .customer-details-block {
+    .payment-page-container .customer-details-block {
         padding: 15px;
         margin-top: 25px;
     }
 
-    .customer-details-block h3 {
+    .payment-page-container .customer-details-block h3 {
         font-size: 1.2em;
     }
 
-    .customer-details-block p {
+    .payment-page-container .customer-details-block p {
         font-size: 0.9em;
     }
 
-    .paystack-pay-button {
+    .payment-page-container .paystack-pay-button {
         font-size: 1.1em;
         padding: 14px 25px;
         max-width: 250px;
     }
 
-    .secure-info {
+    .payment-page-container .secure-info {
         font-size: 0.85em;
         margin-top: 20px;
     }
 
-    .action-buttons-footer {
+    .payment-page-container .action-buttons-footer {
         gap: 15px;
         margin-top: 30px;
     }
 
-    .go-home-button,
-    .cancel-order-button {
+    .payment-page-container .go-home-button,
+    .payment-page-container .cancel-order-button {
         font-size: 1em;
         padding: 12px 20px;
         max-width: 280px;
     }
 
-    .cancel-dialog {
+    .payment-page-container .cancel-dialog {
         padding: 25px;
     }
 
-    .cancel-dialog p {
+    .payment-page-container .cancel-dialog p {
         font-size: 1em;
         margin-bottom: 20px;
     }
 
-    .dialog-buttons {
+    .payment-page-container .dialog-buttons {
         flex-direction: column;
         gap: 10px;
     }
 
-    .dialog-confirm-button,
-    .dialog-cancel-button {
+    .payment-page-container .dialog-confirm-button,
+    .payment-page-container .dialog-cancel-button {
         font-size: 0.95em;
         padding: 10px 15px;
     }
