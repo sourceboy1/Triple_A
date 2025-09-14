@@ -29,7 +29,7 @@ body {
   border: 1px solid var(--border-color);
   border-radius: 12px; /* Slightly more rounded corners */
   overflow: hidden;
-  margin-top: 100px; /* Adjusted top margin for potential header */
+  margin-top: 130px; /* Adjusted top margin for potential header */
   box-shadow: 0 4px 15px var(--shadow-light); /* Softer shadow */
 }
 
@@ -198,7 +198,7 @@ body {
 @media screen and (max-width: 992px) {
   .account-container {
     margin: 20px auto;
-    margin-top: 150px;
+    margin-top: 160px;
     border-radius: 8px;
   }
 
