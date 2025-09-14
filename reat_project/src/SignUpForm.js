@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from './api'; // Import your custom axios instance
 import './SignUpForm.css';
 import eyeIcon from './pictures/eye.jpg';
 import closedEyeIcon from './pictures/eye-closed.jpg';
@@ -43,17 +43,13 @@ const SignUpForm = () => {
 
   const handleSignup = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/api/signup/', formData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      // ✅ Use the 'api' instance from api.js
+      const response = await api.post('/signup/', formData); 
 
       const data = response.data;
 
       if (response.status === 201) {
-        // JWT token from signup response
-        if (data.access && data.user_id) {
+        if (data.access && data.refresh && data.user_id) { // Ensure refresh token is also received
           signIn({
             username: formData.username,
             userId: data.user_id,
@@ -61,7 +57,7 @@ const SignUpForm = () => {
             lastName: formData.last_name,
             email: formData.email,
             token: data.access,      // access token for auth
-            refreshToken: data.refresh // optional, store refresh token if needed
+            refresh: data.refresh    // Store refresh token
           });
 
           setSuccessMessage('User created successfully!');
@@ -70,6 +66,7 @@ const SignUpForm = () => {
           setError('Unexpected response format. Please try again.');
         }
       } else {
+        // This block might not be reached if axios throws an error for non-2xx status
         setError('Error creating user. Please try again.');
       }
     } catch (error) {
