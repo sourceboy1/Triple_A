@@ -135,10 +135,11 @@ const Checkout = () => {
         postal_code: postalCode,
         country,
         phone,
-        shipping_method: shippingMethod,
+        // Only include shipping_method if shippingCost is not 0
+        ...(currentShippingCost > 0 && { shipping_method: shippingMethod }),
         order_note: orderNote,
         payment_method_id: paymentMethodId,
-        shipping_cost: shippingCost,
+        shipping_cost: currentShippingCost,
         total_amount: total,
         cart_items: cart.map(item => ({
             product: item.product_id,
@@ -159,18 +160,18 @@ const Checkout = () => {
 
         const redirectPath = paymentMethod === 'debit_credit_cards' ? '/payment/debit-credit-card' : '/payment/bank-transfer';
         navigate(redirectPath, {
-             state: {
+            state: {
                 orderId: response.data.order_id,
                 email,
                 phone,
                 address: fullAddress,
                 subtotal,
-                shippingCost,
+                shippingCost: currentShippingCost, // Pass currentShippingCost
                 total,
                 products: cart,
-                shippingMethod: shippingMethod // Make sure this is passed
-    }
-});
+                shippingMethod: shippingMethod // Make sure to pass shippingMethod
+            }
+        });
     } catch (error) {
         console.error('Error placing the order:', error.response || error);
         window.scrollTo(0, 0);
