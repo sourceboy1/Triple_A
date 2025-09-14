@@ -672,6 +672,19 @@ body {
         width: 85%; /* Ensure it's not too wide */
     }
 
+    .header-section {
+        width: 75%; /* Reset to 100% within the 85% container */
+    }
+
+    .content-wrapper {
+        width: 75%; /* Reset to 100% within the 85% container */
+        margin-right: 30px;
+    }
+
+    .action-buttons-footer {
+        width: 75%; /* Reset to 100% within the 85% container */
+    }
+
     .header-section h1 {
         font-size: 1.8em;
         gap: 8px;
