@@ -455,7 +455,7 @@ const Checkout = () => {
                                         disabled={loading || loadingCheckoutDetails}
                                     />
                                     <label htmlFor="terms">
-                                      I have read and agree to the website  <a href="#" onClick={toggleTerms}>terms and conditions</a>
+                                      I have read and agree to the website <a href="#" onClick={toggleTerms}> terms and conditions</a>
                                     </label>
                                 </div>
 

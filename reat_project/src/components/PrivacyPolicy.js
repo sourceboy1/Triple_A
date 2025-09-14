@@ -7,7 +7,7 @@ const PrivacyPolicy = () => {
             <h1>Privacy Policy</h1>
             <section className="privacy-policy-section">
                 <h2>Who we are</h2>
-                <p>Our website address is: <a href="https://tripleastechng.com" target="_blank" rel="noopener noreferrer">https://tripleastech.com</a></p>
+                <p>Our website address is: <a href="https://tripleastechng.com" target="_blank" rel="noopener noreferrer">https://tripleastechng.com</a></p>
             </section>
             
             <section className="privacy-policy-section">
