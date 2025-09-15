@@ -103,7 +103,7 @@ class Product(models.Model):
     discount = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     stock = models.IntegerField()
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, blank=True, null=True)
-    image = models.ImageField(upload_to='products/', blank=True, null=True,storage=MediaCloudinaryStorage())
+    image = models.ImageField(upload_to='products/', blank=True, null=True,storage=MediaCloudinaryStorage(), max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     is_deal_of_the_day = models.BooleanField(default=False)
     is_featured = models.BooleanField(default=False)
@@ -136,10 +136,10 @@ class Product(models.Model):
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name='additional_images', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='products/additional/', null=True, blank=True,storage=MediaCloudinaryStorage())
-    secondary_image = models.ImageField(upload_to='products/additional/', null=True, blank=True,storage=MediaCloudinaryStorage())
-    tertiary_image = models.ImageField(upload_to='products/additional/', null=True, blank=True,storage=MediaCloudinaryStorage())
-    quaternary_image = models.ImageField(upload_to='products/additional/', null=True, blank=True,storage=MediaCloudinaryStorage())
+    image = models.ImageField(upload_to='products/additional/', null=True, blank=True,storage=MediaCloudinaryStorage(), max_length=255)
+    secondary_image = models.ImageField(upload_to='products/additional/', null=True, blank=True,storage=MediaCloudinaryStorage(), max_length=255)
+    tertiary_image = models.ImageField(upload_to='products/additional/', null=True, blank=True,storage=MediaCloudinaryStorage(), max_length=255)
+    quaternary_image = models.ImageField(upload_to='products/additional/', null=True, blank=True,storage=MediaCloudinaryStorage(), max_length=255)
     description = models.TextField(blank=True, null=True)
 
     class Meta:
