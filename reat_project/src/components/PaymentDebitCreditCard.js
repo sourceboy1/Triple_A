@@ -69,12 +69,8 @@ const PaymentDebitCreditCard = () => {
     // This useEffect will trigger the Paystack popup
     useEffect(() => {
         if (!isLoading && totalWithCharges > 0 && !paystackTriggeredRef.current) {
-            // Programmatically trigger Paystack by rendering the button and simulating a click
-            // The PaystackButton component itself handles the rendering and logic.
-            // We just need to ensure it's mounted with the right props.
-            paystackTriggeredRef.current = true; // Mark as triggered
+            paystackTriggeredRef.current = true;
             // The PaystackButton will automatically open when mounted with valid props.
-            // No need for a separate state `showPaystackPopup` to control its visibility if it should always show.
         }
     }, [isLoading, totalWithCharges]);
 
@@ -124,13 +120,9 @@ const PaymentDebitCreditCard = () => {
             // Conditionally add shipping_method based on shippingCost
             if (shippingCost > 0) {
                 requestBody.shipping_method = shippingMethod;
-            } else {
-                // For pickup (shippingCost === 0), you might want to send a specific message
-                // or entirely omit the shipping method from the backend.
-                // Assuming "pickup" is a valid shipping_method for the backend if needed,
-                // but if not, removing it is the best.
-                // For this modification, we are ensuring it's not sent if cost is 0.
             }
+            // If shippingCost is 0, shipping_method is omitted from the requestBody,
+            // which aligns with the intention for store pickup.
 
             await api.post(`/orders/${orderId}/confirm_payment/`, requestBody, {
                 headers: {
@@ -141,9 +133,9 @@ const PaymentDebitCreditCard = () => {
 
             let successMessage = '';
             if (shippingCost === 0) { // Assuming shippingCost 0 means store pickup
-                successMessage = 'Your order is confirmed and will be available for pickup soon.';
+                successMessage = 'Your order is confirmed and will be available for pickup soon. You will receive an email notification when it\'s ready.';
             } else {
-                successMessage = 'Your order is confirmed and will be available for shipment soon.';
+                successMessage = 'Your order is confirmed and will be shipped to your address soon. You will receive tracking details via email.';
             }
 
             navigate('/order-success', { state: { orderId, successMessage } }); // Pass success message to success page
@@ -160,7 +152,6 @@ const PaymentDebitCreditCard = () => {
         if (!paystackTriggeredRef.current) { // Prevent showing alert if it was a successful payment then closed
             alert('Payment window closed. You can try again or cancel your order.');
         }
-        // paystackTriggeredRef.current = false; // Reset if user wants to try again
     };
 
     const PaystackIntegrationButton = () => (
