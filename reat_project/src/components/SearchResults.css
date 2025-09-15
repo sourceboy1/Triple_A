@@ -2,7 +2,7 @@
     padding: 20px;
     background-color: white;
     width: 100vw; /* Use viewport width for full width */
-    margin: 0; /* Remove any default margin */
+    margin-top: 60px; /* Remove any default margin */
     box-sizing: border-box; /* Include padding in width calculation */
 }
   
