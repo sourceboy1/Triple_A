@@ -162,20 +162,23 @@ EMAIL_TIMEOUT = 10
 
 # Database
 # Use dj_database_url to parse the DATABASE_URL environment variable from Railway
-DATABASE_URL = os.environ.get("DATABASE_URL")
+# Database
+raw_database_url = os.environ.get("DATABASE_URL", "").strip()
 
-if DATABASE_URL and DATABASE_URL.strip() and not DATABASE_URL.strip().startswith("://"):
+if raw_database_url and "://" in raw_database_url and not raw_database_url.startswith("://"):
+    # ✅ Valid DATABASE_URL → use it
     DATABASES = {
-        "default": dj_database_url.parse(DATABASE_URL, conn_max_age=600)
+        "default": dj_database_url.parse(raw_database_url, conn_max_age=600)
     }
 else:
-    # ✅ Safe fallback to SQLite for build/collectstatic
+    # 🚨 Fallback for build time (when DATABASE_URL is empty or just "://")
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
+
 
 
 
