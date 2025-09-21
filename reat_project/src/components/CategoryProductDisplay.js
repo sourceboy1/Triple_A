@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react"; 
 import { useNavigate } from "react-router-dom";
 import { TokenContext } from "./TokenContext";
 import api from "../Api";
@@ -97,40 +97,42 @@ const CategoryProductDisplay = () => {
         {loadingProducts ? (
           <div className="cpd-loading-spinner"></div>
         ) : (
-          <div className="cpd-product-grid">
-            {displayedProducts.length > 0 ? (
-              displayedProducts.map((product) => {
-                const mainImage = product.image_urls?.medium || "/media/default.jpg";
-                const secondaryImage = product.secondary_image_urls?.medium || mainImage;
+          /* NEW: scroll wrapper that shows exactly 2 rows (8 items on desktop) */
+          <div className="cpd-product-scroll">
+            <div className="cpd-product-grid">
+              {displayedProducts.length > 0 ? (
+                displayedProducts.map((product) => {
+                  const mainImage = product.image_urls?.medium || "/media/default.jpg";
+                  const secondaryImage = product.secondary_image_urls?.medium || mainImage;
 
-                return (
-                  <div
-                    key={product.product_id}
-                    className="cpd-product-card"
-                    onClick={() => handleProductClick(product.product_id)}
-                    onMouseEnter={(e) => {
-                      const imgEl = e.currentTarget.querySelector("img");
-                      imgEl.src = secondaryImage;
-                    }}
-                    onMouseLeave={(e) => {
-                      const imgEl = e.currentTarget.querySelector("img");
-                      imgEl.src = mainImage;
-                    }}
-                  >
-                    <img
-                      src={mainImage}
-                      alt={product.name}
-                      className="cpd-product-image"
-                    />
-                    <h4 className="cpd-product-title">{product.name}</h4>
-                    {/* Use the formatPriceInNaira function here */}
-                    <p className="cpd-product-price">{formatPriceInNaira(parseFloat(product.price))}</p>
-                  </div>
-                );
-              })
-            ) : (
-              <p className="cpd-no-products">No products found in this category.</p>
-            )}
+                  return (
+                    <div
+                      key={product.product_id}
+                      className="cpd-product-card"
+                      onClick={() => handleProductClick(product.product_id)}
+                      onMouseEnter={(e) => {
+                        const imgEl = e.currentTarget.querySelector("img");
+                        if (imgEl) imgEl.src = secondaryImage;
+                      }}
+                      onMouseLeave={(e) => {
+                        const imgEl = e.currentTarget.querySelector("img");
+                        if (imgEl) imgEl.src = mainImage;
+                      }}
+                    >
+                      <img
+                        src={mainImage}
+                        alt={product.name}
+                        className="cpd-product-image"
+                      />
+                      <h4 className="cpd-product-title">{product.name}</h4>
+                      <p className="cpd-product-price">{formatPriceInNaira(parseFloat(product.price))}</p>
+                    </div>
+                  );
+                })
+              ) : (
+                <p className="cpd-no-products">No products found in this category.</p>
+              )}
+            </div>
           </div>
         )}
       </main>
