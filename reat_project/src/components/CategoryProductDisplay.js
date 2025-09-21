@@ -20,12 +20,10 @@ const allCategories = [
   { id: 1, name: "Accessories for Phones * Tablets" },
   { id: 15, name: "Accessories for Electronics" },
   // Adding more categories for demonstration of scroll
-  { id: 10, name: "Cameras & Photography" },
-  { id: 11, name: "Home Appliances" },
-  { id: 12, name: "Office Electronics" },
-  { id: 13, name: "Audio Systems" },
-  { id: 17, name: "Networking Devices" },
-  { id: 18, name: "Drones" },
+  { id: 17, name: "Cameras & Photography" },
+  { id: 18, name: "Home Appliances" },
+  { id: 19, name: "Networking Devices" },
+  { id: 20, name: "Drones" },
 ];
 
 const CategoryProductDisplay = () => {

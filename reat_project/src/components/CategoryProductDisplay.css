@@ -13,149 +13,81 @@
   --radius-soft: 8px;
   --gap-md: 20px;
   --gap-lg: 30px;
+  --product-card-width: 200px; /* Base width for product cards */
 }
 
 .cpd-main-layout {
-  /* Removed flex-direction: row to allow full width for content */
-  min-height: calc(100vh - var(--navbar-height, 60px) - var(--footer-height, 100px)); /* Adjust heights as needed */
+  display: flex; /* Revert to flex for sidebar and main content */
+  min-height: calc(100vh - var(--navbar-height, 60px) - var(--footer-height, 100px));
   background-color: var(--background-light);
   padding: var(--gap-lg);
+  gap: var(--gap-lg);
   box-sizing: border-box;
   margin-top: 60px;
 }
 
-/* Removed cpd-sidebar styles as it's now integrated horizontally */
-
-/* Content Area Styling - now takes full width */
-.cpd-content-area {
+/* Sidebar Styling */
+.cpd-sidebar {
+  flex-shrink: 0;
+  width: 250px;
   background-color: var(--background-card);
   border-radius: var(--radius-soft);
   box-shadow: 0 4px 12px var(--shadow-light);
-  padding: var(--gap-lg);
+  padding: var(--gap-md);
   box-sizing: border-box;
-  width: 100%; /* Ensure it takes full available width */
 }
 
-.cpd-categories-header {
-  display: flex;
-  flex-direction: column; /* Stack title and scroll container */
-  margin-bottom: var(--gap-lg);
-}
-
-.cpd-categories-header h2 {
+.cpd-sidebar h2 {
   font-size: 1.6em;
   color: var(--primary-color);
-  margin-bottom: 15px; /* Space between title and category list */
-  text-align: center;
-  position: relative;
+  margin-bottom: var(--gap-md);
   padding-bottom: 10px;
-}
-
-.cpd-categories-header h2::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 2px;
-  background-color: var(--primary-color);
-  border-radius: 1px;
-}
-
-.cpd-category-scroll-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 0 40px; /* Space for buttons */
-  box-sizing: border-box;
+  border-bottom: 2px solid var(--border-light);
 }
 
 .cpd-category-list {
   list-style: none;
   padding: 0;
   margin: 0;
-  display: flex; /* Make items display in a row */
-  overflow-x: scroll; /* Enable horizontal scrolling */
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-  scroll-behavior: smooth; /* Smooth scroll when buttons are clicked */
-  white-space: nowrap; /* Prevent items from wrapping */
-  gap: 15px; /* Space between categories */
-  flex-grow: 1; /* Allows the list to take available space */
-
-  /* Hide scrollbar for various browsers */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-}
-
-.cpd-category-list::-webkit-scrollbar {
-  display: none; /* WebKit (Chrome, Safari) */
 }
 
 .cpd-category-item {
-  flex-shrink: 0; /* Prevent items from shrinking */
-  padding: 12px 18px; /* Adjusted padding for horizontal items */
+  padding: 12px 10px;
   color: var(--text-dark);
-  font-size: 1.0em;
+  font-size: 1.1em;
   cursor: pointer;
-  border-radius: 25px; /* More rounded pills */
-  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
-  border: 1px solid var(--border-light); /* Subtle border */
-  white-space: nowrap; /* Ensure text stays on one line */
-  background-color: var(--background-card);
+  border-radius: var(--radius-soft);
+  transition: background-color 0.2s ease, color 0.2s ease;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
 }
 
 .cpd-category-item:hover {
-  background-color: var(--secondary-color);
+  background-color: var(--primary-color);
   color: white;
-  box-shadow: 0 2px 8px var(--shadow-light);
-  border-color: var(--secondary-color);
 }
 
 .cpd-category-item.active {
   background-color: var(--primary-color);
   color: white;
   font-weight: 600;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-  border-color: var(--primary-color);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.cpd-scroll-button {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  border-radius: 50%; /* Circular buttons */
-  width: 35px;
-  height: 35px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 1.5em;
-  position: absolute; /* Position relative to .cpd-category-scroll-container */
-  z-index: 10;
-  box-shadow: 0 2px 8px var(--shadow-light);
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.cpd-scroll-button.left {
-  left: 0;
-}
-
-.cpd-scroll-button.right {
-  right: 0;
-}
-
-.cpd-scroll-button:hover {
-  background-color: var(--secondary-color);
-  transform: scale(1.05);
+/* Content Area Styling */
+.cpd-content-area {
+  flex-grow: 1;
+  background-color: var(--background-card);
+  border-radius: var(--radius-soft);
+  box-shadow: 0 4px 12px var(--shadow-light);
+  padding: var(--gap-lg);
+  box-sizing: border-box;
 }
 
 .cpd-content-title {
   font-size: 2em;
   color: var(--text-dark);
-  margin-top: var(--gap-lg); /* Space after categories */
   margin-bottom: var(--gap-lg);
   text-align: center;
   position: relative;
@@ -174,12 +106,38 @@
   border-radius: 2px;
 }
 
+/* Product Scroll Container */
+.cpd-product-scroll-container {
+  max-height: 800px; /* Adjust this height to show ~10 products (2 rows of 5) */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding-right: 15px; /* Space for scrollbar */
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: var(--primary-color) var(--border-light); /* Firefox */
+}
+
+/* Webkit scrollbar styling */
+.cpd-product-scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.cpd-product-scroll-container::-webkit-scrollbar-track {
+  background: var(--border-light);
+  border-radius: 10px;
+}
+
+.cpd-product-scroll-container::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color);
+  border-radius: 10px;
+  border: 2px solid var(--background-card);
+}
+
 
 /* Product Grid Styling */
 .cpd-product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Responsive grid */
+  grid-template-columns: repeat(auto-fill, minmax(var(--product-card-width), 1fr));
   gap: var(--gap-md);
+  padding-bottom: 10px; /* Add some padding at the bottom for scroll */
 }
 
 .cpd-product-card {
@@ -188,12 +146,13 @@
   box-shadow: 0 2px 8px var(--shadow-light);
   padding: var(--gap-md);
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Default to column for image, title, price */
   align-items: center;
   text-align: center;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   overflow: hidden;
+  height: auto; /* Allow height to adjust based on content */
 }
 
 .cpd-product-card:hover {
@@ -203,9 +162,9 @@
 
 .cpd-product-image {
   width: 100%;
-  max-width: 180px; /* Max size for images within card */
-  height: 150px; /* Fixed height for consistency */
-  object-fit: contain; /* Ensures image is fully visible */
+  max-width: 180px;
+  height: 150px;
+  object-fit: contain;
   border-radius: var(--radius-soft);
   margin-bottom: 15px;
 }
@@ -218,7 +177,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* Limit to 2 lines */
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
@@ -226,11 +185,11 @@
   font-size: 1.2em;
   color: var(--primary-color);
   font-weight: 700;
-  margin-top: auto; /* Pushes price to the bottom */
+  margin-top: auto;
 }
 
 .cpd-no-products {
-  grid-column: 1 / -1; /* Center message across grid */
+  grid-column: 1 / -1;
   text-align: center;
   color: var(--text-medium);
   font-size: 1.2em;
@@ -259,48 +218,58 @@
   .cpd-main-layout{
       margin-top: 100px;
   }
-  .cpd-category-item {
-    padding: 10px 15px;
-    font-size: 0.95em;
+  .cpd-sidebar {
+      width: 200px;
   }
   .cpd-product-grid {
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      --product-card-width: 180px; /* Adjust variable */
+  }
+  .cpd-product-scroll-container {
+    max-height: 700px; /* Adjust for smaller screens */
   }
 }
 
 @media (max-width: 768px) {
   .cpd-main-layout {
+      flex-direction: column;
       padding: var(--gap-md);
       margin-top: 150px;
+  }
+  .cpd-sidebar {
+      width: 100%;
+      margin-bottom: var(--gap-md);
   }
   .cpd-content-area {
       padding: var(--gap-md);
   }
-  .cpd-category-scroll-container {
-    padding: 0 30px; /* Smaller padding for buttons */
-  }
-  .cpd-scroll-button {
-    width: 30px;
-    height: 30px;
-    font-size: 1.3em;
-  }
-  .cpd-category-list {
-    gap: 10px;
-  }
-  .cpd-category-item {
-      padding: 8px 12px;
-      font-size: 0.9em;
-      border-radius: 20px;
-  }
   .cpd-product-grid {
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
       gap: 15px;
+      --product-card-width: 160px;
   }
   .cpd-content-title {
       font-size: 1.8em;
   }
-  .cpd-categories-header h2 {
-    font-size: 1.4em;
+  .cpd-sidebar h2 {
+      text-align: center;
+  }
+  .cpd-category-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+  }
+  .cpd-category-item {
+      padding: 8px 12px;
+      margin: 5px;
+      font-size: 1em;
+  }
+  .cpd-product-scroll-container {
+    max-height: 600px; /* Further adjust for tablets */
+    padding-right: 8px; /* Smaller scrollbar space */
+  }
+  .cpd-product-scroll-container::-webkit-scrollbar {
+    width: 6px;
   }
 }
 
@@ -309,23 +278,18 @@
       padding: 10px;
       margin-top: 120px;
   }
-  .cpd-content-area {
-      padding: 15px;
+  .cpd-sidebar {
+      padding: 10px;
   }
-  .cpd-categories-header h2 {
-    font-size: 1.2em;
-  }
-  .cpd-category-scroll-container {
-    padding: 0 25px;
-  }
-  .cpd-scroll-button {
-    width: 25px;
-    height: 25px;
-    font-size: 1em;
+  .cpd-sidebar h2 {
+      font-size: 1.4em;
   }
   .cpd-category-item {
-      font-size: 0.8em;
+      font-size: 0.9em;
       padding: 6px 10px;
+  }
+  .cpd-content-area {
+      padding: 15px;
   }
   .cpd-content-title {
       font-size: 1.5em;
@@ -334,27 +298,52 @@
   .cpd-product-grid {
       grid-template-columns: 1fr; /* Single column on very small screens */
       gap: 10px;
+      --product-card-width: 100%; /* Full width for cards */
   }
   .cpd-product-image {
       max-width: 120px;
       height: 100px;
+      margin-bottom: 0; /* No margin bottom when horizontal */
   }
   .cpd-product-card {
       flex-direction: row; /* Horizontal layout for small screens */
       text-align: left;
       gap: 10px;
       padding: 10px;
+      align-items: center; /* Vertically align items in the row */
   }
   .cpd-product-title, .cpd-product-price {
       margin: 0;
   }
   .cpd-product-title {
-      flex-grow: 1;
-      -webkit-line-clamp: 3;
+      flex-grow: 1; /* Allow title to take available space */
+      -webkit-line-clamp: 2; /* Limit to 2 lines for title */
       font-size: 1em;
+      /* Adjust order to be after image but before price if needed by adding a wrapper */
   }
   .cpd-product-price {
       font-size: 1em;
       white-space: nowrap; /* Keep price on one line */
+      margin-left: auto; /* Push price to the right */
   }
+
+  /* Specific structure for mobile: image, then name/price block */
+  .cpd-product-card > img {
+    order: 1; /* Image first */
+  }
+
+  .cpd-product-card > h4 {
+    order: 2; /* Name second */
+    margin-right: 10px; /* Space between name and price */
+  }
+
+  .cpd-product-card > p {
+    order: 3; /* Price third */
+    align-self: flex-end; /* Align price to bottom if space allows */
+  }
+
+  /* To get name and price stacked *under* the image on mobile if it were a column,
+     we would need a wrapper div around name and price for column layout,
+     but for the requested "image first and the name at the front and the price at the buttom of the name"
+     in a row layout, the above order and flex-direction: row works. */
 }
