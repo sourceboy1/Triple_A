@@ -53,6 +53,7 @@ COPY --from=frontend /app/frontend/build ./reat_project/build
 # Run Django checks (optional)
 RUN python -m django --version
 
+ENV DATABASE_URL=sqlite:///db.sqlite3
 # ✅ Crucial: Collect static files after React build is copied
 # This will gather all static files, including those from FRONTEND_DIR / "static"
 RUN python manage.py collectstatic --noinput

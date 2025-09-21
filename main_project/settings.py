@@ -162,23 +162,39 @@ EMAIL_TIMEOUT = 10
 
 # Database
 # Use dj_database_url to parse the DATABASE_URL environment variable from Railway
-# Database
-raw_database_url = os.environ.get("DATABASE_URL", "").strip()
+raw_database_url = os.environ.get("DATABASE_URL", "") or ""
+raw_database_url = raw_database_url.strip()
 
-# Railway bug: sometimes DATABASE_URL is literally "://"
-if raw_database_url and raw_database_url not in ("", "://"):
-    DATABASES = {
-        "default": dj_database_url.parse(raw_database_url, conn_max_age=600)
-    }
+# Treat obvious garbage values as "not provided"
+if raw_database_url in ("", "://", None):
+    USE_SQLITE_FALLBACK = True
 else:
-    # ✅ Fallback for build time (collectstatic)
+    USE_SQLITE_FALLBACK = False
+
+if USE_SQLITE_FALLBACK:
+    # Fallback for build-time operations (collectstatic) or missing DB env
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
+            "NAME": str(BASE_DIR / "db.sqlite3"),
         }
     }
-
+else:
+    # Try to parse the url; if parsing fails, fallback to sqlite
+    try:
+        DATABASES = {
+            "default": dj_database_url.parse(raw_database_url, conn_max_age=600)
+        }
+    except Exception as e:
+        # Log the exception if you have logging available, then fallback
+        # (This prevents dj_database_url.UnknownSchemeError from crashing builds)
+        print("WARNING: dj_database_url.parse failed, falling back to sqlite. error:", e)
+        DATABASES = {
+            "default": {
+                "ENGINE": "django.db.backends.sqlite3",
+                "NAME": str(BASE_DIR / "db.sqlite3"),
+            }
+        }
 
 
 
