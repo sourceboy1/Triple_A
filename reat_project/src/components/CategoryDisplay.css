@@ -1,252 +1,118 @@
-/* CategoryDisplay.css - REVISED FOR STACKED CATEGORIES AND FLEX PRODUCTS */
-:root {
-  --background-color: white; /* Lighter background for the entire display */
-  --category-title-color: #333;
-  --card-background: #ffffff;
-  --border-radius: 8px;
-  --card-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-  --primary-color: #007185;
-  --secondary-text-color: #555;
-}
-
 .category-display {
   padding: 20px;
-  background-color: var(--background-color);
-  display: flex;
-  flex-direction: column; /* Stacks categories vertically */
-  gap: 20px; /* Space between each category block */
+  max-width: 1200px; /* Optional: Limit width for better readability */
+  margin: 0 auto; /* Center the content */
 }
 
-/* Remove .category-row as we're stacking directly */
-.category-row {
-  display: contents; /* Makes children participate directly in .category-display's flex context */
+.category-section {
+  margin-bottom: 40px; /* Space between each category section */
+  border-bottom: 1px solid #eee; /* Optional: Separator line */
+  padding-bottom: 20px;
 }
 
-/* Each category container - now takes full width */
-.category-container {
-  width: 100%; /* Take full width */
-  max-width: 1200px; /* Optional: limit max width on very large screens */
-  margin: 0 auto; /* Center the container if max-width is set */
-  background-color: var(--card-background);
-  border-radius: var(--border-radius);
-  box-shadow: var(--card-shadow);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-sizing: border-box;
+.category-section:last-child {
+  border-bottom: none; /* No border for the last section */
+  margin-bottom: 20px; /* Adjust margin for the last section */
 }
 
 .category-title {
-  font-size: 1.5em;
-  color: darkgreen;
-  margin-bottom: 15px;
-  font-weight: 600;
-  text-align: center;
+  font-size: 1.8em;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: left; /* Align title to the left */
+  border-bottom: 2px solid #007bff; /* Underline for category title */
+  padding-bottom: 10px;
+  display: inline-block; /* Make the underline fit the text */
 }
 
-/* Flexbox for product cards within each category, making them flow in a row */
 .product-grid {
-  display: flex; /* Use flexbox */
-  flex-wrap: wrap; /* Allow products to wrap to the next line */
-  justify-content: center; /* Center products when they don't fill a full row */
-  gap: 15px; /* Space between product cards */
-  width: 100%;
-  margin-bottom: 15px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Four products in a row */
+  gap: 20px; /* Space between products */
+  justify-items: center; /* Center products within their grid cells */
 }
 
-/* Product card styling */
 .product-card {
-  background-color: var(--card-background);
-  border-radius: var(--border-radius);
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 3px;
-  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px;
-  box-sizing: border-box;
-  overflow: hidden;
-
-  /* Flex item sizing for 4 products in a row on larger screens */
-  flex: 1 1 calc(25% - 15px); /* Allows 4 items per row with gap */
-  max-width: calc(25% - 15px); /* Ensures max 4 per row */
-  min-width: 180px; /* Minimum width before wrapping */
+  cursor: pointer;
+  background-color: #fff;
+  width: 100%; /* Ensure cards take full width of their grid cell */
+  max-width: 250px; /* Optional: Max width for product cards */
 }
 
 .product-card:hover {
-  transform: translateY(-3px);
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 15px;
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .product-image {
   width: 100%;
-  max-width: 170px;
-  height: 135px;
-  object-fit: contain;
-  border-radius: var(--border-radius);
+  height: 180px; /* Fixed height for consistent image size */
+  object-fit: contain; /* Ensure image fits without cropping */
+  border-radius: 4px;
   margin-bottom: 10px;
-  flex-shrink: 0;
 }
 
 .product-title {
-  font-size: 0.9em; /* Increased for better readability now that cards are wider */
-  color: var(--primary-color);
-  font-weight: 400;
+  font-size: 1.1em;
+  color: #555;
   margin: 0;
-  padding: 0 5px;
-  line-height: 1.3;
-  text-align: center;
-  word-break: break-word;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-line-clamp: 2;
+  white-space: nowrap;
+  text-overflow: ellipsis; /* Truncate long titles */
 }
 
 .category-display-footer {
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-  padding-bottom: 20px;
+  margin-top: 40px;
+  text-align: center;
 }
 
 .view-all-categories-btn {
-  background-color: darkgreen;
+  background-color: #28a745; /* Green color */
   color: white;
   padding: 12px 25px;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   font-size: 1.1em;
-  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out, box-shadow 0.3s ease;
+  transition: background-color 0.3s ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .view-all-categories-btn:hover {
-  background-color: #004d00;
-  transform: translateY(-3px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background-color: #218838; /* Darker green on hover */
 }
 
-/* Responsive styling */
-
-/* Large screens (default: 4 products per row) */
-
-@media (max-width: 1200px) {
-  .product-card {
-    flex: 1 1 calc(33.333% - 15px); /* 3 cards per row */
-    max-width: calc(33.333% - 15px);
-  }
-}
-
-@media (max-width: 1024px) {
-  .product-card {
-    flex: 1 1 calc(50% - 15px); /* 2 cards per row */
-    max-width: calc(50% - 15px);
-  }
-  .product-image {
-    height: 120px;
-  }
-  .product-title {
-    font-size: 0.8em;
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 products on medium screens */
   }
 }
 
 @media (max-width: 768px) {
-  .category-display {
-    padding: 15px;
-  }
-  .category-container {
-    padding: 12px;
-  }
-  .category-title {
-    font-size: 1.4em;
-  }
   .product-grid {
-    gap: 10px;
+    grid-template-columns: repeat(2, 1fr); /* 2 products on smaller screens */
+  }
+}
+
+@media (max-width: 576px) {
+  .product-grid {
+    grid-template-columns: 1fr; /* 1 product on extra small screens */
   }
   .product-card {
-    flex: 1 1 calc(50% - 10px); /* Still 2 cards per row, adjusted gap */
-    max-width: calc(50% - 10px);
-    min-width: 140px; /* Ensure cards don't get too small before stacking */
-    padding: 8px;
+    max-width: 100%; /* Allow cards to stretch */
   }
-  .product-image {
-    height: 100px;
-  }
-  .product-title {
-    font-size: 0.7em;
-    -webkit-line-clamp: 3; /* Allow more lines for slightly smaller titles */
+  .category-title {
+    font-size: 1.5em;
   }
   .view-all-categories-btn {
     padding: 10px 20px;
     font-size: 1em;
-  }
-}
-
-/* Mobile responsiveness: Straight in a role (single column) */
-@media (max-width: 480px) {
-  .category-display {
-    padding: 10px;
-    gap: 15px;
-  }
-  .category-container {
-    padding: 10px;
-  }
-  .category-title {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-  }
-  .product-grid {
-    flex-direction: column; /* Stack products vertically */
-    gap: 10px;
-  }
-  .product-card {
-    width: 100%; /* Each product takes full width */
-    max-width: unset; /* Remove max-width constraint */
-    flex: 1 1 100%; /* Take full width */
-    flex-direction: row; /* Image and title side-by-side */
-    justify-content: flex-start;
-    align-items: center;
-    padding: 8px;
-  }
-  .product-image {
-    width: 80px; /* Fixed width for side-by-side on mobile */
-    height: 80px; /* Fixed height */
-    margin-bottom: 0;
-    margin-right: 10px;
-    flex-shrink: 0;
-    object-fit: contain;
-  }
-  .product-title {
-    font-size: 0.7em; /* Consistent font size for mobile row view */
-    flex-grow: 1; /* Allow title to take remaining space */
-    text-align: left;
-    -webkit-line-clamp: 3;
-  }
-  .view-all-categories-btn {
-    padding: 8px 15px;
-    font-size: 0.9em;
-  }
-}
-
-/* Even smaller screens if needed */
-@media (max-width: 320px) {
-  .product-card {
-    padding: 5px;
-  }
-  .product-image {
-    width: 60px;
-    height: 60px;
-    margin-right: 8px;
-  }
-  .product-title {
-    font-size: 0.65em;
-    -webkit-line-clamp: 3;
   }
 }
