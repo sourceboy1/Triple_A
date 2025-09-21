@@ -266,6 +266,9 @@
 
 /* Small devices (phones < 480px) */
 @media (max-width: 480px) {
+  .product-detail-page-wrapper{
+    margin-top: 80px;
+  }
   .abroad-order-tag {
     font-size: 0.75em; /* Slightly smaller */
     padding: 4px 6px;
