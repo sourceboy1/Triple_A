@@ -135,7 +135,7 @@
 /* Product Grid Styling */
 .cpd-product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(var(--product-card-width), 1fr));
+  grid-template-columns: repeat(4, 1fr); /* Changed to 4 columns explicitly */
   gap: var(--gap-md);
   padding-bottom: 10px; /* Add some padding at the bottom for scroll */
 }
@@ -222,7 +222,7 @@
       width: 200px;
   }
   .cpd-product-grid {
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      grid-template-columns: repeat(3, 1fr); /* 3 columns on medium screens */
       --product-card-width: 180px; /* Adjust variable */
   }
   .cpd-product-scroll-container {
@@ -244,7 +244,7 @@
       padding: var(--gap-md);
   }
   .cpd-product-grid {
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
       gap: 15px;
       --product-card-width: 160px;
   }
