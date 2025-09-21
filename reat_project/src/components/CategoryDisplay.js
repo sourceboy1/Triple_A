@@ -5,10 +5,10 @@ import api from '../Api';
 import './CategoryDisplay.css';
 
 const categories = [
-  { id: 1, name: "Accessories for Phones & Tablets" }, // Fixed ampersand for display
-  { id: 9, name: "Video Games & Accessories" },       // Fixed ampersand for display
-  { id: 3, name: "Headsets & AirPods & Earbuds" },     // Fixed ampersand for display
-  { id: 8, name: "Watches & Smartwatches" },
+  { id: 1, name: "Accessories for Phones * Tablets" },
+  { id: 9, name: "Video Games * Accessories	" },
+  { id: 3, name: "Headsets * AirPods * Earbuds	" },
+  { id: 8, name: "Watches * Smartwatches" },
 ];
 
 const shuffleArray = (array) => {
@@ -49,8 +49,9 @@ const CategoryDisplay = () => {
     fetchProducts();
   }, [accessToken]);
 
+  // NEW: Handler for navigating to CategoryProductDisplay without a specific category ID
   const handleViewAllCategories = () => {
-    navigate('/category-full-display');
+    navigate('/category-full-display'); // Navigate to the base path for full display
   };
 
   const handleProductClick = (productId) => {
@@ -75,11 +76,11 @@ const CategoryDisplay = () => {
                       onClick={() => handleProductClick(product.product_id)}
                       onMouseEnter={(e) => {
                         const imgEl = e.currentTarget.querySelector('img');
-                        if (imgEl) imgEl.src = secondaryImage;
+                        imgEl.src = secondaryImage;
                       }}
                       onMouseLeave={(e) => {
                         const imgEl = e.currentTarget.querySelector('img');
-                        if (imgEl) imgEl.src = mainImage;
+                        imgEl.src = mainImage;
                       }}
                     >
                       <img src={mainImage} alt={product.name} className="product-image" />
@@ -88,10 +89,12 @@ const CategoryDisplay = () => {
                   );
                 })}
               </div>
+              {/* Removed individual "See More" and "View All Products in Category" links here */}
             </div>
           ))}
         </div>
       ))}
+      {/* NEW: Single "View All Categories" button at the bottom */}
       <div className="category-display-footer">
         <button
           className="view-all-categories-btn"
