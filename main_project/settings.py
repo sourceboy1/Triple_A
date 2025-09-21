@@ -165,13 +165,13 @@ EMAIL_TIMEOUT = 10
 # Database
 raw_database_url = os.environ.get("DATABASE_URL", "").strip()
 
-if raw_database_url and "://" in raw_database_url and not raw_database_url.startswith("://"):
-    # ✅ Valid DATABASE_URL → use it
+# Railway bug: sometimes DATABASE_URL is literally "://"
+if raw_database_url and raw_database_url not in ("", "://"):
     DATABASES = {
         "default": dj_database_url.parse(raw_database_url, conn_max_age=600)
     }
 else:
-    # 🚨 Fallback for build time (when DATABASE_URL is empty or just "://")
+    # ✅ Fallback for build time (collectstatic)
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
