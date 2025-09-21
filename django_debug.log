@@ -3025,3 +3025,5 @@ INFO 2025-09-21 14:52:30,845 autoreload 20944 12904 C:\Users\YOU\Documents\Tripl
 INFO 2025-09-21 14:52:35,171 autoreload 11512 5144 Watching for file changes with StatReloader
 INFO 2025-09-21 14:58:54,644 autoreload 11512 5144 C:\Users\YOU\Documents\Triple_A\main_project\settings.py changed, reloading.
 INFO 2025-09-21 14:58:58,317 autoreload 6556 3712 Watching for file changes with StatReloader
+INFO 2025-09-21 15:34:38,374 autoreload 6556 3712 C:\Users\YOU\Documents\Triple_A\main_project\settings.py changed, reloading.
+INFO 2025-09-21 15:34:41,601 autoreload 20104 14248 Watching for file changes with StatReloader
