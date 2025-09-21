@@ -5,10 +5,10 @@ import api from '../Api';
 import './CategoryDisplay.css';
 
 const categories = [
-  { id: 1, name: "Accessories for Phones & Tablets" }, // Changed * to & for better display
-  { id: 9, name: "Video Games & Accessories" }, // Changed * to &
-  { id: 3, name: "Headsets & AirPods & Earbuds" }, // Changed * to &
-  { id: 8, name: "Watches & Smartwatches" },
+  { id: 1, name: "Accessories for Phones * Tablets" },
+  { id: 9, name: "Video Games * Accessories" },
+  { id: 3, name: "Headsets * AirPods * Earbuds" },
+  { id: 8, name: "Watches * Smartwatches" },
 ];
 
 const shuffleArray = (array) => {
@@ -29,7 +29,7 @@ const CategoryDisplay = () => {
       try {
         const responses = await Promise.all(
           categories.map(category =>
-            api.get(`products/?category_id=${category.id}`, {
+            api.get(`/products/?category_id=${category.id}`, {
               headers: { Authorization: `Bearer ${accessToken}` }
             })
           )
@@ -59,8 +59,8 @@ const CategoryDisplay = () => {
 
   return (
     <div className="category-display">
-      {categories.map(category => ( // Changed to map directly for vertical stacking
-        <div key={category.id} className="category-section"> {/* New wrapper for each category */}
+      {categories.map(category => (
+        <div key={category.id} className="category-container">
           <h3 className="category-title">{category.name}</h3>
           <div className="product-grid">
             {products[category.name] && products[category.name].map(product => {
@@ -73,11 +73,11 @@ const CategoryDisplay = () => {
                   onClick={() => handleProductClick(product.product_id)}
                   onMouseEnter={(e) => {
                     const imgEl = e.currentTarget.querySelector('img');
-                    if (imgEl) imgEl.src = secondaryImage;
+                    imgEl.src = secondaryImage;
                   }}
                   onMouseLeave={(e) => {
                     const imgEl = e.currentTarget.querySelector('img');
-                    if (imgEl) imgEl.src = mainImage;
+                    imgEl.src = mainImage;
                   }}
                 >
                   <img src={mainImage} alt={product.name} className="product-image" />
@@ -88,6 +88,8 @@ const CategoryDisplay = () => {
           </div>
         </div>
       ))}
+
+      {/* Single View All Categories button */}
       <div className="category-display-footer">
         <button
           className="view-all-categories-btn"
