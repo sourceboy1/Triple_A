@@ -50,8 +50,8 @@
   display: flex; /* Use flexbox */
   flex-wrap: wrap; /* Allow products to wrap to the next line */
   justify-content: center; /* Center products when they don't fill a full row */
-  gap: 15px; /* Space between product cards */
-  width: 100%;
+  gap: 10px; /* Space between product cards */
+  width: 80%;
   margin-bottom: 15px;
 }
 
@@ -73,7 +73,7 @@
   /* Flex item sizing for 4 products in a row on larger screens */
   flex: 1 1 calc(25% - 15px); /* Allows 4 items per row with gap */
   max-width: calc(25% - 15px); /* Ensures max 4 per row */
-  min-width: 180px; /* Minimum width before wrapping */
+  min-width: 140px; /* Minimum width before wrapping */
 }
 
 .product-card:hover {
