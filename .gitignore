@@ -10,5 +10,5 @@ __pycache__/
 *.pyc
 staticfiles/
 media/
-.env
+.env.local
 .env.local
