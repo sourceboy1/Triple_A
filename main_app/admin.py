@@ -91,17 +91,17 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = (
         'order_id', 'user_id', 'total_amount', 'created_at', 'first_name',
         'last_name', 'email', 'phone', 'shipping_method', 'order_note',
-        'payment_method', 'shipping_cost', 'status', 'payment_confirmed'
+        'payment_method_id', 'shipping_cost', 'status', 'payment_confirmed'
     )
     fields = (
         'user_id', 'email', 'first_name', 'last_name',
-        'phone', 'shipping_method', 'order_note', 'payment_method',
+        'phone', 'shipping_method', 'order_note', 'payment_method_id',
         'shipping_cost', 'total_amount', 'status', 'transaction_reference',
         'payment_confirmed'
     )
     readonly_fields = ('order_id', 'created_at')
     list_filter = (
-        'created_at', 'shipping_method', 'payment_method', 'status', 'payment_confirmed'
+        'created_at', 'shipping_method', 'payment_method_id', 'status', 'payment_confirmed'
     )
     search_fields = (
         'order_id', 'first_name', 'last_name', 'phone', 'payment_method__method_name'

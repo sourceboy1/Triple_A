@@ -280,7 +280,7 @@ class Order(models.Model):
     shipping_method = models.CharField(max_length=50, default="standard")
     order_note = models.TextField(null=True, blank=True)
 
-    payment_method = models.ForeignKey('main_app.PaymentMethod', on_delete=models.CASCADE, null=True, blank=True)
+    payment_method_id = models.ForeignKey('main_app.PaymentMethod', on_delete=models.CASCADE, null=True, blank=True)
     shipping_cost = models.DecimalField(max_digits=10, decimal_places=2, default=0)  # type: ignore
 
     status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default='pending')
