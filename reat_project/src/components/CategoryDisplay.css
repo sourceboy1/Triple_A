@@ -18,9 +18,7 @@
 }
 
 /* Remove .category-row as we're stacking directly */
-.category-row {
-  display: contents; /* Makes children participate directly in .category-display's flex context */
-}
+/* No need for .category-row, removed from JS, so remove from CSS */
 
 /* Each category container - now takes full width */
 .category-container {
@@ -50,9 +48,10 @@
   display: flex; /* Use flexbox */
   flex-wrap: wrap; /* Allow products to wrap to the next line */
   justify-content: center; /* Center products when they don't fill a full row */
-  gap: 10px; /* Space between product cards */
-  width: 80%;
+  gap: 15px; /* Space between product cards, adjusted for 4 items */
+  width: 100%; /* Ensure grid takes full width of its container */
   margin-bottom: 15px;
+  max-width: 1160px; /* Adjust based on your max-width for category-container and gap */
 }
 
 /* Product card styling */
@@ -71,9 +70,9 @@
   overflow: hidden;
 
   /* Flex item sizing for 4 products in a row on larger screens */
-  flex: 0 0 calc(25% - 15px); /* Changed to 0 0 to prevent shrinking below desired size, with gap */
-  max-width: calc(25% - 15px); /* Ensures max 4 per row */
-  min-width: 140px; /* Minimum width before wrapping */
+  flex: 0 0 calc(25% - 12px); /* 4 cards per row, accounting for gap */
+  max-width: calc(25% - 12px); /* Ensures max 4 per row, adjust 12px if gap changes */
+  min-width: 150px; /* Minimum width before wrapping */
 }
 
 .product-card:hover {
@@ -83,7 +82,7 @@
 
 .product-image {
   width: 100%;
-  max-width: 170px;
+  max-width: 170px; /* Adjusted to fit better within the new card width */
   height: 135px;
   object-fit: contain;
   border-radius: var(--border-radius);
@@ -92,7 +91,7 @@
 }
 
 .product-title {
-  font-size: 0.9em; /* Increased for better readability now that cards are wider */
+  font-size: 0.9em;
   color: var(--primary-color);
   font-weight: 400;
   margin: 0;
@@ -136,19 +135,16 @@
 
 /* Responsive styling */
 
-/* Large screens (default: 4 products per row) */
+/* Large screens (default: 4 products per row from .product-card) */
 
 @media (max-width: 1200px) {
-  .product-card {
-    flex: 0 0 calc(33.333% - 15px); /* 3 cards per row */
-    max-width: calc(33.333% - 15px);
-  }
+  /* No change needed here for 4-in-a-row if 12px gap is maintained */
 }
 
 @media (max-width: 1024px) {
   .product-card {
-    flex: 0 0 calc(50% - 15px); /* 2 cards per row */
-    max-width: calc(50% - 15px);
+    flex: 0 0 calc(33.333% - 10px); /* 3 cards per row */
+    max-width: calc(33.333% - 10px);
   }
   .product-image {
     height: 120px;
@@ -172,8 +168,8 @@
     gap: 10px;
   }
   .product-card {
-    flex: 0 0 calc(50% - 10px); /* Still 2 cards per row, adjusted gap */
-    max-width: calc(50% - 10px);
+    flex: 0 0 calc(50% - 8px); /* 2 cards per row, adjusted gap */
+    max-width: calc(50% - 8px);
     min-width: 140px; /* Ensure cards don't get too small before stacking */
     padding: 8px;
   }
