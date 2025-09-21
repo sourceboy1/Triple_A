@@ -43,7 +43,8 @@ body {
 }
 
 .product-row h4{
-  font-size: small;
+  font-size: medium;
+  margin-bottom: 10px;
 }
 
 .product-card {
@@ -86,7 +87,7 @@ body {
   font-size: 0.5em; /* **Slightly reduced font size** */
   color: #555;
   margin: 0 8px; /* **Reduced horizontal margin** */
-  height: 36px; /* **Adjusted height for product name to prevent layout shifts (approx 2 lines)** */
+  height: 40px; /* **Adjusted height for product name to prevent layout shifts (approx 2 lines)** */
   display: -webkit-box;
   -webkit-line-clamp: 2; /* Limit to 2 lines */
   -webkit-box-orient: vertical;
