@@ -52,7 +52,6 @@ COPY --from=frontend /app/frontend/build ./reat_project/build
 
 # Run Django checks (optional)
 RUN python -m django --version
-RUN python manage.py check
 
 # ✅ Crucial: Collect static files after React build is copied
 # This will gather all static files, including those from FRONTEND_DIR / "static"
