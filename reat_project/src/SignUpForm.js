@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import api from './Api'; // Import your custom axios instance
+import api from './Api'; 
 import './SignUpForm.css';
 import eyeIcon from './pictures/eye.jpg';
 import closedEyeIcon from './pictures/eye-closed.jpg';
@@ -20,53 +20,47 @@ const SignUpForm = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [loading, setLoading] = useState(false); // ✅ Loading state
   const navigate = useNavigate();
   const { signIn } = useUser();
 
-  const handlePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible);
-  };
+  const handlePasswordVisibility = () => setPasswordVisible(!passwordVisible);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handlePhoneChange = (value) => {
-    setFormData({
-      ...formData,
-      phone: value,
-    });
+    setFormData({ ...formData, phone: value });
   };
 
   const handleSignup = async () => {
-    try {
-      // ✅ Use the 'api' instance from api.js
-      const response = await api.post('/signup/', formData); 
+    setLoading(true);
+    setError('');
+    setSuccessMessage('');
 
+    try {
+      const response = await api.post('/signup/', formData); 
       const data = response.data;
 
       if (response.status === 201) {
-        if (data.access && data.refresh && data.user_id) { // Ensure refresh token is also received
+        if (data.access && data.refresh && data.user_id) {
           signIn({
             username: formData.username,
             userId: data.user_id,
             firstName: formData.first_name,
             lastName: formData.last_name,
             email: formData.email,
-            token: data.access,      // access token for auth
-            refresh: data.refresh    // Store refresh token
+            token: data.access,
+            refresh: data.refresh
           });
 
           setSuccessMessage('User created successfully!');
-          setTimeout(() => navigate('/'), 2000);
+          setTimeout(() => navigate('/'), 1500);
         } else {
           setError('Unexpected response format. Please try again.');
         }
       } else {
-        // This block might not be reached if axios throws an error for non-2xx status
         setError('Error creating user. Please try again.');
       }
     } catch (error) {
@@ -74,6 +68,8 @@ const SignUpForm = () => {
       setError(
         'Error creating user: ' + (error.response ? error.response.data.error || JSON.stringify(error.response.data) : error.message)
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -94,6 +90,7 @@ const SignUpForm = () => {
             value={formData.username}
             onChange={handleChange}
             required
+            disabled={loading}
           />
         </label>
         <label>
@@ -105,11 +102,12 @@ const SignUpForm = () => {
               value={formData.password}
               onChange={handleChange}
               required
+              disabled={loading}
             />
             <img
               src={passwordVisible ? closedEyeIcon : eyeIcon}
               alt="Toggle Password Visibility"
-              className="eye-icon"
+              className="eye-icons"
               onClick={handlePasswordVisibility}
             />
           </div>
@@ -122,6 +120,7 @@ const SignUpForm = () => {
             value={formData.email}
             onChange={handleChange}
             required
+            disabled={loading}
           />
         </label>
         <label>
@@ -131,6 +130,7 @@ const SignUpForm = () => {
             name="first_name"
             value={formData.first_name}
             onChange={handleChange}
+            disabled={loading}
           />
         </label>
         <label>
@@ -140,6 +140,7 @@ const SignUpForm = () => {
             name="last_name"
             value={formData.last_name}
             onChange={handleChange}
+            disabled={loading}
           />
         </label>
         <label>
@@ -148,6 +149,7 @@ const SignUpForm = () => {
             name="address"
             value={formData.address}
             onChange={handleChange}
+            disabled={loading}
           />
         </label>
         <label>
@@ -155,9 +157,12 @@ const SignUpForm = () => {
           <PhoneInputComponent
             value={formData.phone}
             onChange={handlePhoneChange}
+            disabled={loading}
           />
         </label>
-        <button type="submit">Sign Up</button>
+        <button type="submit" disabled={loading}>
+          {loading ? <span>Signing up<span className="dots">...</span></span> : 'Sign Up'}
+        </button>
         {successMessage && <p className="success-message">{successMessage}</p>}
         {error && <p className="error-message">{error}</p>}
       </form>

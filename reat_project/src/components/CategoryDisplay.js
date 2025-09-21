@@ -1,18 +1,16 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TokenContext } from './TokenContext';
-import api from '../Api'; // Import your api instance
+import api from '../Api';
 import './CategoryDisplay.css';
 
-// Define categories once
 const categories = [
-  { id: 1, name: "Accessories" },
-  { id: 9, name: "Games" },
-  { id: 3, name: "Headphones & Airpods" },
-  { id: 8, name: "Watches" },
+  { id: 1, name: "Accessories for Phones & Tablets" }, // Fixed ampersand for display
+  { id: 9, name: "Video Games & Accessories" },       // Fixed ampersand for display
+  { id: 3, name: "Headsets & AirPods & Earbuds" },     // Fixed ampersand for display
+  { id: 8, name: "Watches & Smartwatches" },
 ];
 
-// Utility to shuffle arrays
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -51,8 +49,8 @@ const CategoryDisplay = () => {
     fetchProducts();
   }, [accessToken]);
 
-  const handleViewAll = (categoryId) => {
-    navigate(`/search?category_id=${categoryId}`);
+  const handleViewAllCategories = () => {
+    navigate('/category-full-display');
   };
 
   const handleProductClick = (productId) => {
@@ -77,11 +75,11 @@ const CategoryDisplay = () => {
                       onClick={() => handleProductClick(product.product_id)}
                       onMouseEnter={(e) => {
                         const imgEl = e.currentTarget.querySelector('img');
-                        imgEl.src = secondaryImage;
+                        if (imgEl) imgEl.src = secondaryImage;
                       }}
                       onMouseLeave={(e) => {
                         const imgEl = e.currentTarget.querySelector('img');
-                        imgEl.src = mainImage;
+                        if (imgEl) imgEl.src = mainImage;
                       }}
                     >
                       <img src={mainImage} alt={product.name} className="product-image" />
@@ -90,16 +88,18 @@ const CategoryDisplay = () => {
                   );
                 })}
               </div>
-              <div
-                className="see-more-link"
-                onClick={() => handleViewAll(category.id)}
-              >
-                See More
-              </div>
             </div>
           ))}
         </div>
       ))}
+      <div className="category-display-footer">
+        <button
+          className="view-all-categories-btn"
+          onClick={handleViewAllCategories}
+        >
+          View All Categories
+        </button>
+      </div>
     </div>
   );
 };

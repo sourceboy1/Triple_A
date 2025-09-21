@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react'; // Added useState, useRef, useCallback
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { TokenProvider } from './components/TokenContext';
 import { CartProvider } from './contexts/CartContext';
@@ -6,7 +6,6 @@ import { UserProvider, useUser } from './contexts/UserContext';
 import { WishlistProvider } from './contexts/WishlistContext';
 import { LoadingProvider, useLoading } from './contexts/LoadingContext';
 import Loading from './components/Loading';
-
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import About from './components/About';
@@ -38,9 +37,13 @@ import FloatingNav from './components/FloatingNav';
 import NotFoundPage from './components/404Page';
 import ScrollToTop from './components/ScrollToTop';
 import Maintenance from './components/Maintenance';
-
-// Import ReactGA for tracking
+import OrderSuccess from './components/OrderSuccess/OrderSuccess';
+import OrderFailure from './components/OrderFailure/OrderFailure';
+import CategoryProductDisplay from './components/CategoryProductDisplay';
 import ReactGA from 'react-ga4';
+
+// Import FlyToCart component
+import FlyToCart from './components/FlyToCart'; // Assuming FlyToCart.js is in ./components
 
 const App = () => {
   return (
@@ -68,7 +71,6 @@ const MaintenanceWrapper = () => {
   if (isMaintenanceMode && !(user && user.is_staff)) {
     return <Maintenance />;
   }
-
   return <AppContent />;
 };
 
@@ -76,23 +78,48 @@ const AppContent = () => {
   const { loading, setLoading } = useLoading();
   const location = useLocation();
 
+  // State to manage the fly-to-cart animation
+  const [flyAnimation, setFlyAnimation] = useState(null); // { startPos, endPos, image }
+  // Ref for the cart icon in the Navbar
+  const navbarCartIconRef = useRef(null);
+
+  // Function to handle the start of the fly-to-cart animation
+  const handleFlyToCart = useCallback((startPos, image) => {
+    // Ensure the navbarCartIconRef is attached and available
+    if (navbarCartIconRef.current) {
+      const endRect = navbarCartIconRef.current.getBoundingClientRect();
+      const endPos = {
+        top: endRect.top + endRect.height / 2, // Center of the cart icon
+        left: endRect.left + endRect.width / 2, // Center of the cart icon
+      };
+      setFlyAnimation({ startPos, endPos, image });
+    } else {
+      console.warn("Navbar cart icon ref not found for animation.");
+    }
+  }, []);
+
+  // Function to clear the fly-to-cart animation state after it finishes
+  const handleAnimationEnd = useCallback(() => {
+    setFlyAnimation(null); // Clear animation state
+  }, []);
+
   // Effect to handle loading state AND Google Analytics page views
   useEffect(() => {
     // Start loading animation
     setLoading(true);
 
     // Send page view to Google Analytics 4
-    // You can also send more detailed events here if needed
     ReactGA.send({ hitType: "pageview", page: location.pathname + location.search, title: document.title });
 
     // End loading animation after a delay
     const timer = setTimeout(() => setLoading(false), 1000);
     return () => clearTimeout(timer);
-  }, [location.pathname, location.search, setLoading]); // Depend on location.pathname and location.search
+  }, [location.pathname, location.search, setLoading]);
 
   return (
     <>
-      <Navbar />
+      {/* Pass the ref to the Navbar component */}
+      <Navbar cartIconRef={navbarCartIconRef} /> {/* <--- Pass ref here */}
       {loading ? (
         <Loading />
       ) : (
@@ -105,7 +132,8 @@ const AppContent = () => {
           <Route path="/request-password-reset" element={<PasswordResetRequest />} />
           <Route path="/reset-password/:uid/:token" element={<PasswordReset />} />
           <Route path="/product-catalog" element={<ProductCatalog />} />
-          <Route path="/product-details/:productId" element={<ProductDetails />} />
+          {/* Pass onFlyToCart to ProductDetails */}
+          <Route path="/product-details/:productId" element={<ProductDetails onFlyToCart={handleFlyToCart} />} /> {/* <--- Pass prop */}
           <Route path="/products" element={<ProductList />} />
           <Route path="/shop/:categoryName" element={<CategoryProducts />} />
           <Route path="/cart" element={<Cart />} />
@@ -119,13 +147,26 @@ const AppContent = () => {
           <Route path="/account" element={<Account />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/account/details" element={<AccountDetails />} />
-          <Route path="/order/:orderId" element={<OrderDetails />} />
           <Route path="/user/orders" element={<UserOrderParent />} />
           <Route path="*" element={<NotFoundPage />} />
+          <Route path="/order-success" element={<OrderSuccess />} />
+          <Route path='/order-failure' element= {<OrderFailure />} />
+          <Route path="/order/:orderId" element={<OrderDetails />} />
+          <Route path="/category-full-display/" element={<CategoryProductDisplay />} />
         </Routes>
       )}
       <FloatingNav />
       <Footer />
+
+      {/* Render the FlyToCart component if animation is active */}
+      {flyAnimation && (
+        <FlyToCart
+          startPos={flyAnimation.startPos}
+          endPos={flyAnimation.endPos}
+          image={flyAnimation.image}
+          onAnimationEnd={handleAnimationEnd}
+        />
+      )}
     </>
   );
 };

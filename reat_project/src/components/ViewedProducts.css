@@ -40,7 +40,7 @@
 .viewed-product-item {
     flex: 0 0 auto; /* Prevent items from growing/shrinking, allow scroll */
     width: calc(16.67% - 20px); /* Default for 6 items per row (desktop) */
-    background-color: #f9f9f9;
+    background-color: white;
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);

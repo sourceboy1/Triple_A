@@ -3,7 +3,15 @@
     margin: 0 auto;
     padding: 20px;
     font-family: Arial, sans-serif;
-    margin-top: 50px;
+    margin-top: 80px;
+}
+
+.faq-container h1{
+    color: black;
+}
+
+.faq-container h2{
+    color: black;
 }
 
 .faq-item {
@@ -51,6 +59,12 @@
 
 @media (max-width: 768px) {
     .faq-container{
-        margin-top: 75px;
+        margin-top: 120px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .faq-container{
+        margin-top: 120px;
     }
 }

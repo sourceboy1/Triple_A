@@ -1,8 +1,11 @@
+// This component's logic is already quite close to what's needed for category-specific search.
+// If this is not intended to be the Navbar's search, then no changes are strictly necessary here
+// based on the initial request.
 import React, { useState, useEffect } from 'react';
 import api from '../Api'; // ✅ Centralized API import
 import { useNavigate } from 'react-router-dom';
 
-const SearchComponent = ({ selectedCategory }) => {
+const SearchComponent = ({ selectedCategory }) => { // Assuming selectedCategory is passed as a prop
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -11,7 +14,7 @@ const SearchComponent = ({ selectedCategory }) => {
   // Fetch all products from the API
   const fetchProducts = async () => {
     try {
-      const response = await api.get('products/', { params });
+      const response = await api.get('products/'); // Removed 'params' here as it's for all products
       return response.data;
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -24,15 +27,14 @@ const SearchComponent = ({ selectedCategory }) => {
       const data = await fetchProducts();
       setProducts(data);
     };
-
     getProducts();
   }, []);
 
   useEffect(() => {
     if (searchQuery.trim()) {
-      const filteredResults = products.filter(product => 
+      const filteredResults = products.filter(product =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        (!selectedCategory || product.category === selectedCategory)
+        (selectedCategory === 'All' || !selectedCategory || product.category_name === selectedCategory) // Adjusted logic for 'All'
       );
       setSearchResults(filteredResults);
     } else {
@@ -54,7 +56,7 @@ const SearchComponent = ({ selectedCategory }) => {
         type="text"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder={`Search ${selectedCategory || 'products'}...`}
+        placeholder={`Search ${selectedCategory !== 'All' ? selectedCategory : 'products'}...`}
         style={{ width: '100%' }}
         onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
       />
@@ -62,13 +64,14 @@ const SearchComponent = ({ selectedCategory }) => {
         {searchQuery && searchResults.length > 0 ? (
           searchResults.map(result => (
             <div key={result.product_id} className="search-result-item">
-              <div 
-                className="search-result-link" 
+              <div
+                className="search-result-link"
                 onClick={() => handleProductClick(result.product_id)}
                 style={{ cursor: 'pointer' }}
               >
                 <div className="search-result-item-info">
-                  <img src={result.image_url} alt={result.name} className="product-image" />
+                  {/* You need to ensure result.image_url exists in your product data */}
+                  <img src={result.image_url || '/placeholder.png'} alt={result.name} className="product-image" />
                   <div>{result.name}</div>
                 </div>
               </div>

@@ -107,8 +107,8 @@
   border-radius: 4px 0 0 4px;
   white-space: nowrap; /* Prevent text from wrapping to a new line */
   flex-grow: 1; /* Allow the dropdown to expand and take up available space */
-  min-width: 120px; /* Set a minimum width for the dropdown */
-  max-width: 300px; /* Set a maximum width to prevent it from growing too large */
+  min-width: 170px; /* Set a minimum width for the dropdown */
+  max-width: 400px; /* Set a maximum width to prevent it from growing too large */
   overflow: hidden; /* Hide overflowing text */
   text-overflow: ellipsis; /* Display ellipsis (...) for overflowing text */
 }
@@ -131,7 +131,7 @@
   left: 0;
   background-color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  width: 200px;
+  width: 255px;
   border: 1px solid #ccc;
   border-radius: 4px;
   z-index: 2;

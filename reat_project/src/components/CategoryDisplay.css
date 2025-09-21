@@ -1,4 +1,4 @@
-/* CategoryDisplay.css - REVISED */
+/* CategoryDisplay.css - REVISED FOR STACKED CATEGORIES AND FLEX PRODUCTS */
 :root {
   --background-color: white; /* Lighter background for the entire display */
   --category-title-color: #333;
@@ -13,23 +13,20 @@
   padding: 20px;
   background-color: var(--background-color);
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  flex-direction: column; /* Stacks categories vertically */
+  gap: 20px; /* Space between each category block */
 }
 
-/* Row layout for two categories per row */
+/* Remove .category-row as we're stacking directly */
 .category-row {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
+  display: contents; /* Makes children participate directly in .category-display's flex context */
 }
 
-/* Each category container */
+/* Each category container - now takes full width */
 .category-container {
-  flex: 1;
-  min-width: 300px; /* Reduced min-width to allow more flexibility before wrapping */
-  max-width: 48%;
+  width: 100%; /* Take full width */
+  max-width: 1200px; /* Optional: limit max width on very large screens */
+  margin: 0 auto; /* Center the container if max-width is set */
   background-color: var(--card-background);
   border-radius: var(--border-radius);
   box-shadow: var(--card-shadow);
@@ -48,11 +45,12 @@
   text-align: center;
 }
 
-/* Grid for product cards within each category */
+/* Flexbox for product cards within each category, making them flow in a row */
 .product-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Two columns, equal width */
-  gap: 15px;
+  display: flex; /* Use flexbox */
+  flex-wrap: wrap; /* Allow products to wrap to the next line */
+  justify-content: center; /* Center products when they don't fill a full row */
+  gap: 15px; /* Space between product cards */
   width: 100%;
   margin-bottom: 15px;
 }
@@ -68,9 +66,14 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 10px; /* Padding inside the card */
-  box-sizing: border-box; /* Crucial: padding should be included in card's total size */
-  overflow: hidden; /* Ensure nothing visually escapes the card */
+  padding: 10px;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  /* Flex item sizing for 4 products in a row on larger screens */
+  flex: 1 1 calc(25% - 15px); /* Allows 4 items per row with gap */
+  max-width: calc(25% - 15px); /* Ensures max 4 per row */
+  min-width: 180px; /* Minimum width before wrapping */
 }
 
 .product-card:hover {
@@ -79,142 +82,172 @@
 }
 
 .product-image {
-  width: 100%; /* Image takes full width of its card's content area */
-  max-width: 170px; /* Max width for images to prevent them from becoming too large */
-  height: 135px; /* Fixed height for consistent card sizing */
-  object-fit: contain; /* Ensures the whole image is visible */
+  width: 100%;
+  max-width: 170px;
+  height: 135px;
+  object-fit: contain;
   border-radius: var(--border-radius);
   margin-bottom: 10px;
-  flex-shrink: 0; /* Prevent image from shrinking if title is long */
+  flex-shrink: 0;
 }
 
 .product-title {
-  font-size: 0.4em; /* Significantly reduced to 0.4em */
+  font-size: 0.9em; /* Increased for better readability now that cards are wider */
   color: var(--primary-color);
   font-weight: 400;
   margin: 0;
   padding: 0 5px;
   line-height: 1.3;
-  text-align: center; /* Center product titles */
-  word-break: break-word; /* Allow long words to break and wrap */
+  text-align: center;
+  word-break: break-word;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis; /* Add ellipsis for truncated text */
-  -webkit-line-clamp: 2; /* Limit to 2 lines for very small text */
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  color: black;
 }
 
-/* "See More" link */
-.see-more-link {
-  text-align: center;
-  color: var(--primary-color);
-  font-weight: bold;
+.category-display-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  padding-bottom: 20px;
+}
+
+.view-all-categories-btn {
+  background-color: darkgreen;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1em;
+  font-weight: 600;
   cursor: pointer;
-  margin-top: 10px;
-  transition: color 0.3s ease-in-out, transform 0.2s ease-in-out;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out, box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.see-more-link:hover {
-  color: #00465d;
-  transform: translateY(-2px);
+.view-all-categories-btn:hover {
+  background-color: #004d00;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Responsive styling */
+
+/* Large screens (default: 4 products per row) */
+
+@media (max-width: 1200px) {
+  .product-card {
+    flex: 1 1 calc(33.333% - 15px); /* 3 cards per row */
+    max-width: calc(33.333% - 15px);
+  }
+}
+
 @media (max-width: 1024px) {
-  .category-container {
-    max-width: 48%;
-    min-width: 320px;
+  .product-card {
+    flex: 1 1 calc(50% - 15px); /* 2 cards per row */
+    max-width: calc(50% - 15px);
+  }
+  .product-image {
+    height: 120px;
+  }
+  .product-title {
+    font-size: 0.8em;
   }
 }
 
 @media (max-width: 768px) {
-  .category-row {
-    flex-direction: column;
-    align-items: center;
-  }
-  .category-container {
-    width: 90%;
-    max-width: 500px;
-    margin-bottom: 20px;
-  }
-  .product-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-  .product-image {
-    height: 100px; /* Adjusted height for tablets */
-    max-width: 100%; /* Ensure it doesn't overflow its new container width */
-    object-fit: contain;
-  }
-  .product-title {
-    font-size: 0.35em; /* Significantly reduced for tablets */
-    -webkit-line-clamp: 2;
-  }
-}
-
-@media (max-width: 480px) {
   .category-display {
     padding: 15px;
   }
-  .category-row {
-    gap: 15px;
-  }
   .category-container {
-    width: 95%;
-    min-width: unset;
     padding: 12px;
   }
   .category-title {
-    font-size: 1.3em;
-    margin-bottom: 10px;
+    font-size: 1.4em;
   }
   .product-grid {
-    grid-template-columns: 1fr; /* Single column for products on small phones */
     gap: 10px;
   }
   .product-card {
-    flex-direction: row; /* Image and title side-by-side */
-    justify-content: flex-start; /* Align content to the left */
-    align-items: center;
-    text-align: left; /* Align text left */
+    flex: 1 1 calc(50% - 10px); /* Still 2 cards per row, adjusted gap */
+    max-width: calc(50% - 10px);
+    min-width: 140px; /* Ensure cards don't get too small before stacking */
     padding: 8px;
   }
   .product-image {
-    width: 80px; /* Fixed width for consistent side-by-side display */
-    height: 80px; /* Fixed height to match width and maintain aspect ratio */
+    height: 100px;
+  }
+  .product-title {
+    font-size: 0.7em;
+    -webkit-line-clamp: 3; /* Allow more lines for slightly smaller titles */
+  }
+  .view-all-categories-btn {
+    padding: 10px 20px;
+    font-size: 1em;
+  }
+}
+
+/* Mobile responsiveness: Straight in a role (single column) */
+@media (max-width: 480px) {
+  .category-display {
+    padding: 10px;
+    gap: 15px;
+  }
+  .category-container {
+    padding: 10px;
+  }
+  .category-title {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+  .product-grid {
+    flex-direction: column; /* Stack products vertically */
+    gap: 10px;
+  }
+  .product-card {
+    width: 100%; /* Each product takes full width */
+    max-width: unset; /* Remove max-width constraint */
+    flex: 1 1 100%; /* Take full width */
+    flex-direction: row; /* Image and title side-by-side */
+    justify-content: flex-start;
+    align-items: center;
+    padding: 8px;
+  }
+  .product-image {
+    width: 80px; /* Fixed width for side-by-side on mobile */
+    height: 80px; /* Fixed height */
     margin-bottom: 0;
     margin-right: 10px;
     flex-shrink: 0;
-    object-fit: contain; /* Ensure the full image is shown within the 80x80 space */
+    object-fit: contain;
   }
   .product-title {
-    font-size: 0.35em; /* Significantly reduced for mobile row view */
+    font-size: 0.7em; /* Consistent font size for mobile row view */
     flex-grow: 1; /* Allow title to take remaining space */
-    text-align: left; /* Ensure text is left-aligned here */
-    -webkit-line-clamp: 3; /* Allow more lines for side-by-side on small screens */
+    text-align: left;
+    -webkit-line-clamp: 3;
+  }
+  .view-all-categories-btn {
+    padding: 8px 15px;
+    font-size: 0.9em;
   }
 }
 
 /* Even smaller screens if needed */
 @media (max-width: 320px) {
-  .category-display {
-    padding: 10px;
-  }
-  .category-container {
-    width: 98%;
-    padding: 10px;
-  }
   .product-card {
     padding: 5px;
   }
   .product-image {
-    width: 70px; /* Smaller fixed width */
-    height: 70px; /* Smaller fixed height */
+    width: 60px;
+    height: 60px;
     margin-right: 8px;
-    object-fit: contain; /* Ensure full image is visible */
   }
   .product-title {
-    font-size: 0.3em; /* Keep at 0.3em, ensuring it's as small as feasible */
+    font-size: 0.65em;
     -webkit-line-clamp: 3;
   }
 }

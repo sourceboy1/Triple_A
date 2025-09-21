@@ -90,41 +90,44 @@ class DealOfTheDayView(APIView):
 
 CustomUser = get_user_model()
 
+from main_app.utils.email_helpers import send_password_reset_email
+
+
 @api_view(['POST'])
-@permission_classes([AllowAny])  # ✅ Allow requests without authentication
+@permission_classes([AllowAny])
 def request_password_reset(request):
     email = request.data.get('email')
-    
+
+    if not email:
+        return Response({'error': 'Email is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
     if not CustomUser.objects.filter(email=email).exists():
         return Response({'error': 'Email is not registered'}, status=status.HTTP_400_BAD_REQUEST)
-    
+
     user = CustomUser.objects.get(email=email)
-    
+
     # Generate token
     token = default_token_generator.make_token(user)
-    
+
     # Generate reset link
     reset_link = f"http://localhost:3000/reset-password/{user.pk}/{token}"
-    
-    # Send reset email
-    send_mail(
-        'Password Reset Request',
-        f'Please use the following link to reset your password: {reset_link}',
-        'no-reply@yourdomain.com',
-        [email],
-        fail_silently=False,
-    )
-    
+
+    # Send reset email using helper
+    send_password_reset_email(user, reset_link)
+
     return Response({'message': 'Password reset link sent'}, status=status.HTTP_200_OK)
 
 
-
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def reset_password(request):
     uid = request.data.get('uid')
     token = request.data.get('token')
     password = request.data.get('password')
-    
+
+    if not uid or not token or not password:
+        return Response({'error': 'All fields are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
     try:
         user = CustomUser.objects.get(pk=uid)
         if default_token_generator.check_token(user, token):
@@ -140,20 +143,64 @@ def reset_password(request):
 
 
 
+@api_view(['GET'])
+def product_list(request):
+    queryset = Product.objects.all()
+    query = request.GET.get('query', None)
+    category_name = request.GET.get('category', None) # Get category from request
+
+    if query:
+        queryset = queryset.filter(
+            Q(name__icontains=query) | 
+            Q(description__icontains=query)
+        )
+
+    # Apply category filter if a specific category is selected
+    if category_name and category_name != 'All':
+        queryset = queryset.filter(category__name__iexact=category_name) # Filter by category name (case-insensitive)
+
+    serializer = ProductSerializer(queryset, many=True, context={'request': request})
+    return Response(serializer.data)
+
+
 def product_suggestions(request):
     query = request.GET.get('query', '')
+    category_name = request.GET.get('category', None) # Get category from request
+    
     if query:
-        suggestions = Product.objects.filter(name__icontains=query)[:5]
-        data = [{'id': product.id, 'name': product.name} for product in suggestions]
+        suggestions_queryset = Product.objects.filter(name__icontains=query)
+        
+        # Apply category filter for suggestions
+        if category_name and category_name != 'All':
+            suggestions_queryset = suggestions_queryset.filter(category__name__iexact=category_name)
+
+        suggestions = suggestions_queryset[:5]
+        # Include 'category_name' in the data for suggestions
+        data = [
+            {'id': product.product_id, 'name': product.name, 'category_name': product.category.name if product.category else 'N/A'} 
+            for product in suggestions
+        ]
         return JsonResponse(data, safe=False)
     return JsonResponse([], safe=False)
 
-def search_products(query):
-    return Product.objects.filter(
+
+# This `search_products` function seems to be an internal utility or a helper.
+# It should also accept the category filter.
+def search_products(query, category_name=None):
+    queryset = Product.objects.filter(
         Q(name__icontains=query) | 
         Q(description__icontains=query) |
-        Q(category__name__icontains=query)
+        Q(category__name__icontains=query) # Filter by category name in name/description search
     )
+    
+    # Apply category filter if a specific category is selected
+    if category_name and category_name != 'All':
+        queryset = queryset.filter(category__name__iexact=category_name)
+        
+    return queryset
+
+
+
 
 
 
@@ -174,12 +221,6 @@ class ProductDetailView(generics.RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
-
-@api_view(['GET'])
-def product_list(request):
-    products = Product.objects.all()
-    serializer = ProductSerializer(products, many=True, context={'request': request})
-    return Response(serializer.data)
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -270,47 +311,6 @@ class SignupView(APIView):
 
 
     
-
-    
-class PlaceOrderView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request):
-        payment_method_id = request.data.get('payment_method_id')
-
-        # Always use the authenticated user
-        user = request.user
-        payment_method = PaymentMethod.objects.filter(id=payment_method_id).first()
-
-        if not payment_method:
-            return Response({'error': 'Invalid payment method'}, status=400)
-
-        data = request.data.copy()
-        data['user_id'] = user.id  # ✅ force bind to logged-in user
-        data['payment_method_id'] = payment_method.id # type: ignore
-
-        serializer = OrderSerializer(data=data, context={'request': request})
-        if serializer.is_valid():
-            order = serializer.save(user=user)  # ✅ create order + items
-
-            # 🔑 Re-serialize using the created instance
-            order_data = OrderSerializer(order, context={'request': request}).data
-
-            return Response({
-                'message': 'Order placed successfully!',
-                'order_id': order.order_id, # type: ignore
-                'order': order_data
-            }, status=201)
-
-        return Response(serializer.errors, status=400)
-
-
-
-
-
-
-
-
 
 
 class LoginView(APIView):
@@ -527,41 +527,59 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import Order
 from .serializers import OrderSerializer
+import requests
+# utils/email_helpers_async.py
+import threading, logging
+from .utils.email_helpers import send_order_email
+
+logger = logging.getLogger(__name__)
+
+def async_send_order_email(to_email, order, request=None):
+    def task():
+        try:
+            send_order_email(to_email, order, request=request)
+            logger.info(f"[ASYNC] Order confirmation email sent to {to_email}")
+        except Exception as e:
+            logger.error(f"[ASYNC] Failed to send order email: {e}")
+
+    threading.Thread(target=task, daemon=True).start()
+
+
+
 
 class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # ✅ Users only see their own orders
         user = self.request.user
-        return Order.objects.filter(user_id=user.id) # type: ignore
+        return Order.objects.filter(user_id=user.id)  # type: ignore # ✅ correct FK usage
+
+    def perform_create(self, serializer):
+        """Automatically send email after order creation"""
+        order = serializer.save()
+        try:
+            if order.user_id and order.user_id.email:  # ✅ safe access
+                async_send_order_email(order.user_id.email, order, request=self.request)
+                logger.info(f"Queued order confirmation email to {order.user_id.email}")
+            else:
+                logger.warning(f"Order {order.order_id} has no user email.")
+        except Exception as e:
+            logger.error(f"Failed to queue order email: {e}")
 
     @action(detail=True, methods=['post'])
     def cancel(self, request, pk=None):
         order = self.get_object()
-        if request.user.id != order.user_id_id:
-            return Response(
-                {"message": "Not authorized to cancel this order."},
-                status=status.HTTP_403_FORBIDDEN
-            )
-        
+        if request.user.id != order.user_id_id:  # ✅ correct check
+            return Response({"message": "Not authorized to cancel this order."}, status=status.HTTP_403_FORBIDDEN)
         order.status = 'cancelled'
         order.save()
-        return Response(
-            {"message": "Order canceled successfully."},
-            status=status.HTTP_200_OK
-        )
+        return Response({"message": "Order canceled successfully."}, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['get'])
     def details(self, request, pk=None):
-        """
-        ✅ Custom endpoint: GET /orders/<id>/details/
-        Returns full order info + shipping address fields.
-        """
         order = self.get_object()
         serializer = self.get_serializer(order)
-
         address_details = {
             'first_name': order.first_name,
             'last_name': order.last_name,
@@ -572,11 +590,140 @@ class OrderViewSet(viewsets.ModelViewSet):
             'country': order.country,
             'phone': order.phone,
         }
+        return Response({"order": serializer.data, "shipping_address": address_details}, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['post'])
+    def confirm_payment(self, request, pk=None):
+        order = self.get_object()
+
+        if request.user.id != order.user_id_id:  # ✅ correct FK usage
+            return Response({"error": "Not authorized to confirm payment for this order."}, status=status.HTTP_403_FORBIDDEN)
+
+        data = request.data
+        reference = data.get('transaction_reference') or data.get('reference') or data.get('transactionReference')
+        amount_paid = data.get('amount_paid')
+        shipping_method = data.get('shipping_method') or order.shipping_method
+
+        if not reference:
+            return Response({"error": "transaction_reference is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        paystack_key = getattr(settings, "PAYSTACK_SECRET_KEY", None)
+        if not paystack_key:
+            logger.error("PAYSTACK_SECRET_KEY not configured in settings.")
+            return Response({"error": "Paystack secret key is not configured on server."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        verify_url = f"https://api.paystack.co/transaction/verify/{reference}"
+
+        try:
+            headers = {"Authorization": f"Bearer {paystack_key}", "Accept": "application/json"}
+            resp = requests.get(verify_url, headers=headers, timeout=15)
+            resp_json = resp.json()
+        except requests.RequestException as e:
+            logger.exception("Error contacting Paystack for verification")
+            return Response({"error": "Failed to reach Paystack for verification.", "details": str(e)}, status=status.HTTP_502_BAD_GATEWAY)
+
+        if resp.status_code != 200 or not resp_json.get("status"):
+            message = resp_json.get("message", "Failed to verify transaction with Paystack.")
+            logger.warning("Paystack verification failed: %s", resp_json)
+            return Response({"error": "Paystack verification failed.", "message": message, "paystack": resp_json}, status=status.HTTP_400_BAD_REQUEST)
+
+        paystack_data = resp_json.get("data", {})
+        paystack_status = paystack_data.get("status")
+        paystack_amount_kobo = paystack_data.get("amount")
+
+        if paystack_status != "success":
+            logger.info("Paystack reports non-success status for ref %s: %s", reference, paystack_status)
+            return Response({"error": "Payment not successful according to Paystack.", "paystack_status": paystack_status}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            if amount_paid is not None:
+                posted_amount_kobo = int(round(float(amount_paid))) if isinstance(amount_paid, int) else int(round(float(amount_paid)))
+                if posted_amount_kobo != int(paystack_amount_kobo):
+                    logger.warning("Amount mismatch for order %s: posted %s kobo vs paystack %s kobo", order.order_id, posted_amount_kobo, paystack_amount_kobo)
+                    return Response({
+                        "error": "Paid amount mismatch.",
+                        "expected_kobo": posted_amount_kobo,
+                        "paystack_amount_kobo": paystack_amount_kobo
+                    }, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                expected_kobo = int(round(float(order.total_amount) * 100))
+                if int(paystack_amount_kobo) != expected_kobo:
+                    logger.warning("Amount mismatch for order %s: order expected %s kobo vs paystack %s kobo", order.order_id, expected_kobo, paystack_amount_kobo)
+                    return Response({
+                        "error": "Paid amount does not match order total.",
+                        "order_expected_kobo": expected_kobo,
+                        "paystack_amount_kobo": paystack_amount_kobo
+                    }, status=status.HTTP_400_BAD_REQUEST)
+        except (ValueError, TypeError) as e:
+            logger.exception("Invalid amount_paid value: %s", amount_paid)
+            return Response({"error": "Invalid amount_paid value sent."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Mark order as confirmed
+        order.transaction_reference = reference
+        order.payment_confirmed = True
+        order.save()
+
+        is_pickup = False
+        if shipping_method:
+            is_pickup = "pick" in shipping_method.lower()
+        else:
+            try:
+                is_pickup = float(order.shipping_cost) == 0.0
+            except Exception:
+                is_pickup = False
+
+        success_message = "Your payment was verified. Your order will be ready for pickup soon." if is_pickup else "Your payment was verified. Your order will be processed and shipped soon."
 
         return Response({
-            "order": serializer.data,
-            "shipping_address": address_details
+            "status": "success",
+            "verified": True,
+            "payment_confirmed": order.payment_confirmed,
+            "transaction_reference": order.transaction_reference,
+            "success_message": success_message,
+            "paystack_data": paystack_data
         }, status=status.HTTP_200_OK)
+
+
+class PlaceOrderView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        payment_method_id = request.data.get('payment_method_id')
+        user = request.user
+        payment_method = PaymentMethod.objects.filter(id=payment_method_id).first()
+
+        if not payment_method:
+            return Response({'error': 'Invalid payment method'}, status=400)
+
+        data = request.data.copy()
+        data['user_id'] = user.id
+        data['payment_method_id'] = payment_method.id  # type: ignore
+
+        serializer = OrderSerializer(data=data, context={'request': request})
+        if serializer.is_valid():
+            order = serializer.save()
+
+            # ✅ Async email
+            try:
+                if order.user_id and order.user_id.email: # type: ignore
+                    async_send_order_email(order.user_id.email, order, request=request) # type: ignore
+                    logger.info(f"Queued order confirmation email to {order.user_id.email}") # type: ignore
+                else:
+                    logger.warning(f"Order {order.order_id} has no user email.") # type: ignore
+            except Exception as e:
+                logger.error(f"Failed to queue order email: {e}")
+
+            order_data = OrderSerializer(order, context={'request': request}).data
+
+            return Response({
+                'message': 'Order placed successfully!',
+                'order_id': order.order_id, # type: ignore
+                'order': order_data
+            }, status=201)
+
+        return Response(serializer.errors, status=400)
+
+
 
 
 

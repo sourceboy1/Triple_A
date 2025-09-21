@@ -1,0 +1,171 @@
+/* src/components/OrderFailure/OrderFailure.css */
+.order-failure-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh; /* Adjust as needed */
+    padding: 40px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, #fefefe, #f9f9f9); /* Lighter background for a clean look */
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 10px;
+    margin: 85px auto;
+    max-width: 800px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ffcccc; /* Subtle red border */
+}
+
+.failure-icon {
+    font-size: 80px;
+    color: #dc3545; /* Red for failure */
+    margin-bottom: 25px;
+    animation: shake 0.8s ease-out; /* A subtle shake for failure */
+}
+
+h1 {
+    font-size: 2.8em;
+    color: #c0392b; /* Darker red for emphasis */
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.order-failure-container p { /* Targeting general paragraphs in failure container */
+    font-size: 1.15em;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-bottom: 20px;
+    color: #444;
+}
+
+.order-failure-container p:first-of-type { /* Style for Order ID if present */
+    font-size: 1.3em;
+    color: #555;
+    margin-bottom: 10px; /* Slightly less margin than main error message */
+}
+
+.order-failure-container p:first-of-type strong { /* If you decide to wrap orderId in strong */
+    color: #dc3545; /* Red for emphasis on failed order ID */
+}
+
+.failure-actions {
+    display: flex;
+    gap: 20px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.failure-actions button {
+    padding: 15px 30px;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.failure-actions button:first-child { /* Try Payment Again button */
+    background-color: #ffc107; /* Amber for a "try again" action */
+    color: #333; /* Darker text for contrast on amber */
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+}
+
+.failure-actions button:first-child:hover {
+    background-color: #e0a800; /* Darker amber on hover */
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
+}
+
+.failure-actions button:last-child { /* Go Home button */
+    background-color: #6c757d; /* Grey for a secondary action */
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+}
+
+.failure-actions button:last-child:hover {
+    background-color: #5a6268;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+}
+
+/* Keyframe for a subtle shake animation */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    15% { transform: translateX(-5px) rotate(-1deg); }
+    30% { transform: translateX(5px) rotate(1deg); }
+    45% { transform: translateX(-5px) rotate(-0.5deg); }
+    60% { transform: translateX(5px) rotate(0.5deg); }
+    75% { transform: translateX(-2px) rotate(-0.2deg); }
+    100% { transform: translateX(0); }
+}
+
+/* Responsive adjustments - mimic success component's responsiveness */
+@media (max-width: 768px) {
+    .order-failure-container {
+        padding: 30px 15px;
+        margin: 130px auto;
+    }
+
+    h1 {
+        font-size: 2.2em;
+    }
+
+    .failure-icon {
+        font-size: 70px;
+        margin-bottom: 20px;
+    }
+
+    .order-failure-container p {
+        font-size: 1em;
+        margin-bottom: 15px;
+    }
+
+    .failure-actions button {
+        padding: 12px 25px;
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 500px) {
+    .order-failure-container {
+        padding: 25px 10px;
+        margin: 120px 10px;
+        border-radius: 8px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+        margin-bottom: 10px;
+    }
+
+    .failure-icon {
+        font-size: 60px;
+        margin-bottom: 15px;
+    }
+
+    .order-failure-container p {
+        font-size: 0.95em;
+        margin-bottom: 15px;
+    }
+
+    .failure-actions {
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+    }
+
+    .failure-actions button {
+        width: 90%;
+        max-width: 280px;
+        margin: 0 auto;
+        font-size: 0.95em;
+        padding: 10px 15px;
+    }
+}

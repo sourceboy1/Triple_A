@@ -98,6 +98,59 @@ table th, table td {
   border-radius: 8px;
 }
 
+.payment-actions {
+  margin-top: 2rem;
+  padding: 1rem;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  text-align: center;
+  background: #fafafa;
+}
+
+.payment-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.payment-btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.payment-btn.bank-transfer {
+  background: #007bff;
+  color: white;
+}
+
+.payment-btn.bank-transfer:hover {
+  background: #0056b3;
+}
+
+.payment-btn.debit-card {
+  background: #28a745;
+  color: white;
+}
+
+.payment-btn.debit-card:hover {
+  background: #1e7e34;
+}
+
+.payment-status {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #e6ffed;
+  border: 1px solid #b7e1c4;
+  border-radius: 10px;
+  text-align: center;
+}
+
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
   .order-details-container {

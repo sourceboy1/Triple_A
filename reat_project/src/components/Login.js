@@ -4,57 +4,16 @@ import './Login.css';
 import eyeIcon from '../pictures/eye.jpg';
 import closedEyeIcon from '../pictures/eye-closed.jpg';
 import { useUser } from '../contexts/UserContext';
+import api from '../Api'; // <- centralized api import
 
 const Login = () => {
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { signIn } = useUser();
-
-  // ✅ Use environment variable (from .env.production)
-  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000/api/";
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch(`${API_URL}login/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username: identifier, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        if (data.access && data.refresh && data.user) {
-          // ✅ Save tokens so api.js can use them
-          localStorage.setItem("access_token", data.access);
-          localStorage.setItem("refresh_token", data.refresh);
-
-          signIn({
-            username: data.user.username,
-            userId: data.user.id,
-            firstName: data.user.first_name,
-            lastName: data.user.last_name,
-            email: data.user.email,
-            token: data.access,       // access token
-            refresh: data.refresh,    // refresh token
-          });
-          navigate('/');
-        } else {
-          setError('Unexpected response format. Please try again.');
-        }
-      } else {
-        setError(data.detail || data.error || 'Invalid credentials.');
-      }
-    } catch (error) {
-      setError('Error logging in: ' + error.message);
-    }
-  };
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -62,6 +21,49 @@ const Login = () => {
 
   const handleRegisterClick = () => {
     navigate('/signup'); 
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      // Use api.post instead of fetch
+      const response = await api.post('login/', {
+        username: identifier,
+        password
+      });
+
+      const data = response.data;
+
+      if (data.access && data.refresh && data.user) {
+        localStorage.setItem("access_token", data.access);
+        localStorage.setItem("refresh_token", data.refresh);
+
+        signIn({
+          username: data.user.username,
+          userId: data.user.id,
+          firstName: data.user.first_name,
+          lastName: data.user.last_name,
+          email: data.user.email,
+          token: data.access,
+          refresh: data.refresh,
+        });
+
+        navigate('/');
+      } else {
+        setError('Unexpected response format. Please try again.');
+      }
+    } catch (err) {
+      if (err.response?.data) {
+        setError(err.response.data.detail || err.response.data.error || 'Invalid credentials.');
+      } else {
+        setError('Error logging in: ' + err.message);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -76,6 +78,7 @@ const Login = () => {
             Register
           </span>
         </h2>
+
         <div>
           <label htmlFor="identifier">Username or Email:</label>
           <input
@@ -84,9 +87,10 @@ const Login = () => {
             value={identifier}
             onChange={(e) => setIdentifier(e.target.value)}
             required
-            aria-label="Username or Email"
+            disabled={loading}
           />
         </div>
+
         <div className="password-container">
           <label htmlFor="password">Password:</label>
           <input
@@ -95,17 +99,22 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            aria-label="Password"
+            disabled={loading}
           />
           <img
             src={passwordVisible ? closedEyeIcon : eyeIcon}
             alt="Toggle Password Visibility"
-            className="eye-icon"
+            className="eye-icona"
             onClick={togglePasswordVisibility}
           />
         </div>
-        <button type="submit">Login</button>
+
+        <button type="submit" disabled={loading}>
+          {loading ? <span>Logging in<span className="dots">...</span></span> : 'Login'}
+        </button>
+
         {error && <p className="error-message">{error}</p>}
+
         <div className="forgot-password">
           <a href="/request-password-reset">Forgot Password?</a>
         </div>

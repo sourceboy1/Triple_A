@@ -8,7 +8,7 @@ body, html {
 .orders-container {
   width: 95%;
   max-width: 1200px;
-  margin: 35px auto;
+  margin: 80px auto;
   padding: 20px;
 }
 
@@ -175,18 +175,13 @@ body, html {
   }
 }
 
-/* Very small phones */
-@media screen and (max-width: 480px) {
-  .orders-container {
-    padding: 12px;
-    width: 100%;
-  }
+
 
 /* For very small devices (320px, 375px, 425px) */
 @media screen and (max-width: 425px) {
   .orders-container {
     width: 95%;               /* keep it inside screen */
-    margin: 20px auto;           /* center the container */
+    margin: 50px auto;           /* center the container */
     border: 1px solid #ddd;   /* full border around container */
     border-radius: 6px;       /* rounded look */
     background: #fff;         /* keep background white */
@@ -218,5 +213,4 @@ body, html {
     padding: 8px 12px;
     width: 100%; /* full width buttons for small screens */
   }
-}
 }

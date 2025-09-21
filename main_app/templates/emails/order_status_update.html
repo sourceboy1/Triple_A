@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Status Update - Triple A's Technology</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+        h2 {
+            color: #2c3e50;
+        }
+        .status {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #16a085;
+        }
+        .order-details {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #eee;
+            background: #fafafa;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #777;
+            text-align: center;
+        }
+        .button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 20px;
+            background: #3498db;
+            color: white !important;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+        .button:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Hello {{ order.first_name }},</h2>
+
+        <p>Your order <strong>#{{ order.order_id }}</strong> has been updated.</p>
+
+        <p class="status">
+            Current Status: {{ order.get_status_display }}
+        </p>
+
+        {% if order.status == "ready_for_pickup" %}
+            <p>Your order is now <strong>ready for pickup</strong> at our store:</p>
+            <p>
+                📍 Triple A’s Technology<br>
+                2 Oba Akran, Ikeja, Lagos<br>
+                ☎ +2348023975782
+            </p>
+        {% elif order.status == "shipped" %}
+            <p>Your order has been <strong>shipped</strong> and is on its way! 🚚</p>
+            <p>Estimated Delivery: 4–5 hours.</p>
+        {% elif order.status == "delivered" %}
+            <p>✅ Your order has been delivered. Thank you for shopping with us!</p>
+        {% elif order.status == "cancelled" %}
+            <p>❌ Unfortunately, your order has been cancelled. If you believe this is a mistake, please contact support.</p>
+        {% endif %}
+
+        <div class="order-details">
+            <p><strong>Order Total:</strong> ₦{{ order.total_amount }}</p>
+            <p><strong>Placed On:</strong> {{ order.created_at|date:"F j, Y, g:i a" }}</p>
+        </div>
+
+        <p>
+            <a href="{{ view_order_url }}" class="button">View My Order</a>
+        </p>
+
+        <div class="footer">
+            <p>Thanks for shopping with <strong>Triple A’s Technology</strong>!</p>
+            <p>&copy; {{ now|date:"Y" }} Triple A’s Technology. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

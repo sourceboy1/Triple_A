@@ -173,13 +173,14 @@ class CartItem(models.Model):
 
 class PaymentMethod(models.Model):
     payment_method_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey('main_app.CustomUser', on_delete=models.CASCADE,)  # Adjust if using a different user model
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
     method_name = models.CharField(max_length=100)
     details = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'payment_method'
+
 
 
 class Payment(models.Model):
@@ -252,19 +253,21 @@ class ShippingAddress(models.Model):
 
 
 
-class Order(models.Model): 
+class Order(models.Model):
     ORDER_STATUS_CHOICES = [
         ('pending', 'Pending'),
+        ('ready_for_pickup', 'Ready for Pickup'),
         ('shipped', 'Shipped'),
         ('delivered', 'Delivered'),
         ('cancelled', 'Cancelled'),
     ]
 
     order_id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
+    user_id = models.ForeignKey('main_app.CustomUser', on_delete=models.SET_NULL, null=True, blank=True)
     email = models.EmailField(default="noemail@example.com")
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0) # type: ignore
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)  # type: ignore
     created_at = models.DateTimeField(auto_now_add=True)
+
     first_name = models.CharField(max_length=50, default='DefaultFirstName')
     last_name = models.CharField(max_length=50, default='DefaultLastname')
     address = models.TextField(default='Default Address')
@@ -273,25 +276,55 @@ class Order(models.Model):
     postal_code = models.CharField(max_length=10, default="00000")
     country = models.CharField(max_length=100, default='Unknown')
     phone = models.CharField(max_length=20, default='0000000000')
+
     shipping_method = models.CharField(max_length=50, default="standard")
     order_note = models.TextField(null=True, blank=True)
-    payment_method_id = models.ForeignKey(PaymentMethod, on_delete=models.SET_NULL, null=True, blank=True)
-    shipping_cost = models.DecimalField(max_digits=10, decimal_places=2)
-    status = models.CharField(max_length=10, choices=ORDER_STATUS_CHOICES, default='pending')
+
+    payment_method = models.ForeignKey('main_app.PaymentMethod', on_delete=models.CASCADE, null=True, blank=True)
+    shipping_cost = models.DecimalField(max_digits=10, decimal_places=2, default=0)  # type: ignore
+
+    status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default='pending')
+
+    transaction_reference = models.CharField(max_length=255, null=True, blank=True)
+    payment_confirmed = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'orders'
 
     def __str__(self):
-        return f"Order {self.order_id} for User {self.user_id.username}" # type: ignore
+        username = self.user_id.username if self.user_id else 'Guest'
+        return f"Order {self.order_id} for User {username}"
+
+    def save(self, *args, **kwargs):
+        from .utils.email_helpers import send_order_status_email
+        import logging
+        logger = logging.getLogger(__name__)
+
+        old_status = None
+        if self.pk:  # only if existing order
+            try:
+                old = type(self).objects.get(pk=self.pk)
+                old_status = old.status
+            except type(self).DoesNotExist:
+                pass
+
+        super().save(*args, **kwargs)
+
+        # send email only if status changed
+        if old_status and old_status != self.status:
+            try:
+                send_order_status_email(self.email, self)
+                logger.info(f"[AUTO] Status update email sent for Order {self.order_id} (new status: {self.status})")
+            except Exception as e:
+                logger.error(f"Failed to send status update email for order {self.order_id}: {e}")
+
 
     
-
 
 class OrderItem(models.Model):
     order_item_id = models.AutoField(primary_key=True)
     order = models.ForeignKey(Order, related_name='cart_items', on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, default=1) # type: ignore
+    product = models.ForeignKey('main_app.Product', on_delete=models.CASCADE, default=1) # type: ignore
     quantity = models.IntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
@@ -304,5 +337,6 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"OrderItem {self.order_item_id} for Order {self.order.order_id}"
 
+    
 
 

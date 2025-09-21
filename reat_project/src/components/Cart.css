@@ -2,7 +2,7 @@
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
-  margin-top: 60px;
+  margin-top: 70px;
   background-color: white;
 }
 
@@ -245,10 +245,10 @@
 }
 
 /* Extra Small Devices (Mobile Portrait, 375px) */
-@media screen and (max-width: 375px) {
+@media screen and (max-width: 480px) {
   .cart-container {
     padding: 5px;
-    margin-top: 90px;
+    margin-top: 125px;
   }
 
   .cart-item-image {

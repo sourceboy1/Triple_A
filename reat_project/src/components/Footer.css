@@ -83,4 +83,12 @@
     .footer-section p {
         text-align: left; /* ✅ Force left for headings + text */
     }
+    
+}
+
+@media (max-width: 320px){
+    .footer-social-media{
+        margin-right: 10px;
+        gap: 6.5px;
+    }
 }

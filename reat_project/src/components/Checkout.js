@@ -159,17 +159,18 @@ const Checkout = () => {
 
         const redirectPath = paymentMethod === 'debit_credit_cards' ? '/payment/debit-credit-card' : '/payment/bank-transfer';
         navigate(redirectPath, {
-            state: {
-                orderId: response.data.order_id,
-                email,
-                phone,
-                address: fullAddress,
-                subtotal,
-                shippingCost,
-                total,
-                products: cart
-            }
-        });
+        state: {
+            orderId: response.data.order_id,
+            email,
+            phone,
+            address: fullAddress,
+            subtotal,
+            shippingCost,
+            total,
+            products: cart,
+            shippingMethod // <-- pass it here
+        }
+    });
     } catch (error) {
         console.error('Error placing the order:', error.response || error);
         window.scrollTo(0, 0);
@@ -195,7 +196,7 @@ const Checkout = () => {
             case 'area2': baseCost = 10000; break;
             case 'abule_egba': baseCost = 8000; break;
             case 'ikeja': baseCost = 5000; break;
-            case 'lagos_mainland': baseCost = 12000; break;
+            case 'lagos_island': baseCost = 12000; break;
             default: baseCost = 0;
         }
 
@@ -225,7 +226,7 @@ const Checkout = () => {
             case 'area2': label = `Ajao Estate/Oshodi/Lawanson/Orile/Itire/Gbagada/Apapa/Surulere/Tradefair: ₦${formatPrice(basePrice)}`; break;
             case 'abule_egba': label = `Abule Egba/ Iyana Ipaja/ Ayobo: ₦${formatPrice(basePrice)}`; break;
             case 'ikeja': label = `IKEJA AXIS/ BARIGA/ALAGOMEJI/FADEYI/PALM GROOVE: ₦${formatPrice(basePrice)}`; break;
-            case 'lagos_mainland': label = `LAGOS MAINLAND: ₦${formatPrice(basePrice)}`; break;
+            case 'lagos_island': label = `LAGOS ISLAND: ₦${formatPrice(basePrice)}`; break;
             default: label = '';
         }
 
@@ -302,17 +303,23 @@ const Checkout = () => {
                         </p>
                     )}
                     <div className="shipping-method-container">
-                        <label>
-                            <input
-                                type="radio"
-                                name="shippingMethod"
-                                value="pickup"
-                                checked={shippingMethod === 'pickup'}
-                                onChange={(e) => setShippingMethod(e.target.value)}
-                                disabled={loading || loadingCheckoutDetails}
-                            />
-                            {getShippingLabel('pickup', 0)}
+                       <label>
+                        <input
+                            type="radio"
+                            name="shippingMethod"
+                            value="pickup"
+                            checked={shippingMethod === 'pickup'}
+                            onChange={(e) => setShippingMethod(e.target.value)}
+                            disabled={loading || loadingCheckoutDetails}
+                        />
+                        {getShippingLabel('pickup', 0)}
                         </label>
+                        {/* New message for pickup */}
+                        {shippingMethod === 'pickup' && (
+                        <p className="pickup-info-message">
+                            <span role="img" aria-label="info">ℹ️</span> You can also pay when you come to pick up your order items at the store.
+                        </p>
+                        )}
                         <label>
                             <input
                                 type="radio"
@@ -383,12 +390,12 @@ const Checkout = () => {
                             <input
                                 type="radio"
                                 name="shippingMethod"
-                                value="lagos_mainland"
-                                checked={shippingMethod === 'lagos_mainland'}
+                                value="lagos_island"
+                                checked={shippingMethod === 'lagos_island'}
                                 onChange={(e) => setShippingMethod(e.target.value)}
                                 disabled={loading || loadingCheckoutDetails}
                             />
-                            {getShippingLabel('lagos_mainland', 12000)}
+                            {getShippingLabel('lagos_island', 12000)}
                         </label>
                     </div>
                 </div>

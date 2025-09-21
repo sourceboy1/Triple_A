@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import api from '../Api'; // ✅ Unified API import
-import './Password.css'; // Import the CSS file
+import api from '../Api';
+import './Password.css';
 import eyeIcon from '../pictures/eye.jpg';
 import closedEyeIcon from '../pictures/eye-closed.jpg';
 
@@ -13,15 +13,11 @@ const ResetPassword = () => {
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false); // ✅ loading state
   const navigate = useNavigate();
 
-  const handlePasswordToggle = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleConfirmPasswordToggle = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
+  const handlePasswordToggle = () => setShowPassword(!showPassword);
+  const handleConfirmPasswordToggle = () => setShowConfirmPassword(!showConfirmPassword);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,14 +28,20 @@ const ResetPassword = () => {
       return;
     }
 
+    setLoading(true);
+    setError('');
+    setMessage('');
+
     try {
       const response = await api.post('/reset-password/', { uid, token, password });
       setMessage(response.data.message);
       setError('');
-      navigate('/signin'); // Redirect to login page after successful reset
+      setTimeout(() => navigate('/signin'), 1500); // slight delay before redirect
     } catch (err) {
       setError(err.response ? err.response.data.error : 'An error occurred');
       setMessage('');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -55,6 +57,7 @@ const ResetPassword = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                disabled={loading}
               />
               <img
                 src={showPassword ? eyeIcon : closedEyeIcon}
@@ -71,6 +74,7 @@ const ResetPassword = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
+                disabled={loading}
               />
               <img
                 src={showConfirmPassword ? eyeIcon : closedEyeIcon}
@@ -80,7 +84,9 @@ const ResetPassword = () => {
               />
             </div>
           </label>
-          <button type="submit">Reset Password</button>
+          <button type="submit" disabled={loading}>
+            {loading ? <span>Resetting password<span className="dots">...</span></span> : 'Reset Password'}
+          </button>
           {message && <p className="success-message">{message}</p>}
           {error && <p className="error-message">{error}</p>}
         </form>

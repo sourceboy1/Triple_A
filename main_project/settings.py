@@ -15,61 +15,63 @@ pymysql.install_as_MySQLdb()
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from decouple import config
+import dj_database_url
+import cloudinary
 
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # React build directory
 FRONTEND_DIR = BASE_DIR / 'reat_project' / 'build'
 
-# Load .env from project root
-load_dotenv(BASE_DIR / ".env")
+# --- IMPORTANT: Load .env.local first, then .env for local development only ---
+# Railway will handle environment variables directly.
+# This ensures .env.local can override .env for local testing if needed.
+if os.path.exists(BASE_DIR / ".env.local"):
+    load_dotenv(BASE_DIR / ".env.local", override=True)
+elif os.path.exists(BASE_DIR / ".env"):
+    load_dotenv(BASE_DIR / ".env")
 
 
-SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key-for-local-dev")
+# SECRET_KEY is crucial. For production, set it as an env var on Railway.
+# The default is for local development if not set.
+SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key-for-local-dev-please-change-me")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# DEBUG should be False in production. Railway will set this via environment variables.
+DEBUG = config("DEBUG", default=False, cast=bool)
 
-# settings.py
+# Paystack keys from environment variables
+PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY")
+PAYSTACK_PUBLIC_KEY = os.getenv("PAYSTACK_PUBLIC_KEY")
+
+# Maintenance mode from environment variable
 MAINTENANCE_MODE = os.getenv("MAINTENANCE_MODE", "off").lower() == "on"
 
-
+# CORS settings
 CORS_ALLOW_CREDENTIALS = True
 
-ALLOWED_HOSTS = [
-    'tripleastechng.com',
-    'www.tripleastechng.com',
-    'crossover.proxy.rlwy.net',
-    'localhost',
-    '127.0.0.1',
-]
+# Dynamically fetch ALLOWED_HOSTS, CSRF_TRUSTED_ORIGINS, CORS_ALLOWED_ORIGINS
+# from environment variables, falling back to safe defaults for local development.
+# On Railway, you should set DJANGO_ALLOWED_HOSTS, DJANGO_CSRF_TRUSTED_ORIGINS,
+# and DJANGO_CORS_ALLOWED_ORIGINS as environment variables.
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://tripleastechng.com',
-    'https://www.tripleastechng.com',
-    'https://crossover.proxy.rlwy.net',
-    'http://localhost:8000',
-    'http://127.0.0.1:8000',
-    'https://metro.proxy.rlwy.net',
+# Example env var format:
+# DJANGO_ALLOWED_HOSTS=tripleastechng.com,www.tripleastechng.com,crossover.proxy.rlwy.net,metro.proxy.rlwy.net,your-railway-app-name-production.up.railway.app
+# DJANGO_CSRF_TRUSTED_ORIGINS=https://tripleastechng.com,https://www.tripleastechng.com,https://crossover.proxy.rlwy.net,https://metro.proxy.rlwy.net,https://your-railway-app-name-production.up.railway.app
+# DJANGO_CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000,http://localhost:8000,http://127.0.0.1:8000,https://tripleastechng.com,https://www.tripleastechng.com,https://crossover.proxy.rlwy.net,https://metro.proxy.rlwy.net,https://your-railway-app-name-production.up.railway.app
 
-]
+ALLOWED_HOSTS_STR = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(',')
+ALLOWED_HOSTS = [h.strip() for h in ALLOWED_HOSTS_STR if h.strip()]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",       # React dev server
-    "http://127.0.0.1:3000",
-    "http://localhost:8000",       # Django local
-    "http://127.0.0.1:8000",
-    "https://tripleastechng.com",  # Production domain
-    "https://www.tripleastechng.com",
-    "https://crossover.proxy.rlwy.net",  # Your Railway proxy
-    "https://metro.proxy.rlwy.net",
-]
+CSRF_TRUSTED_ORIGINS_STR = os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "http://localhost:8000,http://127.0.0.1:8000,http://localhost:3000,http://127.0.0.1:3000").split(',')
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in CSRF_TRUSTED_ORIGINS_STR if o.strip()]
 
+CORS_ALLOWED_ORIGINS_STR = os.getenv("DJANGO_CORS_ALLOWED_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000,http://localhost:8000,http://127.0.0.1:8000").split(',')
+CORS_ALLOWED_ORIGINS = [o.strip() for o in CORS_ALLOWED_ORIGINS_STR if o.strip()]
 
 
 # Application definition
-
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -82,12 +84,13 @@ INSTALLED_APPS = [
     'rest_framework',
     'cloudinary_storage',
     'cloudinary',
+    'products',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this
-    'corsheaders.middleware.CorsMiddleware',  # Move above CommonMiddleware
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Ensure this is high up
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -97,14 +100,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
 AUTH_USER_MODEL = "main_app.CustomUser"
 
 AUTHENTICATION_BACKENDS = [
     "main_app.backends.UsernameOrEmailBackend",  # custom backend
     "django.contrib.auth.backends.ModelBackend", # fallback
 ]
-
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -113,17 +114,15 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
 }
 
-
-# Cloudinary storage
+# Cloudinary configuration
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-import cloudinary
 if CLOUDINARY_URL := os.environ.get("CLOUDINARY_URL"):
     cloudinary.config(cloudinary_url=CLOUDINARY_URL, secure=True)
-
-
 
 # Where to redirect when a login is required
 LOGIN_URL = '/login/'  # Change this to your React login URL if needed
@@ -131,17 +130,12 @@ LOGIN_URL = '/login/'  # Change this to your React login URL if needed
 # Where to go after login (optional)
 LOGIN_REDIRECT_URL = '/'
 
-
 ROOT_URLCONF = 'main_project.urls'
-
-
-FRONTEND_DIR = BASE_DIR / 'reat_project' / 'build'
-
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [FRONTEND_DIR] if FRONTEND_DIR.exists() else [],
+        'DIRS': [FRONTEND_DIR] if FRONTEND_DIR.exists() else [], # Serve React's index.html
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -154,40 +148,20 @@ TEMPLATES = [
     },
 ]
 
-
-
-
-
 WSGI_APPLICATION = 'main_project.wsgi.application'
 
-
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+# Email Configuration - Fetch credentials from environment variables
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.zoho.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'seunakanni417@gmail.com'
-EMAIL_HOST_PASSWORD = 'nmxwcdumiwjwccyr'
-DEFAULT_FROM_EMAIL = 'Triple A,s Support <support.royeane@yahoo.com>'
-
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "tripleastech@tripleastechng.com") # Default for local, use env for production
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD") # MUST be set as an environment variable on Railway
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "Triple A's Technology <tripleastech@tripleastechng.com>")
+EMAIL_TIMEOUT = 10
 
 # Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-# db_url = os.environ.get("DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}")
-
-# # 👇 Only change host when inside Railway (not on your PC)
-# if os.environ.get("RAILWAY_RUNTIME") == "true":
-#     db_url = db_url.replace("crossover.proxy.rlwy.net", "mysql.railway.internal")
-#     db_url = db_url.replace("metro.proxy.rlwy.net", "mysql.railway.internal")
-
-import dj_database_url
-import os
-
+# Use dj_database_url to parse the DATABASE_URL environment variable from Railway
 DATABASES = {
     "default": dj_database_url.parse(
         os.environ.get("DATABASE_URL"), # type: ignore
@@ -195,35 +169,7 @@ DATABASES = {
     )
 }
 
-
-
-
-
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.mysql",
-#         "NAME": "my_triplea_ecommerce_db",
-#         "USER": "triple_user",
-#         "PASSWORD": "oluwaseun123$",
-#         "HOST": "localhost",
-#         "PORT": "3306",
-#         "OPTIONS": {
-#             "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
-#         },
-#     }
-# }
-
-
-
-
-
-
-
-
 # Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -239,68 +185,81 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-
 # Internationalization
-# https://docs.djangoproject.com/en/5.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
-
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800  # 50 MB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800
 
-
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-
+# Static files (CSS, JavaScript, Images)
+# Static files configuration for production with WhiteNoise
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = BASE_DIR / "staticfiles" # Django collects static files here
 
-# React static files
+# Point to your React build's static directory
 FRONTEND_STATIC_DIR = BASE_DIR / "reat_project" / "build" / "static"
-STATICFILES_DIRS = [FRONTEND_STATIC_DIR]
+STATICFILES_DIRS = [
+    FRONTEND_STATIC_DIR,
+]
 
-# WhiteNoise for serving static files
+# WhiteNoise for serving static files in production
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# Media files (user-uploaded content)
 MEDIA_URL = '/media/'
+# DEFAULT_FILE_STORAGE is already set to 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-
-# Logging config to avoid startup errors
+# Logging config
 LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "verbose": {
-            "format": "[{levelname}] {asctime} {name} {message}",
-            "style": "{",
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
         },
-        "simple": {
-            "format": "[{levelname}] {message}",
-            "style": "{",
-        },
-    },
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "formatter": "simple",
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
         },
     },
-    "root": {
-        "handlers": ["console"],
-        "level": "INFO",
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': 'django_debug.log', # Or 'django_errors.log' for errors only
+            'formatter': 'verbose',
+        },
+    },
+    'root': {
+        'handlers': ['console', 'file'], # Direct logs to both console and file
+        'level': 'INFO', # Set minimum level to log
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'main_app': { # Replace 'your_app_name' with the actual name of your Django app
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        # You can also add a logger for your utils if it's in a separate module
+        'main_app.utils.email_helpers': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
     },
 }

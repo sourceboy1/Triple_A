@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../contexts/UserContext'; // ✅ import useUser
 import homeIcon from '../pictures/home_icon.jpg';
-import cartIcon from '../pictures/carticon.jpg';
+import cartIcon from '../pictures/carticon1.webp';
 import userIcon from '../pictures/usericon.jpg';
 import searchIcon from '../pictures/searchicon.jpg';
 import './FloatingNav.css';

@@ -99,9 +99,13 @@ const AccountDetails = () => {
       )}
       <form className="account-details-form" onSubmit={handleAccountUpdate}>
         <h2>Account Details</h2>
-        <div ref={updateMessageRef} className="update-message">{updateMessage}</div>
+        {updateMessage && ( // Only render if there's a message
+          <div ref={updateMessageRef} className={`update-message ${updateMessage.includes('successfully') ? 'success' : 'error'}`}>
+            {updateMessage}
+          </div>
+        )}
 
-        <div>
+        <div className="form-group"> {/* Added form-group for better spacing */}
           <label htmlFor="firstName">First name *</label>
           <input
             id="firstName"
@@ -112,7 +116,7 @@ const AccountDetails = () => {
           />
         </div>
 
-        <div>
+        <div className="form-group"> {/* Added form-group */}
           <label htmlFor="lastName">Last name *</label>
           <input
             id="lastName"
@@ -123,18 +127,19 @@ const AccountDetails = () => {
           />
         </div>
 
-        <div>
+        <div className="form-group"> {/* Added form-group */}
           <label htmlFor="displayName">Display name *</label>
           <input
             id="displayName"
             type="text"
             value={`${editFirstName} ${editLastName}`}
             readOnly
+            className="read-only" 
           />
           <small>This will be how your name will be displayed in the account section and in reviews.</small>
         </div>
 
-        <div>
+        <div className="form-group"> {/* Added form-group */}
           <label htmlFor="email">Email address *</label>
           <input
             id="email"
@@ -146,7 +151,7 @@ const AccountDetails = () => {
         </div>
 
         {/* Current Password - always required */}
-        <div className="password-container">
+        <div className="form-group password-group"> {/* Added form-group and password-group */}
           <label htmlFor="currentPassword">Current password *</label>
           <div className="password-input-container">
             <input
@@ -166,7 +171,7 @@ const AccountDetails = () => {
         </div>
 
         {/* Note for password change */}
-        <div className="password-note">
+        <div className="password-note info-box"> {/* Added info-box for styling */}
           <small>
             If you want to change your password, fill in the fields below.  
             Otherwise, leave them blank and your password will remain the same.
@@ -178,7 +183,7 @@ const AccountDetails = () => {
           { label: 'New password (optional)', value: newPassword, setter: setNewPassword, show: showNewPassword, toggle: setShowNewPassword, id: 'newPassword' },
           { label: 'Confirm new password', value: confirmNewPassword, setter: setConfirmNewPassword, show: showConfirmNewPassword, toggle: setShowConfirmNewPassword, id: 'confirmNewPassword' }
         ].map(field => (
-          <div className="password-container" key={field.id}>
+          <div className="form-group password-group" key={field.id}> {/* Added form-group and password-group */}
             <label htmlFor={field.id}>{field.label}</label>
             <div className="password-input-container">
               <input
@@ -197,7 +202,7 @@ const AccountDetails = () => {
           </div>
         ))}
 
-        <button type="submit">Save changes</button>
+        <button type="submit" disabled={isLoading}>Save changes</button> {/* Disabled button when loading */}
       </form>
     </div>
   );

@@ -1,134 +1,179 @@
+/* General Body and HTML Reset */
+body, html {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  color: #333;
+  line-height: 1.6;
+  background-color: #f0f2f5; /* Lighter background for the overall page */
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Account Details Container */
 .account-details-container {
-  background-color: #f7f7f7;
-  padding: 2rem;
+  background-color: #ffffff;
+  padding: 2.5rem 2rem;
   border-radius: 12px;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
-  max-width: 650px;
-  margin: 2rem auto;
-  font-family: 'Segoe UI', Arial, sans-serif;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  max-width: 600px; /* Slightly reduced max-width */
+  margin: 3rem auto; /* More vertical margin */
   transition: all 0.3s ease-in-out;
+  border: 1px solid #e0e0e0;
 }
 
 .account-details-container h2 {
-  color: #222;
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
+  color: #1a1a1a;
+  font-size: 2.2rem;
+  margin-bottom: 2rem;
   text-align: center;
   font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
-/* Info box for optional password */
-.password-info {
-  background: #e9f5ff;
-  border: 1px solid #b6e0fe;
-  color: #055160;
-  padding: 0.75rem 1rem;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  margin-bottom: 1.5rem;
-  text-align: center;
+/* Form Grouping for better spacing */
+.form-group {
+  margin-bottom: 1.5rem; /* Consistent spacing between form fields */
 }
 
+/* Labels */
 .account-details-form label {
   display: block;
-  color: #444;
-  margin-bottom: 0.4rem;
+  color: #4a4a4a;
+  margin-bottom: 0.6rem;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 
+/* Input Fields */
 .account-details-form input[type="text"],
 .account-details-form input[type="email"],
 .account-details-form input[type="password"] {
   width: 100%;
-  padding: 0.8rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  margin-bottom: 1.3rem;
+  padding: 0.9rem 1rem;
+  border-radius: 8px; /* Slightly more rounded */
+  border: 1px solid #dcdcdc;
   font-size: 1rem;
-  transition: border-color 0.3s, box-shadow 0.2s;
+  transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
   box-sizing: border-box;
-  background-color: #fff;
+  background-color: #fdfdfd;
 }
 
 .account-details-form input:focus {
-  border-color: #218838;
-  box-shadow: 0 0 0 3px rgba(33, 136, 56, 0.2);
+  border-color: #28a745; /* Green focus border */
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2); /* Green glow */
+  background-color: #ffffff;
   outline: none;
 }
 
+.account-details-form input.read-only {
+  background-color: #e9ecef;
+  border-color: #ced4da;
+  cursor: not-allowed;
+  color: #6c757d;
+}
+
+/* Password Input Container with Eye Icon */
 .password-input-container {
   position: relative;
 }
 
 .eye-icon {
   position: absolute;
-  top: 35%;  /* move it a bit up from the middle */
-  right: 12px;
+  top: 50%; /* Center vertically */
+  right: 15px;
   transform: translateY(-50%);
   cursor: pointer;
   width: 20px;
   height: 20px;
-  opacity: 0.7;
-  transition: opacity 0.2s ease;
+  opacity: 0.6;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  filter: grayscale(100%); /* Make eye icon more subtle */
 }
 
 .eye-icon:hover {
   opacity: 1;
+  transform: translateY(-50%) scale(1.1); /* Slight grow on hover */
+  filter: grayscale(0%);
 }
 
-
+/* Small text/notes */
 .account-details-form small {
   display: block;
-  color: #777;
-  margin-top: -1rem;
-  margin-bottom: 1.5rem;
-  font-size: 0.85rem;
+  color: #7a7a7a;
+  margin-top: 0.5rem; /* Adjusted margin */
+  font-size: 0.875rem;
+  line-height: 1.4;
 }
 
+/* Update Message (Success/Error) */
 .update-message {
-  color: #155724;
-  background-color: #d4edda;
-  border: 1px solid #c3e6cb;
-  padding: 10px;
-  border-radius: 6px;
-  margin-bottom: 1.5rem;
+  padding: 12px 18px;
+  border-radius: 8px;
+  margin-bottom: 1.8rem;
   text-align: center;
   font-weight: 500;
+  font-size: 0.95rem;
+  animation: fadeIn 0.5s ease-out;
 }
 
+.update-message.success {
+  color: #0f5132;
+  background-color: #d1e7dd;
+  border: 1px solid #badbcc;
+}
+
+.update-message.error {
+  color: #842029;
+  background-color: #f8d7da;
+  border: 1px solid #f5c2c7;
+}
+
+/* Info Box (for password note) */
+.info-box {
+  background: #e6f7ff;
+  border: 1px solid #91d5ff;
+  color: #085a67;
+  padding: 1rem 1.2rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-top: 0.5rem; /* Ensure it's not too close to the previous field */
+  margin-bottom: 2rem;
+  text-align: left;
+  line-height: 1.5;
+}
+
+/* Submit Button */
 .account-details-form button {
   width: 100%;
-  background-color: #218838;
+  background-color: #28a745; /* Green button */
   color: white;
-  padding: 0.9rem;
+  padding: 1.1rem;
   border: none;
-  border-radius: 6px;
-  font-size: 1.05rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+  letter-spacing: 0.02em;
+  margin-top: 1rem;
 }
 
-.account-details-form button:hover {
-  background-color: #1c7430;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+.account-details-form button:hover:not(:disabled) {
+  background-color: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(40, 167, 69, 0.25);
 }
 
-.account-details-form button:active {
+.account-details-form button:active:not(:disabled) {
   transform: translateY(0);
-  box-shadow: none;
+  box-shadow: 0 2px 5px rgba(40, 167, 69, 0.2);
 }
 
 .account-details-form button:disabled {
-  background-color: #b0bec5;
+  background-color: #a7d9b7; /* Lighter green for disabled */
   cursor: not-allowed;
   box-shadow: none;
-}
-
-body, html {
-  overflow: auto;
+  opacity: 0.8;
 }
 
 /* Fullscreen loading overlay */
@@ -138,20 +183,21 @@ body, html {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.55);
+  background-color: rgba(0, 0, 0, 0.6); /* Slightly darker overlay */
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
+  backdrop-filter: blur(3px); /* Added blur effect */
 }
 
 .loading-spinner {
-  border: 5px solid rgba(255, 255, 255, 0.3);
-  border-top: 5px solid #fff;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #fff;
   border-radius: 50%;
-  width: 55px;
-  height: 55px;
-  animation: spin 1s linear infinite;
+  width: 45px; /* Slightly smaller spinner */
+  height: 45px;
+  animation: spin 0.8s linear infinite; /* Faster spin */
 }
 
 @keyframes spin {
@@ -159,35 +205,110 @@ body, html {
   100% { transform: rotate(360deg); }
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .account-details-container {
-    padding: 1.5rem;
-    margin: 1rem;
+    padding: 2rem 1.5rem;
+    margin: 2rem 1rem;
+    border-radius: 10px;
   }
 
   .account-details-container h2 {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
   }
 
-  .account-details-form input,
-  .account-details-form button {
+  .form-group {
+    margin-bottom: 1.2rem;
+  }
+
+  .account-details-form label {
+    font-size: 0.9rem;
+  }
+
+  .account-details-form input[type="text"],
+  .account-details-form input[type="email"],
+  .account-details-form input[type="password"] {
+    padding: 0.8rem;
     font-size: 0.95rem;
-    padding: 0.75rem;
+    border-radius: 6px;
+  }
+
+  .eye-icon {
+    right: 12px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .account-details-form small {
+    font-size: 0.8rem;
+    margin-top: 0.4rem;
+  }
+
+  .update-message, .info-box {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .account-details-form button {
+    padding: 0.9rem;
+    font-size: 1rem;
+    border-radius: 6px;
   }
 }
 
 @media (max-width: 480px) {
   .account-details-container {
-    padding: 1rem;
+    padding: 1.5rem 1rem;
+    margin: 1rem 0.8rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   }
 
   .account-details-container h2 {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .account-details-form label {
+    font-size: 0.85rem;
+  }
+
+  .account-details-form input[type="text"],
+  .account-details-form input[type="email"],
+  .account-details-form input[type="password"] {
+    padding: 0.7rem;
+    font-size: 0.9rem;
+  }
+
+  .eye-icon {
+    right: 10px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .account-details-form small {
+    font-size: 0.75rem;
+  }
+
+  .update-message, .info-box {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    margin-bottom: 1.2rem;
   }
 
   .account-details-form button {
-    font-size: 0.9rem;
-    padding: 0.7rem;
+    padding: 0.8rem;
+    font-size: 0.95rem;
   }
 }

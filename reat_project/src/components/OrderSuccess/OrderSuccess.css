@@ -1,0 +1,193 @@
+/* src/components/OrderSuccess/OrderSuccess.css */
+.order-success-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh; /* Adjust as needed */
+    padding: 40px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, #f0f4f8, #e6e9ed);
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 10px;
+    margin: 85px auto;
+    max-width: 800px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.success-icon {
+    font-size: 80px;
+    color: #28a745; /* Green for success */
+    margin-bottom: 25px;
+    animation: bounceIn 0.8s ease-out;
+}
+
+.order-success-container h1 {
+    font-size: 2.8em;
+    color: green;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.order-id-display {
+    font-size: 1.3em;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.order-id-display strong {
+    color: #007bff; /* Blue for emphasis */
+}
+
+.success-message-text {
+    font-size: 1.15em;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-bottom: 30px;
+    color: #444;
+}
+
+.success-actions {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    flex-wrap: wrap; /* Allow buttons to wrap */
+    justify-content: center;
+}
+
+.view-order-button,
+.continue-shopping-button {
+    padding: 15px 30px;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none; /* For potential Link usage */
+    white-space: nowrap; /* Prevent button text from breaking */
+}
+
+.view-order-button {
+    background-color: #007bff;
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+}
+
+.view-order-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+}
+
+.continue-shopping-button {
+    background-color: #6c757d;
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+}
+
+.continue-shopping-button:hover {
+    background-color: #5a6268;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+}
+
+.thank-you-note {
+    margin-top: 40px;
+    font-size: 1em;
+    color: #666;
+    font-style: italic;
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.1);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .order-success-container {
+        padding: 30px 15px;
+        margin: 130px auto; /* Adjust margin for smaller screens */
+    }
+
+    h1 {
+        font-size: 2.2em;
+    }
+
+    .success-icon {
+        font-size: 70px;
+        margin-bottom: 20px;
+    }
+
+    .order-id-display {
+        font-size: 1.1em;
+    }
+
+    .success-message-text {
+        font-size: 1em;
+        margin-bottom: 25px;
+    }
+
+    .view-order-button,
+    .continue-shopping-button {
+        padding: 12px 25px;
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 500px) {
+    .order-success-container {
+        padding: 25px 10px;
+        margin: 120px 10px; /* More aggressive margin for very small screens */
+        border-radius: 8px; /* Slightly smaller border-radius */
+    }
+
+    h1 {
+        font-size: 1.8em;
+        margin-bottom: 10px;
+    }
+
+    .success-icon {
+        font-size: 60px;
+        margin-bottom: 15px;
+    }
+
+    .order-id-display,
+    .success-message-text {
+        font-size: 0.95em;
+        margin-bottom: 20px;
+    }
+
+    .success-actions {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 15px;
+        width: 100%; /* Ensure actions take full width to center buttons */
+    }
+
+    .view-order-button,
+    .continue-shopping-button {
+        width: 90%; /* Make buttons almost full width */
+        max-width: 280px; /* Limit max width for stacking on very small screens */
+        margin: 0 auto; /* Center buttons when stacked */
+        font-size: 0.95em;
+        padding: 10px 15px;
+    }
+
+    .thank-you-note {
+        margin-top: 30px;
+        font-size: 0.9em;
+    }
+}

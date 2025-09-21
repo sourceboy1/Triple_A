@@ -40,7 +40,7 @@ const Footer = () => {
 
     const handleShopClick = () => {
         // Navigate to the search page and show all products
-        navigate('/search?query=&category=All');
+        navigate('/category-full-display');
         scrollToTop();
     };
 

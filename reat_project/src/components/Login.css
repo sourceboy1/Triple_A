@@ -76,6 +76,16 @@
   text-align: center;
 }
 
+.eye-icona {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  width: 21px;
+  padding-bottom: 20px;
+}
+
 .forgot-password a {
   color: #007bff;
   text-decoration: none;
@@ -97,3 +107,14 @@
 .login-form h2 span:hover {
   color: blue; /* Change color on hover */
 }
+
+.dots {
+  display: inline-block;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 20%, 50%, 80%, 100% { opacity: 1; }
+  10%, 30%, 60%, 90% { opacity: 0; }
+}
+

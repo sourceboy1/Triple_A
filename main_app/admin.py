@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth import get_user_model
 from .models import ShippingAddress, Cart, CartItem, Category, Product, Order, OrderItem, Payment, PaymentDetail, PaymentMethod, ProductImage
+from .utils.email_helpers import send_order_email, send_order_status_email
+
 
 # Get the user model
 CustomUser = get_user_model()
@@ -70,6 +72,10 @@ class ProductAdmin(admin.ModelAdmin):
 #     list_display = ('name',)
 #     search_fields = ('name',)
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
     list_display = ('product', 'image', 'secondary_image', 'tertiary_image', 'quaternary_image', 'description')
@@ -85,16 +91,17 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = (
         'order_id', 'user_id', 'total_amount', 'created_at', 'first_name',
         'last_name', 'email', 'phone', 'shipping_method', 'order_note',
-        'payment_method_id', 'shipping_cost', 'status',
+        'payment_method', 'shipping_cost', 'status', 'payment_confirmed'
     )
     fields = (
         'user_id', 'email', 'first_name', 'last_name',
-        'phone', 'shipping_method', 'order_note', 'payment_method_id',
-        'shipping_cost', 'total_amount', 'status'
-    )  # removed 'order_id' and 'created_at'
-    readonly_fields = ('order_id', 'created_at')  # show as read-only
+        'phone', 'shipping_method', 'order_note', 'payment_method',
+        'shipping_cost', 'total_amount', 'status', 'transaction_reference',
+        'payment_confirmed'
+    )
+    readonly_fields = ('order_id', 'created_at')
     list_filter = (
-        'created_at', 'shipping_method', 'payment_method_id', 'status',
+        'created_at', 'shipping_method', 'payment_method', 'status', 'payment_confirmed'
     )
     search_fields = (
         'order_id', 'first_name', 'last_name', 'phone', 'payment_method__method_name'
@@ -102,29 +109,76 @@ class OrderAdmin(admin.ModelAdmin):
     list_editable = ('status',)
     inlines = [OrderItemInline]
 
-    actions = ['mark_as_shipped', 'mark_as_delivered', 'mark_as_cancelled']
+    actions = [
+        'mark_as_ready_for_pickup',
+        'mark_as_shipped',
+        'mark_as_delivered',
+        'mark_as_cancelled',
+        'send_confirmation_email',
+    ]
 
-    def get_shipping_address(self, obj):
-        if obj.shipping_address:
-            return f"{obj.shipping_address.address}, {obj.shipping_address.city}, {obj.shipping_address.state}, {obj.shipping_address.postal_code}, {obj.shipping_address.country}"
-        return "No address provided"
-    get_shipping_address.short_description = 'Shipping Address'
+    def mark_as_ready_for_pickup(self, request, queryset):
+        sent_count = 0
+        skipped = 0
+        for order in queryset:
+            if order.payment_confirmed:
+                order.status = 'ready_for_pickup'
+                order.save()  # email handled in model.save()
+                sent_count += 1
+            else:
+                skipped += 1
+        self.message_user(request, f"✅ {sent_count} orders marked Ready for Pickup and notified. {skipped} skipped (payment not confirmed).")
 
     def mark_as_shipped(self, request, queryset):
-        queryset.update(status='shipped')
-        self.message_user(request, "Selected orders have been marked as shipped.")
+        sent_count = 0
+        skipped = 0
+        for order in queryset:
+            if order.payment_confirmed:
+                order.status = 'shipped'
+                order.save()  # email handled in model.save()
+                sent_count += 1
+            else:
+                skipped += 1
+        self.message_user(request, f"🚚 {sent_count} orders marked Shipped and notified. {skipped} skipped (payment not confirmed).")
 
     def mark_as_delivered(self, request, queryset):
-        queryset.update(status='delivered')
-        self.message_user(request, "Selected orders have been marked as delivered.")
-    
-    def mark_as_cancelled(self, request, queryset):
-        queryset.update(status='cancelled')
-        self.message_user(request, "Selected orders have been marked as cancelled.")
+        sent_count = 0
+        for order in queryset:
+            if order.payment_confirmed:
+                order.status = 'delivered'
+                order.save()  # email handled in model.save()
+                sent_count += 1
+        self.message_user(request, f"✅ {sent_count} orders marked Delivered and notified.")
 
-    mark_as_shipped.short_description = "Mark selected orders as Shipped"
-    mark_as_delivered.short_description = "Mark selected orders as Delivered"
-    mark_as_cancelled.short_description = "Mark selected orders as Cancelled"
+    def mark_as_cancelled(self, request, queryset):
+        sent_count = 0
+        for order in queryset:
+            order.status = 'cancelled'
+            order.save()  # email handled in model.save()
+            sent_count += 1
+        self.message_user(request, f"❌ {sent_count} orders marked Cancelled and notified.")
+
+    def send_confirmation_email(self, request, queryset):
+        """
+        Re-send the initial 'order placed' email (useful if needed).
+        """
+        sent_count = 0
+        for order in queryset:
+            try:
+                send_order_email(order.email, order, request=request)
+                sent_count += 1
+            except Exception as e:
+                logger.exception("Failed to re-send confirmation for order %s: %s", order.order_id, e)
+        self.message_user(request, f"📧 Re-sent order confirmation for {sent_count} orders.")
+
+    # labels
+    mark_as_ready_for_pickup.short_description = "Mark selected orders as Ready for Pickup (and notify customer)"
+    mark_as_shipped.short_description = "Mark selected orders as Shipped (and notify customer)"
+    mark_as_delivered.short_description = "Mark selected orders as Delivered (and notify customer)"
+    mark_as_cancelled.short_description = "Mark selected orders as Cancelled (and notify customer)"
+    send_confirmation_email.short_description = "Send (or re-send) order confirmation email"
+
+
 
 
 
