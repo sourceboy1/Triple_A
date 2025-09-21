@@ -164,18 +164,19 @@ EMAIL_TIMEOUT = 10
 # Use dj_database_url to parse the DATABASE_URL environment variable from Railway
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
-if DATABASE_URL:
+if DATABASE_URL and DATABASE_URL.strip() and not DATABASE_URL.strip().startswith("://"):
     DATABASES = {
         "default": dj_database_url.parse(DATABASE_URL, conn_max_age=600)
     }
 else:
-    # fallback to a simple SQLite DB during build (for collectstatic)
+    # ✅ Safe fallback to SQLite for build/collectstatic
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
+
 
 
 # Password validation
