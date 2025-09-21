@@ -2,13 +2,13 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TokenContext } from './TokenContext';
 import api from '../Api';
-import './CategoryDisplay.css';
+import './CategoryDisplay.css'; // Make sure this CSS file is linked
 
 const categories = [
-  { id: 1, name: "Accessories for Phones * Tablets" },
-  { id: 9, name: "Video Games * Accessories" },
-  { id: 3, name: "Headsets * AirPods * Earbuds" },
-  { id: 8, name: "Watches * Smartwatches" },
+  { id: 1, name: "Accessories for Phones & Tablets" }, // Changed * to & for better display
+  { id: 9, name: "Video Games & Accessories" },        // Changed * to & for better display
+  { id: 3, name: "Headsets, AirPods & Earbuds" },      // Changed * to & for better display
+  { id: 8, name: "Watches & Smartwatches" },           // Changed * to & for better display
 ];
 
 const shuffleArray = (array) => {
@@ -29,7 +29,7 @@ const CategoryDisplay = () => {
       try {
         const responses = await Promise.all(
           categories.map(category =>
-            api.get(`/products/?category_id=${category.id}`, {
+            api.get(`products/?category_id=${category.id}`, {
               headers: { Authorization: `Bearer ${accessToken}` }
             })
           )
@@ -60,9 +60,9 @@ const CategoryDisplay = () => {
   return (
     <div className="category-display">
       {categories.map(category => (
-        <div key={category.id} className="category-container">
+        <div key={category.id} className="category-section">
           <h3 className="category-title">{category.name}</h3>
-          <div className="product-grid">
+          <div className="product-row">
             {products[category.name] && products[category.name].map(product => {
               const mainImage = product.image_urls?.medium || '/media/default.jpg';
               const secondaryImage = product.secondary_image_urls?.medium || mainImage;
@@ -72,24 +72,23 @@ const CategoryDisplay = () => {
                   className="product-card"
                   onClick={() => handleProductClick(product.product_id)}
                   onMouseEnter={(e) => {
-                    const imgEl = e.currentTarget.querySelector('img');
-                    imgEl.src = secondaryImage;
+                    const imgEl = e.currentTarget.querySelector('.product-image'); // Target specific image
+                    if (imgEl) imgEl.src = secondaryImage;
                   }}
                   onMouseLeave={(e) => {
-                    const imgEl = e.currentTarget.querySelector('img');
-                    imgEl.src = mainImage;
+                    const imgEl = e.currentTarget.querySelector('.product-image'); // Target specific image
+                    if (imgEl) imgEl.src = mainImage;
                   }}
                 >
                   <img src={mainImage} alt={product.name} className="product-image" />
-                  <h4 className="product-title">{product.name}</h4>
+                  <h4 className="product-name">{product.name}</h4>
+                  {/* You can add price or other details here if needed */}
                 </div>
               );
             })}
           </div>
         </div>
       ))}
-
-      {/* Single View All Categories button */}
       <div className="category-display-footer">
         <button
           className="view-all-categories-btn"
