@@ -215,7 +215,6 @@ const Navbar = forwardRef((props, ref) => { // <--- Accept ref as second argumen
                   'Video Games & Accessories',
                   'Accessories for Phones & Tablets',
                   'Electronics',
-                  'Accessories for Electronics',
                   'Software & Server Services',
                 ].map((cat) => (
                   <a href="#" key={cat} onClick={(e) => { e.preventDefault(); handleCategoryClick(cat); }}>
