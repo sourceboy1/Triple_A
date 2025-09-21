@@ -71,7 +71,7 @@
   overflow: hidden;
 
   /* Flex item sizing for 4 products in a row on larger screens */
-  flex: 1 1 calc(25% - 15px); /* Allows 4 items per row with gap */
+  flex: 0 0 calc(25% - 15px); /* Changed to 0 0 to prevent shrinking below desired size, with gap */
   max-width: calc(25% - 15px); /* Ensures max 4 per row */
   min-width: 140px; /* Minimum width before wrapping */
 }
@@ -140,14 +140,14 @@
 
 @media (max-width: 1200px) {
   .product-card {
-    flex: 1 1 calc(33.333% - 15px); /* 3 cards per row */
+    flex: 0 0 calc(33.333% - 15px); /* 3 cards per row */
     max-width: calc(33.333% - 15px);
   }
 }
 
 @media (max-width: 1024px) {
   .product-card {
-    flex: 1 1 calc(50% - 15px); /* 2 cards per row */
+    flex: 0 0 calc(50% - 15px); /* 2 cards per row */
     max-width: calc(50% - 15px);
   }
   .product-image {
@@ -172,7 +172,7 @@
     gap: 10px;
   }
   .product-card {
-    flex: 1 1 calc(50% - 10px); /* Still 2 cards per row, adjusted gap */
+    flex: 0 0 calc(50% - 10px); /* Still 2 cards per row, adjusted gap */
     max-width: calc(50% - 10px);
     min-width: 140px; /* Ensure cards don't get too small before stacking */
     padding: 8px;
