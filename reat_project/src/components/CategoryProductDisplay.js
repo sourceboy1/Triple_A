@@ -8,22 +8,22 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 
 const allCategories = [
-  { id: 8, name: "Watches * Smartwatches" },
-  { id: 9, name: "Video Games * Accessories" },
-  { id: 16, name: "Software * Server Services" },
+  { id: 8, name: "Watches & Smartwatches" },
+  { id: 9, name: "Video Games & Accessories" },
+  { id: 16, name: "Software & Server Services" },
   { id: 7, name: "Powerbanks" },
-  { id: 2, name: "Phones * Tablets" },
-  { id: 4, name: "Laptops * Computers" },
-  { id: 3, name: "Headsets * AirPods * Earbuds" },
+  { id: 2, name: "Phones & Tablets" },
+  { id: 4, name: "Laptops & Computers" },
+  { id: 3, name: "Headsets & AirPods & Earbuds" },
   { id: 14, name: "Electronics" },
-  { id: 6, name: "Cases * Screen Protector/Guard" },
-  { id: 1, name: "Accessories for Phones * Tablets" },
+  { id: 6, name: "Cases & Screen Protector/Guard" },
+  { id: 1, name: "Accessories for Phones & Tablets" },
   { id: 15, name: "Accessories for Electronics" },
   // Adding more categories for demonstration of scroll
-  { id: 17, name: "Cameras * Photography" },
+  { id: 17, name: "Cameras & Photography" },
   { id: 18, name: "Home Appliances" },
   { id: 19, name: "Networking Devices" },
-  { id: 20, name: "Drones" },
+  { id: 20, name: "Drones & Accessories" },
 ];
 
 const CategoryProductDisplay = () => {
