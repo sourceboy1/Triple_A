@@ -247,6 +247,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 
 # serializers.py
+# serializers.py
 class OrderSerializer(serializers.ModelSerializer):
     user_id = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
     payment_method_id = serializers.PrimaryKeyRelatedField(queryset=PaymentMethod.objects.all())
@@ -270,9 +271,10 @@ class OrderSerializer(serializers.ModelSerializer):
         user = validated_data.pop('user_id')  # already a CustomUser instance
         payment_method_id = validated_data.pop('payment_method_id')
 
+        # ✅ fixed here (use payment_method_id=... not payment_method=...)
         order = Order.objects.create(
-            user_id=user,          # keep this as user instance
-            payment_method=payment_method_id,
+            user_id=user,
+            payment_method_id=payment_method_id,
             **validated_data
         )
 
@@ -282,6 +284,7 @@ class OrderSerializer(serializers.ModelSerializer):
             OrderItem.objects.create(order=order, **item_data)
 
         return order
+
 
 
 
