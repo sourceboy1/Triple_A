@@ -268,11 +268,11 @@ class OrderSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         cart_items_data = validated_data.pop('cart_items', [])
         user = validated_data.pop('user_id')  # already a CustomUser instance
-        payment_method = validated_data.pop('payment_method_id')
+        payment_method_id = validated_data.pop('payment_method_id')
 
         order = Order.objects.create(
             user_id=user,          # keep this as user instance
-            payment_method=payment_method,
+            payment_method=payment_method_id,
             **validated_data
         )
 

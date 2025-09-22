@@ -19,6 +19,7 @@ body, html {
   margin: 3rem auto; /* More vertical margin */
   transition: all 0.3s ease-in-out;
   border: 1px solid #e0e0e0;
+  margin-left: 100px;
 }
 
 .account-details-container h2 {
@@ -42,6 +43,7 @@ body, html {
   margin-bottom: 0.6rem;
   font-weight: 600;
   font-size: 0.95rem;
+  
 }
 
 /* Input Fields */
