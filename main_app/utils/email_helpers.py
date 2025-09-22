@@ -9,7 +9,6 @@ from django.utils.http import urlencode
 
 logger = logging.getLogger(__name__)
 
-
 # === Helper to get a fresh Zoho access token ===
 def get_zoho_access_token():
     client_id = os.getenv("ZOHO_CLIENT_ID")
@@ -32,7 +31,6 @@ def get_zoho_access_token():
     data = resp.json()
     return data["access_token"]
 
-
 # === Secure signed link generator ===
 def generate_signed_link(order_id, path, domain, expires_in=172800):
     """
@@ -42,7 +40,6 @@ def generate_signed_link(order_id, path, domain, expires_in=172800):
     token = signer.sign(str(order_id))
     url = f"https://{domain}{path}?{urlencode({'token': token})}"
     return url
-
 
 def validate_signed_token(token, max_age=172800):
     """
@@ -55,7 +52,6 @@ def validate_signed_token(token, max_age=172800):
         return int(unsigned)  # order_id
     except (SignatureExpired, BadSignature):
         return None
-
 
 # === Generic Zoho send mail function ===
 def send_zoho_mail(to_email, subject, plain_message, html_message=None):
@@ -93,6 +89,12 @@ def send_zoho_mail(to_email, subject, plain_message, html_message=None):
     print(f"[INFO] Email sent to {to_email} via Zoho API")
     return True
 
+# === Helper: format prices with ₦ and thousand separators ===
+def format_price(amount):
+    try:
+        return f"₦{int(amount):,}"
+    except Exception:
+        return f"₦{amount}"
 
 # === Order confirmation email ===
 def send_order_email(user_email, order, request=None):
@@ -106,14 +108,22 @@ def send_order_email(user_email, order, request=None):
     subject = f"Order #{order.order_id} Received — Awaiting Payment"
     status_message = "We received your order and will notify you once payment is confirmed."
 
-    # 🔐 Generate secure links (expire in 48h)
-    view_order_url = generate_signed_link(order.order_id, reverse("order-details", args=[order.order_id]), domain)
-    cancel_order_url = generate_signed_link(order.order_id, reverse("order-cancel", args=[order.order_id]), domain)
+    # 🔐 Generate secure links (48h expiry)
+    view_order_url = generate_signed_link(
+        order.id,  # use pk
+        reverse("order-details", args=[order.id]),
+        domain
+    )
+    cancel_order_url = generate_signed_link(
+        order.id,
+        reverse("order-cancel", args=[order.id]),
+        domain
+    )
 
     plain_message = (
         f"Thank you for your order!\n\n"
         f"Order ID: #{order.order_id}\n"
-        f"Total: ₦{order.total_amount}\n\n"
+        f"Total: {format_price(order.total_amount)}\n\n"
         f"{status_message}\n\n"
         f"View your order (48h): {view_order_url}\n"
         f"Cancel your order (48h): {cancel_order_url}\n\n"
@@ -127,6 +137,7 @@ def send_order_email(user_email, order, request=None):
         "view_order_url": view_order_url,
         "cancel_order_url": cancel_order_url,
         "status_message": status_message,
+        "format_price": format_price
     })
 
     try:
@@ -134,7 +145,6 @@ def send_order_email(user_email, order, request=None):
     except Exception as e:
         logger.exception("Failed to send order confirmation email: %s", e)
         print(f"[ERROR] Failed to send order email: {e}")
-
 
 # === Order status email ===
 def send_order_status_email(user_email, order, request=None):
@@ -157,7 +167,11 @@ def send_order_status_email(user_email, order, request=None):
         status_message = f"Your order status is now: {order.get_status_display()}"
 
     # 🔐 Secure view link (48h expiry)
-    view_order_url = generate_signed_link(order.order_id, reverse("order-details", args=[order.order_id]), domain)
+    view_order_url = generate_signed_link(
+        order.id,
+        reverse("order-details", args=[order.id]),
+        domain
+    )
 
     plain_message = (
         f"Hello {order.first_name},\n\n"
@@ -171,6 +185,7 @@ def send_order_status_email(user_email, order, request=None):
         "status_message": status_message,
         "domain": domain,
         "view_order_url": view_order_url,
+        "format_price": format_price
     })
 
     try:
@@ -178,7 +193,6 @@ def send_order_status_email(user_email, order, request=None):
     except Exception as e:
         logger.exception("Failed to send order status email: %s", e)
         print(f"[ERROR] Failed to send status update email: {e}")
-
 
 # === Password reset email ===
 def send_password_reset_email(user, reset_link):
