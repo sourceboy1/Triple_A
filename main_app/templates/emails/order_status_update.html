@@ -1,3 +1,4 @@
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,12 +80,12 @@
         {% endif %}
 
         <div class="order-details">
-            <p><strong>Order Total:</strong> ₦{{ order.total_amount }}</p>
+            <p><strong>Order Total:</strong> ₦{{ order.total_amount|intcomma }}</p>
             <p><strong>Placed On:</strong> {{ order.created_at|date:"F j, Y, g:i a" }}</p>
         </div>
 
         <p>
-            <a href="{{ view_order_url }}" class="button">View My Order</a>
+            <a href="{{ secure_view_order_url }}" class="button">View My Order</a>
         </p>
 
         <div class="footer">

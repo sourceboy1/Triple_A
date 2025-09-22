@@ -1,9 +1,11 @@
-# main_app/utils/email_helpers.py
 import os
 import logging
 import requests
 from django.template.loader import render_to_string
 from django.conf import settings
+from django.core.signing import TimestampSigner, SignatureExpired, BadSignature
+from django.urls import reverse
+from django.utils.http import urlencode
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +33,30 @@ def get_zoho_access_token():
     return data["access_token"]
 
 
+# === Secure signed link generator ===
+def generate_signed_link(order_id, path, domain, expires_in=172800):
+    """
+    Create a signed URL that expires after `expires_in` seconds (default 48 hours).
+    """
+    signer = TimestampSigner()
+    token = signer.sign(str(order_id))
+    url = f"https://{domain}{path}?{urlencode({'token': token})}"
+    return url
+
+
+def validate_signed_token(token, max_age=172800):
+    """
+    Validate a signed token (max_age default = 48h).
+    Returns order_id if valid, None if invalid/expired.
+    """
+    signer = TimestampSigner()
+    try:
+        unsigned = signer.unsign(token, max_age=max_age)
+        return int(unsigned)  # order_id
+    except (SignatureExpired, BadSignature):
+        return None
+
+
 # === Generic Zoho send mail function ===
 def send_zoho_mail(to_email, subject, plain_message, html_message=None):
     access_token = get_zoho_access_token()
@@ -39,7 +65,6 @@ def send_zoho_mail(to_email, subject, plain_message, html_message=None):
     if not account_id:
         raise Exception("ZOHO_ACCOUNT_ID not set in environment")
 
-    # ✅ Correct Zoho Mail API endpoint
     url = f"https://mail.zoho.com/api/accounts/{account_id}/messages"
 
     headers = {
@@ -55,8 +80,6 @@ def send_zoho_mail(to_email, subject, plain_message, html_message=None):
         "mailFormat": "html" if html_message else "text",
     }
 
-
-
     if html_message:
         payload["content"] = html_message
 
@@ -71,7 +94,6 @@ def send_zoho_mail(to_email, subject, plain_message, html_message=None):
     return True
 
 
-
 # === Order confirmation email ===
 def send_order_email(user_email, order, request=None):
     domain = request.get_host() if request else getattr(settings, 'SITE_DOMAIN', 'tripleastechng.com')
@@ -84,13 +106,17 @@ def send_order_email(user_email, order, request=None):
     subject = f"Order #{order.order_id} Received — Awaiting Payment"
     status_message = "We received your order and will notify you once payment is confirmed."
 
+    # 🔐 Generate secure links (expire in 48h)
+    view_order_url = generate_signed_link(order.order_id, reverse("order-details", args=[order.order_id]), domain)
+    cancel_order_url = generate_signed_link(order.order_id, reverse("order-cancel", args=[order.order_id]), domain)
+
     plain_message = (
         f"Thank you for your order!\n\n"
         f"Order ID: #{order.order_id}\n"
         f"Total: ₦{order.total_amount}\n\n"
         f"{status_message}\n\n"
-        f"View your order: https://{domain}/order/{order.order_id}\n"
-        f"Cancel your order: https://{domain}/order/{order.order_id}/cancel\n\n"
+        f"View your order (48h): {view_order_url}\n"
+        f"Cancel your order (48h): {cancel_order_url}\n\n"
         "Thanks for shopping with Triple A."
     )
 
@@ -98,8 +124,8 @@ def send_order_email(user_email, order, request=None):
         "order": order,
         "cart_items": cart_items,
         "domain": domain,
-        "view_order_url": f"https://{domain}/order/{order.order_id}",
-        "cancel_order_url": f"https://{domain}/order/{order.order_id}/cancel",
+        "view_order_url": view_order_url,
+        "cancel_order_url": cancel_order_url,
         "status_message": status_message,
     })
 
@@ -130,10 +156,13 @@ def send_order_status_email(user_email, order, request=None):
         subject = f"Update on Order #{order.order_id}"
         status_message = f"Your order status is now: {order.get_status_display()}"
 
+    # 🔐 Secure view link (48h expiry)
+    view_order_url = generate_signed_link(order.order_id, reverse("order-details", args=[order.order_id]), domain)
+
     plain_message = (
         f"Hello {order.first_name},\n\n"
         f"{status_message}\n\n"
-        f"View your order: https://{domain}/order/{order.order_id}\n\n"
+        f"View your order (48h): {view_order_url}\n\n"
         "Thank you for shopping with Triple A."
     )
 
@@ -141,7 +170,7 @@ def send_order_status_email(user_email, order, request=None):
         "order": order,
         "status_message": status_message,
         "domain": domain,
-        "view_order_url": f"https://{domain}/order/{order.order_id}",
+        "view_order_url": view_order_url,
     })
 
     try:

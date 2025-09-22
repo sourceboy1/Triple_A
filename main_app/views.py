@@ -518,7 +518,8 @@ class ProductViewSet(viewsets.ModelViewSet):
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
-
+from django.core.signing import BadSignature, SignatureExpired
+from main_app.utils.email_helpers import validate_signed_token
 
 
 from rest_framework import viewsets, status
@@ -567,30 +568,56 @@ class OrderViewSet(viewsets.ModelViewSet):
         except Exception as e:
             logger.error(f"Failed to queue order email: {e}")
 
-    @action(detail=True, methods=['post'])
-    def cancel(self, request, pk=None):
-        order = self.get_object()
-        if request.user.id != order.user_id_id:  # ✅ correct check
-            return Response({"message": "Not authorized to cancel this order."}, status=status.HTTP_403_FORBIDDEN)
-        order.status = 'cancelled'
-        order.save()
-        return Response({"message": "Order canceled successfully."}, status=status.HTTP_200_OK)
-
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=["get"], url_path="details", authentication_classes=[], permission_classes=[])
     def details(self, request, pk=None):
-        order = self.get_object()
+        """
+        View order details securely via signed token (no login required).
+        """
+        token = request.query_params.get("token")
+
+        if not token:
+            return Response({"error": "Missing signed token"}, status=status.HTTP_400_BAD_REQUEST)
+
+        order_id = validate_signed_token(token)
+
+        if not order_id:
+            return Response({"error": "Invalid or expired token"}, status=status.HTTP_403_FORBIDDEN)
+
+        try:
+            order = Order.objects.get(pk=order_id)
+        except Order.DoesNotExist:
+            return Response({"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND)
+
         serializer = self.get_serializer(order)
-        address_details = {
-            'first_name': order.first_name,
-            'last_name': order.last_name,
-            'address': order.address,
-            'city': order.city,
-            'state': order.state,
-            'postal_code': order.postal_code,
-            'country': order.country,
-            'phone': order.phone,
-        }
-        return Response({"order": serializer.data, "shipping_address": address_details}, status=status.HTTP_200_OK)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=["post"], url_path="cancel", authentication_classes=[], permission_classes=[])
+    def cancel(self, request, pk=None):
+        """
+        Cancel an order securely via signed token (no login required).
+        """
+        token = request.query_params.get("token")
+
+        if not token:
+            return Response({"error": "Missing signed token"}, status=status.HTTP_400_BAD_REQUEST)
+
+        order_id = validate_signed_token(token)
+
+        if not order_id:
+            return Response({"error": "Invalid or expired token"}, status=status.HTTP_403_FORBIDDEN)
+
+        try:
+            order = Order.objects.get(pk=order_id)
+        except Order.DoesNotExist:
+            return Response({"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        if order.status in ["cancelled", "delivered"]:
+            return Response({"error": "Order cannot be cancelled"}, status=status.HTTP_400_BAD_REQUEST)
+
+        order.status = "cancelled"
+        order.save()
+
+        return Response({"message": f"Order #{order.order_id} has been cancelled."})
 
     @action(detail=True, methods=['post'])
     def confirm_payment(self, request, pk=None):

@@ -1,4 +1,4 @@
-{% load math_filters %}
+{% load math_filters humanize %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,7 +24,7 @@
             <td style="padding: 20px;">
                 <h3 style="margin-top: 0; color: #333;">Thank you for your order!</h3>
                 <p style="margin: 5px 0;">Order ID: <strong>#{{ order.order_id }}</strong></p>
-                <p style="margin: 5px 0;">Total: <strong>₦{{ order.total_amount }}</strong></p>
+                <p style="margin: 5px 0;">Total: <strong>₦{{ order.total_amount|intcomma }}</strong></p>
 
                 {% if order.shipping_method and "pick" in order.shipping_method|lower %}
                     <p style="margin: 5px 0; color: #28a745;"><strong>Pickup at Store:</strong> Available once payment is confirmed.</p>
@@ -50,15 +50,15 @@
                         <tr>
                             <td style="border: 1px solid #ddd;">{{ item.product.name }}</td>
                             <td align="center" style="border: 1px solid #ddd;">{{ item.quantity }}</td>
-                            <td align="right" style="border: 1px solid #ddd;">₦{{ item.price }}</td>
-                            <td align="right" style="border: 1px solid #ddd;">₦{{ item.quantity|mul:item.price }}</td>
+                            <td align="right" style="border: 1px solid #ddd;">₦{{ item.price|intcomma }}</td>
+                            <td align="right" style="border: 1px solid #ddd;">₦{{ item.quantity|mul:item.price|intcomma }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
 
                 <p style="margin-top: 20px; font-size: 16px;">
-                    <strong>Order Total:</strong> ₦{{ order.total_amount }}
+                    <strong>Order Total:</strong> ₦{{ order.total_amount|intcomma }}
                 </p>
 
                 <!-- SHIPPING DETAILS -->
@@ -75,7 +75,7 @@
 
                 <!-- CTA BUTTONS -->
                 <div style="margin-top: 25px; text-align: center;">
-                    <a href="{{ view_order_url }}"
+                    <a href="{{ login_url }}?next={{ view_order_url }}"
                        style="background-color: #28a745; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin-right: 10px;">
                         View Order
                     </a>
