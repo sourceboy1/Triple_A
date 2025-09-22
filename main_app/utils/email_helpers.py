@@ -1,25 +1,84 @@
 # main_app/utils/email_helpers.py
+import os
 import logging
-from django.core.mail import send_mail
+import requests
 from django.template.loader import render_to_string
 from django.conf import settings
-from django.utils import timezone
 
 logger = logging.getLogger(__name__)
 
+
+# === Helper to get a fresh Zoho access token ===
+def get_zoho_access_token():
+    client_id = os.getenv("ZOHO_CLIENT_ID")
+    client_secret = os.getenv("ZOHO_CLIENT_SECRET")
+    refresh_token = os.getenv("ZOHO_REFRESH_TOKEN")
+
+    if not client_id or not client_secret or not refresh_token:
+        raise Exception("Zoho OAuth env vars not set (ZOHO_CLIENT_ID, ZOHO_CLIENT_SECRET, ZOHO_REFRESH_TOKEN)")
+
+    url = "https://accounts.zoho.com/oauth/v2/token"
+    payload = {
+        "grant_type": "refresh_token",
+        "client_id": client_id,
+        "client_secret": client_secret,
+        "refresh_token": refresh_token,
+    }
+
+    resp = requests.post(url, data=payload)
+    resp.raise_for_status()
+    data = resp.json()
+    return data["access_token"]
+
+
+# === Generic Zoho send mail function ===
+def send_zoho_mail(to_email, subject, plain_message, html_message=None):
+    access_token = get_zoho_access_token()
+    account_id = os.getenv("ZOHO_ACCOUNT_ID")
+
+    if not account_id:
+        raise Exception("ZOHO_ACCOUNT_ID not set in environment")
+
+    # ✅ Correct Zoho Mail API endpoint
+    url = f"https://mail.zoho.com/api/accounts/{account_id}/messages"
+
+    headers = {
+        "Authorization": f"Zoho-oauthtoken {access_token}",
+        "Content-Type": "application/json",
+    }
+
+    payload = {
+        "fromAddress": f"Triple A's Technology <{os.getenv('EMAIL_HOST_USER')}>",
+        "toAddress": to_email,
+        "subject": subject,
+        "content": plain_message,
+        "mailFormat": "html" if html_message else "text",
+    }
+
+
+
+    if html_message:
+        payload["content"] = html_message
+
+    resp = requests.post(url, headers=headers, json=payload)
+
+    if resp.status_code != 200:
+        logger.error("Zoho Mail API error: %s", resp.text)
+        raise Exception(f"Zoho Mail API error: {resp.text}")
+
+    logger.info("Email sent to %s via Zoho API", to_email)
+    print(f"[INFO] Email sent to {to_email} via Zoho API")
+    return True
+
+
+
+# === Order confirmation email ===
 def send_order_email(user_email, order, request=None):
-    """
-    Initial order placed email (sent immediately after order creation).
-    This informs the customer that the order was received and that payment
-    must be confirmed before it's processed.
-    """
     domain = request.get_host() if request else getattr(settings, 'SITE_DOMAIN', 'tripleastechng.com')
 
-    # Try to get cart items in a safe way
     try:
         cart_items = order.cart_items.select_related("product").all()
     except Exception:
-        # fallback if your related_name is different
         cart_items = getattr(order, 'orderitem_set').select_related("product").all()
 
     subject = f"Order #{order.order_id} Received — Awaiting Payment"
@@ -35,59 +94,38 @@ def send_order_email(user_email, order, request=None):
         "Thanks for shopping with Triple A."
     )
 
-    html_message = render_to_string('emails/order_confirmation.html', {
-        'order': order,
-        'cart_items': cart_items,
-        'domain': domain,
-        'view_order_url': f"https://{domain}/order/{order.order_id}",
-        'cancel_order_url': f"https://{domain}/order/{order.order_id}/cancel",
-        'status_message': status_message,
+    html_message = render_to_string("emails/order_confirmation.html", {
+        "order": order,
+        "cart_items": cart_items,
+        "domain": domain,
+        "view_order_url": f"https://{domain}/order/{order.order_id}",
+        "cancel_order_url": f"https://{domain}/order/{order.order_id}/cancel",
+        "status_message": status_message,
     })
 
     try:
-        send_mail(
-            subject=subject,
-            message=plain_message,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[user_email],
-            html_message=html_message,
-            fail_silently=False,
-        )
-        logger.info("Order confirmation email sent to %s", user_email)
-        print(f"[INFO] Order confirmation email sent to {user_email}")
+        send_zoho_mail(user_email, subject, plain_message, html_message)
     except Exception as e:
-        logger.exception("Failed to send order confirmation email to %s: %s", user_email, e)
+        logger.exception("Failed to send order confirmation email: %s", e)
         print(f"[ERROR] Failed to send order email: {e}")
 
 
+# === Order status email ===
 def send_order_status_email(user_email, order, request=None):
-    """
-    Sends an order status update email (ready for pickup / shipped / delivered / cancelled).
-    This should be triggered only from the admin actions (or wherever you decide).
-    """
     domain = request.get_host() if request else getattr(settings, 'SITE_DOMAIN', 'tripleastechng.com')
 
-    # Pick subject and message based on order.status
     if order.status == "ready_for_pickup":
         subject = f"Order #{order.order_id} — Ready for Pickup"
-        status_message = (
-            "✅ Your order is ready for pickup!\n\n"
-            "Pickup Address:\n"
-            "2 Oba Akran, Ikeja, Lagos\n"
-            "Phone: +2348023975782"
-        )
+        status_message = "✅ Your order is ready for pickup! Address: 2 Oba Akran, Ikeja, Lagos"
     elif order.status == "shipped":
         subject = f"Order #{order.order_id} — Out for Delivery"
-        status_message = (
-            "🚚 Your order has been shipped and is on its way!\n"
-            "Estimated delivery: 1–3 business days."
-        )
+        status_message = "🚚 Your order has been shipped. Estimated delivery: 1–3 days."
     elif order.status == "delivered":
         subject = f"Order #{order.order_id} — Delivered"
-        status_message = "📦 Your order has been delivered. Enjoy your purchase!"
+        status_message = "📦 Your order has been delivered."
     elif order.status == "cancelled":
         subject = f"Order #{order.order_id} — Cancelled"
-        status_message = "❌ Your order has been cancelled. Contact support if this is unexpected."
+        status_message = "❌ Your order has been cancelled."
     else:
         subject = f"Update on Order #{order.order_id}"
         status_message = f"Your order status is now: {order.get_status_display()}"
@@ -99,60 +137,37 @@ def send_order_status_email(user_email, order, request=None):
         "Thank you for shopping with Triple A."
     )
 
-    html_message = render_to_string('emails/order_status_update.html', {
-        'order': order,
-        'status_message': status_message,
-        'domain': domain,
-        'view_order_url': f"https://{domain}/order/{order.order_id}",
+    html_message = render_to_string("emails/order_status_update.html", {
+        "order": order,
+        "status_message": status_message,
+        "domain": domain,
+        "view_order_url": f"https://{domain}/order/{order.order_id}",
     })
 
     try:
-        send_mail(
-            subject=subject,
-            message=plain_message,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[user_email],
-            html_message=html_message,
-            fail_silently=False,
-        )
-        logger.info("Order status update email sent to %s (status=%s)", user_email, order.status)
-        print(f"[INFO] Order status update email sent to {user_email} (status: {order.status})")
+        send_zoho_mail(user_email, subject, plain_message, html_message)
     except Exception as e:
-        logger.exception("Failed to send order status update email to %s: %s", user_email, e)
-        print(f"[ERROR] Failed to send status update email to {user_email}: {e}")
+        logger.exception("Failed to send order status email: %s", e)
+        print(f"[ERROR] Failed to send status update email: {e}")
 
 
+# === Password reset email ===
 def send_password_reset_email(user, reset_link):
-    """
-    Sends a password reset email to the user.
-    """
     subject = "Reset Your Password — Triple A's Technology"
-    from_email = settings.DEFAULT_FROM_EMAIL
-    recipient_list = [user.email]
-
     plain_message = (
         f"Hello {user.first_name},\n\n"
         f"We received a request to reset your password.\n"
-        f"Click the link below to reset your password:\n"
-        f"{reset_link}\n\n"
-        f"If you did not request this, please ignore this email.\n\n"
-        "Thanks,\nTriple A's Technology"
+        f"Click below to reset:\n{reset_link}\n\n"
+        "If you did not request this, ignore this email."
     )
 
-    html_message = render_to_string('emails/password_reset.html', {
-        'user': user,
-        'reset_link': reset_link
+    html_message = render_to_string("emails/password_reset.html", {
+        "user": user,
+        "reset_link": reset_link,
     })
 
     try:
-        send_mail(
-            subject=subject,
-            message=plain_message,
-            from_email=from_email,
-            recipient_list=recipient_list,
-            html_message=html_message,
-            fail_silently=False
-        )
-        logger.info("Password reset email sent to %s", user.email)
+        send_zoho_mail(user.email, subject, plain_message, html_message)
     except Exception as e:
-        logger.exception("Failed to send password reset email to %s: %s", user.email, e)
+        logger.exception("Failed to send password reset email: %s", e)
+        print(f"[ERROR] Failed to send password reset email: {e}")

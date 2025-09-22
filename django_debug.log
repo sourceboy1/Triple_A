@@ -3036,3 +3036,3134 @@ INFO 2025-09-21 15:42:04,630 autoreload 17168 14248 Watching for file changes wi
 INFO 2025-09-21 15:46:28,354 autoreload 17168 14248 C:\Users\YOU\Documents\Triple_A\main_project\settings.py changed, reloading.
 INFO 2025-09-21 15:46:30,359 autoreload 3716 19936 Watching for file changes with StatReloader
 INFO 2025-09-21 16:03:16,110 autoreload 3716 19936 C:\Users\YOU\Documents\Triple_A\main_project\settings.py changed, reloading.
+ERROR 2025-09-22 18:18:31,504 email_helpers 16868 14192 Zoho Mail API error: <html><head><title>Zoho CRM - Error</title><link rel="SHORTCUT ICON" href="https&#x3a;&#x2f;&#x2f;static.zohocdn.com&#x2f;crm&#x2f;images&#x2f;favicon_cbfca4856ba4bfb37be615b152f95251_.ico" /><link href="https://static.zohocdn.com/crm/CRMClient/css/default_theme_8f3efc478c69f68b97189a7b085b0190_.css" rel="stylesheet" type="text/css"/><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="Pragma" content="no-cache"><style>
+:root{
+--paragraphColor: #434D5F;
+--linkColor: #338cf0;
+--bg_white: #fff;
+--headingColor: #202123;
+--primaryColor: #fff;
+--primaryShadow: #0061CA;
+--primaryBackground: transparent linear-gradient(0deg, #0279FF 0%, #00A3F3 100%);
+--primaryBackgroundHover: transparent linear-gradient(0deg, #006BE4 0%, #02ACFF 100%);
+--primaryBackgroundActive: #2385EF;
+--primaryShadowActive: none; 
+--primaryBackgroundDisabled: #91CBFF;
+--primaryShadowDisabled: #6AAFEB;
+}
+/******new error page style******/
+.crmErrorPgCont {
+background-color: var(--bg_white);
+text-align: center;
+display: flex;
+align-items: center;
+flex-flow: column;
+justify-content: space-between;
+}
+.crmErrorHeight{
+min-height:100vh;
+}
+.crmErrorPgBody {
+background-color: var(--bg_white);
+padding: 50px 0;
+margin-top: 100px;
+margin-bottom: 100px;
+width: 700px;
+display: flex;
+align-items: center;
+flex-flow: column;
+}
+.crmErrorPgImgContr {
+max-width: 300px;
+height: 170px;
+margin-bottom:40px;
+margin-left:45px;
+}
+.crmErrorPgImg {
+max-width: 100%;
+display: block; 
+}
+.crmErrorInfoSection {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+.crmErrorPgErrText1 {
+color: var(--headingColor);
+font-size: var(--crm-large-font-size);
+font-family: var(--crm-font-bold);
+margin: 0 0 8px 0;
+}
+.crmErrorPgErrText2 {
+color: var(--paragraphColor);
+font-size: var(--crm-base-font-size);
+font-family: var(--crm-font-regular);
+margin: 0 0 40px 0;
+line-height: 22px;
+}
+.crmErrorUrl {
+font-size: var(--crm-base-font-size);
+font-family: var(--crm-font-bold);
+}
+.primarybtn{
+color: var(--primaryColor);
+border-radius: 6px;
+font-family: var(--crm-font-semibold);
+box-sizing: border-box;
+padding: 8px 20px;
+box-shadow: inset 0px -2px 0px var(--primaryShadow);
+background: var(--primaryBackground);
+font-size: var(--crm-base-font-size);
+position: relative;
+border: 0;
+outline: none;
+cursor: pointer;
+text-align: center;
+white-space: nowrap;
+}
+.primarybtn:hover{
+background: var(--primaryBackgroundHover);
+box-shadow: inset 0px -2px 0px var(--primaryShadow);
+border: 0;
+color: var(--primaryColor);
+outline: none;
+}
+.primarybtn:active {
+top: 1px;
+box-shadow: var(--primaryShadowActive);
+background: var(--primaryBackgroundActive);
+position: relative;
+}
+.primarybtn[disabled], .primarybtn.disabled{
+background: var(--primaryBackgroundDisabled);
+box-shadow: inset 0px -2px 0px var(--primaryShadowDisabled);
+border: 0;
+opacity: 1;
+cursor: not-allowed;
+pointer-events: none !important;
+top: 0px !important;
+color: var(--primaryColorDisabled);
+}
+.crmErrorPgfooter {
+margin-bottom: 30px;
+}
+.crmErrorPgfooterTxt {
+font-family: var(--crm-font-regular);
+font-size: var(--crm-base-font-size);
+color: var(--paragraphColor);
+font-style: normal;
+line-height: 22px;
+}
+.crmErrorPgfooterCont {
+height: 30px;
+margin-bottom: 5px;
+}
+.crmLogoImg {
+min-width: 20px;
+max-width: 100px;
+min-height: 20px;
+max-height: 25px;
+}
+/******new error page style End******/
+html{
+font-size:1.4rem;
+/* font-size: calc(.775rem - -.25 * (100vw - 20rem) / 100); */
+font-size: 62.5%;
+font-variant-ligatures: no-contextual;
+}
+</style></head><body leftmargin="0" topmargin="0" class="bodyBg" marginheight="0"
+marginwidth="0">
+<link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.woff2" rel="preload" as="font" type="font/woff" crossorigin><style type="text/css">
+:root{
+--crm-font-regular: Zoho_Puvi_Regular, sans-serif;
+--crm-font-regularlight: Zoho_Puvi_Regular, sans-serif;
+--crm-font-medium: Zoho_Puvi_Regular, sans-serif;
+--crm-font-mediumitalic: Zoho_Puvi_RegularItalic, sans-serif;
+--crm-font-semibold: Zoho_Puvi_Medium, sans-serif;
+--crm-font-semibolditalic: Zoho_Puvi_MediumItalic, sans-serif;
+--crm-font-bold: Zoho_Puvi_SemiBold, sans-serif;
+--crm-font-bolditalic: Zoho_Puvi_SemiBoldItalic, sans-serif;
+--crm-font-black: Zoho_Puvi_Bold, sans-serif;
+--crm-font-blackitalic: Zoho_Puvi_BoldItalic, sans-serif;
+--crm-font-light: Zoho_Puvi_Regular, sans-serif;
+--crm-font-italic: Zoho_Puvi_RegularItalic, sans-serif;
+--crm-font-thin: Zoho_Puvi_Regular, sans-serif;
+--crm-font-thinitalic: Zoho_Puvi_Regular, sans-serif;
+--crm-font-heavy: Zoho_Puvi_Bold, sans-serif;
+--crux-primary-font: Zoho_Puvi_Regular, sans-serif;
+--crux-bold-font: Zoho_Puvi_SemiBold, sans-serif;
+--crux-light-font: Zoho_Puvi_Regular, sans-serif;
+--crux-thin-font: Zoho_Puvi_Regular, sans-serif;
+--pf-font-light: Zoho_Puvi_Regular, sans-serif;
+--pf-font-regular: Zoho_Puvi_Regular, sans-serif;
+--pf-font-semibold: Zoho_Puvi_Medium, sans-serif;
+--pf-font-bold: Zoho_Puvi_SemiBold, sans-serif;
+--pf-font-black: Zoho_Puvi_Bold, sans-serif;
+--pf-font-mediumitalic: Zoho_Puvi_RegularItalic, sans-serif;
+--pf-font-semibolditalic: Zoho_Puvi_MediumItalic, sans-serif;
+--pf-font-bolditalic: Zoho_Puvi_SemiBoldItalic, sans-serif;
+--pf-font-blackitalic: Zoho_Puvi_BoldItalic, sans-serif;
+}
+@font-face {
+font-family:"Zoho_Puvi_Thin";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_ThinItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.otf") format("opentype");
+}
+@font-face {    
+font-family:"Zoho_Puvi_Light";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_LightItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Regular";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_RegularItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Medium";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_MediumItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_SemiBold";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_SemiBoldItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Bold";
+font-weight:normal;
+font-style:normal;
+font-display:block;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_BoldItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Black";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Extrablack";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_BlackItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_ExtraBold";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_ExtraBoldItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.otf") format("opentype");
+}
+.fontbold {
+font-weight: bold;
+}
+.crm-font-regular,.CanvasFontRegular,select, input, form, textarea, pre{
+font-family: var(--crm-font-regular);
+}*/
+.crm-font-regular{font-family: var(--crm-font-regular);}
+.crm-font-bold, .CanvasFontBold{
+font-family: var(--crm-font-bold);
+font-weight: var(--font-weight-bold);
+}
+.crm-font-xbold,.CanvasFontXbold {
+font-family: var(--crm-font-black);
+}
+.crm-font-regular-italic ,.CanvasFontRegularItalic{
+font-family: var(--crm-font-italic);
+}
+.crm-font-bold-italic,.CanvasFontBoldItalic{
+font-family:var(--crm-font-bolditalic);
+}
+.crm-font-xbold-italic,.CanvasFontXboldItalic {
+font-family: var(--crm-font-blackitalic);
+}
+.crm-font-thin,.CanvasFontThin{
+font-family: var(--crm-font-thin);
+}
+.crm-font-light,.CanvasFontLight{
+font-family: @lightFont;
+}
+.crm-font-medium{
+font-family:var(--crm-font-medium);
+}
+.crm-font-semibold , .CanvasFontSemibold{
+font-family: var(--crm-font-semibold);
+}
+.crm-font-thin-italic , .CanvasFontThinItalic{
+font-family: var(--crm-font-thinitalic);
+}
+.crm-font-light-italic , .CanvasFontLightItalic{
+font-family: var(--crm-font-lightitalic);
+}
+.crm-font-medium-italic{
+font-family: var(--crm-font-mediumitalic);
+}
+.crm-font-semibold-italic , .CanvasFontSemiboldItalic{
+font-family: var(--crm-font-semibolditalic);
+}
+:root{
+--crm-base-font-size: calc((14 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-medium-font-size: calc((15 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-extra-medium-font-size: calc((14 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-small-font-size: calc((13 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-extra-small-font-size: calc((11 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-medium-large-font-size: calc((18 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-large-font-size: calc((20 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm_baseFontSize: 16;
+--crm_baseFontUnit: 16px;
+--crm-medium-small-font-size: 1.2rem;
+}
+[data-size="small"]{
+--crm-base-font-size: 1.3rem;
+--crm-medium-font-size: 1.4rem;
+--crm-extra-medium-font-size: 1.3rem;
+--crm-small-font-size: 1.2rem;
+--crm-extra-small-font-size: 1.1rem;
+--crm-medium-large-font-size: 1.7rem;
+--crm-large-font-size: 1.9rem;
+}
+[data-size="large"]{
+--crm-base-font-size: 1.5rem;
+--crm-medium-font-size: 1.6rem;
+--crm-extra-medium-font-size: 1.5rem;
+--crm-small-font-size: 1.4rem;
+--crm-extra-small-font-size: 1.3rem;
+--crm-medium-large-font-size: 1.9rem;
+--crm-large-font-size: 2.1rem;
+}
+[data-size="largest"]{
+--crm-base-font-size: 1.6rem;
+--crm-medium-font-size: 1.7rem;
+--crm-extra-medium-font-size: 1.6rem;
+--crm-small-font-size: 1.5rem;
+--crm-extra-small-font-size: 1.4rem;
+--crm-medium-large-font-size: 2rem;
+--crm-large-font-size: 2.2rem;
+}
+[data-letterspacing="condensed"]{
+letter-spacing: -.5px;
+}
+[data-letterspacing="normal"]{
+letter-spacing: 0px;
+}
+[data-letterspacing="expanded"]{
+letter-spacing: .05px;	
+}
+[data-letterspacing="widen"]{
+letter-spacing: 1px;	
+}
+</style>
+<div class="crmErrorPgCont crmErrorHeight" data-zcqa="crm_error_page" data-errormessage="Sorry the page you have requested was not found"><div class="crmErrorPgBody"><div class="crmErrorPgImgContr"><!-- <span class="crmErrorPgImg"></span> -->
+<img class="crmErrorPgImg" data-image-mode='true' src='https://static.zohocdn.com/crm/images/crm-iam-errorPage_lightmode_2eb563c9ea6d989a69e2be6276245761_.png'/></div><div class="crmErrorInfoSection"><p class="crmErrorPgErrText1">Invalid URL</p> 
+<p class="crmErrorPgErrText2">Unable to process your request as the URL <span class='crmErrorUrl'>&#x2f;zohomail&#x2f;v2&#x2f;accounts&#x2f;8658834000000008002&#x2f;messages</span> is invalid.</p> <!-- No I18N -->
+<a class="crmErrorPgHomeLink" href="/crm/ShowHomePage.do">
+<button data-zcqa="home_errorPage" class = "primarybtn" >Go to Home page</button>
+</a></div></div><!-- No I18N -->
+<!-- Temporarily removing should handle this in CRM first-->
+<div class="crmErrorPgfooter"><div class="crmErrorPgfooterCont"><img src="https&#x3a;&#x2f;&#x2f;static.zohocdn.com&#x2f;crm&#x2f;CRMClient&#x2f;images&#x2f;crm_logo_04536e35e8162d631b95cf42593491cd_.svg"  alt="CRM" class="crmLogoImg"></div><span class="crmErrorPgfooterTxt">© 2025 Zoho Corp.All rights reserved.</span></div></div></body></html>
+ERROR 2025-09-22 18:20:05,194 email_helpers 16868 14192 Zoho Mail API error: <html><head><title>Zoho CRM - Error</title><link rel="SHORTCUT ICON" href="https&#x3a;&#x2f;&#x2f;static.zohocdn.com&#x2f;crm&#x2f;images&#x2f;favicon_cbfca4856ba4bfb37be615b152f95251_.ico" /><link href="https://static.zohocdn.com/crm/CRMClient/css/default_theme_8f3efc478c69f68b97189a7b085b0190_.css" rel="stylesheet" type="text/css"/><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="Pragma" content="no-cache"><style>
+:root{
+--paragraphColor: #434D5F;
+--linkColor: #338cf0;
+--bg_white: #fff;
+--headingColor: #202123;
+--primaryColor: #fff;
+--primaryShadow: #0061CA;
+--primaryBackground: transparent linear-gradient(0deg, #0279FF 0%, #00A3F3 100%);
+--primaryBackgroundHover: transparent linear-gradient(0deg, #006BE4 0%, #02ACFF 100%);
+--primaryBackgroundActive: #2385EF;
+--primaryShadowActive: none; 
+--primaryBackgroundDisabled: #91CBFF;
+--primaryShadowDisabled: #6AAFEB;
+}
+/******new error page style******/
+.crmErrorPgCont {
+background-color: var(--bg_white);
+text-align: center;
+display: flex;
+align-items: center;
+flex-flow: column;
+justify-content: space-between;
+}
+.crmErrorHeight{
+min-height:100vh;
+}
+.crmErrorPgBody {
+background-color: var(--bg_white);
+padding: 50px 0;
+margin-top: 100px;
+margin-bottom: 100px;
+width: 700px;
+display: flex;
+align-items: center;
+flex-flow: column;
+}
+.crmErrorPgImgContr {
+max-width: 300px;
+height: 170px;
+margin-bottom:40px;
+margin-left:45px;
+}
+.crmErrorPgImg {
+max-width: 100%;
+display: block; 
+}
+.crmErrorInfoSection {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+.crmErrorPgErrText1 {
+color: var(--headingColor);
+font-size: var(--crm-large-font-size);
+font-family: var(--crm-font-bold);
+margin: 0 0 8px 0;
+}
+.crmErrorPgErrText2 {
+color: var(--paragraphColor);
+font-size: var(--crm-base-font-size);
+font-family: var(--crm-font-regular);
+margin: 0 0 40px 0;
+line-height: 22px;
+}
+.crmErrorUrl {
+font-size: var(--crm-base-font-size);
+font-family: var(--crm-font-bold);
+}
+.primarybtn{
+color: var(--primaryColor);
+border-radius: 6px;
+font-family: var(--crm-font-semibold);
+box-sizing: border-box;
+padding: 8px 20px;
+box-shadow: inset 0px -2px 0px var(--primaryShadow);
+background: var(--primaryBackground);
+font-size: var(--crm-base-font-size);
+position: relative;
+border: 0;
+outline: none;
+cursor: pointer;
+text-align: center;
+white-space: nowrap;
+}
+.primarybtn:hover{
+background: var(--primaryBackgroundHover);
+box-shadow: inset 0px -2px 0px var(--primaryShadow);
+border: 0;
+color: var(--primaryColor);
+outline: none;
+}
+.primarybtn:active {
+top: 1px;
+box-shadow: var(--primaryShadowActive);
+background: var(--primaryBackgroundActive);
+position: relative;
+}
+.primarybtn[disabled], .primarybtn.disabled{
+background: var(--primaryBackgroundDisabled);
+box-shadow: inset 0px -2px 0px var(--primaryShadowDisabled);
+border: 0;
+opacity: 1;
+cursor: not-allowed;
+pointer-events: none !important;
+top: 0px !important;
+color: var(--primaryColorDisabled);
+}
+.crmErrorPgfooter {
+margin-bottom: 30px;
+}
+.crmErrorPgfooterTxt {
+font-family: var(--crm-font-regular);
+font-size: var(--crm-base-font-size);
+color: var(--paragraphColor);
+font-style: normal;
+line-height: 22px;
+}
+.crmErrorPgfooterCont {
+height: 30px;
+margin-bottom: 5px;
+}
+.crmLogoImg {
+min-width: 20px;
+max-width: 100px;
+min-height: 20px;
+max-height: 25px;
+}
+/******new error page style End******/
+html{
+font-size:1.4rem;
+/* font-size: calc(.775rem - -.25 * (100vw - 20rem) / 100); */
+font-size: 62.5%;
+font-variant-ligatures: no-contextual;
+}
+</style></head><body leftmargin="0" topmargin="0" class="bodyBg" marginheight="0"
+marginwidth="0">
+<link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.woff2" rel="preload" as="font" type="font/woff" crossorigin><style type="text/css">
+:root{
+--crm-font-regular: Zoho_Puvi_Regular, sans-serif;
+--crm-font-regularlight: Zoho_Puvi_Regular, sans-serif;
+--crm-font-medium: Zoho_Puvi_Regular, sans-serif;
+--crm-font-mediumitalic: Zoho_Puvi_RegularItalic, sans-serif;
+--crm-font-semibold: Zoho_Puvi_Medium, sans-serif;
+--crm-font-semibolditalic: Zoho_Puvi_MediumItalic, sans-serif;
+--crm-font-bold: Zoho_Puvi_SemiBold, sans-serif;
+--crm-font-bolditalic: Zoho_Puvi_SemiBoldItalic, sans-serif;
+--crm-font-black: Zoho_Puvi_Bold, sans-serif;
+--crm-font-blackitalic: Zoho_Puvi_BoldItalic, sans-serif;
+--crm-font-light: Zoho_Puvi_Regular, sans-serif;
+--crm-font-italic: Zoho_Puvi_RegularItalic, sans-serif;
+--crm-font-thin: Zoho_Puvi_Regular, sans-serif;
+--crm-font-thinitalic: Zoho_Puvi_Regular, sans-serif;
+--crm-font-heavy: Zoho_Puvi_Bold, sans-serif;
+--crux-primary-font: Zoho_Puvi_Regular, sans-serif;
+--crux-bold-font: Zoho_Puvi_SemiBold, sans-serif;
+--crux-light-font: Zoho_Puvi_Regular, sans-serif;
+--crux-thin-font: Zoho_Puvi_Regular, sans-serif;
+--pf-font-light: Zoho_Puvi_Regular, sans-serif;
+--pf-font-regular: Zoho_Puvi_Regular, sans-serif;
+--pf-font-semibold: Zoho_Puvi_Medium, sans-serif;
+--pf-font-bold: Zoho_Puvi_SemiBold, sans-serif;
+--pf-font-black: Zoho_Puvi_Bold, sans-serif;
+--pf-font-mediumitalic: Zoho_Puvi_RegularItalic, sans-serif;
+--pf-font-semibolditalic: Zoho_Puvi_MediumItalic, sans-serif;
+--pf-font-bolditalic: Zoho_Puvi_SemiBoldItalic, sans-serif;
+--pf-font-blackitalic: Zoho_Puvi_BoldItalic, sans-serif;
+}
+@font-face {
+font-family:"Zoho_Puvi_Thin";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_ThinItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.otf") format("opentype");
+}
+@font-face {    
+font-family:"Zoho_Puvi_Light";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_LightItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Regular";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_RegularItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Medium";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_MediumItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_SemiBold";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_SemiBoldItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Bold";
+font-weight:normal;
+font-style:normal;
+font-display:block;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_BoldItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Black";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Extrablack";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_BlackItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_ExtraBold";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_ExtraBoldItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.otf") format("opentype");
+}
+.fontbold {
+font-weight: bold;
+}
+.crm-font-regular,.CanvasFontRegular,select, input, form, textarea, pre{
+font-family: var(--crm-font-regular);
+}*/
+.crm-font-regular{font-family: var(--crm-font-regular);}
+.crm-font-bold, .CanvasFontBold{
+font-family: var(--crm-font-bold);
+font-weight: var(--font-weight-bold);
+}
+.crm-font-xbold,.CanvasFontXbold {
+font-family: var(--crm-font-black);
+}
+.crm-font-regular-italic ,.CanvasFontRegularItalic{
+font-family: var(--crm-font-italic);
+}
+.crm-font-bold-italic,.CanvasFontBoldItalic{
+font-family:var(--crm-font-bolditalic);
+}
+.crm-font-xbold-italic,.CanvasFontXboldItalic {
+font-family: var(--crm-font-blackitalic);
+}
+.crm-font-thin,.CanvasFontThin{
+font-family: var(--crm-font-thin);
+}
+.crm-font-light,.CanvasFontLight{
+font-family: @lightFont;
+}
+.crm-font-medium{
+font-family:var(--crm-font-medium);
+}
+.crm-font-semibold , .CanvasFontSemibold{
+font-family: var(--crm-font-semibold);
+}
+.crm-font-thin-italic , .CanvasFontThinItalic{
+font-family: var(--crm-font-thinitalic);
+}
+.crm-font-light-italic , .CanvasFontLightItalic{
+font-family: var(--crm-font-lightitalic);
+}
+.crm-font-medium-italic{
+font-family: var(--crm-font-mediumitalic);
+}
+.crm-font-semibold-italic , .CanvasFontSemiboldItalic{
+font-family: var(--crm-font-semibolditalic);
+}
+:root{
+--crm-base-font-size: calc((14 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-medium-font-size: calc((15 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-extra-medium-font-size: calc((14 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-small-font-size: calc((13 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-extra-small-font-size: calc((11 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-medium-large-font-size: calc((18 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-large-font-size: calc((20 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm_baseFontSize: 16;
+--crm_baseFontUnit: 16px;
+--crm-medium-small-font-size: 1.2rem;
+}
+[data-size="small"]{
+--crm-base-font-size: 1.3rem;
+--crm-medium-font-size: 1.4rem;
+--crm-extra-medium-font-size: 1.3rem;
+--crm-small-font-size: 1.2rem;
+--crm-extra-small-font-size: 1.1rem;
+--crm-medium-large-font-size: 1.7rem;
+--crm-large-font-size: 1.9rem;
+}
+[data-size="large"]{
+--crm-base-font-size: 1.5rem;
+--crm-medium-font-size: 1.6rem;
+--crm-extra-medium-font-size: 1.5rem;
+--crm-small-font-size: 1.4rem;
+--crm-extra-small-font-size: 1.3rem;
+--crm-medium-large-font-size: 1.9rem;
+--crm-large-font-size: 2.1rem;
+}
+[data-size="largest"]{
+--crm-base-font-size: 1.6rem;
+--crm-medium-font-size: 1.7rem;
+--crm-extra-medium-font-size: 1.6rem;
+--crm-small-font-size: 1.5rem;
+--crm-extra-small-font-size: 1.4rem;
+--crm-medium-large-font-size: 2rem;
+--crm-large-font-size: 2.2rem;
+}
+[data-letterspacing="condensed"]{
+letter-spacing: -.5px;
+}
+[data-letterspacing="normal"]{
+letter-spacing: 0px;
+}
+[data-letterspacing="expanded"]{
+letter-spacing: .05px;	
+}
+[data-letterspacing="widen"]{
+letter-spacing: 1px;	
+}
+</style>
+<div class="crmErrorPgCont crmErrorHeight" data-zcqa="crm_error_page" data-errormessage="Sorry the page you have requested was not found"><div class="crmErrorPgBody"><div class="crmErrorPgImgContr"><!-- <span class="crmErrorPgImg"></span> -->
+<img class="crmErrorPgImg" data-image-mode='true' src='https://static.zohocdn.com/crm/images/crm-iam-errorPage_lightmode_2eb563c9ea6d989a69e2be6276245761_.png'/></div><div class="crmErrorInfoSection"><p class="crmErrorPgErrText1">Invalid URL</p> 
+<p class="crmErrorPgErrText2">Unable to process your request as the URL <span class='crmErrorUrl'>&#x2f;zohomail&#x2f;v2&#x2f;accounts&#x2f;8658834000000008002&#x2f;messages</span> is invalid.</p> <!-- No I18N -->
+<a class="crmErrorPgHomeLink" href="/crm/ShowHomePage.do">
+<button data-zcqa="home_errorPage" class = "primarybtn" >Go to Home page</button>
+</a></div></div><!-- No I18N -->
+<!-- Temporarily removing should handle this in CRM first-->
+<div class="crmErrorPgfooter"><div class="crmErrorPgfooterCont"><img src="https&#x3a;&#x2f;&#x2f;static.zohocdn.com&#x2f;crm&#x2f;CRMClient&#x2f;images&#x2f;crm_logo_04536e35e8162d631b95cf42593491cd_.svg"  alt="CRM" class="crmLogoImg"></div><span class="crmErrorPgfooterTxt">© 2025 Zoho Corp.All rights reserved.</span></div></div></body></html>
+ERROR 2025-09-22 18:20:44,307 email_helpers 16868 14192 Zoho Mail API error: <html><head><title>Zoho CRM - Error</title><link rel="SHORTCUT ICON" href="https&#x3a;&#x2f;&#x2f;static.zohocdn.com&#x2f;crm&#x2f;images&#x2f;favicon_cbfca4856ba4bfb37be615b152f95251_.ico" /><link href="https://static.zohocdn.com/crm/CRMClient/css/default_theme_8f3efc478c69f68b97189a7b085b0190_.css" rel="stylesheet" type="text/css"/><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="Pragma" content="no-cache"><style>
+:root{
+--paragraphColor: #434D5F;
+--linkColor: #338cf0;
+--bg_white: #fff;
+--headingColor: #202123;
+--primaryColor: #fff;
+--primaryShadow: #0061CA;
+--primaryBackground: transparent linear-gradient(0deg, #0279FF 0%, #00A3F3 100%);
+--primaryBackgroundHover: transparent linear-gradient(0deg, #006BE4 0%, #02ACFF 100%);
+--primaryBackgroundActive: #2385EF;
+--primaryShadowActive: none; 
+--primaryBackgroundDisabled: #91CBFF;
+--primaryShadowDisabled: #6AAFEB;
+}
+/******new error page style******/
+.crmErrorPgCont {
+background-color: var(--bg_white);
+text-align: center;
+display: flex;
+align-items: center;
+flex-flow: column;
+justify-content: space-between;
+}
+.crmErrorHeight{
+min-height:100vh;
+}
+.crmErrorPgBody {
+background-color: var(--bg_white);
+padding: 50px 0;
+margin-top: 100px;
+margin-bottom: 100px;
+width: 700px;
+display: flex;
+align-items: center;
+flex-flow: column;
+}
+.crmErrorPgImgContr {
+max-width: 300px;
+height: 170px;
+margin-bottom:40px;
+margin-left:45px;
+}
+.crmErrorPgImg {
+max-width: 100%;
+display: block; 
+}
+.crmErrorInfoSection {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+.crmErrorPgErrText1 {
+color: var(--headingColor);
+font-size: var(--crm-large-font-size);
+font-family: var(--crm-font-bold);
+margin: 0 0 8px 0;
+}
+.crmErrorPgErrText2 {
+color: var(--paragraphColor);
+font-size: var(--crm-base-font-size);
+font-family: var(--crm-font-regular);
+margin: 0 0 40px 0;
+line-height: 22px;
+}
+.crmErrorUrl {
+font-size: var(--crm-base-font-size);
+font-family: var(--crm-font-bold);
+}
+.primarybtn{
+color: var(--primaryColor);
+border-radius: 6px;
+font-family: var(--crm-font-semibold);
+box-sizing: border-box;
+padding: 8px 20px;
+box-shadow: inset 0px -2px 0px var(--primaryShadow);
+background: var(--primaryBackground);
+font-size: var(--crm-base-font-size);
+position: relative;
+border: 0;
+outline: none;
+cursor: pointer;
+text-align: center;
+white-space: nowrap;
+}
+.primarybtn:hover{
+background: var(--primaryBackgroundHover);
+box-shadow: inset 0px -2px 0px var(--primaryShadow);
+border: 0;
+color: var(--primaryColor);
+outline: none;
+}
+.primarybtn:active {
+top: 1px;
+box-shadow: var(--primaryShadowActive);
+background: var(--primaryBackgroundActive);
+position: relative;
+}
+.primarybtn[disabled], .primarybtn.disabled{
+background: var(--primaryBackgroundDisabled);
+box-shadow: inset 0px -2px 0px var(--primaryShadowDisabled);
+border: 0;
+opacity: 1;
+cursor: not-allowed;
+pointer-events: none !important;
+top: 0px !important;
+color: var(--primaryColorDisabled);
+}
+.crmErrorPgfooter {
+margin-bottom: 30px;
+}
+.crmErrorPgfooterTxt {
+font-family: var(--crm-font-regular);
+font-size: var(--crm-base-font-size);
+color: var(--paragraphColor);
+font-style: normal;
+line-height: 22px;
+}
+.crmErrorPgfooterCont {
+height: 30px;
+margin-bottom: 5px;
+}
+.crmLogoImg {
+min-width: 20px;
+max-width: 100px;
+min-height: 20px;
+max-height: 25px;
+}
+/******new error page style End******/
+html{
+font-size:1.4rem;
+/* font-size: calc(.775rem - -.25 * (100vw - 20rem) / 100); */
+font-size: 62.5%;
+font-variant-ligatures: no-contextual;
+}
+</style></head><body leftmargin="0" topmargin="0" class="bodyBg" marginheight="0"
+marginwidth="0">
+<link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.woff2" rel="preload" as="font" type="font/woff" crossorigin><style type="text/css">
+:root{
+--crm-font-regular: Zoho_Puvi_Regular, sans-serif;
+--crm-font-regularlight: Zoho_Puvi_Regular, sans-serif;
+--crm-font-medium: Zoho_Puvi_Regular, sans-serif;
+--crm-font-mediumitalic: Zoho_Puvi_RegularItalic, sans-serif;
+--crm-font-semibold: Zoho_Puvi_Medium, sans-serif;
+--crm-font-semibolditalic: Zoho_Puvi_MediumItalic, sans-serif;
+--crm-font-bold: Zoho_Puvi_SemiBold, sans-serif;
+--crm-font-bolditalic: Zoho_Puvi_SemiBoldItalic, sans-serif;
+--crm-font-black: Zoho_Puvi_Bold, sans-serif;
+--crm-font-blackitalic: Zoho_Puvi_BoldItalic, sans-serif;
+--crm-font-light: Zoho_Puvi_Regular, sans-serif;
+--crm-font-italic: Zoho_Puvi_RegularItalic, sans-serif;
+--crm-font-thin: Zoho_Puvi_Regular, sans-serif;
+--crm-font-thinitalic: Zoho_Puvi_Regular, sans-serif;
+--crm-font-heavy: Zoho_Puvi_Bold, sans-serif;
+--crux-primary-font: Zoho_Puvi_Regular, sans-serif;
+--crux-bold-font: Zoho_Puvi_SemiBold, sans-serif;
+--crux-light-font: Zoho_Puvi_Regular, sans-serif;
+--crux-thin-font: Zoho_Puvi_Regular, sans-serif;
+--pf-font-light: Zoho_Puvi_Regular, sans-serif;
+--pf-font-regular: Zoho_Puvi_Regular, sans-serif;
+--pf-font-semibold: Zoho_Puvi_Medium, sans-serif;
+--pf-font-bold: Zoho_Puvi_SemiBold, sans-serif;
+--pf-font-black: Zoho_Puvi_Bold, sans-serif;
+--pf-font-mediumitalic: Zoho_Puvi_RegularItalic, sans-serif;
+--pf-font-semibolditalic: Zoho_Puvi_MediumItalic, sans-serif;
+--pf-font-bolditalic: Zoho_Puvi_SemiBoldItalic, sans-serif;
+--pf-font-blackitalic: Zoho_Puvi_BoldItalic, sans-serif;
+}
+@font-face {
+font-family:"Zoho_Puvi_Thin";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_ThinItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.otf") format("opentype");
+}
+@font-face {    
+font-family:"Zoho_Puvi_Light";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_LightItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Regular";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_RegularItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Medium";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_MediumItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_SemiBold";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_SemiBoldItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Bold";
+font-weight:normal;
+font-style:normal;
+font-display:block;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_BoldItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Black";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Extrablack";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_BlackItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_ExtraBold";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_ExtraBoldItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.otf") format("opentype");
+}
+.fontbold {
+font-weight: bold;
+}
+.crm-font-regular,.CanvasFontRegular,select, input, form, textarea, pre{
+font-family: var(--crm-font-regular);
+}*/
+.crm-font-regular{font-family: var(--crm-font-regular);}
+.crm-font-bold, .CanvasFontBold{
+font-family: var(--crm-font-bold);
+font-weight: var(--font-weight-bold);
+}
+.crm-font-xbold,.CanvasFontXbold {
+font-family: var(--crm-font-black);
+}
+.crm-font-regular-italic ,.CanvasFontRegularItalic{
+font-family: var(--crm-font-italic);
+}
+.crm-font-bold-italic,.CanvasFontBoldItalic{
+font-family:var(--crm-font-bolditalic);
+}
+.crm-font-xbold-italic,.CanvasFontXboldItalic {
+font-family: var(--crm-font-blackitalic);
+}
+.crm-font-thin,.CanvasFontThin{
+font-family: var(--crm-font-thin);
+}
+.crm-font-light,.CanvasFontLight{
+font-family: @lightFont;
+}
+.crm-font-medium{
+font-family:var(--crm-font-medium);
+}
+.crm-font-semibold , .CanvasFontSemibold{
+font-family: var(--crm-font-semibold);
+}
+.crm-font-thin-italic , .CanvasFontThinItalic{
+font-family: var(--crm-font-thinitalic);
+}
+.crm-font-light-italic , .CanvasFontLightItalic{
+font-family: var(--crm-font-lightitalic);
+}
+.crm-font-medium-italic{
+font-family: var(--crm-font-mediumitalic);
+}
+.crm-font-semibold-italic , .CanvasFontSemiboldItalic{
+font-family: var(--crm-font-semibolditalic);
+}
+:root{
+--crm-base-font-size: calc((14 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-medium-font-size: calc((15 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-extra-medium-font-size: calc((14 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-small-font-size: calc((13 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-extra-small-font-size: calc((11 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-medium-large-font-size: calc((18 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-large-font-size: calc((20 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm_baseFontSize: 16;
+--crm_baseFontUnit: 16px;
+--crm-medium-small-font-size: 1.2rem;
+}
+[data-size="small"]{
+--crm-base-font-size: 1.3rem;
+--crm-medium-font-size: 1.4rem;
+--crm-extra-medium-font-size: 1.3rem;
+--crm-small-font-size: 1.2rem;
+--crm-extra-small-font-size: 1.1rem;
+--crm-medium-large-font-size: 1.7rem;
+--crm-large-font-size: 1.9rem;
+}
+[data-size="large"]{
+--crm-base-font-size: 1.5rem;
+--crm-medium-font-size: 1.6rem;
+--crm-extra-medium-font-size: 1.5rem;
+--crm-small-font-size: 1.4rem;
+--crm-extra-small-font-size: 1.3rem;
+--crm-medium-large-font-size: 1.9rem;
+--crm-large-font-size: 2.1rem;
+}
+[data-size="largest"]{
+--crm-base-font-size: 1.6rem;
+--crm-medium-font-size: 1.7rem;
+--crm-extra-medium-font-size: 1.6rem;
+--crm-small-font-size: 1.5rem;
+--crm-extra-small-font-size: 1.4rem;
+--crm-medium-large-font-size: 2rem;
+--crm-large-font-size: 2.2rem;
+}
+[data-letterspacing="condensed"]{
+letter-spacing: -.5px;
+}
+[data-letterspacing="normal"]{
+letter-spacing: 0px;
+}
+[data-letterspacing="expanded"]{
+letter-spacing: .05px;	
+}
+[data-letterspacing="widen"]{
+letter-spacing: 1px;	
+}
+</style>
+<div class="crmErrorPgCont crmErrorHeight" data-zcqa="crm_error_page" data-errormessage="Sorry the page you have requested was not found"><div class="crmErrorPgBody"><div class="crmErrorPgImgContr"><!-- <span class="crmErrorPgImg"></span> -->
+<img class="crmErrorPgImg" data-image-mode='true' src='https://static.zohocdn.com/crm/images/crm-iam-errorPage_lightmode_2eb563c9ea6d989a69e2be6276245761_.png'/></div><div class="crmErrorInfoSection"><p class="crmErrorPgErrText1">Invalid URL</p> 
+<p class="crmErrorPgErrText2">Unable to process your request as the URL <span class='crmErrorUrl'>&#x2f;zohomail&#x2f;v2&#x2f;accounts&#x2f;8658834000000008002&#x2f;messages</span> is invalid.</p> <!-- No I18N -->
+<a class="crmErrorPgHomeLink" href="/crm/ShowHomePage.do">
+<button data-zcqa="home_errorPage" class = "primarybtn" >Go to Home page</button>
+</a></div></div><!-- No I18N -->
+<!-- Temporarily removing should handle this in CRM first-->
+<div class="crmErrorPgfooter"><div class="crmErrorPgfooterCont"><img src="https&#x3a;&#x2f;&#x2f;static.zohocdn.com&#x2f;crm&#x2f;CRMClient&#x2f;images&#x2f;crm_logo_04536e35e8162d631b95cf42593491cd_.svg"  alt="CRM" class="crmLogoImg"></div><span class="crmErrorPgfooterTxt">© 2025 Zoho Corp.All rights reserved.</span></div></div></body></html>
+ERROR 2025-09-22 18:22:37,356 email_helpers 7796 20268 Zoho Mail API error: <html><head><title>Zoho CRM - Error</title><link rel="SHORTCUT ICON" href="https&#x3a;&#x2f;&#x2f;static.zohocdn.com&#x2f;crm&#x2f;images&#x2f;favicon_cbfca4856ba4bfb37be615b152f95251_.ico" /><link href="https://static.zohocdn.com/crm/CRMClient/css/default_theme_8f3efc478c69f68b97189a7b085b0190_.css" rel="stylesheet" type="text/css"/><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="Pragma" content="no-cache"><style>
+:root{
+--paragraphColor: #434D5F;
+--linkColor: #338cf0;
+--bg_white: #fff;
+--headingColor: #202123;
+--primaryColor: #fff;
+--primaryShadow: #0061CA;
+--primaryBackground: transparent linear-gradient(0deg, #0279FF 0%, #00A3F3 100%);
+--primaryBackgroundHover: transparent linear-gradient(0deg, #006BE4 0%, #02ACFF 100%);
+--primaryBackgroundActive: #2385EF;
+--primaryShadowActive: none; 
+--primaryBackgroundDisabled: #91CBFF;
+--primaryShadowDisabled: #6AAFEB;
+}
+/******new error page style******/
+.crmErrorPgCont {
+background-color: var(--bg_white);
+text-align: center;
+display: flex;
+align-items: center;
+flex-flow: column;
+justify-content: space-between;
+}
+.crmErrorHeight{
+min-height:100vh;
+}
+.crmErrorPgBody {
+background-color: var(--bg_white);
+padding: 50px 0;
+margin-top: 100px;
+margin-bottom: 100px;
+width: 700px;
+display: flex;
+align-items: center;
+flex-flow: column;
+}
+.crmErrorPgImgContr {
+max-width: 300px;
+height: 170px;
+margin-bottom:40px;
+margin-left:45px;
+}
+.crmErrorPgImg {
+max-width: 100%;
+display: block; 
+}
+.crmErrorInfoSection {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+.crmErrorPgErrText1 {
+color: var(--headingColor);
+font-size: var(--crm-large-font-size);
+font-family: var(--crm-font-bold);
+margin: 0 0 8px 0;
+}
+.crmErrorPgErrText2 {
+color: var(--paragraphColor);
+font-size: var(--crm-base-font-size);
+font-family: var(--crm-font-regular);
+margin: 0 0 40px 0;
+line-height: 22px;
+}
+.crmErrorUrl {
+font-size: var(--crm-base-font-size);
+font-family: var(--crm-font-bold);
+}
+.primarybtn{
+color: var(--primaryColor);
+border-radius: 6px;
+font-family: var(--crm-font-semibold);
+box-sizing: border-box;
+padding: 8px 20px;
+box-shadow: inset 0px -2px 0px var(--primaryShadow);
+background: var(--primaryBackground);
+font-size: var(--crm-base-font-size);
+position: relative;
+border: 0;
+outline: none;
+cursor: pointer;
+text-align: center;
+white-space: nowrap;
+}
+.primarybtn:hover{
+background: var(--primaryBackgroundHover);
+box-shadow: inset 0px -2px 0px var(--primaryShadow);
+border: 0;
+color: var(--primaryColor);
+outline: none;
+}
+.primarybtn:active {
+top: 1px;
+box-shadow: var(--primaryShadowActive);
+background: var(--primaryBackgroundActive);
+position: relative;
+}
+.primarybtn[disabled], .primarybtn.disabled{
+background: var(--primaryBackgroundDisabled);
+box-shadow: inset 0px -2px 0px var(--primaryShadowDisabled);
+border: 0;
+opacity: 1;
+cursor: not-allowed;
+pointer-events: none !important;
+top: 0px !important;
+color: var(--primaryColorDisabled);
+}
+.crmErrorPgfooter {
+margin-bottom: 30px;
+}
+.crmErrorPgfooterTxt {
+font-family: var(--crm-font-regular);
+font-size: var(--crm-base-font-size);
+color: var(--paragraphColor);
+font-style: normal;
+line-height: 22px;
+}
+.crmErrorPgfooterCont {
+height: 30px;
+margin-bottom: 5px;
+}
+.crmLogoImg {
+min-width: 20px;
+max-width: 100px;
+min-height: 20px;
+max-height: 25px;
+}
+/******new error page style End******/
+html{
+font-size:1.4rem;
+/* font-size: calc(.775rem - -.25 * (100vw - 20rem) / 100); */
+font-size: 62.5%;
+font-variant-ligatures: no-contextual;
+}
+</style></head><body leftmargin="0" topmargin="0" class="bodyBg" marginheight="0"
+marginwidth="0">
+<link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.woff2" rel="preload" as="font" type="font/woff" crossorigin><style type="text/css">
+:root{
+--crm-font-regular: Zoho_Puvi_Regular, sans-serif;
+--crm-font-regularlight: Zoho_Puvi_Regular, sans-serif;
+--crm-font-medium: Zoho_Puvi_Regular, sans-serif;
+--crm-font-mediumitalic: Zoho_Puvi_RegularItalic, sans-serif;
+--crm-font-semibold: Zoho_Puvi_Medium, sans-serif;
+--crm-font-semibolditalic: Zoho_Puvi_MediumItalic, sans-serif;
+--crm-font-bold: Zoho_Puvi_SemiBold, sans-serif;
+--crm-font-bolditalic: Zoho_Puvi_SemiBoldItalic, sans-serif;
+--crm-font-black: Zoho_Puvi_Bold, sans-serif;
+--crm-font-blackitalic: Zoho_Puvi_BoldItalic, sans-serif;
+--crm-font-light: Zoho_Puvi_Regular, sans-serif;
+--crm-font-italic: Zoho_Puvi_RegularItalic, sans-serif;
+--crm-font-thin: Zoho_Puvi_Regular, sans-serif;
+--crm-font-thinitalic: Zoho_Puvi_Regular, sans-serif;
+--crm-font-heavy: Zoho_Puvi_Bold, sans-serif;
+--crux-primary-font: Zoho_Puvi_Regular, sans-serif;
+--crux-bold-font: Zoho_Puvi_SemiBold, sans-serif;
+--crux-light-font: Zoho_Puvi_Regular, sans-serif;
+--crux-thin-font: Zoho_Puvi_Regular, sans-serif;
+--pf-font-light: Zoho_Puvi_Regular, sans-serif;
+--pf-font-regular: Zoho_Puvi_Regular, sans-serif;
+--pf-font-semibold: Zoho_Puvi_Medium, sans-serif;
+--pf-font-bold: Zoho_Puvi_SemiBold, sans-serif;
+--pf-font-black: Zoho_Puvi_Bold, sans-serif;
+--pf-font-mediumitalic: Zoho_Puvi_RegularItalic, sans-serif;
+--pf-font-semibolditalic: Zoho_Puvi_MediumItalic, sans-serif;
+--pf-font-bolditalic: Zoho_Puvi_SemiBoldItalic, sans-serif;
+--pf-font-blackitalic: Zoho_Puvi_BoldItalic, sans-serif;
+}
+@font-face {
+font-family:"Zoho_Puvi_Thin";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_ThinItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.otf") format("opentype");
+}
+@font-face {    
+font-family:"Zoho_Puvi_Light";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_LightItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Regular";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_RegularItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Medium";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_MediumItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_SemiBold";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_SemiBoldItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Bold";
+font-weight:normal;
+font-style:normal;
+font-display:block;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_BoldItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Black";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Extrablack";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_BlackItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_ExtraBold";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_ExtraBoldItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.otf") format("opentype");
+}
+.fontbold {
+font-weight: bold;
+}
+.crm-font-regular,.CanvasFontRegular,select, input, form, textarea, pre{
+font-family: var(--crm-font-regular);
+}*/
+.crm-font-regular{font-family: var(--crm-font-regular);}
+.crm-font-bold, .CanvasFontBold{
+font-family: var(--crm-font-bold);
+font-weight: var(--font-weight-bold);
+}
+.crm-font-xbold,.CanvasFontXbold {
+font-family: var(--crm-font-black);
+}
+.crm-font-regular-italic ,.CanvasFontRegularItalic{
+font-family: var(--crm-font-italic);
+}
+.crm-font-bold-italic,.CanvasFontBoldItalic{
+font-family:var(--crm-font-bolditalic);
+}
+.crm-font-xbold-italic,.CanvasFontXboldItalic {
+font-family: var(--crm-font-blackitalic);
+}
+.crm-font-thin,.CanvasFontThin{
+font-family: var(--crm-font-thin);
+}
+.crm-font-light,.CanvasFontLight{
+font-family: @lightFont;
+}
+.crm-font-medium{
+font-family:var(--crm-font-medium);
+}
+.crm-font-semibold , .CanvasFontSemibold{
+font-family: var(--crm-font-semibold);
+}
+.crm-font-thin-italic , .CanvasFontThinItalic{
+font-family: var(--crm-font-thinitalic);
+}
+.crm-font-light-italic , .CanvasFontLightItalic{
+font-family: var(--crm-font-lightitalic);
+}
+.crm-font-medium-italic{
+font-family: var(--crm-font-mediumitalic);
+}
+.crm-font-semibold-italic , .CanvasFontSemiboldItalic{
+font-family: var(--crm-font-semibolditalic);
+}
+:root{
+--crm-base-font-size: calc((14 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-medium-font-size: calc((15 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-extra-medium-font-size: calc((14 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-small-font-size: calc((13 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-extra-small-font-size: calc((11 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-medium-large-font-size: calc((18 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-large-font-size: calc((20 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm_baseFontSize: 16;
+--crm_baseFontUnit: 16px;
+--crm-medium-small-font-size: 1.2rem;
+}
+[data-size="small"]{
+--crm-base-font-size: 1.3rem;
+--crm-medium-font-size: 1.4rem;
+--crm-extra-medium-font-size: 1.3rem;
+--crm-small-font-size: 1.2rem;
+--crm-extra-small-font-size: 1.1rem;
+--crm-medium-large-font-size: 1.7rem;
+--crm-large-font-size: 1.9rem;
+}
+[data-size="large"]{
+--crm-base-font-size: 1.5rem;
+--crm-medium-font-size: 1.6rem;
+--crm-extra-medium-font-size: 1.5rem;
+--crm-small-font-size: 1.4rem;
+--crm-extra-small-font-size: 1.3rem;
+--crm-medium-large-font-size: 1.9rem;
+--crm-large-font-size: 2.1rem;
+}
+[data-size="largest"]{
+--crm-base-font-size: 1.6rem;
+--crm-medium-font-size: 1.7rem;
+--crm-extra-medium-font-size: 1.6rem;
+--crm-small-font-size: 1.5rem;
+--crm-extra-small-font-size: 1.4rem;
+--crm-medium-large-font-size: 2rem;
+--crm-large-font-size: 2.2rem;
+}
+[data-letterspacing="condensed"]{
+letter-spacing: -.5px;
+}
+[data-letterspacing="normal"]{
+letter-spacing: 0px;
+}
+[data-letterspacing="expanded"]{
+letter-spacing: .05px;	
+}
+[data-letterspacing="widen"]{
+letter-spacing: 1px;	
+}
+</style>
+<div class="crmErrorPgCont crmErrorHeight" data-zcqa="crm_error_page" data-errormessage="Sorry the page you have requested was not found"><div class="crmErrorPgBody"><div class="crmErrorPgImgContr"><!-- <span class="crmErrorPgImg"></span> -->
+<img class="crmErrorPgImg" data-image-mode='true' src='https://static.zohocdn.com/crm/images/crm-iam-errorPage_lightmode_2eb563c9ea6d989a69e2be6276245761_.png'/></div><div class="crmErrorInfoSection"><p class="crmErrorPgErrText1">Invalid URL</p> 
+<p class="crmErrorPgErrText2">Unable to process your request as the URL <span class='crmErrorUrl'>&#x2f;zohomail&#x2f;v2&#x2f;accounts&#x2f;8658834000000008002&#x2f;messages</span> is invalid.</p> <!-- No I18N -->
+<a class="crmErrorPgHomeLink" href="/crm/ShowHomePage.do">
+<button data-zcqa="home_errorPage" class = "primarybtn" >Go to Home page</button>
+</a></div></div><!-- No I18N -->
+<!-- Temporarily removing should handle this in CRM first-->
+<div class="crmErrorPgfooter"><div class="crmErrorPgfooterCont"><img src="https&#x3a;&#x2f;&#x2f;static.zohocdn.com&#x2f;crm&#x2f;CRMClient&#x2f;images&#x2f;crm_logo_04536e35e8162d631b95cf42593491cd_.svg"  alt="CRM" class="crmLogoImg"></div><span class="crmErrorPgfooterTxt">© 2025 Zoho Corp.All rights reserved.</span></div></div></body></html>
+ERROR 2025-09-22 18:22:37,432 send_test_email 7796 20268 Error sending test email
+Traceback (most recent call last):
+  File "C:\Users\YOU\Documents\Triple_A\main_app\management\commands\send_test_email.py", line 25, in handle
+    ok = send_zoho_mail(to_email=to, subject=subject, plain_message=text, html_message=html)
+  File "C:\Users\YOU\Documents\Triple_A\main_app\utils\email_helpers.py", line 63, in send_zoho_mail
+    raise Exception(f"Zoho Mail API error: {resp.text}")
+Exception: Zoho Mail API error: <html><head><title>Zoho CRM - Error</title><link rel="SHORTCUT ICON" href="https&#x3a;&#x2f;&#x2f;static.zohocdn.com&#x2f;crm&#x2f;images&#x2f;favicon_cbfca4856ba4bfb37be615b152f95251_.ico" /><link href="https://static.zohocdn.com/crm/CRMClient/css/default_theme_8f3efc478c69f68b97189a7b085b0190_.css" rel="stylesheet" type="text/css"/><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="Pragma" content="no-cache"><style>
+:root{
+--paragraphColor: #434D5F;
+--linkColor: #338cf0;
+--bg_white: #fff;
+--headingColor: #202123;
+--primaryColor: #fff;
+--primaryShadow: #0061CA;
+--primaryBackground: transparent linear-gradient(0deg, #0279FF 0%, #00A3F3 100%);
+--primaryBackgroundHover: transparent linear-gradient(0deg, #006BE4 0%, #02ACFF 100%);
+--primaryBackgroundActive: #2385EF;
+--primaryShadowActive: none; 
+--primaryBackgroundDisabled: #91CBFF;
+--primaryShadowDisabled: #6AAFEB;
+}
+/******new error page style******/
+.crmErrorPgCont {
+background-color: var(--bg_white);
+text-align: center;
+display: flex;
+align-items: center;
+flex-flow: column;
+justify-content: space-between;
+}
+.crmErrorHeight{
+min-height:100vh;
+}
+.crmErrorPgBody {
+background-color: var(--bg_white);
+padding: 50px 0;
+margin-top: 100px;
+margin-bottom: 100px;
+width: 700px;
+display: flex;
+align-items: center;
+flex-flow: column;
+}
+.crmErrorPgImgContr {
+max-width: 300px;
+height: 170px;
+margin-bottom:40px;
+margin-left:45px;
+}
+.crmErrorPgImg {
+max-width: 100%;
+display: block; 
+}
+.crmErrorInfoSection {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+.crmErrorPgErrText1 {
+color: var(--headingColor);
+font-size: var(--crm-large-font-size);
+font-family: var(--crm-font-bold);
+margin: 0 0 8px 0;
+}
+.crmErrorPgErrText2 {
+color: var(--paragraphColor);
+font-size: var(--crm-base-font-size);
+font-family: var(--crm-font-regular);
+margin: 0 0 40px 0;
+line-height: 22px;
+}
+.crmErrorUrl {
+font-size: var(--crm-base-font-size);
+font-family: var(--crm-font-bold);
+}
+.primarybtn{
+color: var(--primaryColor);
+border-radius: 6px;
+font-family: var(--crm-font-semibold);
+box-sizing: border-box;
+padding: 8px 20px;
+box-shadow: inset 0px -2px 0px var(--primaryShadow);
+background: var(--primaryBackground);
+font-size: var(--crm-base-font-size);
+position: relative;
+border: 0;
+outline: none;
+cursor: pointer;
+text-align: center;
+white-space: nowrap;
+}
+.primarybtn:hover{
+background: var(--primaryBackgroundHover);
+box-shadow: inset 0px -2px 0px var(--primaryShadow);
+border: 0;
+color: var(--primaryColor);
+outline: none;
+}
+.primarybtn:active {
+top: 1px;
+box-shadow: var(--primaryShadowActive);
+background: var(--primaryBackgroundActive);
+position: relative;
+}
+.primarybtn[disabled], .primarybtn.disabled{
+background: var(--primaryBackgroundDisabled);
+box-shadow: inset 0px -2px 0px var(--primaryShadowDisabled);
+border: 0;
+opacity: 1;
+cursor: not-allowed;
+pointer-events: none !important;
+top: 0px !important;
+color: var(--primaryColorDisabled);
+}
+.crmErrorPgfooter {
+margin-bottom: 30px;
+}
+.crmErrorPgfooterTxt {
+font-family: var(--crm-font-regular);
+font-size: var(--crm-base-font-size);
+color: var(--paragraphColor);
+font-style: normal;
+line-height: 22px;
+}
+.crmErrorPgfooterCont {
+height: 30px;
+margin-bottom: 5px;
+}
+.crmLogoImg {
+min-width: 20px;
+max-width: 100px;
+min-height: 20px;
+max-height: 25px;
+}
+/******new error page style End******/
+html{
+font-size:1.4rem;
+/* font-size: calc(.775rem - -.25 * (100vw - 20rem) / 100); */
+font-size: 62.5%;
+font-variant-ligatures: no-contextual;
+}
+</style></head><body leftmargin="0" topmargin="0" class="bodyBg" marginheight="0"
+marginwidth="0">
+<link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.woff2" rel="preload" as="font" type="font/woff" crossorigin><style type="text/css">
+:root{
+--crm-font-regular: Zoho_Puvi_Regular, sans-serif;
+--crm-font-regularlight: Zoho_Puvi_Regular, sans-serif;
+--crm-font-medium: Zoho_Puvi_Regular, sans-serif;
+--crm-font-mediumitalic: Zoho_Puvi_RegularItalic, sans-serif;
+--crm-font-semibold: Zoho_Puvi_Medium, sans-serif;
+--crm-font-semibolditalic: Zoho_Puvi_MediumItalic, sans-serif;
+--crm-font-bold: Zoho_Puvi_SemiBold, sans-serif;
+--crm-font-bolditalic: Zoho_Puvi_SemiBoldItalic, sans-serif;
+--crm-font-black: Zoho_Puvi_Bold, sans-serif;
+--crm-font-blackitalic: Zoho_Puvi_BoldItalic, sans-serif;
+--crm-font-light: Zoho_Puvi_Regular, sans-serif;
+--crm-font-italic: Zoho_Puvi_RegularItalic, sans-serif;
+--crm-font-thin: Zoho_Puvi_Regular, sans-serif;
+--crm-font-thinitalic: Zoho_Puvi_Regular, sans-serif;
+--crm-font-heavy: Zoho_Puvi_Bold, sans-serif;
+--crux-primary-font: Zoho_Puvi_Regular, sans-serif;
+--crux-bold-font: Zoho_Puvi_SemiBold, sans-serif;
+--crux-light-font: Zoho_Puvi_Regular, sans-serif;
+--crux-thin-font: Zoho_Puvi_Regular, sans-serif;
+--pf-font-light: Zoho_Puvi_Regular, sans-serif;
+--pf-font-regular: Zoho_Puvi_Regular, sans-serif;
+--pf-font-semibold: Zoho_Puvi_Medium, sans-serif;
+--pf-font-bold: Zoho_Puvi_SemiBold, sans-serif;
+--pf-font-black: Zoho_Puvi_Bold, sans-serif;
+--pf-font-mediumitalic: Zoho_Puvi_RegularItalic, sans-serif;
+--pf-font-semibolditalic: Zoho_Puvi_MediumItalic, sans-serif;
+--pf-font-bolditalic: Zoho_Puvi_SemiBoldItalic, sans-serif;
+--pf-font-blackitalic: Zoho_Puvi_BoldItalic, sans-serif;
+}
+@font-face {
+font-family:"Zoho_Puvi_Thin";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_ThinItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.otf") format("opentype");
+}
+@font-face {    
+font-family:"Zoho_Puvi_Light";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_LightItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Regular";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_RegularItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Medium";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_MediumItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_SemiBold";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_SemiBoldItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Bold";
+font-weight:normal;
+font-style:normal;
+font-display:block;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_BoldItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Black";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Extrablack";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_BlackItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_ExtraBold";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_ExtraBoldItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.otf") format("opentype");
+}
+.fontbold {
+font-weight: bold;
+}
+.crm-font-regular,.CanvasFontRegular,select, input, form, textarea, pre{
+font-family: var(--crm-font-regular);
+}*/
+.crm-font-regular{font-family: var(--crm-font-regular);}
+.crm-font-bold, .CanvasFontBold{
+font-family: var(--crm-font-bold);
+font-weight: var(--font-weight-bold);
+}
+.crm-font-xbold,.CanvasFontXbold {
+font-family: var(--crm-font-black);
+}
+.crm-font-regular-italic ,.CanvasFontRegularItalic{
+font-family: var(--crm-font-italic);
+}
+.crm-font-bold-italic,.CanvasFontBoldItalic{
+font-family:var(--crm-font-bolditalic);
+}
+.crm-font-xbold-italic,.CanvasFontXboldItalic {
+font-family: var(--crm-font-blackitalic);
+}
+.crm-font-thin,.CanvasFontThin{
+font-family: var(--crm-font-thin);
+}
+.crm-font-light,.CanvasFontLight{
+font-family: @lightFont;
+}
+.crm-font-medium{
+font-family:var(--crm-font-medium);
+}
+.crm-font-semibold , .CanvasFontSemibold{
+font-family: var(--crm-font-semibold);
+}
+.crm-font-thin-italic , .CanvasFontThinItalic{
+font-family: var(--crm-font-thinitalic);
+}
+.crm-font-light-italic , .CanvasFontLightItalic{
+font-family: var(--crm-font-lightitalic);
+}
+.crm-font-medium-italic{
+font-family: var(--crm-font-mediumitalic);
+}
+.crm-font-semibold-italic , .CanvasFontSemiboldItalic{
+font-family: var(--crm-font-semibolditalic);
+}
+:root{
+--crm-base-font-size: calc((14 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-medium-font-size: calc((15 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-extra-medium-font-size: calc((14 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-small-font-size: calc((13 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-extra-small-font-size: calc((11 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-medium-large-font-size: calc((18 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-large-font-size: calc((20 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm_baseFontSize: 16;
+--crm_baseFontUnit: 16px;
+--crm-medium-small-font-size: 1.2rem;
+}
+[data-size="small"]{
+--crm-base-font-size: 1.3rem;
+--crm-medium-font-size: 1.4rem;
+--crm-extra-medium-font-size: 1.3rem;
+--crm-small-font-size: 1.2rem;
+--crm-extra-small-font-size: 1.1rem;
+--crm-medium-large-font-size: 1.7rem;
+--crm-large-font-size: 1.9rem;
+}
+[data-size="large"]{
+--crm-base-font-size: 1.5rem;
+--crm-medium-font-size: 1.6rem;
+--crm-extra-medium-font-size: 1.5rem;
+--crm-small-font-size: 1.4rem;
+--crm-extra-small-font-size: 1.3rem;
+--crm-medium-large-font-size: 1.9rem;
+--crm-large-font-size: 2.1rem;
+}
+[data-size="largest"]{
+--crm-base-font-size: 1.6rem;
+--crm-medium-font-size: 1.7rem;
+--crm-extra-medium-font-size: 1.6rem;
+--crm-small-font-size: 1.5rem;
+--crm-extra-small-font-size: 1.4rem;
+--crm-medium-large-font-size: 2rem;
+--crm-large-font-size: 2.2rem;
+}
+[data-letterspacing="condensed"]{
+letter-spacing: -.5px;
+}
+[data-letterspacing="normal"]{
+letter-spacing: 0px;
+}
+[data-letterspacing="expanded"]{
+letter-spacing: .05px;	
+}
+[data-letterspacing="widen"]{
+letter-spacing: 1px;	
+}
+</style>
+<div class="crmErrorPgCont crmErrorHeight" data-zcqa="crm_error_page" data-errormessage="Sorry the page you have requested was not found"><div class="crmErrorPgBody"><div class="crmErrorPgImgContr"><!-- <span class="crmErrorPgImg"></span> -->
+<img class="crmErrorPgImg" data-image-mode='true' src='https://static.zohocdn.com/crm/images/crm-iam-errorPage_lightmode_2eb563c9ea6d989a69e2be6276245761_.png'/></div><div class="crmErrorInfoSection"><p class="crmErrorPgErrText1">Invalid URL</p> 
+<p class="crmErrorPgErrText2">Unable to process your request as the URL <span class='crmErrorUrl'>&#x2f;zohomail&#x2f;v2&#x2f;accounts&#x2f;8658834000000008002&#x2f;messages</span> is invalid.</p> <!-- No I18N -->
+<a class="crmErrorPgHomeLink" href="/crm/ShowHomePage.do">
+<button data-zcqa="home_errorPage" class = "primarybtn" >Go to Home page</button>
+</a></div></div><!-- No I18N -->
+<!-- Temporarily removing should handle this in CRM first-->
+<div class="crmErrorPgfooter"><div class="crmErrorPgfooterCont"><img src="https&#x3a;&#x2f;&#x2f;static.zohocdn.com&#x2f;crm&#x2f;CRMClient&#x2f;images&#x2f;crm_logo_04536e35e8162d631b95cf42593491cd_.svg"  alt="CRM" class="crmLogoImg"></div><span class="crmErrorPgfooterTxt">© 2025 Zoho Corp.All rights reserved.</span></div></div></body></html>
+ERROR 2025-09-22 18:24:23,338 email_helpers 15752 7620 Zoho Mail API error: <html><head><title>Zoho CRM - Error</title><link rel="SHORTCUT ICON" href="https&#x3a;&#x2f;&#x2f;static.zohocdn.com&#x2f;crm&#x2f;images&#x2f;favicon_cbfca4856ba4bfb37be615b152f95251_.ico" /><link href="https://static.zohocdn.com/crm/CRMClient/css/default_theme_8f3efc478c69f68b97189a7b085b0190_.css" rel="stylesheet" type="text/css"/><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="Pragma" content="no-cache"><style>
+:root{
+--paragraphColor: #434D5F;
+--linkColor: #338cf0;
+--bg_white: #fff;
+--headingColor: #202123;
+--primaryColor: #fff;
+--primaryShadow: #0061CA;
+--primaryBackground: transparent linear-gradient(0deg, #0279FF 0%, #00A3F3 100%);
+--primaryBackgroundHover: transparent linear-gradient(0deg, #006BE4 0%, #02ACFF 100%);
+--primaryBackgroundActive: #2385EF;
+--primaryShadowActive: none; 
+--primaryBackgroundDisabled: #91CBFF;
+--primaryShadowDisabled: #6AAFEB;
+}
+/******new error page style******/
+.crmErrorPgCont {
+background-color: var(--bg_white);
+text-align: center;
+display: flex;
+align-items: center;
+flex-flow: column;
+justify-content: space-between;
+}
+.crmErrorHeight{
+min-height:100vh;
+}
+.crmErrorPgBody {
+background-color: var(--bg_white);
+padding: 50px 0;
+margin-top: 100px;
+margin-bottom: 100px;
+width: 700px;
+display: flex;
+align-items: center;
+flex-flow: column;
+}
+.crmErrorPgImgContr {
+max-width: 300px;
+height: 170px;
+margin-bottom:40px;
+margin-left:45px;
+}
+.crmErrorPgImg {
+max-width: 100%;
+display: block; 
+}
+.crmErrorInfoSection {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+.crmErrorPgErrText1 {
+color: var(--headingColor);
+font-size: var(--crm-large-font-size);
+font-family: var(--crm-font-bold);
+margin: 0 0 8px 0;
+}
+.crmErrorPgErrText2 {
+color: var(--paragraphColor);
+font-size: var(--crm-base-font-size);
+font-family: var(--crm-font-regular);
+margin: 0 0 40px 0;
+line-height: 22px;
+}
+.crmErrorUrl {
+font-size: var(--crm-base-font-size);
+font-family: var(--crm-font-bold);
+}
+.primarybtn{
+color: var(--primaryColor);
+border-radius: 6px;
+font-family: var(--crm-font-semibold);
+box-sizing: border-box;
+padding: 8px 20px;
+box-shadow: inset 0px -2px 0px var(--primaryShadow);
+background: var(--primaryBackground);
+font-size: var(--crm-base-font-size);
+position: relative;
+border: 0;
+outline: none;
+cursor: pointer;
+text-align: center;
+white-space: nowrap;
+}
+.primarybtn:hover{
+background: var(--primaryBackgroundHover);
+box-shadow: inset 0px -2px 0px var(--primaryShadow);
+border: 0;
+color: var(--primaryColor);
+outline: none;
+}
+.primarybtn:active {
+top: 1px;
+box-shadow: var(--primaryShadowActive);
+background: var(--primaryBackgroundActive);
+position: relative;
+}
+.primarybtn[disabled], .primarybtn.disabled{
+background: var(--primaryBackgroundDisabled);
+box-shadow: inset 0px -2px 0px var(--primaryShadowDisabled);
+border: 0;
+opacity: 1;
+cursor: not-allowed;
+pointer-events: none !important;
+top: 0px !important;
+color: var(--primaryColorDisabled);
+}
+.crmErrorPgfooter {
+margin-bottom: 30px;
+}
+.crmErrorPgfooterTxt {
+font-family: var(--crm-font-regular);
+font-size: var(--crm-base-font-size);
+color: var(--paragraphColor);
+font-style: normal;
+line-height: 22px;
+}
+.crmErrorPgfooterCont {
+height: 30px;
+margin-bottom: 5px;
+}
+.crmLogoImg {
+min-width: 20px;
+max-width: 100px;
+min-height: 20px;
+max-height: 25px;
+}
+/******new error page style End******/
+html{
+font-size:1.4rem;
+/* font-size: calc(.775rem - -.25 * (100vw - 20rem) / 100); */
+font-size: 62.5%;
+font-variant-ligatures: no-contextual;
+}
+</style></head><body leftmargin="0" topmargin="0" class="bodyBg" marginheight="0"
+marginwidth="0">
+<link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.woff2" rel="preload" as="font" type="font/woff" crossorigin><style type="text/css">
+:root{
+--crm-font-regular: Zoho_Puvi_Regular, sans-serif;
+--crm-font-regularlight: Zoho_Puvi_Regular, sans-serif;
+--crm-font-medium: Zoho_Puvi_Regular, sans-serif;
+--crm-font-mediumitalic: Zoho_Puvi_RegularItalic, sans-serif;
+--crm-font-semibold: Zoho_Puvi_Medium, sans-serif;
+--crm-font-semibolditalic: Zoho_Puvi_MediumItalic, sans-serif;
+--crm-font-bold: Zoho_Puvi_SemiBold, sans-serif;
+--crm-font-bolditalic: Zoho_Puvi_SemiBoldItalic, sans-serif;
+--crm-font-black: Zoho_Puvi_Bold, sans-serif;
+--crm-font-blackitalic: Zoho_Puvi_BoldItalic, sans-serif;
+--crm-font-light: Zoho_Puvi_Regular, sans-serif;
+--crm-font-italic: Zoho_Puvi_RegularItalic, sans-serif;
+--crm-font-thin: Zoho_Puvi_Regular, sans-serif;
+--crm-font-thinitalic: Zoho_Puvi_Regular, sans-serif;
+--crm-font-heavy: Zoho_Puvi_Bold, sans-serif;
+--crux-primary-font: Zoho_Puvi_Regular, sans-serif;
+--crux-bold-font: Zoho_Puvi_SemiBold, sans-serif;
+--crux-light-font: Zoho_Puvi_Regular, sans-serif;
+--crux-thin-font: Zoho_Puvi_Regular, sans-serif;
+--pf-font-light: Zoho_Puvi_Regular, sans-serif;
+--pf-font-regular: Zoho_Puvi_Regular, sans-serif;
+--pf-font-semibold: Zoho_Puvi_Medium, sans-serif;
+--pf-font-bold: Zoho_Puvi_SemiBold, sans-serif;
+--pf-font-black: Zoho_Puvi_Bold, sans-serif;
+--pf-font-mediumitalic: Zoho_Puvi_RegularItalic, sans-serif;
+--pf-font-semibolditalic: Zoho_Puvi_MediumItalic, sans-serif;
+--pf-font-bolditalic: Zoho_Puvi_SemiBoldItalic, sans-serif;
+--pf-font-blackitalic: Zoho_Puvi_BoldItalic, sans-serif;
+}
+@font-face {
+font-family:"Zoho_Puvi_Thin";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_ThinItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.otf") format("opentype");
+}
+@font-face {    
+font-family:"Zoho_Puvi_Light";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_LightItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Regular";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_RegularItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Medium";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_MediumItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_SemiBold";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_SemiBoldItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Bold";
+font-weight:normal;
+font-style:normal;
+font-display:block;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_BoldItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Black";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Extrablack";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_BlackItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_ExtraBold";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_ExtraBoldItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.otf") format("opentype");
+}
+.fontbold {
+font-weight: bold;
+}
+.crm-font-regular,.CanvasFontRegular,select, input, form, textarea, pre{
+font-family: var(--crm-font-regular);
+}*/
+.crm-font-regular{font-family: var(--crm-font-regular);}
+.crm-font-bold, .CanvasFontBold{
+font-family: var(--crm-font-bold);
+font-weight: var(--font-weight-bold);
+}
+.crm-font-xbold,.CanvasFontXbold {
+font-family: var(--crm-font-black);
+}
+.crm-font-regular-italic ,.CanvasFontRegularItalic{
+font-family: var(--crm-font-italic);
+}
+.crm-font-bold-italic,.CanvasFontBoldItalic{
+font-family:var(--crm-font-bolditalic);
+}
+.crm-font-xbold-italic,.CanvasFontXboldItalic {
+font-family: var(--crm-font-blackitalic);
+}
+.crm-font-thin,.CanvasFontThin{
+font-family: var(--crm-font-thin);
+}
+.crm-font-light,.CanvasFontLight{
+font-family: @lightFont;
+}
+.crm-font-medium{
+font-family:var(--crm-font-medium);
+}
+.crm-font-semibold , .CanvasFontSemibold{
+font-family: var(--crm-font-semibold);
+}
+.crm-font-thin-italic , .CanvasFontThinItalic{
+font-family: var(--crm-font-thinitalic);
+}
+.crm-font-light-italic , .CanvasFontLightItalic{
+font-family: var(--crm-font-lightitalic);
+}
+.crm-font-medium-italic{
+font-family: var(--crm-font-mediumitalic);
+}
+.crm-font-semibold-italic , .CanvasFontSemiboldItalic{
+font-family: var(--crm-font-semibolditalic);
+}
+:root{
+--crm-base-font-size: calc((14 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-medium-font-size: calc((15 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-extra-medium-font-size: calc((14 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-small-font-size: calc((13 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-extra-small-font-size: calc((11 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-medium-large-font-size: calc((18 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-large-font-size: calc((20 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm_baseFontSize: 16;
+--crm_baseFontUnit: 16px;
+--crm-medium-small-font-size: 1.2rem;
+}
+[data-size="small"]{
+--crm-base-font-size: 1.3rem;
+--crm-medium-font-size: 1.4rem;
+--crm-extra-medium-font-size: 1.3rem;
+--crm-small-font-size: 1.2rem;
+--crm-extra-small-font-size: 1.1rem;
+--crm-medium-large-font-size: 1.7rem;
+--crm-large-font-size: 1.9rem;
+}
+[data-size="large"]{
+--crm-base-font-size: 1.5rem;
+--crm-medium-font-size: 1.6rem;
+--crm-extra-medium-font-size: 1.5rem;
+--crm-small-font-size: 1.4rem;
+--crm-extra-small-font-size: 1.3rem;
+--crm-medium-large-font-size: 1.9rem;
+--crm-large-font-size: 2.1rem;
+}
+[data-size="largest"]{
+--crm-base-font-size: 1.6rem;
+--crm-medium-font-size: 1.7rem;
+--crm-extra-medium-font-size: 1.6rem;
+--crm-small-font-size: 1.5rem;
+--crm-extra-small-font-size: 1.4rem;
+--crm-medium-large-font-size: 2rem;
+--crm-large-font-size: 2.2rem;
+}
+[data-letterspacing="condensed"]{
+letter-spacing: -.5px;
+}
+[data-letterspacing="normal"]{
+letter-spacing: 0px;
+}
+[data-letterspacing="expanded"]{
+letter-spacing: .05px;	
+}
+[data-letterspacing="widen"]{
+letter-spacing: 1px;	
+}
+</style>
+<div class="crmErrorPgCont crmErrorHeight" data-zcqa="crm_error_page" data-errormessage="Sorry the page you have requested was not found"><div class="crmErrorPgBody"><div class="crmErrorPgImgContr"><!-- <span class="crmErrorPgImg"></span> -->
+<img class="crmErrorPgImg" data-image-mode='true' src='https://static.zohocdn.com/crm/images/crm-iam-errorPage_lightmode_2eb563c9ea6d989a69e2be6276245761_.png'/></div><div class="crmErrorInfoSection"><p class="crmErrorPgErrText1">Invalid URL</p> 
+<p class="crmErrorPgErrText2">Unable to process your request as the URL <span class='crmErrorUrl'>&#x2f;zohomail&#x2f;v2&#x2f;accounts&#x2f;8658834000000008002&#x2f;messages</span> is invalid.</p> <!-- No I18N -->
+<a class="crmErrorPgHomeLink" href="/crm/ShowHomePage.do">
+<button data-zcqa="home_errorPage" class = "primarybtn" >Go to Home page</button>
+</a></div></div><!-- No I18N -->
+<!-- Temporarily removing should handle this in CRM first-->
+<div class="crmErrorPgfooter"><div class="crmErrorPgfooterCont"><img src="https&#x3a;&#x2f;&#x2f;static.zohocdn.com&#x2f;crm&#x2f;CRMClient&#x2f;images&#x2f;crm_logo_04536e35e8162d631b95cf42593491cd_.svg"  alt="CRM" class="crmLogoImg"></div><span class="crmErrorPgfooterTxt">© 2025 Zoho Corp.All rights reserved.</span></div></div></body></html>
+ERROR 2025-09-22 18:24:23,446 send_test_email 15752 7620 Error sending test email
+Traceback (most recent call last):
+  File "C:\Users\YOU\Documents\Triple_A\main_app\management\commands\send_test_email.py", line 25, in handle
+    ok = send_zoho_mail(to_email=to, subject=subject, plain_message=text, html_message=html)
+  File "C:\Users\YOU\Documents\Triple_A\main_app\utils\email_helpers.py", line 63, in send_zoho_mail
+    raise Exception(f"Zoho Mail API error: {resp.text}")
+Exception: Zoho Mail API error: <html><head><title>Zoho CRM - Error</title><link rel="SHORTCUT ICON" href="https&#x3a;&#x2f;&#x2f;static.zohocdn.com&#x2f;crm&#x2f;images&#x2f;favicon_cbfca4856ba4bfb37be615b152f95251_.ico" /><link href="https://static.zohocdn.com/crm/CRMClient/css/default_theme_8f3efc478c69f68b97189a7b085b0190_.css" rel="stylesheet" type="text/css"/><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="Pragma" content="no-cache"><style>
+:root{
+--paragraphColor: #434D5F;
+--linkColor: #338cf0;
+--bg_white: #fff;
+--headingColor: #202123;
+--primaryColor: #fff;
+--primaryShadow: #0061CA;
+--primaryBackground: transparent linear-gradient(0deg, #0279FF 0%, #00A3F3 100%);
+--primaryBackgroundHover: transparent linear-gradient(0deg, #006BE4 0%, #02ACFF 100%);
+--primaryBackgroundActive: #2385EF;
+--primaryShadowActive: none; 
+--primaryBackgroundDisabled: #91CBFF;
+--primaryShadowDisabled: #6AAFEB;
+}
+/******new error page style******/
+.crmErrorPgCont {
+background-color: var(--bg_white);
+text-align: center;
+display: flex;
+align-items: center;
+flex-flow: column;
+justify-content: space-between;
+}
+.crmErrorHeight{
+min-height:100vh;
+}
+.crmErrorPgBody {
+background-color: var(--bg_white);
+padding: 50px 0;
+margin-top: 100px;
+margin-bottom: 100px;
+width: 700px;
+display: flex;
+align-items: center;
+flex-flow: column;
+}
+.crmErrorPgImgContr {
+max-width: 300px;
+height: 170px;
+margin-bottom:40px;
+margin-left:45px;
+}
+.crmErrorPgImg {
+max-width: 100%;
+display: block; 
+}
+.crmErrorInfoSection {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+.crmErrorPgErrText1 {
+color: var(--headingColor);
+font-size: var(--crm-large-font-size);
+font-family: var(--crm-font-bold);
+margin: 0 0 8px 0;
+}
+.crmErrorPgErrText2 {
+color: var(--paragraphColor);
+font-size: var(--crm-base-font-size);
+font-family: var(--crm-font-regular);
+margin: 0 0 40px 0;
+line-height: 22px;
+}
+.crmErrorUrl {
+font-size: var(--crm-base-font-size);
+font-family: var(--crm-font-bold);
+}
+.primarybtn{
+color: var(--primaryColor);
+border-radius: 6px;
+font-family: var(--crm-font-semibold);
+box-sizing: border-box;
+padding: 8px 20px;
+box-shadow: inset 0px -2px 0px var(--primaryShadow);
+background: var(--primaryBackground);
+font-size: var(--crm-base-font-size);
+position: relative;
+border: 0;
+outline: none;
+cursor: pointer;
+text-align: center;
+white-space: nowrap;
+}
+.primarybtn:hover{
+background: var(--primaryBackgroundHover);
+box-shadow: inset 0px -2px 0px var(--primaryShadow);
+border: 0;
+color: var(--primaryColor);
+outline: none;
+}
+.primarybtn:active {
+top: 1px;
+box-shadow: var(--primaryShadowActive);
+background: var(--primaryBackgroundActive);
+position: relative;
+}
+.primarybtn[disabled], .primarybtn.disabled{
+background: var(--primaryBackgroundDisabled);
+box-shadow: inset 0px -2px 0px var(--primaryShadowDisabled);
+border: 0;
+opacity: 1;
+cursor: not-allowed;
+pointer-events: none !important;
+top: 0px !important;
+color: var(--primaryColorDisabled);
+}
+.crmErrorPgfooter {
+margin-bottom: 30px;
+}
+.crmErrorPgfooterTxt {
+font-family: var(--crm-font-regular);
+font-size: var(--crm-base-font-size);
+color: var(--paragraphColor);
+font-style: normal;
+line-height: 22px;
+}
+.crmErrorPgfooterCont {
+height: 30px;
+margin-bottom: 5px;
+}
+.crmLogoImg {
+min-width: 20px;
+max-width: 100px;
+min-height: 20px;
+max-height: 25px;
+}
+/******new error page style End******/
+html{
+font-size:1.4rem;
+/* font-size: calc(.775rem - -.25 * (100vw - 20rem) / 100); */
+font-size: 62.5%;
+font-variant-ligatures: no-contextual;
+}
+</style></head><body leftmargin="0" topmargin="0" class="bodyBg" marginheight="0"
+marginwidth="0">
+<link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.woff2" rel="preload" as="font" type="font/woff" crossorigin><link href="//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.woff2" rel="preload" as="font" type="font/woff" crossorigin><style type="text/css">
+:root{
+--crm-font-regular: Zoho_Puvi_Regular, sans-serif;
+--crm-font-regularlight: Zoho_Puvi_Regular, sans-serif;
+--crm-font-medium: Zoho_Puvi_Regular, sans-serif;
+--crm-font-mediumitalic: Zoho_Puvi_RegularItalic, sans-serif;
+--crm-font-semibold: Zoho_Puvi_Medium, sans-serif;
+--crm-font-semibolditalic: Zoho_Puvi_MediumItalic, sans-serif;
+--crm-font-bold: Zoho_Puvi_SemiBold, sans-serif;
+--crm-font-bolditalic: Zoho_Puvi_SemiBoldItalic, sans-serif;
+--crm-font-black: Zoho_Puvi_Bold, sans-serif;
+--crm-font-blackitalic: Zoho_Puvi_BoldItalic, sans-serif;
+--crm-font-light: Zoho_Puvi_Regular, sans-serif;
+--crm-font-italic: Zoho_Puvi_RegularItalic, sans-serif;
+--crm-font-thin: Zoho_Puvi_Regular, sans-serif;
+--crm-font-thinitalic: Zoho_Puvi_Regular, sans-serif;
+--crm-font-heavy: Zoho_Puvi_Bold, sans-serif;
+--crux-primary-font: Zoho_Puvi_Regular, sans-serif;
+--crux-bold-font: Zoho_Puvi_SemiBold, sans-serif;
+--crux-light-font: Zoho_Puvi_Regular, sans-serif;
+--crux-thin-font: Zoho_Puvi_Regular, sans-serif;
+--pf-font-light: Zoho_Puvi_Regular, sans-serif;
+--pf-font-regular: Zoho_Puvi_Regular, sans-serif;
+--pf-font-semibold: Zoho_Puvi_Medium, sans-serif;
+--pf-font-bold: Zoho_Puvi_SemiBold, sans-serif;
+--pf-font-black: Zoho_Puvi_Bold, sans-serif;
+--pf-font-mediumitalic: Zoho_Puvi_RegularItalic, sans-serif;
+--pf-font-semibolditalic: Zoho_Puvi_MediumItalic, sans-serif;
+--pf-font-bolditalic: Zoho_Puvi_SemiBoldItalic, sans-serif;
+--pf-font-blackitalic: Zoho_Puvi_BoldItalic, sans-serif;
+}
+@font-face {
+font-family:"Zoho_Puvi_Thin";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_ThinItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Thin.otf") format("opentype");
+}
+@font-face {    
+font-family:"Zoho_Puvi_Light";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_LightItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Light.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Regular";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_RegularItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Regular_Italic.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Medium";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_MediumItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Medium.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_SemiBold";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_SemiBoldItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Semibold_Italic.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Bold";
+font-weight:normal;
+font-style:normal;
+font-display:block;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_BoldItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Bold_Italic.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Black";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_Extrablack";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrablack.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_BlackItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Black.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_ExtraBold";
+font-weight:normal;
+font-style:normal;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.otf") format("opentype");
+}
+@font-face {
+font-family:"Zoho_Puvi_ExtraBoldItalic";
+font-weight:normal;
+font-style:italic;
+font-display:swap;
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot");
+src:url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.eot?#iefix") format("embedded-opentype"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.woff2") format("woff2"),
+url("//static.zohocdn.com/zohofonts/zohopuvi/4.0/Zoho_Puvi_Extrabold.otf") format("opentype");
+}
+.fontbold {
+font-weight: bold;
+}
+.crm-font-regular,.CanvasFontRegular,select, input, form, textarea, pre{
+font-family: var(--crm-font-regular);
+}*/
+.crm-font-regular{font-family: var(--crm-font-regular);}
+.crm-font-bold, .CanvasFontBold{
+font-family: var(--crm-font-bold);
+font-weight: var(--font-weight-bold);
+}
+.crm-font-xbold,.CanvasFontXbold {
+font-family: var(--crm-font-black);
+}
+.crm-font-regular-italic ,.CanvasFontRegularItalic{
+font-family: var(--crm-font-italic);
+}
+.crm-font-bold-italic,.CanvasFontBoldItalic{
+font-family:var(--crm-font-bolditalic);
+}
+.crm-font-xbold-italic,.CanvasFontXboldItalic {
+font-family: var(--crm-font-blackitalic);
+}
+.crm-font-thin,.CanvasFontThin{
+font-family: var(--crm-font-thin);
+}
+.crm-font-light,.CanvasFontLight{
+font-family: @lightFont;
+}
+.crm-font-medium{
+font-family:var(--crm-font-medium);
+}
+.crm-font-semibold , .CanvasFontSemibold{
+font-family: var(--crm-font-semibold);
+}
+.crm-font-thin-italic , .CanvasFontThinItalic{
+font-family: var(--crm-font-thinitalic);
+}
+.crm-font-light-italic , .CanvasFontLightItalic{
+font-family: var(--crm-font-lightitalic);
+}
+.crm-font-medium-italic{
+font-family: var(--crm-font-mediumitalic);
+}
+.crm-font-semibold-italic , .CanvasFontSemiboldItalic{
+font-family: var(--crm-font-semibolditalic);
+}
+:root{
+--crm-base-font-size: calc((14 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-medium-font-size: calc((15 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-extra-medium-font-size: calc((14 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-small-font-size: calc((13 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-extra-small-font-size: calc((11 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-medium-large-font-size: calc((18 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm-large-font-size: calc((20 / var(--crm_baseFontSize)) * var(--crm_baseFontUnit));
+--crm_baseFontSize: 16;
+--crm_baseFontUnit: 16px;
+--crm-medium-small-font-size: 1.2rem;
+}
+[data-size="small"]{
+--crm-base-font-size: 1.3rem;
+--crm-medium-font-size: 1.4rem;
+--crm-extra-medium-font-size: 1.3rem;
+--crm-small-font-size: 1.2rem;
+--crm-extra-small-font-size: 1.1rem;
+--crm-medium-large-font-size: 1.7rem;
+--crm-large-font-size: 1.9rem;
+}
+[data-size="large"]{
+--crm-base-font-size: 1.5rem;
+--crm-medium-font-size: 1.6rem;
+--crm-extra-medium-font-size: 1.5rem;
+--crm-small-font-size: 1.4rem;
+--crm-extra-small-font-size: 1.3rem;
+--crm-medium-large-font-size: 1.9rem;
+--crm-large-font-size: 2.1rem;
+}
+[data-size="largest"]{
+--crm-base-font-size: 1.6rem;
+--crm-medium-font-size: 1.7rem;
+--crm-extra-medium-font-size: 1.6rem;
+--crm-small-font-size: 1.5rem;
+--crm-extra-small-font-size: 1.4rem;
+--crm-medium-large-font-size: 2rem;
+--crm-large-font-size: 2.2rem;
+}
+[data-letterspacing="condensed"]{
+letter-spacing: -.5px;
+}
+[data-letterspacing="normal"]{
+letter-spacing: 0px;
+}
+[data-letterspacing="expanded"]{
+letter-spacing: .05px;	
+}
+[data-letterspacing="widen"]{
+letter-spacing: 1px;	
+}
+</style>
+<div class="crmErrorPgCont crmErrorHeight" data-zcqa="crm_error_page" data-errormessage="Sorry the page you have requested was not found"><div class="crmErrorPgBody"><div class="crmErrorPgImgContr"><!-- <span class="crmErrorPgImg"></span> -->
+<img class="crmErrorPgImg" data-image-mode='true' src='https://static.zohocdn.com/crm/images/crm-iam-errorPage_lightmode_2eb563c9ea6d989a69e2be6276245761_.png'/></div><div class="crmErrorInfoSection"><p class="crmErrorPgErrText1">Invalid URL</p> 
+<p class="crmErrorPgErrText2">Unable to process your request as the URL <span class='crmErrorUrl'>&#x2f;zohomail&#x2f;v2&#x2f;accounts&#x2f;8658834000000008002&#x2f;messages</span> is invalid.</p> <!-- No I18N -->
+<a class="crmErrorPgHomeLink" href="/crm/ShowHomePage.do">
+<button data-zcqa="home_errorPage" class = "primarybtn" >Go to Home page</button>
+</a></div></div><!-- No I18N -->
+<!-- Temporarily removing should handle this in CRM first-->
+<div class="crmErrorPgfooter"><div class="crmErrorPgfooterCont"><img src="https&#x3a;&#x2f;&#x2f;static.zohocdn.com&#x2f;crm&#x2f;CRMClient&#x2f;images&#x2f;crm_logo_04536e35e8162d631b95cf42593491cd_.svg"  alt="CRM" class="crmLogoImg"></div><span class="crmErrorPgfooterTxt">© 2025 Zoho Corp.All rights reserved.</span></div></div></body></html>
+ERROR 2025-09-22 18:29:10,261 email_helpers 14200 18052 Zoho Mail API error: {"status":{"code":500,"description":"Internal Error"},"data":{"moreInfo":"Given FromAddress not exists!"}}
+INFO 2025-09-22 18:38:11,135 email_helpers 3868 2044 Email sent to seunakanni417@gmail.com via Zoho API
+INFO 2025-09-22 18:41:43,204 email_helpers 3868 2044 Email sent to seunakanni417@gmail.com via Zoho API
+INFO 2025-09-22 18:51:02,101 email_helpers 20412 21140 Email sent to seunakanni417@gmail.com via Zoho API

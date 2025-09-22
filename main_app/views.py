@@ -684,20 +684,25 @@ class OrderViewSet(viewsets.ModelViewSet):
         }, status=status.HTTP_200_OK)
 
 
+# views.py
 class PlaceOrderView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        payment_method_id = request.data.get('payment_method_id')
         user = request.user
-        payment_method = PaymentMethod.objects.filter(id=payment_method_id).first()
+        payment_method_id = request.data.get('payment_method_id')
 
-        if not payment_method:
+        if not payment_method_id:
+            return Response({'error': 'payment_method_id is required'}, status=400)
+
+        # ✅ just validate existence instead of fetching object
+        if not PaymentMethod.objects.filter(id=payment_method_id).exists():
             return Response({'error': 'Invalid payment method'}, status=400)
 
+        # ✅ inject user and payment_method_id into request data
         data = request.data.copy()
         data['user_id'] = user.id
-        data['payment_method_id'] = payment_method.id  # type: ignore
+        data['payment_method_id'] = payment_method_id
 
         serializer = OrderSerializer(data=data, context={'request': request})
         if serializer.is_valid():
@@ -705,11 +710,11 @@ class PlaceOrderView(APIView):
 
             # ✅ Async email
             try:
-                if order.user_id and order.user_id.email: # type: ignore
-                    async_send_order_email(order.user_id.email, order, request=request) # type: ignore
-                    logger.info(f"Queued order confirmation email to {order.user_id.email}") # type: ignore
+                if order.user_id and order.user_id.email:  # type: ignore
+                    async_send_order_email(order.user_id.email, order, request=request)  # type: ignore
+                    logger.info(f"Queued order confirmation email to {order.user_id.email}")  # type: ignore
                 else:
-                    logger.warning(f"Order {order.order_id} has no user email.") # type: ignore
+                    logger.warning(f"Order {order.order_id} has no user email.")  # type: ignore
             except Exception as e:
                 logger.error(f"Failed to queue order email: {e}")
 
@@ -717,11 +722,12 @@ class PlaceOrderView(APIView):
 
             return Response({
                 'message': 'Order placed successfully!',
-                'order_id': order.order_id, # type: ignore
+                'order_id': order.order_id,  # type: ignore
                 'order': order_data
             }, status=201)
 
         return Response(serializer.errors, status=400)
+
 
 
 

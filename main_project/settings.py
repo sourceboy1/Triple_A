@@ -151,14 +151,23 @@ TEMPLATES = [
 WSGI_APPLICATION = 'main_project.wsgi.application'
 
 # Email Configuration - Fetch credentials from environment variables
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.zoho.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "tripleastech@tripleastechng.com") # Default for local, use env for production
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD") # MUST be set as an environment variable on Railway
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "Triple A's Technology <tripleastech@tripleastechng.com>")
-EMAIL_TIMEOUT = 10
+# Remove or comment out the old SMTP config
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_HOST = "smtp.zoho.com"
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "tripleastech@tripleastechng.com")
+# EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+# EMAIL_TIMEOUT = 10
+
+# ✅ Keep this since Zoho API needs it
+DEFAULT_FROM_EMAIL = os.getenv(
+    "DEFAULT_FROM_EMAIL", "Triple A's Technology <tripleastech@tripleastechng.com>"
+)
+
+# ✅ Add a fallback domain (used in email_helpers.py if request is None)
+SITE_DOMAIN = os.getenv("SITE_DOMAIN", "tripleastechng.com")
+
 
 # Database
 # Use dj_database_url to parse the DATABASE_URL environment variable from Railway
