@@ -529,23 +529,25 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Order
 from .serializers import OrderSerializer
 import requests
-# utils/email_helpers_async.py
-import threading, logging
-from .utils.email_helpers import send_order_email
+from .utils.email_helpers import validate_signed_token, format_price, generate_signed_link
+from .utils.email_helpers import send_order_email as sync_send_order_email  # synchronous function
 
 logger = logging.getLogger(__name__)
 
+
 def async_send_order_email(to_email, order, request=None):
+    """
+    Fire-and-forget email sending in background thread.
+    Uses the sync_send_order_email defined in utils.email_helpers.
+    """
     def task():
         try:
-            send_order_email(to_email, order, request=request)
-            logger.info(f"[ASYNC] Order confirmation email sent to {to_email}")
+            sync_send_order_email(to_email, order, request=request)
+            logger.info("[ASYNC] Order confirmation email sent to %s", to_email)
         except Exception as e:
-            logger.error(f"[ASYNC] Failed to send order email: {e}")
+            logger.exception("[ASYNC] Failed to send order email to %s: %s", to_email, e)
 
     threading.Thread(target=task, daemon=True).start()
-
-
 
 
 class OrderViewSet(viewsets.ModelViewSet):
@@ -554,70 +556,76 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        return Order.objects.filter(user_id=user.id)  # type: ignore # ✅ correct FK usage
+        return Order.objects.filter(user_id=user.id)
 
     def perform_create(self, serializer):
-        """Automatically send email after order creation"""
-        order = serializer.save()
-        try:
-            if order.user_id and order.user_id.email:  # ✅ safe access
-                async_send_order_email(order.user_id.email, order, request=self.request)
-                logger.info(f"Queued order confirmation email to {order.user_id.email}")
-            else:
-                logger.warning(f"Order {order.order_id} has no user email.")
-        except Exception as e:
-            logger.error(f"Failed to queue order email: {e}")
-
-    @action(detail=True, methods=["get"], url_path="details", authentication_classes=[], permission_classes=[])
-    def details(self, request, pk=None):
         """
-        View order details securely via signed token (no login required).
+        Save order then attempt to queue an order confirmation email.
+        Use order.order_id when constructing signed links and accessing pk.
+        """
+        order = serializer.save()
+
+        try:
+            user_email = None
+            if getattr(order, "user_id", None) and getattr(order.user_id, "email", None):
+                user_email = order.user_id.email
+
+            if user_email:
+                async_send_order_email(user_email, order, request=self.request)
+                logger.info("Queued order confirmation email to %s", user_email)
+            else:
+                logger.warning("Order %s has no user email", getattr(order, "order_id", "unknown"))
+        except Exception as e:
+            logger.exception("Failed to queue order email: %s", e)
+
+    @action(detail=True, methods=["get"], url_path="view", authentication_classes=[], permission_classes=[])
+    def view_signed(self, request, pk=None):
+        """
+        Public (token-based) view — no login required.
+        Must be called with ?token=<signed_token>.
         """
         token = request.query_params.get("token")
-
         if not token:
-            return Response({"error": "Missing signed token"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "Missing token"}, status=status.HTTP_400_BAD_REQUEST)
 
-        order_id = validate_signed_token(token)
-
-        if not order_id:
+        order_order_id = validate_signed_token(token)
+        if not order_order_id:
             return Response({"error": "Invalid or expired token"}, status=status.HTTP_403_FORBIDDEN)
 
+        # lookup by order_id (primary key name)
         try:
-            order = Order.objects.get(pk=order_id)
-        except Order.DoesNotExist:
+            order = get_object_or_404(Order, order_id=order_order_id)
+        except Exception:
             return Response({"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = self.get_serializer(order)
-        return Response(serializer.data)
+        return Response({"order": serializer.data}, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=["post"], url_path="cancel", authentication_classes=[], permission_classes=[])
-    def cancel(self, request, pk=None):
+    def cancel_signed(self, request, pk=None):
         """
-        Cancel an order securely via signed token (no login required).
+        Cancel via token (no login required) — token authenticates the action.
+        POST to /orders/<pk>/cancel/?token=<token>
         """
         token = request.query_params.get("token")
-
         if not token:
-            return Response({"error": "Missing signed token"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "Missing token"}, status=status.HTTP_400_BAD_REQUEST)
 
-        order_id = validate_signed_token(token)
-
-        if not order_id:
+        order_order_id = validate_signed_token(token)
+        if not order_order_id:
             return Response({"error": "Invalid or expired token"}, status=status.HTTP_403_FORBIDDEN)
 
         try:
-            order = Order.objects.get(pk=order_id)
-        except Order.DoesNotExist:
+            order = get_object_or_404(Order, order_id=order_order_id)
+        except Exception:
             return Response({"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND)
 
         if order.status in ["cancelled", "delivered"]:
-            return Response({"error": "Order cannot be cancelled"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "Order cannot be cancelled."}, status=status.HTTP_400_BAD_REQUEST)
 
         order.status = "cancelled"
         order.save()
-
-        return Response({"message": f"Order #{order.order_id} has been cancelled."})
+        return Response({"message": f"Order #{order.order_id} has been cancelled."}, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['post'])
     def confirm_payment(self, request, pk=None):

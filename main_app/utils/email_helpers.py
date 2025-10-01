@@ -4,10 +4,10 @@ import requests
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.core.signing import TimestampSigner, SignatureExpired, BadSignature
-from django.urls import reverse
 from django.utils.http import urlencode
 
 logger = logging.getLogger(__name__)
+
 
 # === Helper to get a fresh Zoho access token ===
 def get_zoho_access_token():
@@ -31,27 +31,37 @@ def get_zoho_access_token():
     data = resp.json()
     return data["access_token"]
 
+
 # === Secure signed link generator ===
-def generate_signed_link(order_id, path, domain, expires_in=172800):
+def generate_signed_link(order_order_id: int, path: str, domain: str, expires_in: int = 172800) -> str:
     """
     Create a signed URL that expires after `expires_in` seconds (default 48 hours).
+    order_order_id: the value in Order.order_id (primary key)
+    path: path starting with "/" (e.g. "/orders/123/view/")
+    domain: domain only, no scheme (e.g. "tripleastechng.com")
     """
     signer = TimestampSigner()
-    token = signer.sign(str(order_id))
+    token = signer.sign(str(order_order_id))
     url = f"https://{domain}{path}?{urlencode({'token': token})}"
     return url
 
-def validate_signed_token(token, max_age=172800):
+
+def validate_signed_token(token: str, max_age: int = 172800):
     """
     Validate a signed token (max_age default = 48h).
-    Returns order_id if valid, None if invalid/expired.
+    Returns order_order_id (int) if valid, otherwise None.
     """
     signer = TimestampSigner()
     try:
         unsigned = signer.unsign(token, max_age=max_age)
-        return int(unsigned)  # order_id
-    except (SignatureExpired, BadSignature):
+        return int(unsigned)
+    except SignatureExpired:
+        logger.info("Signed token expired")
         return None
+    except BadSignature:
+        logger.warning("Bad signed token")
+        return None
+
 
 # === Generic Zoho send mail function ===
 def send_zoho_mail(to_email, subject, plain_message, html_message=None):
@@ -79,46 +89,53 @@ def send_zoho_mail(to_email, subject, plain_message, html_message=None):
     if html_message:
         payload["content"] = html_message
 
-    resp = requests.post(url, headers=headers, json=payload)
+    resp = requests.post(url, headers=headers, json=payload, timeout=20)
 
     if resp.status_code != 200:
         logger.error("Zoho Mail API error: %s", resp.text)
         raise Exception(f"Zoho Mail API error: {resp.text}")
 
     logger.info("Email sent to %s via Zoho API", to_email)
-    print(f"[INFO] Email sent to {to_email} via Zoho API")
     return True
+
 
 # === Helper: format prices with ₦ and thousand separators ===
 def format_price(amount):
     try:
-        return f"₦{int(amount):,}"
+        # rounds/truncates decimals — use more precise formatting if needed
+        return f"₦{int(round(float(amount))):,}"
     except Exception:
         return f"₦{amount}"
 
+
 # === Order confirmation email ===
 def send_order_email(user_email, order, request=None):
-    domain = request.get_host() if request else getattr(settings, 'SITE_DOMAIN', 'tripleastechng.com')
+    """
+    order is the Order model instance that has:
+      - order.order_id (primary key)
+      - order.user_id (FK to user) or None
+      - order.total_amount, etc.
+    """
+    domain = request.get_host() if request else getattr(settings, "SITE_DOMAIN", "tripleastechng.com")
 
     try:
-        cart_items = order.cart_items.select_related("product").all()
+        # Try common related name; fallback to orderitem_set
+        try:
+            cart_items = order.cart_items.select_related("product").all()
+        except Exception:
+            cart_items = getattr(order, "orderitem_set").select_related("product").all()
     except Exception:
-        cart_items = getattr(order, 'orderitem_set').select_related("product").all()
+        cart_items = []
 
     subject = f"Order #{order.order_id} Received — Awaiting Payment"
     status_message = "We received your order and will notify you once payment is confirmed."
 
-    # 🔐 Generate secure links (48h expiry)
-    view_order_url = generate_signed_link(
-        order.id,  # use pk
-        reverse("order-details", args=[order.id]),
-        domain
-    )
-    cancel_order_url = generate_signed_link(
-        order.id,
-        reverse("order-cancel", args=[order.id]),
-        domain
-    )
+    # Build paths (explicit strings so reverse/name mismatches won't break)
+    view_path = f"/orders/{order.order_id}/view/"
+    cancel_path = f"/orders/{order.order_id}/cancel/"
+
+    view_order_url = generate_signed_link(order.order_id, view_path, domain)
+    cancel_order_url = generate_signed_link(order.order_id, cancel_path, domain)
 
     plain_message = (
         f"Thank you for your order!\n\n"
@@ -130,25 +147,31 @@ def send_order_email(user_email, order, request=None):
         "Thanks for shopping with Triple A."
     )
 
-    html_message = render_to_string("emails/order_confirmation.html", {
-        "order": order,
-        "cart_items": cart_items,
-        "domain": domain,
-        "view_order_url": view_order_url,
-        "cancel_order_url": cancel_order_url,
-        "status_message": status_message,
-        "format_price": format_price
-    })
+    html_message = render_to_string(
+        "emails/order_confirmation.html",
+        {
+            "order": order,
+            "cart_items": cart_items,
+            "domain": domain,
+            "view_order_url": view_order_url,
+            "cancel_order_url": cancel_order_url,
+            "status_message": status_message,
+            "format_price": format_price,
+        },
+    )
 
     try:
         send_zoho_mail(user_email, subject, plain_message, html_message)
+        logger.info("Order confirmation email sent (sync) to %s", user_email)
     except Exception as e:
-        logger.exception("Failed to send order confirmation email: %s", e)
-        print(f"[ERROR] Failed to send order email: {e}")
+        logger.exception("Failed to send order confirmation email to %s: %s", user_email, e)
+        # bubble up or swallow depending on desired behavior; currently we log and continue
+        raise
+
 
 # === Order status email ===
 def send_order_status_email(user_email, order, request=None):
-    domain = request.get_host() if request else getattr(settings, 'SITE_DOMAIN', 'tripleastechng.com')
+    domain = request.get_host() if request else getattr(settings, "SITE_DOMAIN", "tripleastechng.com")
 
     if order.status == "ready_for_pickup":
         subject = f"Order #{order.order_id} — Ready for Pickup"
@@ -166,12 +189,8 @@ def send_order_status_email(user_email, order, request=None):
         subject = f"Update on Order #{order.order_id}"
         status_message = f"Your order status is now: {order.get_status_display()}"
 
-    # 🔐 Secure view link (48h expiry)
-    view_order_url = generate_signed_link(
-        order.id,
-        reverse("order-details", args=[order.id]),
-        domain
-    )
+    view_path = f"/orders/{order.order_id}/view/"
+    view_order_url = generate_signed_link(order.order_id, view_path, domain)
 
     plain_message = (
         f"Hello {order.first_name},\n\n"
@@ -180,19 +199,24 @@ def send_order_status_email(user_email, order, request=None):
         "Thank you for shopping with Triple A."
     )
 
-    html_message = render_to_string("emails/order_status_update.html", {
-        "order": order,
-        "status_message": status_message,
-        "domain": domain,
-        "view_order_url": view_order_url,
-        "format_price": format_price
-    })
+    html_message = render_to_string(
+        "emails/order_status_update.html",
+        {
+            "order": order,
+            "status_message": status_message,
+            "domain": domain,
+            "view_order_url": view_order_url,
+            "format_price": format_price,
+        },
+    )
 
     try:
         send_zoho_mail(user_email, subject, plain_message, html_message)
+        logger.info("Order status email sent to %s", user_email)
     except Exception as e:
-        logger.exception("Failed to send order status email: %s", e)
-        print(f"[ERROR] Failed to send status update email: {e}")
+        logger.exception("Failed to send order status email to %s: %s", user_email, e)
+        raise
+
 
 # === Password reset email ===
 def send_password_reset_email(user, reset_link):
@@ -204,13 +228,10 @@ def send_password_reset_email(user, reset_link):
         "If you did not request this, ignore this email."
     )
 
-    html_message = render_to_string("emails/password_reset.html", {
-        "user": user,
-        "reset_link": reset_link,
-    })
+    html_message = render_to_string("emails/password_reset.html", {"user": user, "reset_link": reset_link})
 
     try:
         send_zoho_mail(user.email, subject, plain_message, html_message)
     except Exception as e:
-        logger.exception("Failed to send password reset email: %s", e)
-        print(f"[ERROR] Failed to send password reset email: {e}")
+        logger.exception("Failed to send password reset email to %s: %s", user.email, e)
+        raise
