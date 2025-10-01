@@ -531,6 +531,7 @@ from .serializers import OrderSerializer
 import requests
 from .utils.email_helpers import validate_signed_token, format_price, generate_signed_link
 from .utils.email_helpers import send_order_email as sync_send_order_email  # synchronous function
+import threading
 
 logger = logging.getLogger(__name__)
 
