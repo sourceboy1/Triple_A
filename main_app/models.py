@@ -283,7 +283,7 @@ class Order(models.Model):
     payment_method_id = models.ForeignKey('main_app.PaymentMethod', on_delete=models.CASCADE, null=True, blank=True)
     shipping_cost = models.DecimalField(max_digits=10, decimal_places=2, default=0)  # type: ignore
 
-    status = models.CharField(max_length=30, choices=ORDER_STATUS_CHOICES, default='pending')
+    status = models.CharField(max_length=50, choices=ORDER_STATUS_CHOICES, default='pending')
 
     transaction_reference = models.CharField(max_length=255, null=True, blank=True)
     payment_confirmed = models.BooleanField(default=False)
