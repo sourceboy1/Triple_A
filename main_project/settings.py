@@ -85,6 +85,7 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     'cloudinary',
     'products',
+    "django.contrib.humanize",
 ]
 
 MIDDLEWARE = [
