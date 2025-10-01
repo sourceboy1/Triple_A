@@ -23,6 +23,10 @@
     padding: 20px 0;
 }
 
+.product-catalog-page h1{
+    color: green;
+}
+
 .product-slider {
     display: flex;
     flex-wrap: nowrap; /* Keep items in a single row */
@@ -216,7 +220,7 @@
 @media (max-width: 480px) {
     .product-catalog-page {
         padding: 50px 10px;
-        margin-top: 50px;
+        margin-top: 65px;
     }
     .catalog-main-title {
         font-size: 1.8rem;

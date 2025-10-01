@@ -5,7 +5,7 @@ import api from '../Api';
 import './ProductCatalog.css';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
-const FEATURED_PRODUCT_IDS = [22, 23, 24];
+const FEATURED_PRODUCT_IDS = [22, 23, 24, 81, 82];
 
 const ProductCatalog = () => {
   const [products, setProducts] = useState([]);
