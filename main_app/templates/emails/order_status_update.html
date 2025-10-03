@@ -41,12 +41,13 @@
         }
         .button {
             display: inline-block;
-            margin-top: 15px;
+            margin-top: 20px;
             padding: 12px 20px;
             background: #3498db;
             color: white !important;
             text-decoration: none;
             border-radius: 6px;
+            font-weight: bold;
         }
         .button:hover {
             background: #2980b9;
@@ -84,8 +85,11 @@
             <p><strong>Placed On:</strong> {{ order.created_at|date:"F j, Y, g:i a" }}</p>
         </div>
 
-        <p>
-            <a href="{{ secure_view_order_url }}" class="button">View My Order</a>
+        <!-- Button link to orders page -->
+        <p style="text-align: center;">
+            <a href="https://tripleastechng.com/user/orders/" class="button" target="_blank">
+                View My Orders
+            </a>
         </p>
 
         <div class="footer">
