@@ -137,16 +137,43 @@ def send_order_email(user_email, order, request=None):
     view_order_url = generate_signed_link(order.order_id, view_path, domain)
     cancel_order_url = generate_signed_link(order.order_id, cancel_path, domain)
 
+    # --- Plain text email ---
+    plain_items = ""
+    if cart_items:
+        plain_items += "\nOrder Items:\n"
+        for item in cart_items:
+            subtotal = item.quantity * item.price
+            plain_items += f"- {item.product.name} (x{item.quantity}) — {format_price(subtotal)}\n"
+
+    # Shipping info
+    if order.shipping_method and "pick" in order.shipping_method.lower():
+        shipping_info = (
+            "\nPickup at Store:\n"
+            "Triple A's Technology\n"
+            "2 Oba Akran, Ikeja, Lagos\n"
+            "Phone: +2348023975782\n"
+        )
+    else:
+        shipping_info = (
+            f"\nShipping To:\n"
+            f"{order.first_name} {order.last_name}\n"
+            f"{order.address}, {order.city}, {order.state}, {order.country} - {order.postal_code}\n"
+            f"Phone: {order.phone}\n"
+        )
+
     plain_message = (
         f"Thank you for your order!\n\n"
         f"Order ID: #{order.order_id}\n"
         f"Total: {format_price(order.total_amount)}\n\n"
-        f"{status_message}\n\n"
+        f"{status_message}\n"
+        f"{plain_items}\n"
+        f"{shipping_info}\n"
         f"View your order (48h): {view_order_url}\n"
         f"Cancel your order (48h): {cancel_order_url}\n\n"
         "Thanks for shopping with Triple A."
     )
 
+    # --- HTML email ---
     html_message = render_to_string(
         "emails/order_confirmation.html",
         {
@@ -165,14 +192,24 @@ def send_order_email(user_email, order, request=None):
         logger.info("Order confirmation email sent (sync) to %s", user_email)
     except Exception as e:
         logger.exception("Failed to send order confirmation email to %s: %s", user_email, e)
-        # bubble up or swallow depending on desired behavior; currently we log and continue
         raise
+
 
 
 # === Order status email ===
 def send_order_status_email(user_email, order, request=None):
     domain = request.get_host() if request else getattr(settings, "SITE_DOMAIN", "tripleastechng.com")
 
+    # Try fetching cart items like in confirmation
+    try:
+        try:
+            cart_items = order.cart_items.select_related("product").all()
+        except Exception:
+            cart_items = getattr(order, "orderitem_set").select_related("product").all()
+    except Exception:
+        cart_items = []
+
+    # Subject + status message
     if order.status == "ready_for_pickup":
         subject = f"Order #{order.order_id} — Ready for Pickup"
         status_message = "✅ Your order is ready for pickup! Address: 2 Oba Akran, Ikeja, Lagos"
@@ -189,20 +226,33 @@ def send_order_status_email(user_email, order, request=None):
         subject = f"Update on Order #{order.order_id}"
         status_message = f"Your order status is now: {order.get_status_display()}"
 
+    # Signed view link
     view_path = f"/orders/{order.order_id}/view/"
     view_order_url = generate_signed_link(order.order_id, view_path, domain)
+
+    # --- Plain text email ---
+    plain_items = ""
+    if cart_items:
+        plain_items += "\nOrder Items:\n"
+        for item in cart_items:
+            subtotal = item.quantity * item.price
+            plain_items += f"- {item.product.name} (x{item.quantity}) — {format_price(subtotal)}\n"
 
     plain_message = (
         f"Hello {order.first_name},\n\n"
         f"{status_message}\n\n"
+        f"Order Total: {format_price(order.total_amount)}\n"
+        f"{plain_items}\n"
         f"View your order (48h): {view_order_url}\n\n"
         "Thank you for shopping with Triple A."
     )
 
+    # --- HTML email ---
     html_message = render_to_string(
         "emails/order_status_update.html",
         {
             "order": order,
+            "cart_items": cart_items,   # ✅ include cart items
             "status_message": status_message,
             "domain": domain,
             "view_order_url": view_order_url,
@@ -216,6 +266,7 @@ def send_order_status_email(user_email, order, request=None):
     except Exception as e:
         logger.exception("Failed to send order status email to %s: %s", user_email, e)
         raise
+
 
 
 # === Password reset email ===
