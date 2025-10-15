@@ -1,0 +1,304 @@
+:root{
+  --navbar-bg: #ffffff;
+  --badge-bg: #16a34a; /* green */
+  --text: #1f2937;
+  --muted: #6b7280;
+  --shadow: 0 8px 24px rgba(15,23,42,0.06);
+}
+
+/* ---------- NAVBAR ---------- */
+.navbar{
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1200;
+  width: calc(100% - 32px);
+  max-width: 1400px;
+  background: var(--navbar-bg);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 12px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: width .2s ease;
+}
+
+/* Inner row: logo left, icons right */
+.navbar-inner{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
+/* Left: Logo + name */
+.company-logo-link{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.company-logo{
+  height: 44px;
+  width: 44px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.company-name{
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+/* Right: icon group */
+.navbar-right{
+  display:flex;
+  align-items:center;
+  gap: 14px;
+}
+
+/* Generic icon button */
+.icon-btn{
+  position: relative;
+  display:flex;
+  align-items:center;
+  gap:5px;
+  padding:6px 8px;
+  border-radius:8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background .12s ease, transform .08s ease;
+}
+
+.icon-btn:hover{
+  background: white;
+  transform: translateY(-3px);
+}
+
+/* Icons */
+.user-icon,
+.wishlist-icon,
+.cart-icon{
+  height: 30px;
+  width: 30px;
+  object-fit: contain;
+  display:block;
+}
+
+/* Greeting next to the user icon */
+.greeting{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  line-height:1;
+}
+
+.greet-small{
+  font-size: .72rem;
+  color: var(--muted);
+  margin:0;
+}
+
+.greet-name{
+  font-size: .92rem;
+  font-weight: 700;
+  color: var(--text);
+  margin:0;
+}
+
+/* Badge style (shared) */
+.badge{
+  position:absolute;
+  top: -8px;
+  right: 15px;
+  background: var(--badge-bg);
+  color: white;
+  min-width: 17px;
+  height: 28px;
+  line-height: 28px;
+  font-size: 0.82rem;
+  text-align: center;
+  border-radius: 50%;
+  padding: 0 5px;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  transform: translate(0, 0);
+  display: inline-block;
+  font-weight: 700;
+}
+
+/* Fine tune badges for wishlist and cart to sit visually on the icon top-right */
+.wishlist-badge{
+  top: -16px;
+  right: -13px;
+}
+
+.cart-badge{
+  top: -4px;
+  right: -1px;
+}
+
+/* Search row */
+.search-row{
+  display:flex;
+  justify-content:center;
+  width:100%;
+  margin-top: -45px;
+}
+
+.search-input-wrapper{
+  width: 70%;
+  max-width: 600px;
+  min-width: 240px;
+  display:flex;
+  align-items:center;
+  position:relative;
+  background: white;
+  border-radius: 999px;
+  padding: 8px;
+  height: 46px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.03);
+  margin-right: 30px;
+}
+
+.search-input{
+  flex:1;
+  border:none;
+  background: transparent;
+  outline:none;
+  padding: 8px 14px;
+  font-size: 1rem;
+  color: var(--text);
+  border-radius: 999px;
+}
+
+.search-input::placeholder{
+  color: #9ca3af;
+}
+
+/* Search button on right inside the pill */
+.search-button{
+  width:44px;
+  height:36px;
+  border-radius: 999px;
+  border:none;
+  background:transparent;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  margin-right:4px;
+}
+
+.search-button img{
+  width:20px;
+  height:20px;
+  object-fit:contain;
+  filter: none;
+}
+
+/* ---------- RESPONSIVE ---------- */
+/* Medium screens - reduce spacing */
+@media (max-width: 1024px){
+  .company-name{ font-size: 1.02rem; }
+  .search-input-wrapper{ width: 82%; max-width: 640px; margin-top: 23px; }
+}
+
+/* Mobile: stack layout - show search as full width row under top row */
+@media (max-width: 768px){
+  .navbar{
+    top: 8px;
+    padding: 10px 12px;
+    width: calc(100% - 16px);
+    border-radius: 10px;
+  }
+
+  .company-logo{ height:40px; width:40px; }
+  .company-name{ font-size: 1rem; }
+
+  .navbar-inner{
+    gap:8px;
+  }
+
+  /* Collapse greeting text to save space */
+  .greeting{ display:none; }
+
+  /* icons smaller */
+  .user-icon, .wishlist-icon, .cart-icon{ height:24px; width:24px; }
+
+  /* Badges slightly smaller and shifted */
+  .badge{ top: 5px; right: -6px; min-width:20px; height:20px; line-height:20px; font-size:.78rem; }
+
+  .wishlist-badge{top: -6px; right: -17px;}
+
+  /* Search becomes nearly full-width and smaller height */
+  .search-input-wrapper{
+    width: 65%;
+    height:40px;
+    padding:6px 8px;
+    
+  }
+
+  .search-input{ font-size: .95rem; padding:6px 10px; }
+  .search-button{ width: 40px; height: 32px; }
+  .search-button img{ width:18px; height:18px; }
+}
+
+/* Small phones: more compact and icons moved below the logo only at <=480px */
+@media (max-width: 480px){
+  .navbar{
+    padding: 8px 10px;
+    width: calc(100% - 12px);
+    border-radius: 8px;
+  }
+
+  /* keep logo small */
+  .company-logo{ height:28px; width:28px; }
+
+  .company-name{ font-size: .80rem; }
+
+  .icon-btn{ gap:4px; padding:4px 6px; }
+  .user-icon, .wishlist-icon, .cart-icon{ height:22px; width:22px; }
+  .badge{ top:-4px; right:-5px; min-width:18px; height:20px; line-height:20px; font-size:.7rem; border-width:1.5px; }
+
+  .search-input-wrapper{ height:36px; margin-top: 28px; }
+  .search-input{ font-size:.9rem; padding:6px 8px; margin-left: 33px; }
+  .search-button img{ width:16px; height:16px; }
+
+  /* ---------- ADDED: stack logo+name above icons ONLY at this breakpoint ---------- */
+
+  /* make the top row stack vertically so icons sit under logo+name */
+  .navbar-inner{
+    flex-direction: column;
+    align-items: center; /* center logo and icons */
+    gap: 6px;
+  }
+
+  /* center the left area (logo + name) */
+  .navbar-left{
+    width: 100%;
+    display: flex;
+  }
+
+  /* place icons on their own centered row under the logo */
+  .navbar-right{
+    width: 100%;
+    display: flex;
+    justify-content: right;
+    gap: 12px;
+    margin-top: -13px;
+  }
+
+  /* ensure badges on the centered icons still position nicely */
+  .wishlist-badge{ top: -10px; right: -12px; }
+  .cart-badge{ top: -2px; right: -2px; }
+}

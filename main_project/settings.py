@@ -26,11 +26,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 FRONTEND_DIR = BASE_DIR / 'reat_project' / 'build'
 
 # --- IMPORTANT: Load .env.local first, then .env for local development only ---
-# Railway will handle environment variables directly.
-# This ensures .env.local can override .env for local testing if needed.
+# This block ensures .env.local overrides .env for local testing.
+# Railway will handle environment variables directly, which take ultimate precedence
+# over files loaded by `dotenv`.
 if os.path.exists(BASE_DIR / ".env.local"):
+    # Load .env.local and override any existing environment variables
     load_dotenv(BASE_DIR / ".env.local", override=True)
 elif os.path.exists(BASE_DIR / ".env"):
+    # If .env.local doesn't exist, load .env
     load_dotenv(BASE_DIR / ".env")
 
 
@@ -39,7 +42,8 @@ elif os.path.exists(BASE_DIR / ".env"):
 SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key-for-local-dev-please-change-me")
 
 # DEBUG should be False in production. Railway will set this via environment variables.
-DEBUG = config("DEBUG", default=False, cast=bool)
+# Using os.getenv here allows environment variables to override values from .env files.
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 # Paystack keys from environment variables
 PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY")
@@ -55,11 +59,6 @@ CORS_ALLOW_CREDENTIALS = True
 # from environment variables, falling back to safe defaults for local development.
 # On Railway, you should set DJANGO_ALLOWED_HOSTS, DJANGO_CSRF_TRUSTED_ORIGINS,
 # and DJANGO_CORS_ALLOWED_ORIGINS as environment variables.
-
-# Example env var format:
-# DJANGO_ALLOWED_HOSTS=tripleastechng.com,www.tripleastechng.com,crossover.proxy.rlwy.net,metro.proxy.rlwy.net,your-railway-app-name-production.up.railway.app
-# DJANGO_CSRF_TRUSTED_ORIGINS=https://tripleastechng.com,https://www.tripleastechng.com,https://crossover.proxy.rlwy.net,https://metro.proxy.rlwy.net,https://your-railway-app-name-production.up.railway.app
-# DJANGO_CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000,http://localhost:8000,http://127.0.0.1:8000,https://tripleastechng.com,https://www.tripleastechng.com,https://crossover.proxy.rlwy.net,https://metro.proxy.rlwy.net,https://your-railway-app-name-production.up.railway.app
 
 ALLOWED_HOSTS_STR = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(',')
 ALLOWED_HOSTS = [h.strip() for h in ALLOWED_HOSTS_STR if h.strip()]
@@ -152,31 +151,24 @@ TEMPLATES = [
 WSGI_APPLICATION = 'main_project.wsgi.application'
 
 # Email Configuration - Fetch credentials from environment variables
-# Remove or comment out the old SMTP config
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_HOST = "smtp.zoho.com"
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "tripleastech@tripleastechng.com")
-# EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-# EMAIL_TIMEOUT = 10
-
-# ✅ Keep this since Zoho API needs it
+# Keep this since Zoho API needs it
 DEFAULT_FROM_EMAIL = os.getenv(
     "DEFAULT_FROM_EMAIL", "Triple A's Technology <tripleastech@tripleastechng.com>"
 )
 
-# ✅ Add a fallback domain (used in email_helpers.py if request is None)
+# Add a fallback domain (used in email_helpers.py if request is None)
 SITE_DOMAIN = os.getenv("SITE_DOMAIN", "tripleastechng.com")
 
 
 # Database
-# Use dj_database_url to parse the DATABASE_URL environment variable from Railway
-raw_database_url = os.environ.get("DATABASE_URL", "") or ""
-raw_database_url = raw_database_url.strip()
+# Use dj_database_url to parse the DATABASE_URL environment variable.
+# The `os.environ.get("DATABASE_URL")` will fetch from environment variables first.
+# If running locally, this will be the value loaded from .env.local (or .env).
+# If on Railway, it will be the actual Railway environment variable.
+raw_database_url = os.environ.get("DATABASE_URL")
 
 # Treat obvious garbage values as "not provided"
-if raw_database_url in ("", "://", None):
+if not raw_database_url or raw_database_url.strip() in ("", "://"):
     USE_SQLITE_FALLBACK = True
 else:
     USE_SQLITE_FALLBACK = False
@@ -193,7 +185,7 @@ else:
     # Try to parse the url; if parsing fails, fallback to sqlite
     try:
         DATABASES = {
-            "default": dj_database_url.parse(raw_database_url, conn_max_age=600)
+            "default": dj_database_url.parse(raw_database_url, conn_max_age=600) # type: ignore
         }
     except Exception as e:
         # Log the exception if you have logging available, then fallback

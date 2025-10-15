@@ -430,18 +430,7 @@
   height: 50px; /* Increased the size of the cart icon */
 }
 
-.cart-count {
-  position: absolute;
-  top: -4px;
-  right: -6px;
-  background-color: green; /* Changed background color to dark green */
-  color: white;
-  border-radius: 50%;
-  padding: 4px 8px; /* Increased padding for better visibility */
-  font-size: 14px; /* Increased font size */
-  font-weight: bold;
-  
-}
+
 .wishlist-link {
   position: relative;
 }
@@ -502,17 +491,6 @@
 
 }
 
-.wishlist-count {
-  background-color: green;
-  color: white;
-  border-radius: 50%;
-  padding: 4px 10px;
-  font-size: 14px;
-  font-weight: bold;
-  margin-right: 2px;
-  margin-bottom: 35px;
-
-}
 
 .wishlist-dropdown {
   position: absolute;
