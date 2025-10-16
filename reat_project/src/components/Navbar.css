@@ -338,12 +338,12 @@
   .navbar { padding: 8px 10px; width: calc(100% - 12px); border-radius: 8px; }
   .company-logo { height: 28px; width: 28px; }
   .company-name { font-size: .80rem; }
-  .icon-btn { gap: 4px; padding: 4px 6px; }
+  .icon-btn { gap: 2px; padding: 4px 6px; }
   .user-icon, .wishlist-icon, .cart-icon { height: 22px; width: 22px; }
   .badge { top: -4px; right: -5px; min-width: 18px; height: 20px; line-height: 20px; font-size: .7rem; border-width: 1.5px; }
   .navbar-inner { flex-direction: column; align-items: center; gap: 6px; }
-  .navbar-left { width: 100%; display: flex; justify-content: center; gap: 8px; align-items: center; }
-  .navbar-right { width: 100%; display: flex; justify-content: center; gap: 12px; margin-top: -13px; }
+  .navbar-left { width: 100%; display: flex; justify-content: start;  align-items: center; }
+  .navbar-right { width: 100%; display: flex; justify-content: end; gap: 12px; margin-top: -13px; }
   .wishlist-badge { top: -10px; right: -12px; }
   .cart-badge { top: -2px; right: -2px; }
   .search-input-wrapper { margin-top: 28px; height: 36px; padding: 6px 8px; }
