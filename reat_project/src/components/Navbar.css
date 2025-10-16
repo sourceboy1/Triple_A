@@ -1,13 +1,18 @@
-:root{
+:root {
   --navbar-bg: #ffffff;
   --badge-bg: #16a34a; /* green */
   --text: #1f2937;
   --muted: #6b7280;
-  --shadow: 0 8px 24px rgba(15,23,42,0.06);
+  --shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  --suggestion-bg: #ffffff;
+  --suggestion-border: #e2e8f0;
+  --suggestion-hover-bg: #f3f4f6;
+  --suggestion-focused-bg: #e0f2f1; /* Light teal for focused item */
+  --suggestion-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 /* ---------- NAVBAR ---------- */
-.navbar{
+.navbar {
   position: fixed;
   top: 12px;
   left: 50%;
@@ -26,7 +31,7 @@
 }
 
 /* Inner row: logo left, icons right */
-.navbar-inner{
+.navbar-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -35,51 +40,72 @@
 }
 
 /* Left: Logo + name */
-.company-logo-link{
-  display:flex;
-  align-items:center;
-  gap:10px;
+.company-logo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   text-decoration: none;
   color: inherit;
+  /* Make sure the clickable logo area is above the search input (fix overlap) */
+  position: relative;
+  z-index: 1300; /* higher than search inputs so clicks reach the logo */
+  padding: 6px; /* increases clickable area around image */
+  border-radius: 10px;
+  cursor: pointer;
 }
 
-.company-logo{
+.company-logo-link:hover {
+  /* subtle hover feedback around the clickable area (not underline) */
+  background: white;
+}
+
+/* Logo image itself */
+.company-logo {
   height: 44px;
   width: 44px;
   object-fit: cover;
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  display: block;
 }
 
-.company-name{
-  font-size: 1.15rem;
+/* Company name is plain text now (no link) */
+.company-name_name {
+  font-size: 1.45rem;
   font-weight: 700;
-  color: var(--text);
+  color: forestgreen;
   white-space: nowrap;
+  /* remove underline and pointer cursor */
+  text-decoration: none;
+  cursor: default;
+  margin-left: 8px;
 }
 
 /* Right: icon group */
-.navbar-right{
-  display:flex;
-  align-items:center;
+.navbar-right {
+  display: flex;
+  align-items: center;
   gap: 14px;
+}
+.navbar span{
+  text-decoration: none;
 }
 
 /* Generic icon button */
-.icon-btn{
+.icon-btn {
   position: relative;
-  display:flex;
-  align-items:center;
-  gap:5px;
-  padding:6px 8px;
-  border-radius:8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 8px;
+  border-radius: 8px;
   border: none;
   background: transparent;
   cursor: pointer;
   transition: background .12s ease, transform .08s ease;
 }
 
-.icon-btn:hover{
+.icon-btn:hover {
   background: white;
   transform: translateY(-3px);
 }
@@ -87,37 +113,37 @@
 /* Icons */
 .user-icon,
 .wishlist-icon,
-.cart-icon{
+.cart-icon {
   height: 30px;
   width: 30px;
   object-fit: contain;
-  display:block;
+  display: block;
 }
 
 /* Greeting next to the user icon */
-.greeting{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  line-height:1;
+.greeting {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1;
 }
 
-.greet-small{
+.greet-small {
   font-size: .72rem;
   color: var(--muted);
-  margin:0;
+  margin: 0;
 }
 
-.greet-name{
+.greet-name {
   font-size: .92rem;
   font-weight: 700;
   color: var(--text);
-  margin:0;
+  margin: 0;
 }
 
 /* Badge style (shared) */
-.badge{
-  position:absolute;
+.badge {
+  position: absolute;
   top: -8px;
   right: 15px;
   background: var(--badge-bg);
@@ -130,175 +156,202 @@
   border-radius: 50%;
   padding: 0 5px;
   border: 2px solid #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
   transform: translate(0, 0);
   display: inline-block;
   font-weight: 700;
 }
 
-/* Fine tune badges for wishlist and cart to sit visually on the icon top-right */
-.wishlist-badge{
+/* Fine tune badges */
+.wishlist-badge {
   top: -16px;
   right: -13px;
 }
 
-.cart-badge{
+.cart-badge {
   top: -4px;
   right: -1px;
 }
 
 /* Search row */
-.search-row{
-  display:flex;
-  justify-content:center;
-  width:100%;
+.search-row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
   margin-top: -45px;
+  /* place search lower in stacking context so logo clickable area is not covered */
+  position: relative;
+  z-index: 100; /* lower than logo (logo has z-index:1300) */
 }
 
-.search-input-wrapper{
+.search-input-wrapper {
   width: 70%;
   max-width: 600px;
   min-width: 240px;
-  display:flex;
-  align-items:center;
-  position:relative;
+  display: flex;
+  align-items: center;
+  position: relative; /* Crucial for positioning the dropdown */
   background: white;
   border-radius: 999px;
   padding: 8px;
   height: 46px;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.03);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
   margin-right: 30px;
+  z-index: 110; /* keep dropdown above most content but below logo link */
 }
 
-.search-input{
-  flex:1;
-  border:none;
+.search-input {
+  flex: 1;
+  border: none;
   background: transparent;
-  outline:none;
+  outline: none;
   padding: 8px 14px;
   font-size: 1rem;
   color: var(--text);
   border-radius: 999px;
 }
 
-.search-input::placeholder{
+.search-input::placeholder {
   color: #9ca3af;
 }
 
 /* Search button on right inside the pill */
-.search-button{
-  width:44px;
-  height:36px;
+.search-button {
+  width: 54px;
+  height: 36px;
   border-radius: 999px;
-  border:none;
-  background:transparent;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  margin-right:4px;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-right: 4px;
 }
 
-.search-button img{
-  width:20px;
-  height:20px;
-  object-fit:contain;
+.search-button img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
   filter: none;
 }
 
-/* ---------- RESPONSIVE ---------- */
-/* Medium screens - reduce spacing */
-@media (max-width: 1024px){
-  .company-name{ font-size: 1.02rem; }
-  .search-input-wrapper{ width: 82%; max-width: 640px; margin-top: 23px; }
+/* ---------- Product Search Suggestions Dropdown Styles ---------- */
+.suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 8px;
+  background: var(--suggestion-bg);
+  border-radius: 12px;
+  box-shadow: var(--suggestion-shadow);
+  list-style: none;
+  padding: 8px 0;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+  border: 1px solid var(--suggestion-border);
+  animation: fadeIn 0.2s ease-out;
 }
 
-/* Mobile: stack layout - show search as full width row under top row */
-@media (max-width: 768px){
-  .navbar{
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  gap: 12px;
+}
+
+.suggestion-item:hover { background-color: var(--suggestion-hover-bg); }
+.suggestion-item.focused { background-color: var(--suggestion-focused-bg); }
+
+.suggestion-image {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.suggestion-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+  flex-grow: 1;
+}
+
+.suggestion-name {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.suggestion-category {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 1024px) {
+  .company-name {
+    font-size: 1.02rem;
+  }
+  .search-input-wrapper { width: 82%; max-width: 640px; margin-top: 23px; }
+}
+
+@media (max-width: 768px) {
+  .navbar {
     top: 8px;
     padding: 10px 12px;
     width: calc(100% - 16px);
     border-radius: 10px;
   }
-
-  .company-logo{ height:40px; width:40px; }
-  .company-name{ font-size: 1rem; }
-
-  .navbar-inner{
-    gap:8px;
-  }
-
-  /* Collapse greeting text to save space */
-  .greeting{ display:none; }
-
-  /* icons smaller */
-  .user-icon, .wishlist-icon, .cart-icon{ height:24px; width:24px; }
-
-  /* Badges slightly smaller and shifted */
-  .badge{ top: 5px; right: -6px; min-width:20px; height:20px; line-height:20px; font-size:.78rem; }
-
-  .wishlist-badge{top: -6px; right: -17px;}
-
-  /* Search becomes nearly full-width and smaller height */
-  .search-input-wrapper{
-    width: 65%;
-    height:40px;
-    padding:6px 8px;
-    
-  }
-
-  .search-input{ font-size: .95rem; padding:6px 10px; }
-  .search-button{ width: 40px; height: 32px; }
-  .search-button img{ width:18px; height:18px; }
+  .company-logo { height: 40px; width: 40px; }
+  .company-name { font-size: 1rem; }
+  .navbar-inner { gap: 8px; }
+  .greeting { display: none; }
+  .user-icon, .wishlist-icon, .cart-icon { height: 24px; width: 24px; }
+  .badge { top: 5px; right: -6px; min-width: 20px; height: 20px; line-height: 20px; font-size: .78rem; }
+  .wishlist-badge { top: -6px; right: -17px; }
+  .search-input-wrapper { width: 65%; height: 40px; padding: 6px 8px; }
+  .search-input { font-size: .95rem; padding: 6px 10px; }
+  .search-button { width: 40px; height: 32px; }
+  .search-button img { width: 18px; height: 18px; }
+  .suggestions-dropdown { margin-top: 6px; border-radius: 10px; padding: 6px 0; max-height: 250px; }
+  .suggestion-item { padding: 8px 12px; gap: 10px; }
+  .suggestion-image { width: 36px; height: 36px; }
+  .suggestion-name { font-size: 0.9rem; }
+  .suggestion-category { font-size: 0.75rem; }
 }
 
-/* Small phones: more compact and icons moved below the logo only at <=480px */
-@media (max-width: 480px){
-  .navbar{
-    padding: 8px 10px;
-    width: calc(100% - 12px);
-    border-radius: 8px;
-  }
-
-  /* keep logo small */
-  .company-logo{ height:28px; width:28px; }
-
-  .company-name{ font-size: .80rem; }
-
-  .icon-btn{ gap:4px; padding:4px 6px; }
-  .user-icon, .wishlist-icon, .cart-icon{ height:22px; width:22px; }
-  .badge{ top:-4px; right:-5px; min-width:18px; height:20px; line-height:20px; font-size:.7rem; border-width:1.5px; }
-
-  .search-input-wrapper{ height:36px; margin-top: 28px; }
-  .search-input{ font-size:.9rem; padding:6px 8px; margin-left: 33px; }
-  .search-button img{ width:16px; height:16px; }
-
-  /* ---------- ADDED: stack logo+name above icons ONLY at this breakpoint ---------- */
-
-  /* make the top row stack vertically so icons sit under logo+name */
-  .navbar-inner{
-    flex-direction: column;
-    align-items: center; /* center logo and icons */
-    gap: 6px;
-  }
-
-  /* center the left area (logo + name) */
-  .navbar-left{
-    width: 100%;
-    display: flex;
-  }
-
-  /* place icons on their own centered row under the logo */
-  .navbar-right{
-    width: 100%;
-    display: flex;
-    justify-content: right;
-    gap: 12px;
-    margin-top: -13px;
-  }
-
-  /* ensure badges on the centered icons still position nicely */
-  .wishlist-badge{ top: -10px; right: -12px; }
-  .cart-badge{ top: -2px; right: -2px; }
+/* Small phones: stack layout - icons below logo only at <=480px */
+@media (max-width: 480px) {
+  .navbar { padding: 8px 10px; width: calc(100% - 12px); border-radius: 8px; }
+  .company-logo { height: 28px; width: 28px; }
+  .company-name { font-size: .80rem; }
+  .icon-btn { gap: 4px; padding: 4px 6px; }
+  .user-icon, .wishlist-icon, .cart-icon { height: 22px; width: 22px; }
+  .badge { top: -4px; right: -5px; min-width: 18px; height: 20px; line-height: 20px; font-size: .7rem; border-width: 1.5px; }
+  .navbar-inner { flex-direction: column; align-items: center; gap: 6px; }
+  .navbar-left { width: 100%; display: flex; justify-content: center; gap: 8px; align-items: center; }
+  .navbar-right { width: 100%; display: flex; justify-content: center; gap: 12px; margin-top: -13px; }
+  .wishlist-badge { top: -10px; right: -12px; }
+  .cart-badge { top: -2px; right: -2px; }
+  .search-input-wrapper { margin-top: 28px; height: 36px; padding: 6px 8px; }
+  .search-input { font-size: .9rem; padding: 6px 8px; margin-left: 33px; }
+  .search-button img { width: 16px; height: 16px; }
+  .suggestions-dropdown { margin-top: 5px; border-radius: 8px; padding: 4px 0; max-height: 200px; }
+  .suggestion-item { padding: 6px 10px; gap: 8px; }
+  .suggestion-image { width: 32px; height: 32px; }
+  .suggestion-name { font-size: 0.85rem; }
+  .suggestion-category { font-size: 0.7rem; }
 }

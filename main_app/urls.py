@@ -30,7 +30,7 @@ urlpatterns = [
 
     # Products
     path('products/<int:pk>/', ProductDetailView.as_view(), name='product-detail'),
-    path('products/suggestions/', views.product_suggestions, name='product_suggestions'),
+    path('products-suggestions/', views.products_suggestions, name='product_suggestions'),
 
     # Orders
     path('orders/place/', PlaceOrderView.as_view(), name='place_order'),

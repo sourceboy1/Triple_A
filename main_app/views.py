@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets, permissions
 from rest_framework import status
 from .models import CustomUser, Cart, CartItem, Category, Payment, PaymentDetail, PaymentMethod, Product, Order, OrderItem, ShippingAddress, ProductImage
@@ -163,41 +163,65 @@ def product_list(request):
     return Response(serializer.data)
 
 
-def product_suggestions(request):
-    query = request.GET.get('query', '')
-    category_name = request.GET.get('category', None) # Get category from request
-    
-    if query:
-        suggestions_queryset = Product.objects.filter(name__icontains=query)
-        
-        # Apply category filter for suggestions
-        if category_name and category_name != 'All':
-            suggestions_queryset = suggestions_queryset.filter(category__name__iexact=category_name)
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def products_suggestions(request):
+    """
+    Robust, public suggestions endpoint.
+    Handles models with custom primary key fields.
+    """
+    query = request.GET.get('query', '').strip()
+    if not query:
+        return JsonResponse([], safe=False)
 
-        suggestions = suggestions_queryset[:5]
-        # Include 'category_name' in the data for suggestions
-        data = [
-            {'id': product.product_id, 'name': product.name, 'category_name': product.category.name if product.category else 'N/A'} 
-            for product in suggestions
-        ]
-        return JsonResponse(data, safe=False)
-    return JsonResponse([], safe=False)
+    try:
+        suggestions_qs = Product.objects.filter(
+            Q(name__icontains=query) | Q(category__name__icontains=query)
+        ).select_related('category').distinct()[:10]
 
+        results = []
+        for product in suggestions_qs:
+            try:
+                # Safely get image URL
+                image_url = None
+                if getattr(product, 'image', None):
+                    try:
+                        image_url = product.image.url
+                    except Exception:
+                        image_url = getattr(product.image, 'name', None)
 
-# This `search_products` function seems to be an internal utility or a helper.
-# It should also accept the category filter.
-def search_products(query, category_name=None):
-    queryset = Product.objects.filter(
-        Q(name__icontains=query) | 
-        Q(description__icontains=query) |
-        Q(category__name__icontains=query) # Filter by category name in name/description search
-    )
-    
-    # Apply category filter if a specific category is selected
-    if category_name and category_name != 'All':
-        queryset = queryset.filter(category__name__iexact=category_name)
-        
-    return queryset
+                    if image_url:
+                        try:
+                            image_url = request.build_absolute_uri(image_url)
+                        except Exception:
+                            image_url = None
+
+                if not image_url:
+                    image_url = request.build_absolute_uri('/static/no-image.png')
+
+                # Safely get category id (works for custom PK names)
+                cat = getattr(product, 'category', None)
+                cat_id = None
+                if cat:
+                    cat_id = getattr(cat, 'id', None) or getattr(cat, 'category_id', None)
+
+                results.append({
+                    'id': getattr(product, 'product_id', getattr(product, 'id', None)),
+                    'name': product.name,
+                    'category_id': cat_id,
+                    'category_name': cat.name if cat else 'N/A',
+                    'image_url': image_url,
+                })
+            except Exception:
+                continue
+
+        return JsonResponse(results, safe=False)
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return JsonResponse([], safe=False)
+
 
 
 
@@ -557,7 +581,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        return Order.objects.filter(user_id=user.id)
+        return Order.objects.filter(user_id=user.id) # type: ignore
 
     def perform_create(self, serializer):
         """

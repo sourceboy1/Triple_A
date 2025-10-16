@@ -88,8 +88,8 @@
 }
 
 .product-detail-image {
-  max-width: 100%; /* Ensure image doesn't overflow */
-  height: auto;
+  max-width: 80%; /* Ensure image doesn't overflow */
+  height: 305px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease; /* Smooth transition for zoom */
@@ -97,7 +97,7 @@
 }
 
 .product-detail-image.zoomed {
-  transform: scale(1.5); /* Zoom level, adjust as needed */
+  transform: scale(1.2); /* Zoom level, adjust as needed */
   cursor: zoom-out;
 }
 
