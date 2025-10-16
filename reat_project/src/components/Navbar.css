@@ -185,8 +185,8 @@
 }
 
 .search-input-wrapper {
-  width: 70%;
-  max-width: 600px;
+  width: 100%;
+  max-width: 500px;
   min-width: 240px;
   display: flex;
   align-items: center;
