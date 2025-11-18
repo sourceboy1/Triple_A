@@ -1,80 +1,115 @@
-import React, { useState } from 'react'; // Import useState
+// src/components/Product.jsx
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from "react-helmet";
 import { useCart } from '../contexts/CartContext';
-import PriceAlertModal from './PriceAlertModal'; // Import the modal
-import './Styling.css'; // Assuming your general styling
+import PriceAlertModal from './PriceAlertModal';
+import { getProductDetailsPath } from '../helpers/navigation';
+import './Styling.css';
 
-const Product = ({ product_id, name, description, price, image_urls, stock, is_abroad_order, abroad_delivery_days }) => {
+const Product = ({ product_id, slug, name, description, price, image_urls, stock, is_abroad_order, abroad_delivery_days }) => {
   const { addItemToCart } = useCart();
-  const [showPriceAlert, setShowPriceAlert] = useState(false); // State for modal visibility
+  const [showPriceAlert, setShowPriceAlert] = useState(false);
 
-  // Format the price with commas
   const formattedPrice = price ? new Intl.NumberFormat().format(price) : 'N/A';
+  const imageUrl = image_urls?.large || "/media/default.jpg";
 
   const handleAddToCart = () => {
     if (stock > 0) {
-      const productToAdd = { product_id, name, description, price, image_url: image_urls.large, stock, is_abroad_order, abroad_delivery_days }; // Pass new props to cart
-      addItemToCart(productToAdd);
-      setShowPriceAlert(true); // Show alert after adding to cart
+      addItemToCart({
+        product_id,
+        name,
+        description,
+        price,
+        image_url: imageUrl,
+        stock,
+        is_abroad_order,
+        abroad_delivery_days
+      });
+      setShowPriceAlert(true);
     } else {
-      alert('Product is out of stock!');
+      alert("Product is out of stock!");
     }
   };
 
-  // Function to view product details and show alert
-  const handleProductClick = () => {
-    // You might want to consider if you still want to show a price alert here
-    // or if it's more appropriate on the actual product details page after fetch.
-    // For now, keeping your original logic.
-    setShowPriceAlert(true); // Show alert when clicking on product name/link
-  };
+  const deliveryDisplay =
+    abroad_delivery_days === 14
+      ? "7-14 days"
+      : `${abroad_delivery_days || 14} days`;
 
-  // Determine the delivery display
-  const deliveryDisplay = abroad_delivery_days === 14 ? '7-14 days' : `${abroad_delivery_days || 14} days`;
-
+  // 🔥 USE UNIVERSAL HELPER
+  const productPath = getProductDetailsPath({ slug, product_id });
 
   return (
-    <div className="product-card">
-      {image_urls && image_urls.large ? (
-        <img src={image_urls.large} alt={name} className="product-image" />
-      ) : (
-        <p>No image available</p>
-      )}
+    <>
+      <Helmet>
+        <title>{name} | Best Price in Nigeria | Triple A Tech</title>
+        <meta
+          name="description"
+          content={`Buy ${name} at the best price in Nigeria. Fast delivery and quality products from Triple A Tech.`}
+        />
+        <meta
+          name="keywords"
+          content={`${name}, buy ${name} in Nigeria, ${name} price in Nigeria, phone accessories Nigeria`}
+        />
+        <script type="application/ld+json">
+          {`
+          {
+            "@context": "https://schema.org/",
+            "@type": "Product",
+            "name": "${name}",
+            "image": "${imageUrl}",
+            "description": "${description}",
+            "sku": "${product_id}",
+            "offers": {
+              "@type": "Offer",
+              "url": "https://tripleastechng.com${productPath}",
+              "priceCurrency": "NGN",
+              "price": "${price}",
+              "availability": "${stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"}"
+            }
+          }
+          `}
+        </script>
+      </Helmet>
 
-      <h2 className="product-title">
-        <Link to={`/product-details/${product_id}`} onClick={handleProductClick}>
-          {name}
-        </Link>
-      </h2>
+      <div className="product-card">
+        {imageUrl ? (
+          <img src={imageUrl} alt={name} className="product-image" />
+        ) : (
+          <p>No image available</p>
+        )}
 
-      <p className="product-description">{description}</p>
+        <h2 className="product-title">
+          <Link to={productPath}>{name}</Link>
+        </h2>
 
-      {/* Abroad Order Indicator */}
-      {is_abroad_order && (
-        <div className="abroad-order-tag">
-          <span role="img" aria-label="globe">🌍</span> Order from Abroad
-          {abroad_delivery_days && ` (~${deliveryDisplay})`}
-        </div>
-      )}
+        <p className="product-description">{description}</p>
 
-      <p className="product-price">₦{formattedPrice}</p>
+        {is_abroad_order && (
+          <div className="abroad-order-tag">
+            🌍 Order from Abroad (~{deliveryDisplay})
+          </div>
+        )}
 
-      <button
-        className="button is-primary"
-        onClick={handleAddToCart}
-        disabled={stock === 0} // Disable button if out of stock
-      >
-        {stock > 0 ? 'Add to Cart' : 'Out of Stock'}
-      </button>
+        <p className="product-price">₦{formattedPrice}</p>
 
-      {/* Price Alert Modal */}
-      <PriceAlertModal
-        show={showPriceAlert}
-        onClose={() => setShowPriceAlert(false)}
-        product={{ name }} // Pass product name for specific WhatsApp message
-        type="product" // Indicate this is from a product page
-      />
-    </div>
+        <button
+          className="button is-primary"
+          onClick={handleAddToCart}
+          disabled={stock === 0}
+        >
+          {stock > 0 ? "Add to Cart" : "Out of Stock"}
+        </button>
+
+        <PriceAlertModal
+          show={showPriceAlert}
+          onClose={() => setShowPriceAlert(false)}
+          product={{ name }}
+          type="product"
+        />
+      </div>
+    </>
   );
 };
 

@@ -515,27 +515,47 @@ class PaymentMethodViewSet(viewsets.ModelViewSet):
 
 
 
-class ProductViewSet(viewsets.ModelViewSet):
-    authentication_classes = [] 
-    queryset = Product.objects.all()  # Ensure queryset is defined
+class ProductViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Read-only API for products. Supports list and retrieve.
+    Can filter products by category slug using ?category=<slug>
+    """
+    queryset = Product.objects.prefetch_related('additional_images').all()
     serializer_class = ProductSerializer
     permission_classes = [AllowAny]
+    authentication_classes = []  # public access
+    lookup_field = 'pk'
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        
-        # Get the category_id from query parameters
-        category_id = self.request.query_params.get('category_id', None)
-        if category_id:
-            # Filter the products based on category_id
-            queryset = queryset.filter(category_id=category_id)
-        
-        # Optional: add search functionality
-        query = self.request.query_params.get('query', None)
+
+        # Filter by category slug (preferred)
+        category_slug = self.request.query_params.get('category')
+        if category_slug:
+            queryset = queryset.filter(category__slug=category_slug)
+
+        # Optional search by product name
+        query = self.request.query_params.get('query')
         if query:
             queryset = queryset.filter(name__icontains=query)
-        
+
         return queryset
+
+    def retrieve(self, request, *args, **kwargs):
+        lookup = kwargs.get('pk')
+        instance = None
+
+        # Try numeric product_id first
+        try:
+            if str(lookup).isdigit():
+                instance = get_object_or_404(Product, product_id=int(lookup)) # type: ignore
+            else:
+                instance = get_object_or_404(Product, slug=lookup)
+        except Exception:
+            instance = get_object_or_404(Product, pk=lookup)
+
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 

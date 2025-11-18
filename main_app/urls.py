@@ -17,7 +17,7 @@ router.register(r'categories', CategoryViewSet, basename='category')
 router.register(r'payments', PaymentViewSet)
 router.register(r'payment_details', PaymentDetailViewSet)
 router.register(r'payment_methods', PaymentMethodViewSet, basename='payment_method')
-router.register(r'products', ProductViewSet)
+router.register(r'products', ProductViewSet, basename='product')
 router.register(r'orders', OrderViewSet, basename='orders')  # ✅ main CRUD orders
 router.register(r'order_items', OrderItemViewSet)
 
@@ -43,3 +43,13 @@ urlpatterns = [
     path('deals_of_the_day/', DealOfTheDayView.as_view(), name='deals_of_the_day'),
 ]
 
+from django.contrib.sitemaps.views import sitemap
+from main_app.sitemap import ProductSitemap
+
+sitemaps = {
+    'products': ProductSitemap,
+}
+
+urlpatterns += [
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+]

@@ -10,6 +10,7 @@ import { useWishlist } from '../contexts/WishlistContext';
 import { useNavigate } from 'react-router-dom';
 import api from '../Api';
 import Loading from './Loading';
+import { getProductDetailsPath } from '../helpers/navigation';
 
 const DealsOfTheDay = () => {
   const [deals, setDeals] = useState([]);
@@ -19,7 +20,6 @@ const DealsOfTheDay = () => {
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const navigate = useNavigate();
   const dealsListRef = useRef(null);
-
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
@@ -64,10 +64,20 @@ const DealsOfTheDay = () => {
     });
   };
 
-  const handleProductClick = (product_id) => navigate(`/product-details/${product_id}`);
+  // 🔥 FIXED: Use universal helper
+  const handleProductClick = (deal) => {
+    navigate(getProductDetailsPath(deal));
+  };
 
-  const slideRight = () => setCurrentIndex((prevIndex) => (prevIndex === deals.length - 1 ? 0 : prevIndex + 1));
-  const slideLeft = () => setCurrentIndex((prevIndex) => (prevIndex === 0 ? deals.length - 1 : prevIndex - 1));
+  const slideRight = () =>
+    setCurrentIndex((prevIndex) =>
+      prevIndex === deals.length - 1 ? 0 : prevIndex + 1
+    );
+
+  const slideLeft = () =>
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? deals.length - 1 : prevIndex - 1
+    );
 
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
@@ -79,11 +89,8 @@ const DealsOfTheDay = () => {
 
   const handleTouchEnd = () => {
     const diff = touchStartX.current - touchEndX.current;
-    if (diff > 50) {
-      slideRight();
-    } else if (diff < -50) {
-      slideLeft();
-    }
+    if (diff > 50) slideRight();
+    else if (diff < -50) slideLeft();
   };
 
   const displayedDeals = deals;
@@ -97,19 +104,22 @@ const DealsOfTheDay = () => {
         <div className="arrow-container left-arrow" onClick={slideLeft}>
           <img src={arrowLeft} alt="Left Arrow" className="deal-arrow" />
         </div>
+
         <div
           className="deals-list"
           ref={dealsListRef}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
-          style={{ transform: `translateX(-${(currentIndex * 100) / displayedDeals.length}%)` }}
+          style={{
+            transform: `translateX(-${(currentIndex * 100) / displayedDeals.length}%)`,
+          }}
         >
           {displayedDeals.map((deal, index) => (
             <div
               key={index}
               className="deal-item"
-              onClick={() => handleProductClick(deal.product_id)}
+              onClick={() => handleProductClick(deal)}
               onMouseEnter={(e) => {
                 const imgEl = e.currentTarget.querySelector('img');
                 if (deal.secondary_image_urls?.medium) {
@@ -121,10 +131,8 @@ const DealsOfTheDay = () => {
                 imgEl.src = deal.image_urls?.medium || '';
               }}
             >
-              <img
-                src={deal.image_urls?.medium || ''}
-                alt={deal.name}
-              />
+              <img src={deal.image_urls?.medium || ''} alt={deal.name} />
+
               <div className="icon-container">
                 <img
                   src={isInWishlist(deal.product_id) ? wishlistActiveIcon : wishlistIcon}
@@ -143,6 +151,7 @@ const DealsOfTheDay = () => {
                   }}
                 />
               </div>
+
               <h4>{deal.name}</h4>
               <p>
                 <strong>Price: </strong>
@@ -152,10 +161,17 @@ const DealsOfTheDay = () => {
                   {formatPrice(deal.original_price)}
                 </span>
               </p>
-              {deal.discount && <p><strong>Discount: </strong>{Math.floor(deal.discount)}% off</p>}
+
+              {deal.discount && (
+                <p>
+                  <strong>Discount: </strong>
+                  {Math.floor(deal.discount)}% off
+                </p>
+              )}
             </div>
           ))}
         </div>
+
         <div className="arrow-container right-arrow" onClick={slideRight}>
           <img src={arrowRight} alt="Right Arrow" className="deal-arrow" />
         </div>

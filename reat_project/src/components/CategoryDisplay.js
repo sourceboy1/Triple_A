@@ -1,14 +1,15 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TokenContext } from './TokenContext';
-import api from '../Api';
-import './CategoryDisplay.css'; // Make sure this CSS file is linked
+import Api from '../Api'; // Capital A
+import { getProductDetailsPath } from '../helpers/navigation';
+import './CategoryDisplay.css'; // Updated CSS file
 
 const categories = [
-  { id: 1, name: "Accessories for Phones & Tablets" }, // Changed * to & for better display
-  { id: 9, name: "Video Games & Accessories" },        // Changed * to & for better display
-  { id: 3, name: "Headsets, AirPods & Earbuds" },      // Changed * to & for better display
-  { id: 8, name: "Watches & Smartwatches" },           // Changed * to & for better display
+  { slug: "accessories-for-phones-tablets", name: "Accessories for Phones & Tablets" },
+  { slug: "video-games-and-accessories", name: "Video Games & Accessories" },
+  { slug: "headsets-airpods-earbuds", name: "Headsets, AirPods & Earbuds" },
+  { slug: "watches-and-smartwatches", name: "Watches & Smartwatches" },
 ];
 
 const shuffleArray = (array) => {
@@ -29,17 +30,19 @@ const CategoryDisplay = () => {
       try {
         const responses = await Promise.all(
           categories.map(category =>
-            api.get(`products/?category_id=${category.id}`, {
+            Api.get(`products/?category=${category.slug}`, {
               headers: { Authorization: `Bearer ${accessToken}` }
             })
           )
         );
 
         const productsData = responses.map(response => shuffleArray(response.data).slice(0, 4));
+
         const productsObject = categories.reduce((acc, category, index) => {
           acc[category.name] = productsData[index];
           return acc;
         }, {});
+
         setProducts(productsObject);
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -53,36 +56,36 @@ const CategoryDisplay = () => {
     navigate('/category-full-display');
   };
 
-  const handleProductClick = (productId) => {
-    navigate(`/product-details/${productId}`);
+  const handleProductClick = (product) => {
+    navigate(getProductDetailsPath(product));
   };
 
   return (
     <div className="category-display">
       {categories.map(category => (
-        <div key={category.id} className="category-section">
+        <div key={category.slug} className="category-section">
           <h3 className="category-title">{category.name}</h3>
           <div className="product-row">
             {products[category.name] && products[category.name].map(product => {
               const mainImage = product.image_urls?.medium || '/media/default.jpg';
               const secondaryImage = product.secondary_image_urls?.medium || mainImage;
+
               return (
                 <div
                   key={product.product_id}
                   className="product-card"
-                  onClick={() => handleProductClick(product.product_id)}
+                  onClick={() => handleProductClick(product)}
                   onMouseEnter={(e) => {
-                    const imgEl = e.currentTarget.querySelector('.product-image'); // Target specific image
+                    const imgEl = e.currentTarget.querySelector('.product-image');
                     if (imgEl) imgEl.src = secondaryImage;
                   }}
                   onMouseLeave={(e) => {
-                    const imgEl = e.currentTarget.querySelector('.product-image'); // Target specific image
+                    const imgEl = e.currentTarget.querySelector('.product-image');
                     if (imgEl) imgEl.src = mainImage;
                   }}
                 >
                   <img src={mainImage} alt={product.name} className="product-image" />
                   <h4 className="product-name">{product.name}</h4>
-                  {/* You can add price or other details here if needed */}
                 </div>
               );
             })}

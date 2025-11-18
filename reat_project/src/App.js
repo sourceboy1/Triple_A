@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react'; // Added useState, useRef, useCallback
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import { TokenProvider } from './components/TokenContext';
 import { CartProvider } from './contexts/CartContext';
 import { UserProvider, useUser } from './contexts/UserContext';
@@ -17,7 +18,6 @@ import PasswordReset from './components/PasswordReset';
 import ProductCatalog from './components/ProductCatalog';
 import ProductDetails from './components/ProductDetails';
 import ProductList from './components/ProductList';
-import CategoryProducts from './components/CategoryProducts';
 import Cart from './components/Cart';
 import Checkout from './components/Checkout';
 import SearchResults from './components/SearchResults';
@@ -40,10 +40,9 @@ import Maintenance from './components/Maintenance';
 import OrderSuccess from './components/OrderSuccess/OrderSuccess';
 import OrderFailure from './components/OrderFailure/OrderFailure';
 import CategoryProductDisplay from './components/CategoryProductDisplay';
+import ShopCategoryPage from './components/ShopCategoryPage';
+import FlyToCart from './components/FlyToCart';
 import ReactGA from 'react-ga4';
-
-// Import FlyToCart component
-import FlyToCart from './components/FlyToCart'; // Assuming FlyToCart.js is in ./components
 
 const App = () => {
   return (
@@ -78,51 +77,39 @@ const AppContent = () => {
   const { loading, setLoading } = useLoading();
   const location = useLocation();
 
-  // State to manage the fly-to-cart animation
-  const [flyAnimation, setFlyAnimation] = useState(null); // { startPos, endPos, image }
-  // Ref for the cart icon in the Navbar
+  const [flyAnimation, setFlyAnimation] = useState(null);
   const navbarCartIconRef = useRef(null);
 
-  // Function to handle the start of the fly-to-cart animation
   const handleFlyToCart = useCallback((startPos, image) => {
-    // Ensure the navbarCartIconRef is attached and available
     if (navbarCartIconRef.current) {
       const endRect = navbarCartIconRef.current.getBoundingClientRect();
-      const endPos = {
-        top: endRect.top + endRect.height / 2, // Center of the cart icon
-        left: endRect.left + endRect.width / 2, // Center of the cart icon
-      };
+      const endPos = { top: endRect.top + endRect.height / 2, left: endRect.left + endRect.width / 2 };
       setFlyAnimation({ startPos, endPos, image });
-    } else {
-      console.warn("Navbar cart icon ref not found for animation.");
     }
   }, []);
 
-  // Function to clear the fly-to-cart animation state after it finishes
-  const handleAnimationEnd = useCallback(() => {
-    setFlyAnimation(null); // Clear animation state
-  }, []);
+  const handleAnimationEnd = useCallback(() => setFlyAnimation(null), []);
 
-  // Effect to handle loading state AND Google Analytics page views
   useEffect(() => {
-    // Start loading animation
     setLoading(true);
 
-    // Send page view to Google Analytics 4
     ReactGA.send({ hitType: "pageview", page: location.pathname + location.search, title: document.title });
 
-    // End loading animation after a delay
     const timer = setTimeout(() => setLoading(false), 1000);
     return () => clearTimeout(timer);
   }, [location.pathname, location.search, setLoading]);
 
   return (
     <>
-      {/* Pass the ref to the Navbar component */}
-      <Navbar cartIconRef={navbarCartIconRef} /> {/* <--- Pass ref here */}
-      {loading ? (
-        <Loading />
-      ) : (
+      <Helmet>
+        <title>Triple A Tech | Buy Electronics & Gadgets in Nigeria</title>
+        <meta name="description" content="Shop original tech products in Nigeria. Phones, laptops, power banks, accessories and more at best prices. Fast delivery!" />
+        <meta name="keywords" content="phones, laptops, power banks, gadgets, electronics, Nigeria, buy tech" />
+        <link rel="canonical" href={`https://tripleastechng.com${location.pathname}`} />
+      </Helmet>
+
+      <Navbar cartIconRef={navbarCartIconRef} />
+      {loading ? <Loading /> : (
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -132,10 +119,8 @@ const AppContent = () => {
           <Route path="/request-password-reset" element={<PasswordResetRequest />} />
           <Route path="/reset-password/:uid/:token" element={<PasswordReset />} />
           <Route path="/product-catalog" element={<ProductCatalog />} />
-          {/* Pass onFlyToCart to ProductDetails */}
-          <Route path="/product-details/:productId" element={<ProductDetails onFlyToCart={handleFlyToCart} />} /> {/* <--- Pass prop */}
+          <Route path="/product/:slug" element={<ProductDetails onFlyToCart={handleFlyToCart} />} /> 
           <Route path="/products" element={<ProductList />} />
-          <Route path="/shop/:categoryName" element={<CategoryProducts />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/search" element={<SearchResults />} />
@@ -153,12 +138,12 @@ const AppContent = () => {
           <Route path='/order-failure' element= {<OrderFailure />} />
           <Route path="/order/:orderId" element={<OrderDetails />} />
           <Route path="/category-full-display/" element={<CategoryProductDisplay />} />
+          <Route path="/shop/:categorySlug" element={<ShopCategoryPage />} />
         </Routes>
       )}
       <FloatingNav />
       <Footer />
 
-      {/* Render the FlyToCart component if animation is active */}
       {flyAnimation && (
         <FlyToCart
           startPos={flyAnimation.startPos}

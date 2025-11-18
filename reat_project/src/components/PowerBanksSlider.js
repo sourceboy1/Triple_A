@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../Api';
+import Api from '../Api';
+import { getProductDetailsPath } from '../helpers/navigation';
 import './PowerBanksSlider.css';
 
 const PowerBankDisplay = ({ onLoaded }) => {
@@ -12,6 +13,9 @@ const PowerBankDisplay = ({ onLoaded }) => {
   const navigate = useNavigate();
   const hoverIntervals = useRef({});
   const rotateInterval = useRef(null);
+
+  // Replace this with the correct slug from your database
+  const CATEGORY_SLUG = 'power-banks';
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -26,7 +30,8 @@ const PowerBankDisplay = ({ onLoaded }) => {
 
     const fetchPowerBanks = async () => {
       try {
-        const response = await api.get(`products/?category_id=7`);
+        const encoded = encodeURIComponent(CATEGORY_SLUG);
+        const response = await Api.get(`products/?category=${encoded}`);
         const data = response.data;
 
         if (!Array.isArray(data)) {
@@ -51,12 +56,11 @@ const PowerBankDisplay = ({ onLoaded }) => {
 
     fetchPowerBanks();
 
-    // auto-rotate items every 12s
+    // Auto rotate every 12s
     rotateInterval.current = setInterval(() => {
       setProducts((prev) => {
         if (prev.length === 0) return prev;
-        const first = prev[0];
-        return [...prev.slice(1), first];
+        return [...prev.slice(1), prev[0]];
       });
     }, 12000);
 
@@ -67,14 +71,19 @@ const PowerBankDisplay = ({ onLoaded }) => {
     };
   }, [onLoaded]);
 
-  const handleProductClick = (id) => {
-    navigate(`/product-details/${id}`);
+  const handleProductClick = (product) => {
+    navigate(getProductDetailsPath(product));
   };
 
   const handleMouseEnter = (id, images) => {
-    if (images.length < 2) return;
+    if (!images || images.length < 2) return;
 
     let currentIndex = 0;
+
+    if (hoverIntervals.current[id]) {
+      clearInterval(hoverIntervals.current[id]);
+    }
+
     hoverIntervals.current[id] = setInterval(() => {
       currentIndex = (currentIndex + 1) % images.length;
       setHoverImageIndexes((prev) => ({
@@ -85,8 +94,10 @@ const PowerBankDisplay = ({ onLoaded }) => {
   };
 
   const handleMouseLeave = (id) => {
-    clearInterval(hoverIntervals.current[id]);
-    hoverIntervals.current[id] = null;
+    if (hoverIntervals.current[id]) {
+      clearInterval(hoverIntervals.current[id]);
+      hoverIntervals.current[id] = null;
+    }
 
     setHoverImageIndexes((prev) => ({
       ...prev,
@@ -108,7 +119,7 @@ const PowerBankDisplay = ({ onLoaded }) => {
             style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}
           >
             {products.slice(0, displayCount).map((pb) => {
-              if (!pb || !pb.image_urls?.medium) return null;
+              if (!pb) return null;
 
               const images = [
                 pb.image_urls?.medium,
@@ -118,23 +129,28 @@ const PowerBankDisplay = ({ onLoaded }) => {
               ].filter(Boolean);
 
               const currentImg =
-                images[hoverImageIndexes[pb.product_id] || 0] || images[0];
+                images[hoverImageIndexes[pb.product_id] || 0] ||
+                images[0] ||
+                '/placeholder.jpg';
 
               return (
                 <div
                   className="powerbank-item"
                   key={pb.product_id}
-                  onClick={() => handleProductClick(pb.product_id)}
+                  onClick={() => handleProductClick(pb)}
                   onMouseEnter={() => handleMouseEnter(pb.product_id, images)}
                   onMouseLeave={() => handleMouseLeave(pb.product_id)}
                 >
                   <img
-                    src={currentImg || '/placeholder.jpg'}
+                    src={currentImg}
                     alt={pb.name || 'Power Bank'}
                     className="powerbank-image"
                     onError={(e) => { e.target.src = '/placeholder.jpg'; }}
+                    loading="lazy"
                   />
+
                   <h3 className="powerbank-name">{pb.name}</h3>
+
                   <p className="powerbank-price">
                     {new Intl.NumberFormat('en-NG', {
                       style: 'currency',

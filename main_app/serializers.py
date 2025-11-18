@@ -119,6 +119,66 @@ class PaymentDetailSerializer(serializers.ModelSerializer):
         fields = ['payment_detail_id', 'payment', 'transaction_id', 'amount', 'status', 'details']
 
 
+def build_cloudinary_urls(image_field):
+    """
+    Return dict with keys: thumbnail, medium, large
+    If image_field is None -> fallback default URL
+    If image_field has a .url (absolute URL) -> return same URL for all sizes
+    If image_field.name is present, attempt cloudinary.utils.cloudinary_url
+    """
+    sizes = {
+        'thumbnail': 200,
+        'medium': 500,
+        'large': 1000
+    }
+    default_placeholder = (
+        # You can place your Cloudinary default public id here if you have one:
+        # cloudinary.utils.cloudinary_url("default.jpg", secure=True)[0]
+        "https://res.cloudinary.com/demo/image/upload/v1/sample.jpg"
+    )
+
+    urls = {}
+    if not image_field:
+        for k in sizes.keys():
+            urls[k] = default_placeholder
+        return urls
+
+    # If ImageField has absolute URL
+    try:
+        image_url = getattr(image_field, 'url', None)
+        if image_url and image_url.startswith('http'):
+            for k in sizes.keys():
+                urls[k] = image_url
+            return urls
+    except Exception:
+        pass
+
+    # Try to build cloudinary URL from public id (image_field.name)
+    try:
+        public_id = getattr(image_field, 'name', None)
+        if public_id:
+            for label, width in sizes.items():
+                try:
+                    url = cloudinary.utils.cloudinary_url(
+                        public_id,
+                        width=width,
+                        crop='scale',
+                        quality='auto',
+                        secure=True
+                    )[0]
+                    urls[label] = url
+                except Exception:
+                    urls[label] = default_placeholder
+            return urls
+    except Exception:
+        pass
+
+    # Final fallback
+    for k in sizes.keys():
+        urls[k] = default_placeholder
+    return urls
+
+
 class ProductImageSerializer(serializers.ModelSerializer):
     image_urls = serializers.SerializerMethodField()
     secondary_image_urls = serializers.SerializerMethodField()
@@ -127,88 +187,63 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProductImage
-        fields = [
+        fields = (
             'id', 'image_urls', 'secondary_image_urls',
             'tertiary_image_urls', 'quaternary_image_urls',
-            'description'
-        ]
-
-    def get_cloudinary_urls(self, image):
-        """Return Cloudinary URLs in multiple sizes"""
-        sizes = {
-            'thumbnail': 200,
-            'medium': 500,
-            'large': 1000
-        }
-        urls = {}
-        for label, width in sizes.items():
-            if image:
-                url, _ = cloudinary.utils.cloudinary_url(
-                    image.name,
-                    width=width,
-                    crop='scale',
-                    quality='auto',
-                    secure=True
-                )
-                urls[label] = url
-            else:
-                # Fallback to a placeholder image on Cloudinary if needed
-                urls[label] = cloudinary.utils.cloudinary_url(
-                    "default.jpg", secure=True  # Make sure you upload a default.jpg to Cloudinary
-                )[0]
-        return urls
+            'description', 'position'
+        )
 
     def get_image_urls(self, obj):
-        return self.get_cloudinary_urls(obj.image)
+        return build_cloudinary_urls(obj.image)
 
     def get_secondary_image_urls(self, obj):
-        return self.get_cloudinary_urls(obj.secondary_image)
+        return build_cloudinary_urls(obj.secondary_image)
 
     def get_tertiary_image_urls(self, obj):
-        return self.get_cloudinary_urls(obj.tertiary_image)
+        return build_cloudinary_urls(obj.tertiary_image)
 
     def get_quaternary_image_urls(self, obj):
-        return self.get_cloudinary_urls(obj.quaternary_image)
+        return build_cloudinary_urls(obj.quaternary_image)
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    product_id = serializers.IntegerField(read_only=True)
+    slug = serializers.CharField(read_only=True)
     image_urls = serializers.SerializerMethodField()
     secondary_image_urls = serializers.SerializerMethodField()
-    category_id = serializers.IntegerField(source='category.id', read_only=True)
-    # Assuming 'additional_images' is a related name for ProductImage instances
     additional_images = ProductImageSerializer(many=True, read_only=True)
+
+    # expose both numeric id and slug of the category
+    category_id = serializers.IntegerField(source='category.category_id', read_only=True)
+    category_slug = serializers.CharField(source='category.slug', read_only=True)
 
     class Meta:
         model = Product
         fields = [
-            'product_id', 'name', 'description', 'price', 'original_price',
-            'discount', 'stock', 'category', 'category_id', 'image_urls',
-            'secondary_image_urls', 'additional_images', 'created_at',
-            'is_abroad_order', 'abroad_delivery_days' # Add new fields here
+            'product_id', 'slug', 'name', 'description', 'price', 'original_price',
+            'discount', 'stock', 'category', 'category_id', 'category_slug',
+            'image_urls', 'secondary_image_urls', 'additional_images',
+            'created_at', 'updated_at', 'is_abroad_order', 'abroad_delivery_days'
         ]
 
+
     def get_image_urls(self, obj):
-        """Return main product image URLs from Cloudinary"""
-        # Assuming ProductImageSerializer is correctly initialized and has get_cloudinary_urls method
-        return ProductImageSerializer(context=self.context).get_cloudinary_urls(obj.image) # type: ignore
+        return build_cloudinary_urls(obj.image)
 
     def get_secondary_image_urls(self, obj):
-        """Return first additional image's secondary image or fallback"""
-        first_additional_image = obj.additional_images.first()
-        if first_additional_image and hasattr(first_additional_image, 'secondary_image') and first_additional_image.secondary_image:
-            return ProductImageSerializer(context=self.context).get_cloudinary_urls( # type: ignore
-                first_additional_image.secondary_image
-            )
-        # Fallback to default placeholder on Cloudinary
-        return ProductImageSerializer(context=self.context).get_cloudinary_urls(None) # type: ignore
-
+        # Use first additional image's secondary_image as a "secondary" if available
+        first = obj.additional_images.first()
+        if first and getattr(first, 'secondary_image', None):
+            return build_cloudinary_urls(first.secondary_image)
+        # fallback to product main image
+        return build_cloudinary_urls(obj.image)
 
 
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['category_id', 'name']
+        fields = ['category_id', 'name', 'slug']
 
 
 

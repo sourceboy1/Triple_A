@@ -3,7 +3,8 @@ import { useCart } from '../contexts/CartContext';
 import { TokenContext } from './TokenContext';
 import api from '../Api';
 import './ProductCatalog.css';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
+import { getProductDetailsPath } from '../helpers/navigation'; // ✅ Import slug helper
 
 const FEATURED_PRODUCT_IDS = [22, 23, 24, 81, 82];
 
@@ -13,7 +14,7 @@ const ProductCatalog = () => {
   const [error, setError] = useState(null);
   const { addItemToCart } = useCart();
   const accessToken = useContext(TokenContext);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const sliderRef = useRef(null);
 
@@ -30,9 +31,10 @@ const ProductCatalog = () => {
             });
             fetchedProducts.push(response.data);
           } catch (err) {
-            // ignore 404 errors
+            // Ignore 404
           }
         }
+
         if (isMounted) setProducts(fetchedProducts);
       } catch (err) {
         if (isMounted) setError(err);
@@ -64,8 +66,9 @@ const ProductCatalog = () => {
     }
   };
 
-  const handleProductClick = (productId) => {
-    navigate(`/product-details/${productId}`); // Use navigate instead of window.location.href
+  // ✅ Updated to use slug helper path
+  const handleProductClick = (product) => {
+    navigate(getProductDetailsPath(product));
   };
 
   if (loading) return <div className="product-catalog-loading">Loading products...</div>;
@@ -75,25 +78,38 @@ const ProductCatalog = () => {
   return (
     <div className="product-catalog-page">
       <h1 className="catalog-main-title">All models. Take your pick.</h1>
+
       <div className="product-slider-wrapper">
         <div className="product-slider" ref={sliderRef}>
           {products.map(product => {
             const productName = product.name;
-            const productTagline = product.is_new ? 'NEW' : (product.is_featured ? 'FEATURED' : 'APPLE INTELLIGENCE');
+            const productTagline = product.is_new
+              ? 'NEW'
+              : product.is_featured
+              ? 'FEATURED'
+              : 'APPLE INTELLIGENCE';
 
-            const formattedPrice = new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(product.price);
+            const formattedPrice = new Intl.NumberFormat('en-NG', { 
+              style: 'currency', 
+              currency: 'NGN' 
+            }).format(product.price);
 
-            const mainImage = product.image_urls?.large || product.secondary_image_urls?.large || '/placeholder.jpg';
+            const mainImage =
+              product.image_urls?.large ||
+              product.secondary_image_urls?.large ||
+              '/placeholder.jpg';
 
             return (
               <div
                 key={product.product_id}
                 className="product-card"
-                onClick={() => handleProductClick(product.product_id)} // Correctly calls handleProductClick
+                onClick={() => handleProductClick(product)} // ✅ Uses slug now
               >
                 {productTagline && <p className="product-tagline">{productTagline}</p>}
                 <h2 className="product-name">{productName}</h2>
+
                 <p className="product-card-price">{formattedPrice}</p>
+
                 <div className="product-image-container">
                   <img
                     src={mainImage}
@@ -102,15 +118,20 @@ const ProductCatalog = () => {
                     onError={(e) => { e.target.src = '/placeholder.jpg'; }}
                   />
                 </div>
+
                 <div className="product-details">
                   <button
                     className="add-to-cart-button"
-                    onClick={(e) => { e.stopPropagation(); handleAddToCart(product); }}
+                    onClick={(e) => { 
+                      e.stopPropagation(); 
+                      handleAddToCart(product); 
+                    }}
                     disabled={product.stock === 0}
                   >
                     {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
                   </button>
                 </div>
+
               </div>
             );
           })}

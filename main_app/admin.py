@@ -50,21 +50,23 @@ class CartItemAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('category_id', 'name', 'description', 'created_at')  
     search_fields = ('name',)
-
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
         'product_id', 'name', 'price', 'original_price', 'discount', 'stock',
-        'category', 'is_deal_of_the_day', 'is_abroad_order', 'abroad_delivery_days', # Add to list display
-        'created_at', 'image'
+        'category', 'is_deal_of_the_day', 'is_abroad_order', 'abroad_delivery_days',
+        'created_at'
     )
-    search_fields = ('name', 'description', 'category__name')
-    list_filter = ('category', 'created_at', 'is_deal_of_the_day', 'is_abroad_order') # Add to list filter
+    search_fields = ('name', 'product_id', 'slug', 'category__name')
+    list_filter = ('category', 'created_at', 'is_deal_of_the_day', 'is_abroad_order', 'is_featured')
     fields = (
-        'name', 'description', 'price', 'original_price', 'discount', 'stock',
-        'category', 'image', 'is_deal_of_the_day',
-        'is_abroad_order', 'abroad_delivery_days' # Add to editable fields
+        'name', 'slug', 'description', 'price', 'original_price', 'discount', 'stock',
+        'category', 'image',  # removed image_secondary
+        'is_deal_of_the_day', 'is_featured', 'is_new',
+        'is_abroad_order', 'abroad_delivery_days'
     )
+    readonly_fields = ('created_at', 'updated_at')
+
 
 # If Category is not already registered
 # @admin.register(Category)

@@ -9,11 +9,12 @@
     "@testing-library/user-event": "^13.5.0",
     "assert": "^2.1.0",
     "axios": "^1.7.2",
-    "express": "^4.19.2", 
+    "express": "^4.19.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-ga4": "^2.1.0",
-    "react-icons": "^4.x.x", 
+    "react-helmet": "^6.1.0",
+    "react-icons": "^4.x.x",
     "react-modal": "^3.16.1",
     "react-paystack": "^6.0.0",
     "react-phone-input-2": "^2.15.1",
@@ -26,9 +27,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start", 
+    "start": "react-scripts start",
     "build": "react-scripts build",
-    "serve": "node server.js", 
+    "serve": "node server.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

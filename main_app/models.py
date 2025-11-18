@@ -8,6 +8,8 @@ import datetime
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from cloudinary_storage.storage import MediaCloudinaryStorage
+from django.utils.text import slugify
+from django.urls import reverse
 
 
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
@@ -79,35 +81,55 @@ class PasswordResetToken(models.Model):
 
 
 class Category(models.Model):
-    category_id = models.AutoField(primary_key=True)  # Use this as the primary key
+    category_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=191, unique=True, blank=True, null=True)  # new field
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        managed = True
         db_table = 'categories'
-        verbose_name = 'Category'
-        verbose_name_plural = 'Categories'
         ordering = ['name']
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base = slugify(self.name)[:250]
+            slug = base
+            i = 1
+            while Category.objects.filter(slug=slug).exists():
+                slug = f"{base}-{i}"
+                i += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
 
 class Product(models.Model):
     product_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=191, unique=False, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    original_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    price = models.DecimalField(max_digits=12, decimal_places=2)
+    original_price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
     discount = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    stock = models.IntegerField()
+    stock = models.IntegerField(default=0)
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, blank=True, null=True)
-    image = models.ImageField(upload_to='products/', blank=True, null=True,storage=MediaCloudinaryStorage(), max_length=255)
+    # Use the storage you're already using; comment below left as example
+    image = models.ImageField(
+        upload_to='products/',
+        blank=True,
+        null=True,
+        storage=None,  # replace with MediaCloudinaryStorage() if available
+        max_length=255
+    )
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
     is_deal_of_the_day = models.BooleanField(default=False)
     is_featured = models.BooleanField(default=False)
     is_new = models.BooleanField(default=False)
+
     # New fields for abroad orders
     is_abroad_order = models.BooleanField(default=False)
     abroad_delivery_days = models.PositiveIntegerField(
@@ -131,19 +153,37 @@ class Product(models.Model):
         """Alias for product_id so code expecting `id` works"""
         return self.product_id
 
+    def get_absolute_url(self):
+        # Use slug URL if available, fallback to pk-based detail
+        if self.slug:
+            return reverse('product-detail-slug', args=[self.slug])
+        return reverse('product-detail', args=[self.product_id])
 
+    def save(self, *args, **kwargs):
+        # Auto-generate unique slug if not provided
+        if not self.slug:
+            base = slugify(self.name)[:250]
+            slug = base
+            i = 1
+            while Product.objects.filter(slug=slug).exists():
+                slug = f"{base}-{i}"
+                i += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
 
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name='additional_images', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='products/additional/', null=True, blank=True,storage=MediaCloudinaryStorage(), max_length=255)
-    secondary_image = models.ImageField(upload_to='products/additional/', null=True, blank=True,storage=MediaCloudinaryStorage(), max_length=255)
-    tertiary_image = models.ImageField(upload_to='products/additional/', null=True, blank=True,storage=MediaCloudinaryStorage(), max_length=255)
-    quaternary_image = models.ImageField(upload_to='products/additional/', null=True, blank=True,storage=MediaCloudinaryStorage(), max_length=255)
+    image = models.ImageField(upload_to='products/additional/', null=True, blank=True, storage=None, max_length=255)
+    secondary_image = models.ImageField(upload_to='products/additional/', null=True, blank=True, storage=None, max_length=255)
+    tertiary_image = models.ImageField(upload_to='products/additional/', null=True, blank=True, storage=None, max_length=255)
+    quaternary_image = models.ImageField(upload_to='products/additional/', null=True, blank=True, storage=None, max_length=255)
     description = models.TextField(blank=True, null=True)
+    position = models.PositiveIntegerField(default=0)
 
     class Meta:
         db_table = 'product_image'
+        ordering = ['position']
 
     def __str__(self):
         return f"Image for {self.product.name}"

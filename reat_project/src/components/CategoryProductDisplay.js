@@ -1,34 +1,33 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { TokenContext } from "./TokenContext";
-import api from "../Api";
+import Api from "../Api"; // Capital A
+import { getProductDetailsPath } from "../helpers/navigation";
 import "./CategoryProductDisplay.css";
 // Import icons for scrolling (you might need to install react-icons or use simple text)
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
-
 const allCategories = [
-  { id: 8, name: "Watches & Smartwatches" },
-  { id: 9, name: "Video Games & Accessories" },
-  { id: 16, name: "Software & Server Services" },
-  { id: 7, name: "Powerbanks" },
-  { id: 2, name: "Phones & Tablets" },
-  { id: 4, name: "Laptops & Computers" },
-  { id: 3, name: "Headsets & AirPods & Earbuds" },
-  { id: 14, name: "Electronics" },
-  { id: 6, name: "Cases & Screen Protector/Guard" },
-  { id: 1, name: "Accessories for Phones & Tablets" },
-  { id: 15, name: "Accessories for Electronics" },
-  // Adding more categories for demonstration of scroll
-  { id: 17, name: "Cameras & Photography" },
-  { id: 18, name: "Home Appliances" },
-  { id: 19, name: "Networking Devices" },
-  { id: 20, name: "Drones & Accessories" },
+  { slug: "watches-and-smartwatches", name: "Watches & Smartwatches" },
+  { slug: "video-games-and-accessories", name: "Video Games & Accessories" },
+  { slug: "software-and-server-services", name: "Software & Server Services" },
+  { slug: "powerbanks", name: "Powerbanks" },
+  { slug: "phones-and-tablets", name: "Phones & Tablets" },
+  { slug: "laptops-and-computers", name: "Laptops & Computers" },
+  { slug: "headsets-airpods-earbuds", name: "Headsets & AirPods & Earbuds" },
+  { slug: "electronics", name: "Electronics" },
+  { slug: "cases-and-screen-protector-guard", name: "Cases & Screen Protector/Guard" },
+  { slug: "accessories-for-phones-and-tablets", name: "Accessories for Phones & Tablets" },
+  { slug: "accessories-for-electronics", name: "Accessories for Electronics" },
+  { slug: "cameras-and-photography", name: "Cameras & Photography" },
+  { slug: "home-appliances", name: "Home Appliances" },
+  { slug: "networking-devices", name: "Networking Devices" },
+  { slug: "drones-and-accessories", name: "Drones & Accessories" },
 ];
 
 const CategoryProductDisplay = () => {
   const [products, setProducts] = useState({});
-  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+  const [selectedCategorySlug, setSelectedCategorySlug] = useState(null);
   const [loadingProducts, setLoadingProducts] = useState(false);
   const accessToken = useContext(TokenContext);
   const navigate = useNavigate();
@@ -39,19 +38,20 @@ const CategoryProductDisplay = () => {
       try {
         const responses = await Promise.all(
           allCategories.map((category) =>
-            api.get(`products/?category_id=${category.id}`, {
+            Api.get(`products/?category=${category.slug}`, {
               headers: { Authorization: `Bearer ${accessToken}` },
             })
           )
         );
 
         const productsObject = allCategories.reduce((acc, category, index) => {
-          acc[category.id] = responses[index].data;
+          acc[category.slug] = responses[index].data;
           return acc;
         }, {});
+
         setProducts(productsObject);
         if (allCategories.length > 0) {
-          setSelectedCategoryId(allCategories[0].id);
+          setSelectedCategorySlug(allCategories[0].slug);
         }
       } catch (error) {
         console.error("Error fetching all category products:", error);
@@ -63,22 +63,26 @@ const CategoryProductDisplay = () => {
     if (accessToken) fetchAllCategoryProducts();
   }, [accessToken]);
 
-  const handleCategoryClick = (id) => {
-    setSelectedCategoryId(id);
+  const handleCategoryClick = (slug) => {
+    setSelectedCategorySlug(slug);
   };
 
-  const handleProductClick = (productId) => {
-    navigate(`/product-details/${productId}`);
+  const handleProductClick = (product) => {
+    navigate(getProductDetailsPath(product));
   };
 
-  const selectedCategoryName = allCategories.find(cat => cat.id === selectedCategoryId)?.name || "All Products";
-  const displayedProducts = selectedCategoryId ? products[selectedCategoryId] || [] : Object.values(products).flat();
+  const selectedCategoryName =
+    allCategories.find((cat) => cat.slug === selectedCategorySlug)?.name || "All Products";
+
+  const displayedProducts = selectedCategorySlug
+    ? products[selectedCategorySlug] || []
+    : Object.values(products).flat();
 
   // Function to format price in Nigerian Naira
   const formatPriceInNaira = (price) => {
-    return new Intl.NumberFormat('en-NG', {
-      style: 'currency',
-      currency: 'NGN',
+    return new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
       minimumFractionDigits: 2,
     }).format(price);
   };
@@ -90,9 +94,11 @@ const CategoryProductDisplay = () => {
         <ul className="cpd-category-list">
           {allCategories.map((category) => (
             <li
-              key={category.id}
-              className={`cpd-category-item ${selectedCategoryId === category.id ? "active" : ""}`}
-              onClick={() => handleCategoryClick(category.id)}
+              key={category.slug}
+              className={`cpd-category-item ${
+                selectedCategorySlug === category.slug ? "active" : ""
+              }`}
+              onClick={() => handleCategoryClick(category.slug)}
             >
               {category.name}
             </li>
@@ -105,7 +111,7 @@ const CategoryProductDisplay = () => {
         {loadingProducts ? (
           <div className="cpd-loading-spinner"></div>
         ) : (
-          <div className="cpd-product-scroll-container"> {/* New scroll container */}
+          <div className="cpd-product-scroll-container">
             <div className="cpd-product-grid">
               {displayedProducts.length > 0 ? (
                 displayedProducts.map((product) => {
@@ -116,14 +122,14 @@ const CategoryProductDisplay = () => {
                     <div
                       key={product.product_id}
                       className="cpd-product-card"
-                      onClick={() => handleProductClick(product.product_id)}
+                      onClick={() => handleProductClick(product)}
                       onMouseEnter={(e) => {
                         const imgEl = e.currentTarget.querySelector("img");
-                        imgEl.src = secondaryImage;
+                        if (imgEl) imgEl.src = secondaryImage;
                       }}
                       onMouseLeave={(e) => {
                         const imgEl = e.currentTarget.querySelector("img");
-                        imgEl.src = mainImage;
+                        if (imgEl) imgEl.src = mainImage;
                       }}
                     >
                       <img

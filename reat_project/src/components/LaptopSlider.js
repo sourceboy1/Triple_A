@@ -1,6 +1,8 @@
+// src/components/LaptopDisplay.js
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../Api';
+import Api from '../Api';
+import { getProductDetailsPath } from '../helpers/navigation';
 import './LaptopSlider.css';
 
 const LaptopDisplay = ({ onLoaded }) => {
@@ -12,6 +14,9 @@ const LaptopDisplay = ({ onLoaded }) => {
   const navigate = useNavigate();
   const hoverIntervals = useRef({});
   const rotateInterval = useRef(null);
+
+  // Use slug for Laptops & Computers (ensure this matches DB)
+  const CATEGORY_SLUG = 'laptops-and-computers';
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -26,7 +31,8 @@ const LaptopDisplay = ({ onLoaded }) => {
 
     const fetchLaptops = async () => {
       try {
-        const response = await api.get(`products/?category_id=4`);
+        const encoded = encodeURIComponent(CATEGORY_SLUG);
+        const response = await Api.get(`products/?category=${encoded}`);
         const data = response.data;
 
         if (!Array.isArray(data)) {
@@ -65,16 +71,24 @@ const LaptopDisplay = ({ onLoaded }) => {
       clearInterval(rotateInterval.current);
       Object.values(hoverIntervals.current).forEach(clearInterval);
     };
-  }, [onLoaded]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onLoaded]); // keep onLoaded as dep only
 
-  const handleProductClick = (id) => {
-    navigate(`/product-details/${id}`);
+  const handleProductClick = (product) => {
+    // Use helper (prefers slug)
+    navigate(getProductDetailsPath(product));
   };
 
   const handleMouseEnter = (id, images) => {
-    if (images.length < 2) return;
+    if (!images || images.length < 2) return;
 
     let currentIndex = 0;
+
+    // clear existing
+    if (hoverIntervals.current[id]) {
+      clearInterval(hoverIntervals.current[id]);
+    }
+
     hoverIntervals.current[id] = setInterval(() => {
       currentIndex = (currentIndex + 1) % images.length;
       setHoverImageIndexes((prev) => ({
@@ -85,8 +99,10 @@ const LaptopDisplay = ({ onLoaded }) => {
   };
 
   const handleMouseLeave = (id) => {
-    clearInterval(hoverIntervals.current[id]);
-    hoverIntervals.current[id] = null;
+    if (hoverIntervals.current[id]) {
+      clearInterval(hoverIntervals.current[id]);
+      hoverIntervals.current[id] = null;
+    }
 
     setHoverImageIndexes((prev) => ({
       ...prev,
@@ -108,7 +124,7 @@ const LaptopDisplay = ({ onLoaded }) => {
             style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}
           >
             {products.slice(0, displayCount).map((laptop) => {
-              if (!laptop || !laptop.image_urls?.medium) return null;
+              if (!laptop) return null;
 
               const images = [
                 laptop.image_urls?.medium,
@@ -118,13 +134,13 @@ const LaptopDisplay = ({ onLoaded }) => {
               ].filter(Boolean);
 
               const currentImg =
-                images[hoverImageIndexes[laptop.product_id] || 0] || images[0];
+                images[hoverImageIndexes[laptop.product_id] || 0] || images[0] || '/placeholder.jpg';
 
               return (
                 <div
                   className="laptop-item"
                   key={laptop.product_id}
-                  onClick={() => handleProductClick(laptop.product_id)}
+                  onClick={() => handleProductClick(laptop)}
                   onMouseEnter={() => handleMouseEnter(laptop.product_id, images)}
                   onMouseLeave={() => handleMouseLeave(laptop.product_id)}
                 >
@@ -133,6 +149,7 @@ const LaptopDisplay = ({ onLoaded }) => {
                     alt={laptop.name || 'Laptop'}
                     className="laptop-image"
                     onError={(e) => { e.target.src = '/placeholder.jpg'; }}
+                    loading="lazy"
                   />
                   <h3 className="laptop-name">{laptop.name}</h3>
                   <p className="laptop-price">
