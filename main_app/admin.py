@@ -20,6 +20,7 @@ class SecretProductAdmin(admin.ModelAdmin):
     
     search_fields = ("name", "imei_or_serial", "description")
     
+    
     readonly_fields = ("date_added", "date_sold")
 
     fieldsets = (
