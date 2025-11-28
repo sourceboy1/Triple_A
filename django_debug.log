@@ -11814,3 +11814,5 @@ INFO 2025-11-28 19:02:35,406 autoreload 17372 17944 C:\Users\YOU\Documents\Tripl
 INFO 2025-11-28 19:02:37,597 autoreload 13284 14712 Watching for file changes with StatReloader
 INFO 2025-11-28 19:02:44,582 autoreload 13284 14712 C:\Users\YOU\Documents\Triple_A\main_app\admin.py changed, reloading.
 INFO 2025-11-28 19:02:47,145 autoreload 6676 6772 Watching for file changes with StatReloader
+INFO 2025-11-28 19:07:01,717 autoreload 6676 6772 C:\Users\YOU\Documents\Triple_A\main_app\admin.py changed, reloading.
+INFO 2025-11-28 19:07:04,552 autoreload 980 17284 Watching for file changes with StatReloader
