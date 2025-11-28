@@ -11,7 +11,8 @@ import wishlistImg from '../pictures/wishlist.jpg';
 import wishlistActiveImg from '../pictures/wishlist-active.jpg';
 
 const ProductDetails = () => {
-  const { productId } = useParams(); // can be slug or id
+  const { slug } = useParams();
+  const productId = slug;   // re-use same variable so rest of your code works
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true); 

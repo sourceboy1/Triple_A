@@ -1,6 +1,6 @@
 // components/Home.jsx
 import React, { useState, useEffect, useRef } from 'react';
-import homeVideo from '../pictures/home.mp4';
+import homeVideo from '../pictures/home1.mp4';
 import './Home.css';
 import { useNavigate } from 'react-router-dom';
 

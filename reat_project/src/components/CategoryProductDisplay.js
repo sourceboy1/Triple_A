@@ -1,33 +1,32 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
+// src/components/CategoryProductDisplay.jsx
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { TokenContext } from "./TokenContext";
-import Api from "../Api"; // Capital A
+import api from "../Api";
 import { getProductDetailsPath } from "../helpers/navigation";
 import "./CategoryProductDisplay.css";
-// Import icons for scrolling (you might need to install react-icons or use simple text)
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const allCategories = [
-  { slug: "watches-and-smartwatches", name: "Watches & Smartwatches" },
-  { slug: "video-games-and-accessories", name: "Video Games & Accessories" },
-  { slug: "software-and-server-services", name: "Software & Server Services" },
-  { slug: "powerbanks", name: "Powerbanks" },
-  { slug: "phones-and-tablets", name: "Phones & Tablets" },
-  { slug: "laptops-and-computers", name: "Laptops & Computers" },
-  { slug: "headsets-airpods-earbuds", name: "Headsets & AirPods & Earbuds" },
-  { slug: "electronics", name: "Electronics" },
-  { slug: "cases-and-screen-protector-guard", name: "Cases & Screen Protector/Guard" },
-  { slug: "accessories-for-phones-and-tablets", name: "Accessories for Phones & Tablets" },
-  { slug: "accessories-for-electronics", name: "Accessories for Electronics" },
-  { slug: "cameras-and-photography", name: "Cameras & Photography" },
-  { slug: "home-appliances", name: "Home Appliances" },
-  { slug: "networking-devices", name: "Networking Devices" },
-  { slug: "drones-and-accessories", name: "Drones & Accessories" },
+  { id: 8, name: "Watches & Smartwatches" },
+  { id: 9, name: "Video Games & Accessories" },
+  { id: 16, name: "Software & Server Services" },
+  { id: 7, name: "Powerbanks" },
+  { id: 2, name: "Phones & Tablets" },
+  { id: 4, name: "Laptops/Computers & Accessories" },
+  { id: 3, name: "AirPods/Earbuds & Headsets" },
+  { id: 14, name: "Electronics" },
+  { id: 6, name: "Screen Protector/Guard & Cases" },
+  { id: 1, name: "Accessories for Phones & Tablets" },
+  { id: 15, name: "Accessories for Electronics" },
+  { id: 17, name: "Cameras & Photography" },
+  { id: 18, name: "Home Appliances" },
+  { id: 19, name: "Networking Devices" },
+  { id: 20, name: "Drones & Accessories" },
 ];
 
 const CategoryProductDisplay = () => {
   const [products, setProducts] = useState({});
-  const [selectedCategorySlug, setSelectedCategorySlug] = useState(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [loadingProducts, setLoadingProducts] = useState(false);
   const accessToken = useContext(TokenContext);
   const navigate = useNavigate();
@@ -38,23 +37,26 @@ const CategoryProductDisplay = () => {
       try {
         const responses = await Promise.all(
           allCategories.map((category) =>
-            Api.get(`products/?category=${category.slug}`, {
+            api.get(`products/?category_id=${category.id}`, {
               headers: { Authorization: `Bearer ${accessToken}` },
             })
           )
         );
 
         const productsObject = allCategories.reduce((acc, category, index) => {
-          acc[category.slug] = responses[index].data;
+          const arr = Array.isArray(responses[index].data) ? responses[index].data : [];
+          // Strict filter using category_id from serializer
+          const filtered = arr
+            .filter((p) => Number(p.category_id) === Number(category.id))
+            .slice(0, 4); // max 4 per category
+          acc[category.id] = filtered;
           return acc;
         }, {});
 
         setProducts(productsObject);
-        if (allCategories.length > 0) {
-          setSelectedCategorySlug(allCategories[0].slug);
-        }
-      } catch (error) {
-        console.error("Error fetching all category products:", error);
+        if (allCategories.length > 0) setSelectedCategoryId(allCategories[0].id);
+      } catch {
+        setProducts({});
       } finally {
         setLoadingProducts(false);
       }
@@ -63,29 +65,16 @@ const CategoryProductDisplay = () => {
     if (accessToken) fetchAllCategoryProducts();
   }, [accessToken]);
 
-  const handleCategoryClick = (slug) => {
-    setSelectedCategorySlug(slug);
-  };
-
-  const handleProductClick = (product) => {
-    navigate(getProductDetailsPath(product));
-  };
+  const handleCategoryClick = (id) => setSelectedCategoryId(id);
+  const handleProductClick = (product) => navigate(getProductDetailsPath(product));
 
   const selectedCategoryName =
-    allCategories.find((cat) => cat.slug === selectedCategorySlug)?.name || "All Products";
+    allCategories.find((cat) => cat.id === selectedCategoryId)?.name || "All Products";
 
-  const displayedProducts = selectedCategorySlug
-    ? products[selectedCategorySlug] || []
-    : Object.values(products).flat();
+  const displayedProducts = selectedCategoryId ? products[selectedCategoryId] || [] : Object.values(products).flat();
 
-  // Function to format price in Nigerian Naira
-  const formatPriceInNaira = (price) => {
-    return new Intl.NumberFormat("en-NG", {
-      style: "currency",
-      currency: "NGN",
-      minimumFractionDigits: 2,
-    }).format(price);
-  };
+  const formatPriceInNaira = (price) =>
+    new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", minimumFractionDigits: 2 }).format(price);
 
   return (
     <div className="cpd-main-layout">
@@ -94,11 +83,9 @@ const CategoryProductDisplay = () => {
         <ul className="cpd-category-list">
           {allCategories.map((category) => (
             <li
-              key={category.slug}
-              className={`cpd-category-item ${
-                selectedCategorySlug === category.slug ? "active" : ""
-              }`}
-              onClick={() => handleCategoryClick(category.slug)}
+              key={category.id}
+              className={`cpd-category-item ${selectedCategoryId === category.id ? "active" : ""}`}
+              onClick={() => handleCategoryClick(category.id)}
             >
               {category.name}
             </li>
@@ -132,11 +119,7 @@ const CategoryProductDisplay = () => {
                         if (imgEl) imgEl.src = mainImage;
                       }}
                     >
-                      <img
-                        src={mainImage}
-                        alt={product.name}
-                        className="cpd-product-image"
-                      />
+                      <img src={mainImage} alt={product.name} className="cpd-product-image" />
                       <h4 className="cpd-product-title">{product.name}</h4>
                       <p className="cpd-product-price">{formatPriceInNaira(parseFloat(product.price))}</p>
                     </div>

@@ -470,7 +470,11 @@ class ProductListView(generics.ListAPIView):
         queryset = Product.objects.all()
         category_id = self.request.query_params.get('category_id', None) # type: ignore
         if category_id:
-            queryset = queryset.filter(category__id=category_id)
+            try:
+                cid = int(category_id)
+                queryset = queryset.filter(category_id=cid)
+            except (ValueError, TypeError):
+                return Product.objects.none()
         return queryset
 
 
@@ -517,31 +521,44 @@ class PaymentMethodViewSet(viewsets.ModelViewSet):
 
 
 
+# views.py
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    Read-only API for products. Supports list and retrieve.
-    Can filter products by category slug using ?category=<slug>
-    """
     queryset = Product.objects.prefetch_related('additional_images').all()
     serializer_class = ProductSerializer
     permission_classes = [AllowAny]
-    authentication_classes = []  # public access
+    authentication_classes = []
     lookup_field = 'pk'
 
     def get_queryset(self):
         queryset = super().get_queryset()
 
-        # Filter by category slug (preferred)
-        category_slug = self.request.query_params.get('category')
-        if category_slug:
-            queryset = queryset.filter(category__slug=category_slug)
+        # Strict: accept numeric category_id param first
+        category_id = self.request.query_params.get('category_id')
+        if category_id:
+            try:
+                cid = int(category_id)
+            except (ValueError, TypeError):
+                return queryset.none()  # invalid id -> return empty queryset
 
-        # Optional search by product name
+            # filter using the actual DB column on Product (category_id),
+            # or use related field category__category_id — both work.
+            queryset = queryset.filter(category_id=cid)
+
+        # fallback: allow category param (slug or numeric)
+        elif self.request.query_params.get('category'):
+            category_val = self.request.query_params.get('category')
+            if category_val.isdigit():
+                queryset = queryset.filter(category_id=int(category_val))
+            else:
+                queryset = queryset.filter(category__slug=category_val)
+
+        # Optional: search
         query = self.request.query_params.get('query')
         if query:
             queryset = queryset.filter(name__icontains=query)
 
         return queryset
+
 
     def retrieve(self, request, *args, **kwargs):
         lookup = kwargs.get('pk')

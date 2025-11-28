@@ -15,8 +15,8 @@ const LaptopDisplay = ({ onLoaded }) => {
   const hoverIntervals = useRef({});
   const rotateInterval = useRef(null);
 
-  // Use slug for Laptops & Computers (ensure this matches DB)
-  const CATEGORY_SLUG = 'laptops-and-computers';
+  // Category ID for Laptops & Computers
+  const CATEGORY_ID = 4;
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -31,22 +31,22 @@ const LaptopDisplay = ({ onLoaded }) => {
 
     const fetchLaptops = async () => {
       try {
-        const encoded = encodeURIComponent(CATEGORY_SLUG);
-        const response = await Api.get(`products/?category=${encoded}`);
-        const data = response.data;
-
-        if (!Array.isArray(data)) {
-          console.error('Unexpected API response:', data);
-          if (isMounted) setProducts([]);
-          return;
-        }
+        const response = await Api.get(`products/?category_id=${CATEGORY_ID}`);
+        const data = Array.isArray(response.data) ? response.data : [];
 
         if (isMounted) {
-          const shuffled = shuffleArray(data.slice(0, fetchCount));
+          // Filter by category_id to be safe
+          const filtered = data.filter((p) => {
+            const idFromProduct = p.category_id ?? p.category?.category_id ?? p.category?.id ?? null;
+            return idFromProduct === CATEGORY_ID;
+          });
+
+          const shuffled = shuffleArray(filtered.slice(0, fetchCount));
           setProducts(shuffled);
         }
       } catch (error) {
         console.error('Error fetching laptops:', error);
+        if (isMounted) setProducts([]);
       } finally {
         if (isMounted) {
           setLoading(false);
@@ -60,7 +60,7 @@ const LaptopDisplay = ({ onLoaded }) => {
     // auto-rotate items every 12s
     rotateInterval.current = setInterval(() => {
       setProducts((prev) => {
-        if (prev.length === 0) return prev;
+        if (!prev || prev.length === 0) return prev;
         const first = prev[0];
         return [...prev.slice(1), first];
       });
@@ -71,11 +71,9 @@ const LaptopDisplay = ({ onLoaded }) => {
       clearInterval(rotateInterval.current);
       Object.values(hoverIntervals.current).forEach(clearInterval);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onLoaded]); // keep onLoaded as dep only
+  }, [onLoaded]);
 
   const handleProductClick = (product) => {
-    // Use helper (prefers slug)
     navigate(getProductDetailsPath(product));
   };
 
@@ -84,7 +82,6 @@ const LaptopDisplay = ({ onLoaded }) => {
 
     let currentIndex = 0;
 
-    // clear existing
     if (hoverIntervals.current[id]) {
       clearInterval(hoverIntervals.current[id]);
     }
@@ -148,7 +145,9 @@ const LaptopDisplay = ({ onLoaded }) => {
                     src={currentImg || '/placeholder.jpg'}
                     alt={laptop.name || 'Laptop'}
                     className="laptop-image"
-                    onError={(e) => { e.target.src = '/placeholder.jpg'; }}
+                    onError={(e) => {
+                      e.target.src = '/placeholder.jpg';
+                    }}
                     loading="lazy"
                   />
                   <h3 className="laptop-name">{laptop.name}</h3>

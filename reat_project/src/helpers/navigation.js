@@ -1,7 +1,7 @@
-export const getProductDetailsPath = (product) => {
+export const getProductDetailsPath = (product) => { 
   if (!product) return "/";
 
   return product.slug
-    ? `/product-details/${product.slug}`
-    : `/product-details/${product.product_id}`;
+    ? `/product/${product.slug}`
+    : `/product/${product.product_id}`;
 };

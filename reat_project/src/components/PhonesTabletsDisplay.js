@@ -1,3 +1,4 @@
+// src/components/PhonesTabletsDisplay.js
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Api from '../Api';
@@ -7,18 +8,15 @@ import './PhonesTabletsDisplay.css';
 const PhonesTabletsDisplay = ({ onLoaded }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const displayCount = 6;
   const fetchCount = 30;
-
   const navigate = useNavigate();
   const hoverIntervals = useRef({});
   const [hoverImageIndexes, setHoverImageIndexes] = useState({});
 
-  // Use slug for Phones & Tablets category
-  const CATEGORY_SLUG = 'phones-and-tablets'; // <-- important: use the normalized slug from your DB
+  // Category ID for Phones & Tablets
+  const CATEGORY_ID = 2;
 
-  // Random shuffle
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -32,23 +30,22 @@ const PhonesTabletsDisplay = ({ onLoaded }) => {
 
     const fetchPhonesAndTablets = async () => {
       try {
-        // Request by slug (backend filters category__slug)
-        const encodedSlug = encodeURIComponent(CATEGORY_SLUG);
-        const response = await Api.get(`products/?category=${encodedSlug}`);
-        const data = response.data;
-
-        if (!Array.isArray(data)) {
-          console.error('Unexpected API response:', data);
-          if (isMounted) setProducts([]);
-          return;
-        }
+        const response = await Api.get(`products/?category_id=${CATEGORY_ID}`);
+        const data = Array.isArray(response.data) ? response.data : [];
 
         if (isMounted) {
-          const shuffledProducts = shuffleArray(data.slice(0, fetchCount));
-          setProducts(shuffledProducts);
+          // Filter to ensure only products from category_id = 2
+          const filtered = data.filter((p) => {
+            const idFromProduct = p.category_id ?? p.category?.category_id ?? p.category?.id ?? null;
+            return idFromProduct === CATEGORY_ID;
+          });
+
+          const shuffled = shuffleArray(filtered.slice(0, fetchCount));
+          setProducts(shuffled);
         }
       } catch (error) {
         console.error('Error fetching phones & tablets:', error);
+        if (isMounted) setProducts([]);
       } finally {
         if (isMounted) {
           setLoading(false);
@@ -59,7 +56,7 @@ const PhonesTabletsDisplay = ({ onLoaded }) => {
 
     fetchPhonesAndTablets();
 
-    // Auto slider every 12 seconds (rotates the product array)
+    // Auto slider every 12 seconds
     const interval = setInterval(() => {
       setProducts((prev) => {
         if (prev.length === 0) return prev;
@@ -76,7 +73,6 @@ const PhonesTabletsDisplay = ({ onLoaded }) => {
   }, [onLoaded]);
 
   const handleProductClick = (product) => {
-    // navigate using the helper (will prefer slug when available)
     navigate(getProductDetailsPath(product));
   };
 
@@ -85,7 +81,6 @@ const PhonesTabletsDisplay = ({ onLoaded }) => {
 
     let currentImgIndex = 0;
 
-    // Clear existing interval (if any) first
     if (hoverIntervals.current[productId]) {
       clearInterval(hoverIntervals.current[productId]);
     }

@@ -14,8 +14,7 @@ const PowerBankDisplay = ({ onLoaded }) => {
   const hoverIntervals = useRef({});
   const rotateInterval = useRef(null);
 
-  // Replace this with the correct slug from your database
-  const CATEGORY_SLUG = 'power-banks';
+  const CATEGORY_ID = 7; // Powerbanks category id
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -30,22 +29,21 @@ const PowerBankDisplay = ({ onLoaded }) => {
 
     const fetchPowerBanks = async () => {
       try {
-        const encoded = encodeURIComponent(CATEGORY_SLUG);
-        const response = await Api.get(`products/?category=${encoded}`);
-        const data = response.data;
-
-        if (!Array.isArray(data)) {
-          console.error('Unexpected API response:', data);
-          if (isMounted) setProducts([]);
-          return;
-        }
+        const response = await Api.get(`products/?category_id=${CATEGORY_ID}`);
+        const data = Array.isArray(response.data) ? response.data : [];
 
         if (isMounted) {
-          const shuffled = shuffleArray(data.slice(0, fetchCount));
+          const filtered = data.filter((p) => {
+            const idFromProduct = p.category_id ?? p.category?.category_id ?? p.category?.id ?? null;
+            return idFromProduct === CATEGORY_ID;
+          });
+
+          const shuffled = shuffleArray(filtered.slice(0, fetchCount));
           setProducts(shuffled);
         }
       } catch (error) {
         console.error('Error fetching power banks:', error);
+        if (isMounted) setProducts([]);
       } finally {
         if (isMounted) {
           setLoading(false);
@@ -56,10 +54,9 @@ const PowerBankDisplay = ({ onLoaded }) => {
 
     fetchPowerBanks();
 
-    // Auto rotate every 12s
     rotateInterval.current = setInterval(() => {
       setProducts((prev) => {
-        if (prev.length === 0) return prev;
+        if (!prev || prev.length === 0) return prev;
         return [...prev.slice(1), prev[0]];
       });
     }, 12000);
@@ -145,12 +142,12 @@ const PowerBankDisplay = ({ onLoaded }) => {
                     src={currentImg}
                     alt={pb.name || 'Power Bank'}
                     className="powerbank-image"
-                    onError={(e) => { e.target.src = '/placeholder.jpg'; }}
+                    onError={(e) => {
+                      e.target.src = '/placeholder.jpg';
+                    }}
                     loading="lazy"
                   />
-
                   <h3 className="powerbank-name">{pb.name}</h3>
-
                   <p className="powerbank-price">
                     {new Intl.NumberFormat('en-NG', {
                       style: 'currency',
