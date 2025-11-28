@@ -11044,3 +11044,769 @@ INFO 2025-11-18 14:11:37,137 basehttp 12184 18648 "GET /favicon.ico HTTP/1.1" 20
 INFO 2025-11-18 14:11:39,445 basehttp 12184 18648 "GET /admin/main_app/product/?o=-1.-2 HTTP/1.1" 200 20413
 INFO 2025-11-18 14:11:39,492 basehttp 12184 18648 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
 INFO 2025-11-18 14:11:39,577 basehttp 12184 18648 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 13:52:44,418 autoreload 12184 11500 C:\Users\YOU\Documents\Triple_A\main_app\models.py changed, reloading.
+INFO 2025-11-20 13:52:56,233 autoreload 10720 11080 Watching for file changes with StatReloader
+INFO 2025-11-20 13:53:17,984 autoreload 10720 11080 C:\Users\YOU\Documents\Triple_A\main_app\admin.py changed, reloading.
+INFO 2025-11-20 13:53:20,972 autoreload 20548 12816 Watching for file changes with StatReloader
+INFO 2025-11-20 13:54:39,165 autoreload 20548 12816 C:\Users\YOU\Documents\Triple_A\main_app\admin.py changed, reloading.
+INFO 2025-11-20 13:54:43,938 autoreload 2000 19064 Watching for file changes with StatReloader
+INFO 2025-11-20 13:59:59,392 autoreload 2000 19064 C:\Users\YOU\Documents\Triple_A\main_app\urls.py changed, reloading.
+INFO 2025-11-20 14:00:08,721 autoreload 20872 14652 Watching for file changes with StatReloader
+INFO 2025-11-20 14:00:19,595 autoreload 20872 14652 C:\Users\YOU\Documents\Triple_A\main_app\urls.py changed, reloading.
+INFO 2025-11-20 14:00:23,037 autoreload 2232 18824 Watching for file changes with StatReloader
+INFO 2025-11-20 14:01:00,492 autoreload 2232 18824 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2025-11-20 14:01:06,066 autoreload 17076 1928 Watching for file changes with StatReloader
+INFO 2025-11-20 14:01:24,394 autoreload 17076 1928 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2025-11-20 14:01:33,361 autoreload 13324 5564 Watching for file changes with StatReloader
+INFO 2025-11-20 14:01:41,303 autoreload 13324 5564 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2025-11-20 14:01:44,800 autoreload 8188 19284 Watching for file changes with StatReloader
+INFO 2025-11-20 14:05:58,699 autoreload 21196 2020 Watching for file changes with StatReloader
+INFO 2025-11-20 14:08:23,954 autoreload 21196 2020 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2025-11-20 14:08:31,813 autoreload 18460 18444 Watching for file changes with StatReloader
+INFO 2025-11-20 14:08:39,169 autoreload 18460 18444 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-11-20 14:08:42,965 autoreload 20320 13832 Watching for file changes with StatReloader
+INFO 2025-11-20 14:09:41,858 basehttp 20320 15232 "GET /admin/main_app/product/?o=-1.-2 HTTP/1.1" 200 20882
+INFO 2025-11-20 14:09:42,017 basehttp 20320 15232 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 14:09:42,120 basehttp 20320 15232 "GET /static/admin/img/sorting-icons.svg HTTP/1.1" 304 0
+INFO 2025-11-20 14:09:42,266 basehttp 20320 15232 "GET /favicon.ico HTTP/1.1" 200 692
+ERROR 2025-11-20 14:09:51,342 log 20320 15232 Internal Server Error: /admin/main_app/secretproduct/
+Traceback (most recent call last):
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\mysql\base.py", line 76, in execute
+    return self.cursor.execute(query, args)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\cursors.py", line 153, in execute
+    result = self._query(query)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\cursors.py", line 322, in _query
+    conn.query(q)
+    ~~~~~~~~~~^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 563, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 825, in _read_query_result
+    result.read()
+    ~~~~~~~~~~~^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 1199, in read
+    first_packet = self.connection._read_packet()
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 775, in _read_packet
+    packet.raise_for_error()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\protocol.py", line 219, in raise_for_error
+    err.raise_mysql_exception(self._data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\err.py", line 150, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.ProgrammingError: (1146, "Table 'my_triplea_ecommerce_db.main_app_secretproduct' doesn't exist")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\options.py", line 718, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 188, in _view_wrapper
+    result = _process_exception(request, e)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 186, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\sites.py", line 241, in inner
+    return view(request, *args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 188, in _view_wrapper
+    result = _process_exception(request, e)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 186, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\options.py", line 1999, in changelist_view
+    cl = self.get_changelist_instance(request)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\options.py", line 866, in get_changelist_instance
+    return ChangeList(
+        request,
+    ...<12 lines>...
+        self.search_help_text,
+    )
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 146, in __init__
+    self.get_results(request)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 313, in get_results
+    result_count = paginator.count
+                   ^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\core\paginator.py", line 110, in count
+    return c()
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\models\query.py", line 620, in count
+    return self.query.get_count(using=self.db)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\models\sql\query.py", line 630, in get_count
+    return obj.get_aggregation(using, {"__count": Count("*")})["__count"]
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\models\sql\query.py", line 616, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\mysql\base.py", line 76, in execute
+    return self.cursor.execute(query, args)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\cursors.py", line 153, in execute
+    result = self._query(query)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\cursors.py", line 322, in _query
+    conn.query(q)
+    ~~~~~~~~~~^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 563, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 825, in _read_query_result
+    result.read()
+    ~~~~~~~~~~~^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 1199, in read
+    first_packet = self.connection._read_packet()
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 775, in _read_packet
+    packet.raise_for_error()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\protocol.py", line 219, in raise_for_error
+    err.raise_mysql_exception(self._data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\err.py", line 150, in raise_mysql_exception
+    raise errorclass(errno, errval)
+django.db.utils.ProgrammingError: (1146, "Table 'my_triplea_ecommerce_db.main_app_secretproduct' doesn't exist")
+ERROR 2025-11-20 14:09:51,421 basehttp 20320 15232 "GET /admin/main_app/secretproduct/ HTTP/1.1" 500 270240
+INFO 2025-11-20 14:09:51,829 basehttp 20320 15232 "GET /favicon.ico HTTP/1.1" 200 692
+ERROR 2025-11-20 14:10:09,677 log 20320 15232 Internal Server Error: /admin/main_app/secretproduct/
+Traceback (most recent call last):
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\mysql\base.py", line 76, in execute
+    return self.cursor.execute(query, args)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\cursors.py", line 153, in execute
+    result = self._query(query)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\cursors.py", line 322, in _query
+    conn.query(q)
+    ~~~~~~~~~~^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 563, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 825, in _read_query_result
+    result.read()
+    ~~~~~~~~~~~^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 1199, in read
+    first_packet = self.connection._read_packet()
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 775, in _read_packet
+    packet.raise_for_error()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\protocol.py", line 219, in raise_for_error
+    err.raise_mysql_exception(self._data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\err.py", line 150, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.ProgrammingError: (1146, "Table 'my_triplea_ecommerce_db.main_app_secretproduct' doesn't exist")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\options.py", line 718, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 188, in _view_wrapper
+    result = _process_exception(request, e)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 186, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\sites.py", line 241, in inner
+    return view(request, *args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 188, in _view_wrapper
+    result = _process_exception(request, e)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 186, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\options.py", line 1999, in changelist_view
+    cl = self.get_changelist_instance(request)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\options.py", line 866, in get_changelist_instance
+    return ChangeList(
+        request,
+    ...<12 lines>...
+        self.search_help_text,
+    )
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 146, in __init__
+    self.get_results(request)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 313, in get_results
+    result_count = paginator.count
+                   ^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\core\paginator.py", line 110, in count
+    return c()
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\models\query.py", line 620, in count
+    return self.query.get_count(using=self.db)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\models\sql\query.py", line 630, in get_count
+    return obj.get_aggregation(using, {"__count": Count("*")})["__count"]
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\models\sql\query.py", line 616, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\mysql\base.py", line 76, in execute
+    return self.cursor.execute(query, args)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\cursors.py", line 153, in execute
+    result = self._query(query)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\cursors.py", line 322, in _query
+    conn.query(q)
+    ~~~~~~~~~~^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 563, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 825, in _read_query_result
+    result.read()
+    ~~~~~~~~~~~^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 1199, in read
+    first_packet = self.connection._read_packet()
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 775, in _read_packet
+    packet.raise_for_error()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\protocol.py", line 219, in raise_for_error
+    err.raise_mysql_exception(self._data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\err.py", line 150, in raise_mysql_exception
+    raise errorclass(errno, errval)
+django.db.utils.ProgrammingError: (1146, "Table 'my_triplea_ecommerce_db.main_app_secretproduct' doesn't exist")
+ERROR 2025-11-20 14:10:09,773 basehttp 20320 15232 "GET /admin/main_app/secretproduct/ HTTP/1.1" 500 270377
+INFO 2025-11-20 14:10:10,228 basehttp 20320 15232 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 14:12:19,793 autoreload 20320 13832 C:\Users\YOU\Documents\Triple_A\main_app\__init__.py changed, reloading.
+INFO 2025-11-20 14:12:23,037 autoreload 9508 13988 Watching for file changes with StatReloader
+INFO 2025-11-20 14:13:49,337 autoreload 9508 13988 C:\Users\YOU\Documents\Triple_A\main_app\__init__.py changed, reloading.
+INFO 2025-11-20 14:13:52,828 autoreload 4772 20224 Watching for file changes with StatReloader
+INFO 2025-11-20 14:14:05,646 autoreload 4772 20224 C:\Users\YOU\Documents\Triple_A\main_app\__init__.py changed, reloading.
+INFO 2025-11-20 14:14:11,753 autoreload 1260 16316 Watching for file changes with StatReloader
+INFO 2025-11-20 14:14:16,501 autoreload 1260 16316 C:\Users\YOU\Documents\Triple_A\main_app\migrations\__init__.py changed, reloading.
+INFO 2025-11-20 14:14:22,886 autoreload 9852 2340 Watching for file changes with StatReloader
+INFO 2025-11-20 14:14:31,562 autoreload 9852 2340 C:\Users\YOU\Documents\Triple_A\main_app\__init__.py changed, reloading.
+INFO 2025-11-20 14:14:34,939 autoreload 17128 7460 Watching for file changes with StatReloader
+INFO 2025-11-20 14:25:28,684 autoreload 17128 7460 C:\Users\YOU\Documents\Triple_A\main_app\__init__.py changed, reloading.
+INFO 2025-11-20 14:25:33,038 autoreload 13184 6992 Watching for file changes with StatReloader
+INFO 2025-11-20 14:25:35,015 autoreload 13184 6992 C:\Users\YOU\Documents\Triple_A\main_app\__init__.py changed, reloading.
+INFO 2025-11-20 14:25:37,842 autoreload 20856 12052 Watching for file changes with StatReloader
+INFO 2025-11-20 14:25:42,863 autoreload 20856 12052 C:\Users\YOU\Documents\Triple_A\main_app\__init__.py changed, reloading.
+INFO 2025-11-20 14:25:45,850 autoreload 1768 5752 Watching for file changes with StatReloader
+INFO 2025-11-20 14:25:53,892 autoreload 1768 5752 C:\Users\YOU\Documents\Triple_A\main_app\__init__.py changed, reloading.
+INFO 2025-11-20 14:25:57,090 autoreload 2824 8968 Watching for file changes with StatReloader
+INFO 2025-11-20 14:27:51,744 autoreload 2824 8968 C:\Users\YOU\Documents\Triple_A\main_app\migrations\0007_secretproduct.py changed, reloading.
+INFO 2025-11-20 14:27:58,128 autoreload 12512 19876 Watching for file changes with StatReloader
+ERROR 2025-11-20 14:28:09,312 log 12512 18484 Internal Server Error: /admin/main_app/secretproduct/
+Traceback (most recent call last):
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\mysql\base.py", line 76, in execute
+    return self.cursor.execute(query, args)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\cursors.py", line 153, in execute
+    result = self._query(query)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\cursors.py", line 322, in _query
+    conn.query(q)
+    ~~~~~~~~~~^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 563, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 825, in _read_query_result
+    result.read()
+    ~~~~~~~~~~~^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 1199, in read
+    first_packet = self.connection._read_packet()
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 775, in _read_packet
+    packet.raise_for_error()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\protocol.py", line 219, in raise_for_error
+    err.raise_mysql_exception(self._data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\err.py", line 150, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.ProgrammingError: (1146, "Table 'my_triplea_ecommerce_db.main_app_secretproduct' doesn't exist")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\options.py", line 718, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 188, in _view_wrapper
+    result = _process_exception(request, e)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 186, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\sites.py", line 241, in inner
+    return view(request, *args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 188, in _view_wrapper
+    result = _process_exception(request, e)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 186, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\options.py", line 1999, in changelist_view
+    cl = self.get_changelist_instance(request)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\options.py", line 866, in get_changelist_instance
+    return ChangeList(
+        request,
+    ...<12 lines>...
+        self.search_help_text,
+    )
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 146, in __init__
+    self.get_results(request)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 313, in get_results
+    result_count = paginator.count
+                   ^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\core\paginator.py", line 110, in count
+    return c()
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\models\query.py", line 620, in count
+    return self.query.get_count(using=self.db)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\models\sql\query.py", line 630, in get_count
+    return obj.get_aggregation(using, {"__count": Count("*")})["__count"]
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\models\sql\query.py", line 616, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\mysql\base.py", line 76, in execute
+    return self.cursor.execute(query, args)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\cursors.py", line 153, in execute
+    result = self._query(query)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\cursors.py", line 322, in _query
+    conn.query(q)
+    ~~~~~~~~~~^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 563, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 825, in _read_query_result
+    result.read()
+    ~~~~~~~~~~~^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 1199, in read
+    first_packet = self.connection._read_packet()
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 775, in _read_packet
+    packet.raise_for_error()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\protocol.py", line 219, in raise_for_error
+    err.raise_mysql_exception(self._data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\err.py", line 150, in raise_mysql_exception
+    raise errorclass(errno, errval)
+django.db.utils.ProgrammingError: (1146, "Table 'my_triplea_ecommerce_db.main_app_secretproduct' doesn't exist")
+ERROR 2025-11-20 14:28:09,452 basehttp 12512 18484 "GET /admin/main_app/secretproduct/ HTTP/1.1" 500 270385
+INFO 2025-11-20 14:28:09,782 basehttp 12512 18484 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 14:32:28,499 autoreload 12512 19876 C:\Users\YOU\Documents\Triple_A\main_app\models.py changed, reloading.
+INFO 2025-11-20 14:32:33,783 autoreload 3964 328 Watching for file changes with StatReloader
+INFO 2025-11-20 14:32:53,923 autoreload 3964 328 C:\Users\YOU\Documents\Triple_A\main_app\admin.py changed, reloading.
+INFO 2025-11-20 14:32:57,528 autoreload 13928 12472 Watching for file changes with StatReloader
+INFO 2025-11-20 14:33:15,818 autoreload 13928 12472 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-11-20 14:33:19,187 autoreload 9728 16536 Watching for file changes with StatReloader
+ERROR 2025-11-20 14:38:43,999 log 9728 7876 Internal Server Error: /admin/main_app/secretproduct/
+Traceback (most recent call last):
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\mysql\base.py", line 76, in execute
+    return self.cursor.execute(query, args)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\cursors.py", line 153, in execute
+    result = self._query(query)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\cursors.py", line 322, in _query
+    conn.query(q)
+    ~~~~~~~~~~^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 563, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 825, in _read_query_result
+    result.read()
+    ~~~~~~~~~~~^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 1199, in read
+    first_packet = self.connection._read_packet()
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 775, in _read_packet
+    packet.raise_for_error()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\protocol.py", line 219, in raise_for_error
+    err.raise_mysql_exception(self._data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\err.py", line 150, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.ProgrammingError: (1146, "Table 'my_triplea_ecommerce_db.main_app_secretproduct' doesn't exist")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\options.py", line 718, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 188, in _view_wrapper
+    result = _process_exception(request, e)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 186, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\sites.py", line 241, in inner
+    return view(request, *args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 188, in _view_wrapper
+    result = _process_exception(request, e)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 186, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\options.py", line 1999, in changelist_view
+    cl = self.get_changelist_instance(request)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\options.py", line 866, in get_changelist_instance
+    return ChangeList(
+        request,
+    ...<12 lines>...
+        self.search_help_text,
+    )
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 146, in __init__
+    self.get_results(request)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 313, in get_results
+    result_count = paginator.count
+                   ^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\core\paginator.py", line 110, in count
+    return c()
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\models\query.py", line 620, in count
+    return self.query.get_count(using=self.db)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\models\sql\query.py", line 630, in get_count
+    return obj.get_aggregation(using, {"__count": Count("*")})["__count"]
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\models\sql\query.py", line 616, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\backends\mysql\base.py", line 76, in execute
+    return self.cursor.execute(query, args)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\cursors.py", line 153, in execute
+    result = self._query(query)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\cursors.py", line 322, in _query
+    conn.query(q)
+    ~~~~~~~~~~^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 563, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 825, in _read_query_result
+    result.read()
+    ~~~~~~~~~~~^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 1199, in read
+    first_packet = self.connection._read_packet()
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\connections.py", line 775, in _read_packet
+    packet.raise_for_error()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\protocol.py", line 219, in raise_for_error
+    err.raise_mysql_exception(self._data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\pymysql\err.py", line 150, in raise_mysql_exception
+    raise errorclass(errno, errval)
+django.db.utils.ProgrammingError: (1146, "Table 'my_triplea_ecommerce_db.main_app_secretproduct' doesn't exist")
+ERROR 2025-11-20 14:38:44,086 basehttp 9728 7876 "GET /admin/main_app/secretproduct/ HTTP/1.1" 500 270377
+INFO 2025-11-20 14:38:44,378 basehttp 9728 7876 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 14:41:38,023 basehttp 9728 7876 "GET /admin/main_app/secretproduct/ HTTP/1.1" 200 13772
+INFO 2025-11-20 14:41:38,088 basehttp 9728 7876 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 14:41:38,216 basehttp 9728 7876 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 14:41:41,921 basehttp 9728 7876 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15020
+INFO 2025-11-20 14:41:41,983 basehttp 9728 7876 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 14:41:42,051 basehttp 9728 7876 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 14:52:31,641 basehttp 9728 14224 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 14:52:31,687 basehttp 9728 14224 "GET /admin/main_app/secretproduct/ HTTP/1.1" 200 16135
+INFO 2025-11-20 14:52:31,740 basehttp 9728 14224 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 14:52:31,813 basehttp 9728 14224 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 14:53:13,737 basehttp 9728 14224 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15020
+INFO 2025-11-20 14:53:13,790 basehttp 9728 14224 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 14:53:13,854 basehttp 9728 14224 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 14:57:35,191 basehttp 9728 14224 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 14:57:35,223 basehttp 9728 14224 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15302
+INFO 2025-11-20 14:57:35,302 basehttp 9728 14224 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 14:57:35,472 basehttp 9728 14224 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 14:57:45,672 basehttp 9728 14224 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 14:57:45,754 basehttp 9728 14224 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15302
+INFO 2025-11-20 14:57:45,925 basehttp 9728 14224 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 14:57:46,278 basehttp 9728 14224 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 15:00:27,601 basehttp 9728 14224 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 15:00:27,647 basehttp 9728 14224 "GET /admin/main_app/secretproduct/ HTTP/1.1" 200 17863
+INFO 2025-11-20 15:00:27,705 basehttp 9728 14224 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 15:00:27,829 basehttp 9728 14224 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 15:00:31,867 basehttp 9728 14224 "GET /admin/main_app/secretproduct/3/change/ HTTP/1.1" 200 15389
+INFO 2025-11-20 15:00:31,929 basehttp 9728 14224 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 15:00:32,011 basehttp 9728 14224 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 15:01:50,782 basehttp 9728 14224 "POST /admin/main_app/secretproduct/3/change/ HTTP/1.1" 302 0
+INFO 2025-11-20 15:01:50,843 basehttp 9728 14224 "GET /admin/main_app/secretproduct/ HTTP/1.1" 200 17922
+INFO 2025-11-20 15:01:50,906 basehttp 9728 14224 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 15:01:51,076 basehttp 9728 14224 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 15:01:54,342 basehttp 9728 14224 "GET /admin/main_app/secretproduct/2/change/ HTTP/1.1" 200 15389
+INFO 2025-11-20 15:01:54,393 basehttp 9728 14224 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 15:01:54,452 basehttp 9728 14224 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 15:01:59,213 basehttp 9728 14224 "POST /admin/main_app/secretproduct/2/change/ HTTP/1.1" 302 0
+INFO 2025-11-20 15:01:59,253 basehttp 9728 14224 "GET /admin/main_app/secretproduct/ HTTP/1.1" 200 17968
+INFO 2025-11-20 15:01:59,307 basehttp 9728 14224 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 15:01:59,370 basehttp 9728 14224 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 15:02:01,750 basehttp 9728 14224 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15020
+INFO 2025-11-20 15:02:01,793 basehttp 9728 14224 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 15:02:01,860 basehttp 9728 14224 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 15:07:53,922 basehttp 9728 12864 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 15:07:53,957 basehttp 9728 12864 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15291
+INFO 2025-11-20 15:07:54,010 basehttp 9728 12864 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 15:07:54,188 basehttp 9728 12864 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 15:08:23,579 basehttp 9728 12864 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 15:08:23,613 basehttp 9728 12864 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15291
+INFO 2025-11-20 15:08:23,669 basehttp 9728 12864 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 15:08:23,733 basehttp 9728 12864 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 15:10:45,807 basehttp 9728 12864 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 15:10:45,858 basehttp 9728 12864 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15326
+INFO 2025-11-20 15:10:45,949 basehttp 9728 12864 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 15:10:46,065 basehttp 9728 12864 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 15:11:52,222 basehttp 9728 12864 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 15:11:52,263 basehttp 9728 12864 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15326
+INFO 2025-11-20 15:11:52,322 basehttp 9728 12864 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 15:11:52,390 basehttp 9728 12864 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 15:13:51,573 basehttp 9728 12864 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 15:13:51,606 basehttp 9728 12864 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15310
+INFO 2025-11-20 15:13:51,664 basehttp 9728 12864 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 15:13:51,733 basehttp 9728 12864 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 15:19:03,418 basehttp 9728 1016 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 15:19:03,458 basehttp 9728 1016 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15289
+INFO 2025-11-20 15:19:03,536 basehttp 9728 1016 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 15:19:03,626 basehttp 9728 1016 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 15:42:33,711 basehttp 9728 13544 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 15:42:33,743 basehttp 9728 13544 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15474
+INFO 2025-11-20 15:42:33,794 basehttp 9728 13544 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 15:42:33,858 basehttp 9728 13544 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 15:48:00,141 basehttp 9728 6724 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 15:48:00,176 basehttp 9728 6724 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15453
+INFO 2025-11-20 15:48:00,229 basehttp 9728 6724 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 15:48:00,297 basehttp 9728 6724 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 15:50:43,246 basehttp 9728 6724 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 15:50:43,281 basehttp 9728 6724 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15317
+INFO 2025-11-20 15:50:43,333 basehttp 9728 6724 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 15:50:43,391 basehttp 9728 6724 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 15:56:23,623 basehttp 9728 11036 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 15:56:23,683 basehttp 9728 11036 "GET /admin/main_app/secretproduct/ HTTP/1.1" 200 24710
+INFO 2025-11-20 15:56:23,742 basehttp 9728 11036 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 15:56:23,872 basehttp 9728 11036 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 15:56:45,401 basehttp 9728 11036 "GET /admin/main_app/secretproduct/12/change/ HTTP/1.1" 200 15927
+INFO 2025-11-20 15:56:45,448 basehttp 9728 11036 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 15:56:45,519 basehttp 9728 11036 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 15:56:57,492 basehttp 9728 11036 "POST /admin/main_app/secretproduct/12/change/ HTTP/1.1" 302 0
+INFO 2025-11-20 15:56:57,568 basehttp 9728 11036 "GET /admin/main_app/secretproduct/ HTTP/1.1" 200 24716
+INFO 2025-11-20 15:56:57,659 basehttp 9728 11036 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 15:56:57,859 basehttp 9728 11036 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 16:08:57,546 basehttp 9728 9832 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15020
+INFO 2025-11-20 16:08:57,585 basehttp 9728 9832 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 16:08:57,660 basehttp 9728 9832 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 16:11:23,425 basehttp 9728 9832 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 16:11:23,462 basehttp 9728 9832 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15322
+INFO 2025-11-20 16:11:23,516 basehttp 9728 9832 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 16:11:23,584 basehttp 9728 9832 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 16:13:40,569 basehttp 9728 9832 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 16:13:40,604 basehttp 9728 9832 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15310
+INFO 2025-11-20 16:13:40,664 basehttp 9728 9832 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 16:13:40,746 basehttp 9728 9832 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 16:15:26,677 basehttp 9728 9832 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 16:15:26,713 basehttp 9728 9832 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15296
+INFO 2025-11-20 16:15:26,766 basehttp 9728 9832 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 16:15:26,843 basehttp 9728 9832 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 16:16:23,788 basehttp 9728 9832 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 16:16:23,828 basehttp 9728 9832 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15296
+INFO 2025-11-20 16:16:23,882 basehttp 9728 9832 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 16:16:23,948 basehttp 9728 9832 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 16:18:38,978 basehttp 9728 9832 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 16:18:39,014 basehttp 9728 9832 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15307
+INFO 2025-11-20 16:18:39,071 basehttp 9728 9832 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 16:18:39,140 basehttp 9728 9832 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 16:20:34,557 basehttp 9728 9832 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 16:20:34,591 basehttp 9728 9832 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15298
+INFO 2025-11-20 16:20:34,644 basehttp 9728 9832 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 16:20:34,708 basehttp 9728 9832 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 16:26:16,106 basehttp 9728 3768 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 16:26:16,144 basehttp 9728 3768 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15333
+INFO 2025-11-20 16:26:16,197 basehttp 9728 3768 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 16:26:16,266 basehttp 9728 3768 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 16:31:19,309 basehttp 9728 11440 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 16:31:19,345 basehttp 9728 11440 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15298
+INFO 2025-11-20 16:31:19,395 basehttp 9728 11440 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 16:31:19,456 basehttp 9728 11440 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 16:33:15,921 basehttp 9728 11440 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 16:33:15,956 basehttp 9728 11440 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15300
+INFO 2025-11-20 16:33:16,010 basehttp 9728 11440 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 16:33:16,073 basehttp 9728 11440 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 16:39:16,555 basehttp 9728 948 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 16:39:16,609 basehttp 9728 948 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15316
+INFO 2025-11-20 16:39:16,664 basehttp 9728 948 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 16:39:16,730 basehttp 9728 948 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 16:41:15,890 basehttp 9728 948 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 16:41:15,944 basehttp 9728 948 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15306
+INFO 2025-11-20 16:41:16,006 basehttp 9728 948 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 16:41:16,063 basehttp 9728 948 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 16:42:46,737 basehttp 9728 948 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 16:42:46,791 basehttp 9728 948 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15292
+INFO 2025-11-20 16:42:46,864 basehttp 9728 948 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 16:42:46,960 basehttp 9728 948 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 16:47:23,388 basehttp 9728 948 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 16:47:23,441 basehttp 9728 948 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15335
+INFO 2025-11-20 16:47:23,502 basehttp 9728 948 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 16:47:23,623 basehttp 9728 948 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 16:51:55,941 basehttp 9728 948 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 16:51:55,997 basehttp 9728 948 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15296
+INFO 2025-11-20 16:51:56,054 basehttp 9728 948 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 16:51:56,121 basehttp 9728 948 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 16:53:02,127 basehttp 9728 948 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 16:53:02,187 basehttp 9728 948 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15296
+INFO 2025-11-20 16:53:02,248 basehttp 9728 948 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 16:53:02,327 basehttp 9728 948 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 16:54:32,217 basehttp 9728 948 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 16:54:32,270 basehttp 9728 948 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15297
+INFO 2025-11-20 16:54:32,328 basehttp 9728 948 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 16:54:32,425 basehttp 9728 948 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 16:56:16,739 basehttp 9728 948 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 16:56:16,800 basehttp 9728 948 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15302
+INFO 2025-11-20 16:56:16,861 basehttp 9728 948 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 16:56:16,928 basehttp 9728 948 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 16:58:33,169 basehttp 9728 948 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 16:58:33,218 basehttp 9728 948 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15306
+INFO 2025-11-20 16:58:33,301 basehttp 9728 948 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 16:58:33,401 basehttp 9728 948 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 17:03:25,955 basehttp 9728 948 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 17:03:26,002 basehttp 9728 948 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15325
+INFO 2025-11-20 17:03:26,053 basehttp 9728 948 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 17:03:26,107 basehttp 9728 948 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 17:09:56,623 basehttp 9728 18468 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 17:09:56,676 basehttp 9728 18468 "GET /admin/main_app/secretproduct/add/ HTTP/1.1" 200 15410
+INFO 2025-11-20 17:09:56,726 basehttp 9728 18468 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 17:09:56,819 basehttp 9728 18468 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 17:11:18,950 basehttp 9728 18468 "POST /admin/main_app/secretproduct/add/ HTTP/1.1" 302 0
+INFO 2025-11-20 17:11:19,102 basehttp 9728 18468 "GET /admin/main_app/secretproduct/ HTTP/1.1" 200 37036
+INFO 2025-11-20 17:11:19,180 basehttp 9728 18468 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 17:11:19,342 basehttp 9728 18468 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 17:11:27,127 basehttp 9728 18468 "GET /admin/main_app/secretproduct/34/change/ HTTP/1.1" 200 15782
+INFO 2025-11-20 17:11:27,178 basehttp 9728 18468 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 17:11:27,244 basehttp 9728 18468 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-20 17:11:48,013 basehttp 9728 18468 "POST /admin/main_app/secretproduct/34/change/ HTTP/1.1" 302 0
+INFO 2025-11-20 17:11:48,152 basehttp 9728 18468 "GET /admin/main_app/secretproduct/ HTTP/1.1" 200 37060
+INFO 2025-11-20 17:11:48,217 basehttp 9728 18468 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-11-20 17:11:48,345 basehttp 9728 18468 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-11-28 18:54:13,304 autoreload 9728 16536 C:\Users\YOU\Documents\Triple_A\main_app\models.py changed, reloading.
+INFO 2025-11-28 18:54:18,001 autoreload 19776 5320 Watching for file changes with StatReloader
+INFO 2025-11-28 18:54:50,813 autoreload 19776 5320 C:\Users\YOU\Documents\Triple_A\main_app\models.py changed, reloading.
+INFO 2025-11-28 18:54:55,357 autoreload 17372 17944 Watching for file changes with StatReloader

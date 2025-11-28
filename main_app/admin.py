@@ -3,6 +3,36 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth import get_user_model
 from .models import ShippingAddress, Cart, CartItem, Category, Product, Order, OrderItem, Payment, PaymentDetail, PaymentMethod, ProductImage
 from .utils.email_helpers import send_order_email, send_order_status_email
+from .models import SecretProduct
+
+@admin.register(SecretProduct)
+class SecretProductAdmin(admin.ModelAdmin):
+    list_display = (
+        "name",
+        "imei_or_serial",
+        "price",
+        "is_sold",
+        "date_added",
+        "date_sold",
+    )
+    
+    list_filter = ("is_sold", "date_added")
+    
+    search_fields = ("name", "imei_or_serial", "description")
+    
+    readonly_fields = ("date_added", "date_sold")
+
+    fieldsets = (
+        (None, {
+            "fields": ("name", "imei_or_serial", "description", "price")
+        }),
+        ("Status", {
+            "fields": ("is_sold",)
+        }),
+        ("Dates", {
+            "fields": ("date_added", "date_sold")
+        }),
+    )
 
 
 # Get the user model

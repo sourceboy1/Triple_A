@@ -30,6 +30,8 @@ from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 
+
+
 def index(request):
     return render(request, 'index.html')
 

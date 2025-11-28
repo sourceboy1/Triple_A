@@ -5,9 +5,9 @@ from .views import (
     PaymentDetailViewSet, PaymentMethodViewSet, ProductViewSet,
     OrderViewSet, OrderItemViewSet, ProductListView, ProductDetailView,
     ShippingAddressViewSet, LoginView, SignupView, PlaceOrderView, UpdateProfileView,
-    UserOrdersView, DealOfTheDayView,
+    UserOrdersView, DealOfTheDayView
 )
-from . import views
+from . import views,views_secret
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -41,6 +41,8 @@ urlpatterns = [
     path('reset-password/', views.reset_password, name='reset_password'),
     path('update-profile/', UpdateProfileView.as_view(), name='update-profile'),
     path('deals_of_the_day/', DealOfTheDayView.as_view(), name='deals_of_the_day'),
+
+    path("x9a7-secret-ops/records/", views_secret.secret_records, name="secret_records"),
 ]
 
 from django.contrib.sitemaps.views import sitemap
