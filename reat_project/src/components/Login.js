@@ -40,6 +40,27 @@ const Login = () => {
       if (data.access && data.refresh && data.user) {
         localStorage.setItem("access_token", data.access);
         localStorage.setItem("refresh_token", data.refresh);
+      
+      const userObj = {
+        id: data.user.id,
+        username: data.user.username,
+        first_name: data.user.first_name,
+        last_name: data.user.last_name,
+        email: data.user.email,
+        is_superuser: !!data.user.is_superuser,
+        is_staff: !!data.user.is_staff
+      };
+      localStorage.setItem("user", JSON.stringify(userObj));
+
+      // keep backward-compatible fields used elsewhere
+      localStorage.setItem('loggedIn', 'true');
+      localStorage.setItem('username', data.user.username || '');
+      localStorage.setItem('userId', String(data.user.id));
+      localStorage.setItem('firstName', data.user.first_name || '');
+      localStorage.setItem('lastName', data.user.last_name || '');
+      localStorage.setItem('email', data.user.email || '');
+      localStorage.setItem('access_token', data.access);
+      localStorage.setItem('refresh_token', data.refresh);  
 
         signIn({
           username: data.user.username,
@@ -49,6 +70,7 @@ const Login = () => {
           email: data.user.email,
           token: data.access,
           refresh: data.refresh,
+          is_superuser: !!data.user.is_superuser,
         });
 
         navigate('/');

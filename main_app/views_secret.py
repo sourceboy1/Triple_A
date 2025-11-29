@@ -1,8 +1,67 @@
-from django.contrib.auth.decorators import user_passes_test
-from django.http import JsonResponse
+# main_app/views_secret.py
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAdminUser
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.views import APIView
+from django.db import transaction
+from django.utils import timezone
+import pytz
+
+
 from .models import SecretProduct
 
-@user_passes_test(lambda u: u.is_superuser)
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
 def secret_records(request):
-    data = list(SecretProduct.objects.values())
-    return JsonResponse({"records": data})
+    qs = SecretProduct.objects.all().values()
+    return Response({"records": list(qs)}, status=status.HTTP_200_OK)
+
+
+class AddSecretProductView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def post(self, request, format=None):
+        data = request.data or {}
+        name = data.get('name')
+        imei_or_serial = data.get('imei_or_serial')
+        price = data.get('price', 0)
+        description = data.get('description', '')
+
+        if not name or not imei_or_serial:
+            return Response({"error": "Name and IMEI/Serial required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        sp = SecretProduct.objects.create(
+            name=name,
+            imei_or_serial=imei_or_serial,
+            price=price,
+            description=description,
+            is_sold=False
+        )
+
+        return Response({"message": "created", "id": sp.id}, status=status.HTTP_201_CREATED) # type: ignore
+
+
+class MarkSecretProductSoldView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def post(self, request, pk, format=None):
+        try:
+            product = SecretProduct.objects.get(pk=pk)
+        except SecretProduct.DoesNotExist:
+            return Response({"error": "not_found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Lagos timezone
+        lagos_tz = pytz.timezone("Africa/Lagos")
+        product.is_sold = True
+        product.date_sold = timezone.now().astimezone(lagos_tz)
+        product.save()
+
+        return Response({
+            "message": "marked_sold",
+            "product": {
+                "id": product.id, # type: ignore
+                "is_sold": product.is_sold,
+                "date_sold": product.date_sold
+            }
+        }, status=status.HTTP_200_OK)

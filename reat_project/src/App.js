@@ -1,3 +1,4 @@
+// src/App.js
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
@@ -44,6 +45,11 @@ import ShopCategoryPage from './components/ShopCategoryPage';
 import FlyToCart from './components/FlyToCart';
 import ReactGA from 'react-ga4';
 
+// Secret admin
+import RequireSuperuser from "./secret/RequireSuperuser";
+import SecretProducts from "./secret/SecretProducts";
+
+// ROOT APP
 const App = () => {
   return (
     <UserProvider>
@@ -53,7 +59,7 @@ const App = () => {
             <LoadingProvider>
               <Router>
                 <ScrollToTop />
-                <MaintenanceWrapper />
+                <AppContent />
               </Router>
             </LoadingProvider>
           </WishlistProvider>
@@ -63,18 +69,11 @@ const App = () => {
   );
 };
 
-const MaintenanceWrapper = () => {
-  const { user } = useUser();
-  const isMaintenanceMode = process.env.REACT_APP_MAINTENANCE_MODE === 'true';
-
-  if (isMaintenanceMode && !(user && user.is_staff)) {
-    return <Maintenance />;
-  }
-  return <AppContent />;
-};
-
+// MAIN APP CONTENT (ALL HOOKS AT TOP – FIXED)
 const AppContent = () => {
+  // Hooks (must be unconditional)
   const { loading, setLoading } = useLoading();
+  const { isSuperuser } = useUser() || {};       // <-- use isSuperuser from context
   const location = useLocation();
 
   const [flyAnimation, setFlyAnimation] = useState(null);
@@ -93,24 +92,59 @@ const AppContent = () => {
   useEffect(() => {
     setLoading(true);
 
-    ReactGA.send({ hitType: "pageview", page: location.pathname + location.search, title: document.title });
+    ReactGA.send({
+      hitType: "pageview",
+      page: location.pathname + location.search,
+      title: document.title
+    });
 
-    const timer = setTimeout(() => setLoading(false), 1000);
+    const timer = setTimeout(() => setLoading(false), 500);
     return () => clearTimeout(timer);
   }, [location.pathname, location.search, setLoading]);
 
+
+  // AFTER HOOKS: safe conditional logic
+  const isMaintenanceMode = process.env.REACT_APP_MAINTENANCE_MODE === 'true';
+
+  // fallback read of localStorage for maintenance bypass (if context not ready yet)
+  let localUserSuper = false;
+  try {
+    const storedUser = JSON.parse(localStorage.getItem("user") || "null");
+    if (storedUser && typeof storedUser.is_superuser !== "undefined") {
+      localUserSuper = !!storedUser.is_superuser;
+    }
+  } catch (e) {
+    localUserSuper = false;
+  }
+
+  // If app is in maintenance and neither context nor localStorage show superuser -> show Maintenance
+  if (isMaintenanceMode && !(!!isSuperuser || localUserSuper)) {
+    return <Maintenance />;
+  }
+
+  const isSecretAdmin = location.pathname.startsWith("/admin-x9a7-secret");
+
   return (
     <>
-      <Helmet>
-        <title>Triple A Tech | Buy Electronics & Gadgets in Nigeria</title>
-        <meta name="description" content="Shop original tech products in Nigeria. Phones, laptops, power banks, accessories and more at best prices. Fast delivery!" />
-        <meta name="keywords" content="phones, laptops, power banks, gadgets, electronics, Nigeria, buy tech" />
-        <link rel="canonical" href={`https://tripleastechng.com${location.pathname}`} />
-      </Helmet>
+      {/* Hide navbar & footer for secret admin */}
+      {!isSecretAdmin && <Navbar cartIconRef={navbarCartIconRef} />}
 
-      <Navbar cartIconRef={navbarCartIconRef} />
-      {loading ? <Loading /> : (
+      {loading ? (
+        <Loading />
+      ) : (
         <Routes>
+
+          {/* SECRET ADMIN ROUTE */}
+          <Route
+            path="/admin-x9a7-secret"
+            element={
+              <RequireSuperuser>
+                <SecretProducts />
+              </RequireSuperuser>
+            }
+          />
+
+          {/* PUBLIC ROUTES */}
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
@@ -119,7 +153,7 @@ const AppContent = () => {
           <Route path="/request-password-reset" element={<PasswordResetRequest />} />
           <Route path="/reset-password/:uid/:token" element={<PasswordReset />} />
           <Route path="/product-catalog" element={<ProductCatalog />} />
-          <Route path="/product/:slug" element={<ProductDetails onFlyToCart={handleFlyToCart} />} /> 
+          <Route path="/product/:slug" element={<ProductDetails onFlyToCart={handleFlyToCart} />} />
           <Route path="/products" element={<ProductList />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
@@ -133,18 +167,21 @@ const AppContent = () => {
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/account/details" element={<AccountDetails />} />
           <Route path="/user/orders" element={<UserOrderParent />} />
-          <Route path="*" element={<NotFoundPage />} />
           <Route path="/order-success" element={<OrderSuccess />} />
-          <Route path='/order-failure' element= {<OrderFailure />} />
+          <Route path='/order-failure' element={<OrderFailure />} />
           <Route path="/order/:orderId" element={<OrderDetails />} />
           <Route path="/category-full-display/" element={<CategoryProductDisplay />} />
           <Route path="/shop/:categorySlug" element={<ShopCategoryPage />} />
+
+          {/* 404 LAST */}
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       )}
-      <FloatingNav />
-      <Footer />
 
-      {flyAnimation && (
+      {!isSecretAdmin && <FloatingNav />}
+      {!isSecretAdmin && <Footer />}
+
+      {flyAnimation && !isSecretAdmin && (
         <FlyToCart
           startPos={flyAnimation.startPos}
           endPos={flyAnimation.endPos}

@@ -43,6 +43,8 @@ urlpatterns = [
     path('deals_of_the_day/', DealOfTheDayView.as_view(), name='deals_of_the_day'),
 
     path("x9a7-secret-ops/records/", views_secret.secret_records, name="secret_records"),
+    path("x9a7-secret-ops/add/", views_secret.AddSecretProductView.as_view()),
+    path("x9a7-secret-ops/mark-sold/<int:pk>/", views_secret.MarkSecretProductSoldView.as_view()),
 ]
 
 from django.contrib.sitemaps.views import sitemap
