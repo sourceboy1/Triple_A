@@ -7,6 +7,8 @@ from rest_framework.views import APIView
 from django.db import transaction
 from django.utils import timezone
 import pytz
+from decimal import Decimal, InvalidOperation
+
 
 
 from .models import SecretProduct
@@ -25,11 +27,22 @@ class AddSecretProductView(APIView):
         data = request.data or {}
         name = data.get('name')
         imei_or_serial = data.get('imei_or_serial')
-        price = data.get('price', 0)
+        price_raw = data.get('price')
         description = data.get('description', '')
 
         if not name or not imei_or_serial:
             return Response({"error": "Name and IMEI/Serial required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # --- FIX STARTS HERE ---
+        # If price is empty, set it to 0
+        if price_raw in [None, "", " "]:
+            price = Decimal("0")
+        else:
+            try:
+                price = Decimal(price_raw) # type: ignore
+            except InvalidOperation:
+                return Response({"error": "Price must be a number"}, status=status.HTTP_400_BAD_REQUEST)
+        # --- FIX ENDS HERE ---
 
         sp = SecretProduct.objects.create(
             name=name,
