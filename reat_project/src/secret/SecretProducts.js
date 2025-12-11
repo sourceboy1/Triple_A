@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"; 
+import React, { useEffect, useState } from "react";
 import Api from "../Api";
 import "./SecretProducts.css";
 
@@ -11,13 +11,15 @@ export default function SecretProducts() {
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+
   const [modalOpen, setModalOpen] = useState(false);
   const [addedModalOpen, setAddedModalOpen] = useState(false);
-  const [duplicateModalOpen, setDuplicateModalOpen] = useState(false); // NEW
+  const [duplicateModalOpen, setDuplicateModalOpen] = useState(false);
+
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [confirming, setConfirming] = useState(false);
 
-  // Format price
+  // Format price as ₦1,000.00
   const formatPrice = (value) => {
     if (!value) return "₦0.00";
     return new Intl.NumberFormat("en-NG", {
@@ -36,22 +38,22 @@ export default function SecretProducts() {
     }
   };
 
-  // Add product with IMEI duplicate check
+  // ⛔ CHECK IMEI BEFORE ADDING
   const addProduct = async () => {
     if (!name || !imei) return alert("Name and IMEI/Serial required");
 
     try {
-      // 🔍 CHECK IF IMEI ALREADY EXISTS
+      // 🔥 Validate IMEI
       const check = await Api.post(`${SECRET_PATH}check-imei/`, {
         imei_or_serial: imei,
       });
 
       if (check.data.exists) {
-        setDuplicateModalOpen(true); // show duplicate popup
+        setDuplicateModalOpen(true);
         return;
       }
 
-      // 👍 IMEI is new → continue and add product
+      // Add product
       await Api.post(`${SECRET_PATH}add/`, {
         name,
         imei_or_serial: imei,
@@ -64,9 +66,8 @@ export default function SecretProducts() {
       setPrice("");
       setDescription("");
 
-      setAddedModalOpen(true); // Success popup
+      setAddedModalOpen(true);
       loadProducts();
-
     } catch (err) {
       console.error(err);
       alert("Failed to add product");
@@ -83,6 +84,7 @@ export default function SecretProducts() {
   const confirmSold = async () => {
     if (!selectedProduct) return;
     setConfirming(true);
+
     try {
       await Api.post(`${SECRET_PATH}mark-sold/${selectedProduct.id}/`);
       setModalOpen(false);
@@ -182,24 +184,24 @@ export default function SecretProducts() {
         </div>
       )}
 
-      {/* Product Added Successfully */}
+      {/* Duplicate IMEI Modal */}
+      {duplicateModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Duplicate IMEI</h3>
+            <p>This IMEI/Serial number already exists in the system.</p>
+            <button onClick={() => setDuplicateModalOpen(false)}>OK</button>
+          </div>
+        </div>
+      )}
+
+      {/* Product Added Modal */}
       {addedModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
             <h3>Product Added</h3>
             <p>The product has been added successfully!</p>
             <button onClick={() => setAddedModalOpen(false)}>OK</button>
-          </div>
-        </div>
-      )}
-
-      {/* Duplicate IMEI Modal */}
-      {duplicateModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h3>IMEI/Serial Already Exists</h3>
-            <p>This IMEI/Serial number has already been added before.</p>
-            <button onClick={() => setDuplicateModalOpen(false)}>OK</button>
           </div>
         </div>
       )}
