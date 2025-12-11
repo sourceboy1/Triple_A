@@ -45,6 +45,8 @@ urlpatterns = [
     path("x9a7-secret-ops/records/", views_secret.secret_records, name="secret_records"),
     path("x9a7-secret-ops/add/", views_secret.AddSecretProductView.as_view()),
     path("x9a7-secret-ops/mark-sold/<int:pk>/", views_secret.MarkSecretProductSoldView.as_view()),
+    path("x9a7-secret-ops/check-imei/", views_secret.check_imei),
+
 ]
 
 from django.contrib.sitemaps.views import sitemap

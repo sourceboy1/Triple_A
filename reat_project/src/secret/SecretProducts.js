@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"; 
 import Api from "../Api";
 import "./SecretProducts.css";
 
@@ -13,10 +13,11 @@ export default function SecretProducts() {
   const [searchTerm, setSearchTerm] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [addedModalOpen, setAddedModalOpen] = useState(false);
+  const [duplicateModalOpen, setDuplicateModalOpen] = useState(false); // NEW
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [confirming, setConfirming] = useState(false);
 
-  // Format price as ₦1,000.00
+  // Format price
   const formatPrice = (value) => {
     if (!value) return "₦0.00";
     return new Intl.NumberFormat("en-NG", {
@@ -35,19 +36,37 @@ export default function SecretProducts() {
     }
   };
 
-  // Add new product
+  // Add product with IMEI duplicate check
   const addProduct = async () => {
     if (!name || !imei) return alert("Name and IMEI/Serial required");
+
     try {
+      // 🔍 CHECK IF IMEI ALREADY EXISTS
+      const check = await Api.post(`${SECRET_PATH}check-imei/`, {
+        imei_or_serial: imei,
+      });
+
+      if (check.data.exists) {
+        setDuplicateModalOpen(true); // show duplicate popup
+        return;
+      }
+
+      // 👍 IMEI is new → continue and add product
       await Api.post(`${SECRET_PATH}add/`, {
         name,
         imei_or_serial: imei,
         price,
         description,
       });
-      setName(""); setImei(""); setPrice(""); setDescription("");
-      setAddedModalOpen(true); // Show product added popup
+
+      setName("");
+      setImei("");
+      setPrice("");
+      setDescription("");
+
+      setAddedModalOpen(true); // Success popup
       loadProducts();
+
     } catch (err) {
       console.error(err);
       alert("Failed to add product");
@@ -163,13 +182,24 @@ export default function SecretProducts() {
         </div>
       )}
 
-      {/* Product Added Modal */}
+      {/* Product Added Successfully */}
       {addedModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
             <h3>Product Added</h3>
             <p>The product has been added successfully!</p>
             <button onClick={() => setAddedModalOpen(false)}>OK</button>
+          </div>
+        </div>
+      )}
+
+      {/* Duplicate IMEI Modal */}
+      {duplicateModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>IMEI/Serial Already Exists</h3>
+            <p>This IMEI/Serial number has already been added before.</p>
+            <button onClick={() => setDuplicateModalOpen(false)}>OK</button>
           </div>
         </div>
       )}

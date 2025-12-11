@@ -16322,3 +16322,57 @@ INFO 2025-11-29 13:09:51,876 basehttp 9576 3944 "GET /api/products/?category_id=
 INFO 2025-11-29 13:09:51,892 basehttp 9576 16256 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
 INFO 2025-11-29 13:09:51,989 basehttp 9576 8024 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
 INFO 2025-11-29 13:09:52,085 basehttp 9576 17272 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2025-12-11 13:27:08,135 autoreload 15320 14024 Watching for file changes with StatReloader
+INFO 2025-12-11 13:38:34,031 basehttp 15320 11544 "GET /admin/ HTTP/1.1" 200 16504
+INFO 2025-12-11 13:38:34,082 basehttp 15320 10684 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:34,093 basehttp 15320 10684 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:34,093 basehttp 15320 20880 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:34,103 basehttp 15320 5340 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:34,104 basehttp 15320 11028 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:34,128 basehttp 15320 11028 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:34,296 basehttp 15320 11544 "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+INFO 2025-12-11 13:38:34,376 basehttp 15320 11544 "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:34,385 basehttp 15320 11544 "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:34,386 basehttp 15320 11028 "GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:34,528 basehttp 15320 11028 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-12-11 13:38:39,265 basehttp 15320 11028 "GET /admin/main_app/secretproduct/ HTTP/1.1" 200 38703
+INFO 2025-12-11 13:38:39,325 basehttp 15320 20880 "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:39,325 basehttp 15320 5340 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:39,325 basehttp 15320 11544 "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:39,326 basehttp 15320 10684 "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:39,326 basehttp 15320 11028 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:39,352 basehttp 15320 20880 "GET /static/admin/js/core.js HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:39,365 basehttp 15320 14420 "GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:39,367 basehttp 15320 5340 "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:39,471 basehttp 15320 11028 "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:39,477 basehttp 15320 11544 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-12-11 13:38:39,488 basehttp 15320 14420 "GET /static/admin/img/icon-yes.svg HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:39,493 basehttp 15320 5340 "GET /static/admin/img/search.svg HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:39,545 basehttp 15320 11544 "GET /static/admin/js/filters.js HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:39,602 basehttp 15320 14420 "GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:39,605 basehttp 15320 5340 "GET /static/admin/img/icon-no.svg HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:39,618 basehttp 15320 11544 "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+INFO 2025-12-11 13:38:39,714 basehttp 15320 11544 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-12-11 13:41:25,417 basehttp 15320 10276 "POST /admin/main_app/secretproduct/ HTTP/1.1" 200 12248
+INFO 2025-12-11 13:41:25,534 basehttp 15320 10276 "GET /static/admin/js/cancel.js HTTP/1.1" 200 884
+INFO 2025-12-11 13:41:25,552 basehttp 15320 10276 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-12-11 13:41:28,659 basehttp 15320 10276 "POST /admin/main_app/secretproduct/ HTTP/1.1" 302 0
+INFO 2025-12-11 13:41:28,719 basehttp 15320 10276 "GET /admin/main_app/secretproduct/ HTTP/1.1" 200 37930
+INFO 2025-12-11 13:41:28,769 basehttp 15320 10276 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-12-11 13:41:28,838 basehttp 15320 10276 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-12-11 13:50:22,965 autoreload 15320 14024 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 13:50:26,746 autoreload 10824 11576 Watching for file changes with StatReloader
+INFO 2025-12-11 13:50:29,374 autoreload 10824 11576 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 13:50:31,408 autoreload 4100 15072 Watching for file changes with StatReloader
+INFO 2025-12-11 13:50:36,800 autoreload 4100 15072 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 13:50:38,561 autoreload 10448 16220 Watching for file changes with StatReloader
+INFO 2025-12-11 13:51:00,170 autoreload 10448 16220 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 13:51:02,099 autoreload 12532 17392 Watching for file changes with StatReloader
+INFO 2025-12-11 13:59:25,493 autoreload 12532 17392 C:\Users\YOU\Documents\Triple_A\main_app\urls.py changed, reloading.
+INFO 2025-12-11 13:59:27,381 autoreload 11308 18248 Watching for file changes with StatReloader
+INFO 2025-12-11 14:00:15,541 autoreload 11308 18248 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 14:00:18,039 autoreload 16928 13960 Watching for file changes with StatReloader
+INFO 2025-12-11 14:00:22,679 autoreload 16928 13960 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 14:00:24,585 autoreload 18528 5448 Watching for file changes with StatReloader
+INFO 2025-12-11 14:00:27,769 autoreload 18528 5448 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 14:00:29,411 autoreload 9820 12456 Watching for file changes with StatReloader

@@ -9,9 +9,8 @@ from django.utils import timezone
 import pytz
 from decimal import Decimal, InvalidOperation
 
-
-
 from .models import SecretProduct
+
 
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
@@ -31,10 +30,19 @@ class AddSecretProductView(APIView):
         description = data.get('description', '')
 
         if not name or not imei_or_serial:
-            return Response({"error": "Name and IMEI/Serial required"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "Name and IMEI/Serial required"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
-        # --- FIX STARTS HERE ---
-        # If price is empty, set it to 0
+        # 🔥 CHECK FOR DUPLICATE
+        if SecretProduct.objects.filter(imei_or_serial=imei_or_serial).exists():
+            return Response(
+                {"error": "duplicate"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Handle empty or invalid price safely
         if price_raw in [None, "", " "]:
             price = Decimal("0")
         else:
@@ -42,7 +50,6 @@ class AddSecretProductView(APIView):
                 price = Decimal(price_raw) # type: ignore
             except InvalidOperation:
                 return Response({"error": "Price must be a number"}, status=status.HTTP_400_BAD_REQUEST)
-        # --- FIX ENDS HERE ---
 
         sp = SecretProduct.objects.create(
             name=name,
@@ -55,6 +62,21 @@ class AddSecretProductView(APIView):
         return Response({"message": "created", "id": sp.id}, status=status.HTTP_201_CREATED) # type: ignore
 
 
+
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
+def check_imei(request):
+    imei = request.data.get("imei_or_serial")
+
+    if not imei:
+        return Response({"error": "IMEI required"}, status=400)
+
+    exists = SecretProduct.objects.filter(imei_or_serial=imei).exists()
+
+    return Response({"exists": exists}, status=200)
+
+
+
 class MarkSecretProductSoldView(APIView):
     permission_classes = [IsAdminUser]
 
@@ -64,7 +86,6 @@ class MarkSecretProductSoldView(APIView):
         except SecretProduct.DoesNotExist:
             return Response({"error": "not_found"}, status=status.HTTP_404_NOT_FOUND)
 
-        # Lagos timezone
         lagos_tz = pytz.timezone("Africa/Lagos")
         product.is_sold = True
         product.date_sold = timezone.now().astimezone(lagos_tz)
