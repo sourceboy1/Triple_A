@@ -22,7 +22,7 @@ def secret_records(request):
     so frontend can search reliably.
     """
     qs = SecretProduct.objects.annotate(
-        cleaned_imei=Replace('imei_or_serial', Value(' '), Value('')) # type: ignore
+        cleaned_imei=Replace('imei_or_serial', Value(' '), Value(''))  # type: ignore
     ).order_by('name').values(
         'id', 'name', 'imei_or_serial', 'cleaned_imei', 'price', 'description', 'is_sold', 'date_sold'
     )
@@ -60,7 +60,7 @@ class AddSecretProductView(APIView):
             price = Decimal("0")
         else:
             try:
-                price = Decimal(price_raw) # type: ignore
+                price = Decimal(price_raw)  # type: ignore
             except InvalidOperation:
                 return Response({"error": "Price must be a number"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -73,7 +73,7 @@ class AddSecretProductView(APIView):
             is_sold=False
         )
 
-        return Response({"message": "created", "id": sp.id}, status=status.HTTP_201_CREATED) # type: ignore
+        return Response({"message": "created", "id": sp.id}, status=status.HTTP_201_CREATED)  # type: ignore
 
 
 @api_view(['POST'])
@@ -110,8 +110,63 @@ class MarkSecretProductSoldView(APIView):
         return Response({
             "message": "marked_sold",
             "product": {
-                "id": product.id, # type: ignore
+                "id": product.id,  # type: ignore
                 "is_sold": product.is_sold,
                 "date_sold": product.date_sold
+            }
+        }, status=status.HTTP_200_OK)
+
+
+class UpdateSecretProductView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def post(self, request, pk, format=None):
+        try:
+            product = SecretProduct.objects.get(pk=pk)
+        except SecretProduct.DoesNotExist:
+            return Response({"error": "not_found"}, status=status.HTTP_404_NOT_FOUND)
+
+        data = request.data or {}
+        name = (data.get('name') or "").strip()
+        imei_raw = data.get('imei_or_serial') or ""
+        imei_clean = "".join(str(imei_raw).split())
+        description = data.get('description', '')
+        price_raw = data.get('price')
+
+        if not name or not imei_clean:
+            return Response({"error": "Name and IMEI/Serial required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Check for duplicates excluding current product
+        exists = SecretProduct.objects.annotate(
+            cleaned=Replace('imei_or_serial', Value(' '), Value('')) # type: ignore
+        ).filter(cleaned=imei_clean).exclude(pk=pk).exists()
+
+        if exists:
+            return Response({"error": "duplicate"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Price validation
+        if price_raw in [None, "", " "]:
+            price = Decimal("0")
+        else:
+            try:
+                price = Decimal(price_raw) # type: ignore
+            except InvalidOperation:
+                return Response({"error": "Price must be a number"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Save updates
+        product.name = name
+        product.imei_or_serial = imei_clean
+        product.description = description
+        product.price = price
+        product.save()
+
+        return Response({
+            "message": "updated",
+            "product": {
+                "id": product.id, # type: ignore
+                "name": product.name,
+                "imei_or_serial": product.imei_or_serial,
+                "price": product.price,
+                "description": product.description
             }
         }, status=status.HTTP_200_OK)

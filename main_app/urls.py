@@ -7,7 +7,7 @@ from .views import (
     ShippingAddressViewSet, LoginView, SignupView, PlaceOrderView, UpdateProfileView,
     UserOrdersView, DealOfTheDayView
 )
-from . import views,views_secret
+from . import views, views_secret
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -42,10 +42,12 @@ urlpatterns = [
     path('update-profile/', UpdateProfileView.as_view(), name='update-profile'),
     path('deals_of_the_day/', DealOfTheDayView.as_view(), name='deals_of_the_day'),
 
+    # Secret Products
     path("x9a7-secret-ops/records/", views_secret.secret_records, name="secret_records"),
     path("x9a7-secret-ops/add/", views_secret.AddSecretProductView.as_view()),
     path("x9a7-secret-ops/mark-sold/<int:pk>/", views_secret.MarkSecretProductSoldView.as_view()),
     path("x9a7-secret-ops/check-imei/", views_secret.check_imei),
+    path("x9a7-secret-ops/update/<int:pk>/", views_secret.UpdateSecretProductView.as_view()),  # <- added
 
 ]
 
