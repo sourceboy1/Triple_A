@@ -16409,3 +16409,96 @@ INFO 2025-12-11 14:10:56,453 basehttp 20344 14628 "GET /api/products/?category_i
 INFO 2025-12-11 14:10:56,487 basehttp 20344 15280 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
 INFO 2025-12-11 14:10:56,493 basehttp 20344 20768 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
 INFO 2025-12-11 14:10:56,515 basehttp 20344 14628 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2025-12-11 14:15:14,741 autoreload 18020 10772 Watching for file changes with StatReloader
+INFO 2025-12-11 14:29:25,691 autoreload 18020 10772 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 14:29:27,438 autoreload 14052 15144 Watching for file changes with StatReloader
+INFO 2025-12-11 14:29:44,057 autoreload 14052 15144 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 14:29:45,476 autoreload 15572 13672 Watching for file changes with StatReloader
+INFO 2025-12-11 14:29:49,137 autoreload 15572 13672 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 14:29:50,829 autoreload 10480 20788 Watching for file changes with StatReloader
+INFO 2025-12-11 14:29:58,101 autoreload 10480 20788 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 14:29:59,850 autoreload 8208 19948 Watching for file changes with StatReloader
+INFO 2025-12-11 14:30:24,543 autoreload 8208 19948 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 14:30:26,163 autoreload 13020 10668 Watching for file changes with StatReloader
+INFO 2025-12-11 14:36:29,385 autoreload 13020 10668 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 14:36:31,274 autoreload 19168 13084 Watching for file changes with StatReloader
+INFO 2025-12-11 14:36:35,503 autoreload 19168 13084 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 14:36:37,601 autoreload 20784 11084 Watching for file changes with StatReloader
+INFO 2025-12-11 14:36:45,277 autoreload 20784 11084 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 14:36:46,871 autoreload 10788 10204 Watching for file changes with StatReloader
+INFO 2025-12-11 14:36:51,355 autoreload 10788 10204 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 14:36:52,896 autoreload 6652 18588 Watching for file changes with StatReloader
+INFO 2025-12-11 15:08:52,375 autoreload 6652 18588 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 15:08:54,424 autoreload 17864 6732 Watching for file changes with StatReloader
+INFO 2025-12-11 15:08:59,840 autoreload 17864 6732 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 15:09:01,354 autoreload 9132 7068 Watching for file changes with StatReloader
+INFO 2025-12-11 15:09:06,848 autoreload 9132 7068 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 15:09:08,366 autoreload 1172 4608 Watching for file changes with StatReloader
+INFO 2025-12-11 15:09:18,529 autoreload 1172 4608 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 15:09:20,049 autoreload 10976 18640 Watching for file changes with StatReloader
+INFO 2025-12-11 15:09:40,794 autoreload 10976 18640 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 15:09:42,403 autoreload 7108 14740 Watching for file changes with StatReloader
+INFO 2025-12-11 15:09:54,402 autoreload 7108 14740 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 15:09:56,749 autoreload 13140 8312 Watching for file changes with StatReloader
+INFO 2025-12-11 15:14:08,015 autoreload 13140 8312 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 15:14:10,272 autoreload 19940 14416 Watching for file changes with StatReloader
+INFO 2025-12-11 15:14:14,575 autoreload 19940 14416 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 15:14:16,793 autoreload 11060 21136 Watching for file changes with StatReloader
+INFO 2025-12-11 15:14:26,845 autoreload 11060 21136 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 15:14:29,089 autoreload 4104 16520 Watching for file changes with StatReloader
+INFO 2025-12-11 15:14:36,979 autoreload 4104 16520 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 15:14:38,734 autoreload 2948 9572 Watching for file changes with StatReloader
+INFO 2025-12-11 15:16:26,734 autoreload 2948 9572 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 15:16:28,631 autoreload 12112 3056 Watching for file changes with StatReloader
+INFO 2025-12-11 16:14:32,768 autoreload 12112 3056 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 16:14:34,561 autoreload 20784 17188 Watching for file changes with StatReloader
+INFO 2025-12-11 16:14:36,988 autoreload 20784 17188 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 16:14:38,454 autoreload 20136 10668 Watching for file changes with StatReloader
+INFO 2025-12-11 16:14:41,629 autoreload 20136 10668 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 16:14:43,301 autoreload 3140 6236 Watching for file changes with StatReloader
+INFO 2025-12-11 16:14:45,652 autoreload 3140 6236 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 16:14:47,066 autoreload 18268 19552 Watching for file changes with StatReloader
+INFO 2025-12-11 16:14:55,740 autoreload 18268 19552 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 16:14:57,941 autoreload 11504 13892 Watching for file changes with StatReloader
+INFO 2025-12-11 16:15:03,641 autoreload 11504 13892 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 16:15:05,635 autoreload 10132 16580 Watching for file changes with StatReloader
+INFO 2025-12-11 16:15:13,229 autoreload 10132 16580 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 16:15:15,332 autoreload 18144 948 Watching for file changes with StatReloader
+INFO 2025-12-11 16:15:19,885 autoreload 18144 948 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 16:15:22,301 autoreload 9720 19180 Watching for file changes with StatReloader
+INFO 2025-12-11 16:15:31,392 autoreload 9720 19180 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 16:15:33,411 autoreload 12852 16516 Watching for file changes with StatReloader
+INFO 2025-12-11 16:16:15,864 autoreload 12852 16516 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-11 16:16:17,924 autoreload 16356 17576 Watching for file changes with StatReloader
+INFO 2025-12-11 16:17:21,196 autoreload 8176 7640 Watching for file changes with StatReloader
+INFO 2025-12-11 16:18:43,307 basehttp 8176 20944 "OPTIONS /api/deals_of_the_day/ HTTP/1.1" 200 0
+INFO 2025-12-11 16:18:43,308 basehttp 8176 9232 "OPTIONS /api/products/?category_id=3 HTTP/1.1" 200 0
+INFO 2025-12-11 16:18:43,308 basehttp 8176 9524 "OPTIONS /api/products/?category_id=1 HTTP/1.1" 200 0
+INFO 2025-12-11 16:18:43,308 basehttp 8176 14636 "OPTIONS /api/products/?category_id=9 HTTP/1.1" 200 0
+INFO 2025-12-11 16:18:43,309 basehttp 8176 1380 "OPTIONS /api/products/?category_id=8 HTTP/1.1" 200 0
+INFO 2025-12-11 16:18:43,312 basehttp 8176 6724 "OPTIONS /api/products/?category_id=7 HTTP/1.1" 200 0
+INFO 2025-12-11 16:18:43,319 basehttp 8176 1380 "OPTIONS /api/deals_of_the_day/ HTTP/1.1" 200 0
+INFO 2025-12-11 16:18:43,321 basehttp 8176 9524 "OPTIONS /api/products/?category_id=1 HTTP/1.1" 200 0
+INFO 2025-12-11 16:18:43,321 basehttp 8176 14636 "OPTIONS /api/products/?category_id=9 HTTP/1.1" 200 0
+INFO 2025-12-11 16:18:43,321 basehttp 8176 9232 "OPTIONS /api/products/?category_id=2 HTTP/1.1" 200 0
+INFO 2025-12-11 16:18:43,322 basehttp 8176 20944 "OPTIONS /api/products/?category_id=4 HTTP/1.1" 200 0
+INFO 2025-12-11 16:18:43,324 basehttp 8176 6724 "OPTIONS /api/products/?category_id=3 HTTP/1.1" 200 0
+INFO 2025-12-11 16:18:43,326 basehttp 8176 1380 "OPTIONS /api/products/?category_id=8 HTTP/1.1" 200 0
+INFO 2025-12-11 16:18:43,328 basehttp 8176 9524 "OPTIONS /api/products/?category_id=2 HTTP/1.1" 200 0
+INFO 2025-12-11 16:18:43,332 basehttp 8176 14636 "OPTIONS /api/products/?category_id=4 HTTP/1.1" 200 0
+INFO 2025-12-11 16:18:43,332 basehttp 8176 9232 "OPTIONS /api/products/?category_id=7 HTTP/1.1" 200 0
+INFO 2025-12-12 13:32:19,594 autoreload 8176 7640 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-12 13:32:21,947 autoreload 18028 496 Watching for file changes with StatReloader
+INFO 2025-12-12 13:32:25,295 autoreload 18028 496 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-12 13:32:26,963 autoreload 19136 13596 Watching for file changes with StatReloader
+INFO 2025-12-12 13:32:33,889 autoreload 19136 13596 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-12 13:32:35,367 autoreload 15816 16684 Watching for file changes with StatReloader
+INFO 2025-12-12 13:32:39,073 autoreload 15816 16684 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-12 13:32:40,462 autoreload 17280 8004 Watching for file changes with StatReloader
+INFO 2025-12-12 13:32:44,956 autoreload 17280 8004 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-12 13:32:46,243 autoreload 7452 11560 Watching for file changes with StatReloader
+INFO 2025-12-12 13:32:49,817 autoreload 7452 11560 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-12 13:32:51,376 autoreload 3248 18196 Watching for file changes with StatReloader
+INFO 2025-12-12 13:32:59,363 autoreload 3248 18196 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
+INFO 2025-12-12 13:33:01,741 autoreload 16380 10152 Watching for file changes with StatReloader
+INFO 2025-12-12 13:41:54,734 autoreload 19004 13064 Watching for file changes with StatReloader

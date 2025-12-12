@@ -1,13 +1,15 @@
-# main_app/views_secret.py
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from django.db import transaction
 from django.utils import timezone
-import pytz
 from decimal import Decimal, InvalidOperation
+import pytz
+
+# DB function to remove spaces when comparing existing rows
+from django.db.models.functions import Replace
+from django.db.models import Value
 
 from .models import SecretProduct
 
@@ -15,7 +17,15 @@ from .models import SecretProduct
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def secret_records(request):
-    qs = SecretProduct.objects.all().values()
+    """
+    Return products ordered by name and include cleaned_imei (spaces removed)
+    so frontend can search reliably.
+    """
+    qs = SecretProduct.objects.annotate(
+        cleaned_imei=Replace('imei_or_serial', Value(' '), Value('')) # type: ignore
+    ).order_by('name').values(
+        'id', 'name', 'imei_or_serial', 'cleaned_imei', 'price', 'description', 'is_sold', 'date_sold'
+    )
     return Response({"records": list(qs)}, status=status.HTTP_200_OK)
 
 
@@ -24,25 +34,28 @@ class AddSecretProductView(APIView):
 
     def post(self, request, format=None):
         data = request.data or {}
-        name = data.get('name')
-        imei_or_serial = data.get('imei_or_serial')
+
+        # normalize inputs
+        name = (data.get('name') or "").strip()  # trim leading/trailing whitespace
+        # remove ALL whitespace characters (spaces, tabs, etc.)
+        imei_raw = data.get('imei_or_serial') or ""
+        imei_clean = "".join(str(imei_raw).split())  # splits on any whitespace and rejoins
+
         price_raw = data.get('price')
         description = data.get('description', '')
 
-        if not name or not imei_or_serial:
-            return Response(
-                {"error": "Name and IMEI/Serial required"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        if not name or not imei_clean:
+            return Response({"error": "Name and IMEI/Serial required"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # 🔥 CHECK FOR DUPLICATE
-        if SecretProduct.objects.filter(imei_or_serial=imei_or_serial).exists():
-            return Response(
-                {"error": "duplicate"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        # DUPLICATE CHECK: compare against cleaned stored IMEI (handles existing DB rows that contain spaces)
+        exists = SecretProduct.objects.annotate(
+            cleaned=Replace('imei_or_serial', Value(' '), Value('')) # type: ignore
+        ).filter(cleaned=imei_clean).exists()
 
-        # Handle empty or invalid price safely
+        if exists:
+            return Response({"error": "duplicate"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # PRICE handling: allow empty -> 0, validate numeric
         if price_raw in [None, "", " "]:
             price = Decimal("0")
         else:
@@ -51,9 +64,10 @@ class AddSecretProductView(APIView):
             except InvalidOperation:
                 return Response({"error": "Price must be a number"}, status=status.HTTP_400_BAD_REQUEST)
 
+        # Save using cleaned IMEI
         sp = SecretProduct.objects.create(
             name=name,
-            imei_or_serial=imei_or_serial,
+            imei_or_serial=imei_clean,
             price=price,
             description=description,
             is_sold=False
@@ -62,19 +76,21 @@ class AddSecretProductView(APIView):
         return Response({"message": "created", "id": sp.id}, status=status.HTTP_201_CREATED) # type: ignore
 
 
-
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
 def check_imei(request):
-    imei = request.data.get("imei_or_serial")
+    imei_raw = request.data.get("imei_or_serial") or ""
+    imei_clean = "".join(str(imei_raw).split())
 
-    if not imei:
-        return Response({"error": "IMEI required"}, status=400)
+    if not imei_clean:
+        # return exists: False (or error) — here we return exists False so frontend can show 'invalid' or similar
+        return Response({"exists": False}, status=status.HTTP_200_OK)
 
-    exists = SecretProduct.objects.filter(imei_or_serial=imei).exists()
+    exists = SecretProduct.objects.annotate(
+        cleaned=Replace('imei_or_serial', Value(' '), Value('')) # type: ignore
+    ).filter(cleaned=imei_clean).exists()
 
-    return Response({"exists": exists}, status=200)
-
+    return Response({"exists": exists}, status=status.HTTP_200_OK)
 
 
 class MarkSecretProductSoldView(APIView):
