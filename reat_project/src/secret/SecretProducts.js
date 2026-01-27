@@ -319,7 +319,7 @@ export default function SecretProducts() {
               <button onClick={() => setModalOpen(false)} disabled={confirming}>Cancel</button>
               <button onClick={confirmSold} disabled={confirming}>{confirming ? "Processing..." : "Confirm"}</button>
             </div>
-          </div>
+          </div> 
         </div>
       )}
 

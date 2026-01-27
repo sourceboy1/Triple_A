@@ -16659,3 +16659,24 @@ INFO 2025-12-12 14:34:27,306 autoreload 8396 19344 C:\Users\YOU\Documents\Triple
 INFO 2025-12-12 14:34:28,927 autoreload 8100 7240 Watching for file changes with StatReloader
 INFO 2025-12-12 14:34:37,274 autoreload 8100 7240 C:\Users\YOU\Documents\Triple_A\main_app\views_secret.py changed, reloading.
 INFO 2025-12-12 14:34:38,444 autoreload 9728 11572 Watching for file changes with StatReloader
+WARNING 2025-12-12 14:36:43,584 log 9728 11024 Unauthorized: /api/x9a7-secret-ops/records/
+WARNING 2025-12-12 14:36:43,594 basehttp 9728 11024 "GET /api/x9a7-secret-ops/records/ HTTP/1.1" 401 172
+INFO 2025-12-12 14:36:43,635 basehttp 9728 11024 "POST /api/token/refresh/ HTTP/1.1" 200 381
+WARNING 2025-12-12 14:36:43,639 log 9728 11024 Unauthorized: /api/x9a7-secret-ops/records/
+WARNING 2025-12-12 14:36:43,641 basehttp 9728 11024 "GET /api/x9a7-secret-ops/records/ HTTP/1.1" 401 172
+INFO 2025-12-12 14:36:43,656 basehttp 9728 11024 "GET /api/x9a7-secret-ops/records/ HTTP/1.1" 200 6956
+INFO 2025-12-12 14:36:43,668 basehttp 9728 11024 "POST /api/token/refresh/ HTTP/1.1" 200 381
+INFO 2025-12-12 14:36:43,693 basehttp 9728 11024 "GET /api/x9a7-secret-ops/records/ HTTP/1.1" 200 6956
+INFO 2025-12-12 14:36:52,501 basehttp 9728 11024 "POST /api/x9a7-secret-ops/update/17/ HTTP/1.1" 200 161
+INFO 2025-12-12 14:36:52,515 basehttp 9728 11024 "GET /api/x9a7-secret-ops/records/ HTTP/1.1" 200 6960
+INFO 2025-12-12 14:37:20,071 basehttp 9728 20176 "GET /admin/main_app/secretproduct/ HTTP/1.1" 200 37781
+INFO 2025-12-12 14:37:20,121 basehttp 9728 20176 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-12-12 14:37:20,203 basehttp 9728 20176 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2025-12-12 14:37:28,002 basehttp 9728 20176 "GET /admin/main_app/secretproduct/?q=anker+332 HTTP/1.1" 200 17147
+INFO 2025-12-12 14:37:28,049 basehttp 9728 20176 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2025-12-12 14:37:28,084 basehttp 9728 20176 "GET /favicon.ico HTTP/1.1" 200 692
+WARNING 2025-12-12 14:41:53,376 log 9728 1940 Unauthorized: /api/x9a7-secret-ops/records/
+WARNING 2025-12-12 14:41:53,378 basehttp 9728 1940 "GET /api/x9a7-secret-ops/records/ HTTP/1.1" 401 172
+INFO 2025-12-12 14:41:53,399 basehttp 9728 1940 "POST /api/token/refresh/ HTTP/1.1" 200 381
+INFO 2025-12-12 14:41:53,418 basehttp 9728 1940 "GET /api/x9a7-secret-ops/records/ HTTP/1.1" 200 6960
+INFO 2026-01-27 13:22:07,240 autoreload 14212 5892 Watching for file changes with StatReloader
