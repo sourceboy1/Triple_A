@@ -1,94 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --font: 'Plus Jakarta Sans', sans-serif;
+  --accent: #16a34a;
+  --accent-dark: #15803d;
+  --accent-light: #86efac;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --surface: #f8fafc;
+  --card-bg: #ffffff;
+  --border: #e2e8f0;
+}
+
+/* ─── Footer Wrapper ─────────────────────────────── */
 .footer-container {
-    background-color: #f9f9f9; /* Light background color */
-    padding: 20px; /* Space around the footer */
-    text-align: center; /* Default for larger screens */
-    padding-top: 50px; /* Additional space at the top */
-    margin-bottom: 10px; /* Space below the footer */
+  font-family: var(--font);
+  background: #111827;
+  padding: 64px 40px 0;
+  margin-top: 40px;
+  padding-bottom: 25px;
 }
 
+/* ─── Footer Grid ────────────────────────────────── */
 .footer-content {
-    display: flex; /* Use flexbox for layout */
-    justify-content: space-between; /* Spread items */
-    flex-wrap: wrap; /* Allow items to wrap */
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: 40px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* ─── Sections ───────────────────────────────────── */
 .footer-section {
-    flex: 1; /* Equal space */
-    padding: 10px;
-    min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
+/* Section headings (INFORMATION, OUR SERVICES, MY ACCOUNT) */
 .footer-section h3 {
-    color: green;
-    margin-bottom: 10px;
-    text-align: left; /* Headings always left */
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #e2e8f0;
+  margin: 0 0 4px;
 }
 
+/* Brand section heading override */
+.footer-section:first-child h3 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  text-transform: none;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+/* All paragraph text */
 .footer-section p {
-    color: black;
-    margin: 5px 0;
-    text-align: left; /* Content always left */
+  font-size: 0.875rem;
+  color: #d1d5db;
+  margin: 0;
+  line-height: 1.65;
+  transition: color 0.2s;
 }
 
-/* Social Media Icons */
+/* Clickable nav links */
+.footer-section p[style*="cursor: pointer"]:hover {
+  color: var(--accent-light);
+}
+
+/* ─── Social Media ───────────────────────────────── */
 .footer-social-media {
-    margin-top: 20px;
-    display: flex;
-    justify-content: flex-start; /* Align icons left */
-    gap: 10px;
+  display: flex;
+  gap: 12px;
+  padding: 32px 0 28px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  flex-wrap: wrap;
+}
+
+.social-icon-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  transition: background 0.25s, border-color 0.25s, transform 0.25s;
+  overflow: hidden;
+}
+
+.social-icon-link:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-3px);
 }
 
 .social-icon {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 2px solid green;
-    padding: 5px;
-    background-color: #fff;
-    transition: transform 0.3s ease;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: none;
+  padding: 0;
+  background: none;
+  display: block;
 }
 
 .social-icon:hover {
-    transform: scale(1.2);
+  transform: none;
+  opacity: 1;
 }
 
-/* Tablet and smaller */
+/* ─── Bottom bar ─────────────────────────────────── */
+.footer-bottom {
+  padding: 22px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.footer-bottom p {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  margin: 0;
+}
+
+.footer-bottom a {
+  color: #9ca3af;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-bottom a:hover {
+  color: var(--accent-light);
+}
+
+/* ─── Responsive ─────────────────────────────────── */
+@media (max-width: 1024px) {
+  .footer-content {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+}
+
 @media (max-width: 768px) {
-    .footer-content {
-        flex-direction: column; /* Stack */
-        align-items: flex-start; /* ✅ Left-align instead of center */
-        text-align: left; /* ✅ Ensure all text is left-aligned */
-    }
+  .footer-container {
+    padding: 48px 24px 0;
+  }
 
-    .footer-section {
-        width: 100%; /* Take full width */
-    }
-
-    .footer-social-media {
-        justify-content: flex-start; /* ✅ Icons stay left */
-    }
+  .footer-content {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
 }
 
-/* Specific small devices: 320px, 375px, 425px */
-@media (max-width: 425px) {
-    .footer-container {
-        text-align: left; /* ✅ Override container centering */
-    }
+@media (max-width: 480px) {
+  .footer-container {
+    padding: 40px 20px 0;
+  }
 
-    .footer-content {
-        align-items: flex-start;
-    }
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
 
-    .footer-section h3,
-    .footer-section p {
-        text-align: left; /* ✅ Force left for headings + text */
-    }
-    
+  .footer-social-media {
+    gap: 10px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
 }
 
-@media (max-width: 320px){
-    .footer-social-media{
-        margin-right: 10px;
-        gap: 6.5px;
-    }
+@media (max-width: 320px) {
+  .social-icon-link {
+    width: 36px;
+    height: 36px;
+  }
+
+  .social-icon {
+    width: 18px;
+    height: 18px;
+  }
 }

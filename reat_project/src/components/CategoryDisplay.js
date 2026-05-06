@@ -2,37 +2,35 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { TokenContext } from "./TokenContext";
-import api from "../Api"; // your axios instance
+import api from "../Api";
 import { getProductDetailsPath } from "../helpers/navigation";
 import "./CategoryDisplay.css";
 
 const categories = [
-  { id: 1, name: "Accessories for Phones & Tablets" },
-  { id: 9, name: "Video Games & Accessories" },
-  { id: 3, name: "AirPods/Earbuds & Headsets" },
-  { id: 8, name: "Watches & Smartwatches" },
+  { id: 1, name: "Accessories for Phones & Tablets", icon: "🔌" },
+  { id: 9, name: "Video Games & Accessories",        icon: "🎮" },
+  { id: 3, name: "AirPods/Earbuds & Headsets",       icon: "🎧" },
+  { id: 8, name: "Watches & Smartwatches",           icon: "⌚" },
 ];
 
 const CategoryDisplay = () => {
-  const [products, setProducts] = useState({}); // { [categoryName]: [product,...] }
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
-  const accessToken = useContext(TokenContext);
+  const [products, setProducts] = useState({});
+  const [loading, setLoading]   = useState(true);
+  const [error, setError]       = useState(null);
+  const navigate                = useNavigate();
+  const accessToken             = useContext(TokenContext);
 
   useEffect(() => {
     let mounted = true;
 
     const fetchProductsForCategory = async (category) => {
-      const path = `products/?category_id=${category.id}`;
       try {
-        const res = await api.get(path);
+        const res = await api.get(`products/?category_id=${category.id}`);
         const arr = Array.isArray(res.data) ? res.data : [];
-        const filtered = arr.filter((p) => {
+        return arr.filter((p) => {
           const pid = p.category_id ?? p.category?.category_id ?? p.category?.id ?? null;
           return pid !== null && Number(pid) === Number(category.id);
         });
-        return filtered;
       } catch {
         return [];
       }
@@ -43,12 +41,11 @@ const CategoryDisplay = () => {
       setError(null);
       try {
         const results = await Promise.all(categories.map((c) => fetchProductsForCategory(c)));
-
         const usedIds = new Set();
-        const mapped = {};
+        const mapped  = {};
         categories.forEach((cat, idx) => {
           const items = results[idx] || [];
-          const uniq = [];
+          const uniq  = [];
           for (const p of items) {
             if (!usedIds.has(p.product_id)) {
               uniq.push(p);
@@ -58,72 +55,117 @@ const CategoryDisplay = () => {
           }
           mapped[cat.name] = uniq.slice(0, 4);
         });
-
-        if (mounted) {
-          setProducts(mapped);
-          setLoading(false);
-        }
-      } catch (err) {
-        if (mounted) {
-          setError("Failed to load categories. Check console for details.");
-          setLoading(false);
-        }
+        if (mounted) { setProducts(mapped); setLoading(false); }
+      } catch {
+        if (mounted) { setError("Failed to load categories."); setLoading(false); }
       }
     };
 
     loadAll();
-    return () => {
-      mounted = false;
-    };
+    return () => { mounted = false; };
   }, []);
 
-  const handleViewAllCategories = () => navigate("/category-full-display");
+  const handleViewAll      = () => navigate("/category-full-display");
   const handleProductClick = (product) => navigate(getProductDetailsPath(product));
+  const handleCategoryClick = (catId) => navigate(`/category-full-display?category_id=${catId}`);
 
-  if (loading) return <div className="category-loading">Loading categories...</div>;
-  if (error) return <div className="category-error">{error}</div>;
+  if (loading) return (
+    <div className="cd-loading">
+      <div className="cd-spinner" />
+      <p>Loading categories…</p>
+    </div>
+  );
+
+  if (error) return <div className="cd-error"><span>⚠️</span><p>{error}</p></div>;
 
   return (
-    <div className="category-display">
-      {categories.map((category) => (
-        <div key={category.id} className="category-section">
-          <h3 className="category-title">{category.name}</h3>
+    <div className="cd-wrapper">
 
-          <div className="product-row">
-            {products[category.name] && products[category.name].length > 0 ? (
-              products[category.name].map((product) => {
-                const mainImage = product.image_urls?.medium || "/media/default.jpg";
-                const secondaryImage = product.secondary_image_urls?.medium || mainImage;
-
-                return (
-                  <div
-                    key={product.product_id}
-                    className="product-card"
-                    onClick={() => handleProductClick(product)}
-                    onMouseEnter={(e) => {
-                      const img = e.currentTarget.querySelector(".product-image");
-                      if (img) img.src = secondaryImage;
-                    }}
-                    onMouseLeave={(e) => {
-                      const img = e.currentTarget.querySelector(".product-image");
-                      if (img) img.src = mainImage;
-                    }}
-                  >
-                    <img src={mainImage} alt={product.name} className="product-image" />
-                    <h4 className="product-name">{product.name}</h4>
-                  </div>
-                );
-              })
-            ) : (
-              <p className="no-products">No products found in this category.</p>
-            )}
-          </div>
+      {/* ── Section header ── */}
+      <div className="cd-header">
+        <div>
+          <span className="cd-header-tag">✦ Browse</span>
+          <h2 className="cd-header-title">Shop by Category</h2>
         </div>
-      ))}
+        <button className="cd-view-all-btn" onClick={handleViewAll}>
+          View All →
+        </button>
+      </div>
 
-      <div className="category-display-footer">
-        <button className="view-all-categories-btn" onClick={handleViewAllCategories}>
-          View All Categories
+      {/* ── Category sections ── */}
+      {categories.map((category) => {
+        const catProducts = products[category.name] || [];
+        return (
+          <div key={category.id} className="cd-category-section">
+
+            {/* Category row header */}
+            <div className="cd-cat-header">
+              <div className="cd-cat-title-wrap">
+                <span className="cd-cat-icon">{category.icon}</span>
+                <h3 className="cd-cat-title">{category.name}</h3>
+              </div>
+              <button
+                className="cd-cat-see-more"
+                onClick={() => handleCategoryClick(category.id)}
+              >
+                See all →
+              </button>
+            </div>
+
+            {/* Product cards */}
+            <div className="cd-product-row">
+              {catProducts.length > 0 ? (
+                catProducts.map((product) => {
+                  const mainImg      = product.image_urls?.medium || "/media/default.jpg";
+                  const secondaryImg = product.secondary_image_urls?.medium || mainImg;
+                  const formattedPrice = product.price
+                    ? new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", minimumFractionDigits: 0 }).format(product.price)
+                    : null;
+
+                  return (
+                    <div
+                      key={product.product_id}
+                      className="cd-product-card"
+                      onClick={() => handleProductClick(product)}
+                      onMouseEnter={(e) => {
+                        const img = e.currentTarget.querySelector(".cd-product-img");
+                        if (img) img.src = secondaryImg;
+                      }}
+                      onMouseLeave={(e) => {
+                        const img = e.currentTarget.querySelector(".cd-product-img");
+                        if (img) img.src = mainImg;
+                      }}
+                    >
+                      {product.is_new && <span className="cd-badge">New</span>}
+                      <div className="cd-product-img-wrap">
+                        <img
+                          src={mainImg}
+                          alt={product.name}
+                          className="cd-product-img"
+                          onError={(e) => { e.target.src = "/media/default.jpg"; }}
+                        />
+                      </div>
+                      <div className="cd-product-info">
+                        <h4 className="cd-product-name">{product.name}</h4>
+                        {formattedPrice && (
+                          <p className="cd-product-price">{formattedPrice}</p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <p className="cd-no-products">No products available yet.</p>
+              )}
+            </div>
+          </div>
+        );
+      })}
+
+      {/* ── Footer CTA ── */}
+      <div className="cd-footer">
+        <button className="cd-footer-btn" onClick={handleViewAll}>
+          Explore All Categories →
         </button>
       </div>
     </div>

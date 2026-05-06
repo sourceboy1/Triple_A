@@ -1,811 +1,586 @@
-/* PaymentDebitCreditCard.css */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap');
 
-/* Variables for easy theme changes */
 :root {
-    --primary-color: #4CAF50; /* A fresh green */
-    --primary-dark: #388E3C;
-    --secondary-color: #2196F3; /* Blue for highlights */
-    --background-light: #f4f7f6;
-    --card-background: #ffffff;
-    --text-dark: #333;
-    --text-medium: #555;
-    --text-light: #7f8c8d;
-    --border-color: #e0e6ed;
-    --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.08);
-    --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.12);
-    --paystack-green: #28a745;
-    --paystack-green-dark: #218838;
-    --cancel-red: #dc3545;
-    --cancel-red-dark: #c82333;
-    --home-blue: #007bff;
-    --home-blue-dark: #0056b3;
+  --dc-green:        #16a34a;
+  --dc-green-dark:   #15803d;
+  --dc-green-light:  #dcfce7;
+  --dc-green-xlight: #f0fdf4;
+  --dc-text:         #0f172a;
+  --dc-muted:        #64748b;
+  --dc-border:       #e2e8f0;
+  --dc-surface:      #f8fafc;
+  --dc-card:         #ffffff;
+  --dc-font:         'DM Sans', sans-serif;
+  --dc-font-head:    'Syne', sans-serif;
+  --dc-shadow:       0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.05);
+  --dc-shadow-hover: 0 8px 32px rgba(22,163,74,0.12);
+  --dc-red:          #ef4444;
+  --dc-red-dark:     #dc2626;
+  --dc-orange:       #f97316;
 }
 
-body {
-    background-color: var(--background-light);
-    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: var(--text-dark);
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+/* ── Page ── */
 .payment-page-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 90%;
-    max-width: 1300px;
-    margin: 40px auto;
-    padding: 30px;
-    background-color: var(--card-background);
-    border-radius: 16px;
-    box-shadow: var(--shadow-medium);
-    animation: fadeIn 0.8s ease-out;
+  font-family: var(--dc-font);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1100px;
+  margin: 100px auto 60px;
+  padding: 0 16px;
+  animation: dc-fadein 0.35s ease;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+@keyframes dc-fadein {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Glassmorphism Effect */
-.glassmorphism {
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 16px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+/* ── Loading / Error states ── */
+.payment-page-container.loading-state,
+.payment-page-container.error-state {
+  min-height: 60vh;
+  justify-content: center;
+  gap: 20px;
 }
 
+.loading-spinner {
+  width: 52px;
+  height: 52px;
+  border: 5px solid var(--dc-green-light);
+  border-top-color: var(--dc-green);
+  border-radius: 50%;
+  animation: dc-spin 0.9s linear infinite;
+}
 
+@keyframes dc-spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-state p {
+  font-family: var(--dc-font-head);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--dc-muted);
+}
+
+.error-state .error-icon {
+  font-size: 3rem;
+  color: var(--dc-red);
+}
+
+.error-state h1 {
+  font-family: var(--dc-font-head);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--dc-red);
+  margin: 0;
+}
+
+.error-state p {
+  font-size: 0.9rem;
+  color: var(--dc-muted);
+  text-align: center;
+  max-width: 480px;
+  line-height: 1.6;
+}
+
+/* ── Header section ── */
 .header-section {
-    text-align: center;
-    margin-bottom: 40px;
-    width: 100%;
+  text-align: center;
+  margin-bottom: 36px;
+  width: 100%;
 }
 
 .header-section h1 {
-    font-size: 3em;
-    color: var(--primary-color);
-    margin-bottom: 10px;
-    font-weight: 800;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
+  font-family: var(--dc-font-head);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--dc-text);
+  letter-spacing: -0.03em;
+  margin: 0 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 .header-lock-icon {
-    color: var(--secondary-color);
-    font-size: 0.8em;
+  color: var(--dc-green);
+  font-size: 0.75em;
 }
 
 .header-section .subtitle {
-    font-size: 1.2em;
-    color: var(--text-medium);
-    margin-bottom: 5px;
+  font-size: 0.88rem;
+  color: var(--dc-muted);
+  margin: 0 0 4px;
+}
+
+.header-section .subtitle strong {
+  color: var(--dc-green);
+  font-weight: 700;
 }
 
 .header-section .tagline {
-    font-size: 1em;
-    color: var(--text-light);
-    font-style: italic;
+  font-size: 0.82rem;
+  color: var(--dc-muted);
+  font-style: italic;
 }
 
-.header-section p strong {
-    color: var(--secondary-color);
-    font-weight: 700;
-}
-
+/* ── Two-column layout ── */
 .content-wrapper {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    gap: 40px;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 
+/* ── Cards (shared) ── */
 .order-details-card,
 .customer-info-card {
-    flex: 1;
-    min-width: 350px;
-    padding: 30px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex: 1;
+  min-width: 300px;
+  background: var(--dc-card);
+  border: 1px solid var(--dc-border);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: var(--dc-shadow);
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
 }
 
-.order-details-card:hover,
-.customer-info-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+.order-details-card::before,
+.customer-info-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--dc-green), var(--dc-green-dark));
 }
 
+/* Remove glassmorphism on these — clean card look instead */
+.glassmorphism {
+  background: var(--dc-card);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 1px solid var(--dc-border);
+}
+
+/* ── Card headings ── */
 .order-details-card h2,
 .customer-info-card h2 {
-    font-size: 2em;
-    color: var(--primary-dark);
-    margin-bottom: 25px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    border-bottom: 2px solid var(--border-color);
-    padding-bottom: 18px;
-    font-weight: 700;
+  font-family: var(--dc-font-head);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--dc-text);
+  letter-spacing: -0.02em;
+  margin: 0 0 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--dc-border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .order-details-card h2 svg,
 .customer-info-card h2 svg {
-    color: var(--primary-color);
-    font-size: 1.3em;
+  color: var(--dc-green);
+  font-size: 1em;
 }
 
+/* ── Order items list ── */
 .order-items-list {
-    margin-bottom: 25px;
-    max-height: 350px;
-    overflow-y: auto;
-    padding-right: 15px;
-    scrollbar-width: thin; /* Firefox */
-    scrollbar-color: var(--secondary-color) rgba(0,0,0,0.1); /* Firefox */
+  max-height: 340px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--dc-green-light) transparent;
 }
 
-/* Custom Scrollbar for Webkit browsers */
-.order-items-list::-webkit-scrollbar {
-    width: 8px;
-}
-.order-items-list::-webkit-scrollbar-track {
-    background: rgba(0,0,0,0.05);
-    border-radius: 10px;
-}
-.order-items-list::-webkit-scrollbar-thumb {
-    background-color: var(--secondary-color);
-    border-radius: 10px;
-    border: 2px solid var(--card-background);
-}
-
+.order-items-list::-webkit-scrollbar { width: 4px; }
+.order-items-list::-webkit-scrollbar-thumb { background: var(--dc-green-light); border-radius: 4px; }
 
 .order-item {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px dashed var(--border-color);
-    animation: slideIn 0.5s ease-out forwards;
-    opacity: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--dc-border);
+  animation: dc-slidein 0.3s ease forwards;
+  opacity: 0;
 }
 
-.order-item:nth-child(1) { animation-delay: 0.1s; }
-.order-item:nth-child(2) { animation-delay: 0.2s; }
-.order-item:nth-child(3) { animation-delay: 0.3s; }
-/* Add more for more items if needed */
+.order-item:nth-child(1) { animation-delay: 0.05s; }
+.order-item:nth-child(2) { animation-delay: 0.1s; }
+.order-item:nth-child(3) { animation-delay: 0.15s; }
+.order-item:nth-child(4) { animation-delay: 0.2s; }
+.order-item:nth-child(5) { animation-delay: 0.25s; }
 
-@keyframes slideIn {
-    from { opacity: 0; transform: translateX(-10px); }
-    to { opacity: 1; transform: translateX(0); }
+@keyframes dc-slidein {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 
-
-.order-item:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
-}
+.order-item:last-child { border-bottom: none; padding-bottom: 0; }
 
 .order-item img {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 10px;
-    border: 2px solid var(--border-color);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
+  border-radius: 10px;
+  background: var(--dc-green-xlight);
+  border: 1px solid var(--dc-border);
+  padding: 6px;
+  flex-shrink: 0;
 }
 
-.item-info {
-    flex-grow: 1;
-}
+.item-info { flex: 1; min-width: 0; }
 
 .item-info h3 {
-    font-size: 1.2em;
-    margin: 0 0 8px 0;
-    color: var(--text-dark);
-    font-weight: 600;
+  font-family: var(--dc-font-head);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--dc-text);
+  margin: 0 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .item-info p {
-    font-size: 0.95em;
-    color: var(--text-light);
-    margin: 4px 0;
-}
-
-.item-total {
-    font-weight: 700;
-    color: var(--primary-dark);
-    font-size: 1.1em;
+  font-size: 0.8rem;
+  color: var(--dc-muted);
+  margin: 2px 0;
 }
 
 .no-products-message {
-    text-align: center;
-    font-style: italic;
-    color: var(--text-light);
-    padding: 20px;
+  text-align: center;
+  font-style: italic;
+  color: var(--dc-muted);
+  font-size: 0.88rem;
+  padding: 24px;
 }
 
+/* ── Summary section ── */
 .summary-section {
-    border-top: 2px solid var(--border-color);
-    padding-top: 20px;
+  border-top: 1px solid var(--dc-border);
+  padding-top: 16px;
 }
 
 .summary-line {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    font-size: 1.1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0;
+  font-size: 0.88rem;
+  border-bottom: 1px solid var(--dc-border);
 }
 
-.summary-line span:first-child {
-    color: var(--text-medium);
-}
+.summary-line:last-of-type { border-bottom: none; }
 
-.summary-line span:last-child {
-    font-weight: 600;
-    color: var(--text-dark);
-}
+.summary-line span:first-child { color: var(--dc-muted); font-weight: 500; }
+.summary-line span:last-child  { font-weight: 700; color: var(--dc-text); }
 
-.paystack-charge {
-    color: #e67e22; /* Orange for charges */
-    font-weight: bold;
-    border-top: 1px dashed rgba(230, 126, 34, 0.3);
-    padding-top: 12px;
-    margin-top: 5px;
-}
+.paystack-charge span:first-child { color: var(--dc-orange); }
+.paystack-charge span:last-child  { color: var(--dc-orange); }
 
 .total-amount-final {
-    font-size: 1.5em;
-    font-weight: 800;
-    color: var(--paystack-green);
-    border-top: 3px solid var(--paystack-green);
-    padding-top: 20px;
-    margin-top: 20px;
+  border-top: 2px solid var(--dc-green-light) !important;
+  border-bottom: none !important;
+  padding-top: 14px !important;
+  margin-top: 4px;
 }
 
+.total-amount-final span:first-child {
+  color: var(--dc-text);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.total-amount-final span:last-child {
+  font-family: var(--dc-font-head);
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--dc-green);
+}
+
+/* ── Customer info card content ── */
 .customer-info-card .payment-instruction {
-    margin-bottom: 20px;
-    line-height: 1.8;
-    font-size: 1.05em;
-    color: var(--text-dark);
+  font-size: 0.88rem;
+  color: var(--dc-text);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.customer-info-card .highlight-total {
+  color: var(--dc-green);
+  font-weight: 800;
 }
 
 .customer-info-card .payment-note {
-    font-size: 0.95em;
-    color: var(--text-medium);
-    margin-bottom: 25px;
-    border-left: 4px solid var(--secondary-color);
-    padding-left: 15px;
-    background-color: rgba(33, 150, 243, 0.05);
-    border-radius: 5px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+  font-size: 0.82rem;
+  color: var(--dc-muted);
+  border-left: 3px solid var(--dc-green-light);
+  padding: 10px 14px;
+  background: var(--dc-green-xlight);
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 24px;
+  line-height: 1.6;
 }
 
-
-.customer-info-card .highlight-total {
-    color: var(--paystack-green);
-    font-size: 1.1em;
-}
-
-.paystack-button-wrapper {
-    margin-top: 30px;
-    margin-bottom: 30px;
-    text-align: center;
-    position: relative; /* For secure-info positioning */
+/* ── Paystack button wrapper ── */
+.paystack-button-wrapper,
+.paystack-wrapper {
+  text-align: center;
+  margin-bottom: 16px;
 }
 
 .paystack-pay-button {
-    background-color: var(--paystack-green);
-    color: white;
-    padding: 18px 35px;
-    border: none;
-    border-radius: 10px;
-    font-size: 1.3em;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    width: 100%;
-    max-width: 320px;
-    box-shadow: 0 6px 15px rgba(40, 167, 69, 0.4);
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin: 0 auto;
+  background: var(--dc-green) !important;
+  color: #fff !important;
+  padding: 14px 32px !important;
+  border: none !important;
+  border-radius: 999px !important;
+  font-family: var(--dc-font) !important;
+  font-size: 0.92rem !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  width: 100% !important;
+  max-width: 300px !important;
+  transition: background 0.15s, transform 0.12s, box-shadow 0.15s !important;
+  box-shadow: 0 4px 16px rgba(22,163,74,0.3) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
 }
 
 .paystack-pay-button:hover {
-    background-color: var(--paystack-green-dark);
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.5);
-}
-
-.paystack-pay-button:active {
-    transform: translateY(0);
-    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+  background: var(--dc-green-dark) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 22px rgba(22,163,74,0.4) !important;
 }
 
 .secure-info {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 25px;
-    color: var(--text-light);
-    font-size: 0.9em;
-    animation: fadeIn 0.8s ease-out 0.5s forwards;
-    opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 16px;
+  font-size: 0.78rem;
+  color: var(--dc-muted);
+  animation: dc-fadein 0.6s ease 0.4s forwards;
+  opacity: 0;
 }
 
-.secure-info svg {
-    color: var(--secondary-color);
-    font-size: 1.1em;
+.secure-info svg { color: var(--dc-green); }
+
+.hint-note {
+  font-size: 0.8rem;
+  color: var(--dc-muted);
+  text-align: center;
+  margin-top: 10px;
+  font-style: italic;
 }
 
+/* ── Customer details block ── */
 .customer-details-block {
-    background-color: rgba(33, 150, 243, 0.08);
-    border-left: 6px solid var(--secondary-color);
-    padding: 20px;
-    border-radius: 10px;
-    margin-top: 35px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  background: var(--dc-green-xlight);
+  border: 1px solid var(--dc-green-light);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-top: 24px;
 }
 
 .customer-details-block h3 {
-    color: var(--home-blue-dark);
-    margin-bottom: 12px;
-    font-size: 1.4em;
-    font-weight: 700;
+  font-family: var(--dc-font-head);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--dc-muted);
+  margin: 0 0 10px;
 }
 
 .customer-details-block p {
-    margin: 8px 0;
-    font-size: 1em;
-    color: var(--text-medium);
+  font-size: 0.84rem;
+  color: var(--dc-text);
+  margin: 4px 0;
+  line-height: 1.5;
 }
 
-.customer-details-block p strong {
-    color: var(--text-dark);
-}
+.customer-details-block p strong { color: var(--dc-muted); font-weight: 600; }
 
+/* ── Footer action buttons ── */
 .action-buttons-footer {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    margin-top: 50px;
-    width: 100%;
-}
-
-.go-home-button,
-.cancel-order-button {
-    padding: 15px 30px;
-    border-radius: 10px;
-    font-size: 1.15em;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 600;
-    border: none;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 36px;
+  width: 100%;
 }
 
 .go-home-button {
-    background-color: var(--home-blue);
-    color: white;
-    box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: var(--dc-green);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  font-family: var(--dc-font);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.12s, box-shadow 0.15s;
+  box-shadow: 0 4px 14px rgba(22,163,74,0.3);
 }
 
 .go-home-button:hover {
-    background-color: var(--home-blue-dark);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.5);
+  background: var(--dc-green-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(22,163,74,0.4);
 }
 
 .cancel-order-button {
-    background-color: var(--cancel-red);
-    color: white;
-    box-shadow: 0 6px 15px rgba(220, 53, 69, 0.4);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: #fff;
+  color: var(--dc-red);
+  border: 1.5px solid #fecaca;
+  border-radius: 999px;
+  font-family: var(--dc-font);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.12s;
 }
 
 .cancel-order-button:hover {
-    background-color: var(--cancel-red-dark);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(220, 53, 69, 0.5);
+  background: var(--dc-red);
+  color: #fff;
+  border-color: var(--dc-red);
+  transform: translateY(-2px);
 }
 
-/* Cancel Dialog Styling */
+/* ── Cancel dialog ── */
 .cancel-dialog-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    animation: fadeIn 0.3s ease-out;
+  position: fixed;
+  inset: 0;
+  background: rgba(15,23,42,0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  animation: dc-fadein 0.18s ease;
 }
 
 .cancel-dialog {
-    background-color: var(--card-background);
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: var(--shadow-medium);
-    text-align: center;
-    max-width: 450px;
-    width: 90%;
-    animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  background: var(--dc-card);
+  border-radius: 18px;
+  padding: 36px 32px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(15,23,42,0.2);
+  animation: dc-scalein 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-@keyframes zoomIn {
-    from { opacity: 0; transform: scale(0.8); }
-    to { opacity: 1; transform: scale(1); }
+@keyframes dc-scalein {
+  from { opacity: 0; transform: scale(0.88); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
 .cancel-dialog .dialog-icon {
-    font-size: 3em;
-    margin-bottom: 20px;
+  font-size: 2.5rem;
+  margin-bottom: 16px;
 }
 
-.cancel-dialog .dialog-icon.warning {
-    color: #ffc107;
-}
+.cancel-dialog .dialog-icon.warning { color: #f59e0b; }
 
 .cancel-dialog p {
-    font-size: 1.3em;
-    color: var(--text-dark);
-    margin-bottom: 30px;
-    font-weight: 500;
+  font-family: var(--dc-font-head);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--dc-text);
+  margin: 0 0 28px;
+  line-height: 1.5;
 }
 
 .dialog-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-.dialog-confirm-button,
-.dialog-cancel-button {
-    padding: 12px 25px;
-    border-radius: 8px;
-    font-size: 1.1em;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    border: none;
-    font-weight: 600;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
 }
 
 .dialog-confirm-button {
-    background-color: var(--cancel-red);
-    color: white;
+  padding: 10px 22px;
+  background: var(--dc-red);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  font-family: var(--dc-font);
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.12s;
 }
 
 .dialog-confirm-button:hover {
-    background-color: var(--cancel-red-dark);
-    transform: translateY(-2px);
+  background: var(--dc-red-dark);
+  transform: translateY(-1px);
 }
 
 .dialog-cancel-button {
-    background-color: var(--text-light);
-    color: white;
+  padding: 10px 22px;
+  background: var(--dc-surface);
+  color: var(--dc-muted);
+  border: 1.5px solid var(--dc-border);
+  border-radius: 999px;
+  font-family: var(--dc-font);
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.12s;
 }
 
 .dialog-cancel-button:hover {
-    background-color: #5a6268;
-    transform: translateY(-2px);
+  background: var(--dc-border);
+  transform: translateY(-1px);
 }
 
-/* Loading State */
-.payment-page-container.loading-state,
-.payment-page-container.error-state {
-    min-height: 400px;
-    justify-content: center;
-    font-size: 1.5em;
-    color: var(--text-medium);
-    gap: 20px;
-    display: flex; /* Ensure these states also use flex for centering */
-    align-items: center;
-    flex-direction: column;
-}
-
-.loading-spinner {
-    border: 8px solid var(--border-color);
-    border-top: 8px solid var(--primary-color);
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.error-state .error-icon {
-    font-size: 4em;
-    color: var(--cancel-red);
-    margin-bottom: 20px;
-}
-
-.error-state h1 {
-    color: var(--cancel-red);
-    margin-bottom: 10px;
-    font-size: 2.5em;
-}
-
-.error-state p {
-    font-size: 1.2em;
-    text-align: center;
-    max-width: 600px;
-    line-height: 1.6;
-    margin-bottom: 30px;
-}
-
-.error-state .go-home-button {
-    padding: 15px 30px;
-    font-size: 1.1em;
-}
-
-
-/* --- Responsive Design --- */
-@media (max-width: 992px) {
-    .content-wrapper {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .order-details-card,
-    .customer-info-card {
-        width: 100%;
-        max-width: 700px; /* Limit width for cards on smaller screens */
-        margin-bottom: 30px;
-    }
-
-    .header-section h1 {
-        font-size: 2.5em;
-    }
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .content-wrapper { flex-direction: column; }
+  .order-details-card,
+  .customer-info-card { min-width: unset; width: 100%; }
 }
 
 @media (max-width: 768px) {
-    .payment-page-container {
-        width: 95%;
-        padding: 25px;
-        margin: 25px auto;
-    }
-
-    .header-section h1 {
-        font-size: 2em;
-        gap: 10px;
-    }
-
-    .header-section .subtitle {
-        font-size: 1.1em;
-    }
-
-    .order-details-card h2,
-    .customer-info-card h2 {
-        font-size: 1.8em;
-        gap: 10px;
-        padding-bottom: 15px;
-        margin-bottom: 20px;
-    }
-
-    .order-details-card,
-    .customer-info-card {
-        padding: 25px;
-    }
-
-    .item-info h3 {
-        font-size: 1.1em;
-    }
-
-    .item-info p {
-        font-size: 0.9em;
-    }
-
-    .item-total {
-        font-size: 1em;
-    }
-
-    .summary-line {
-        font-size: 1em;
-    }
-
-    .total-amount-final {
-        font-size: 1.3em;
-        padding-top: 15px;
-        margin-top: 15px;
-    }
-
-    .paystack-pay-button {
-        font-size: 1.2em;
-        padding: 16px 30px;
-        max-width: 280px;
-    }
-
-    .action-buttons-footer {
-        flex-direction: column;
-        gap: 20px;
-        margin-top: 40px;
-    }
-
-    .go-home-button,
-    .cancel-order-button {
-        width: 100%;
-        max-width: 350px;
-        margin: 0 auto;
-        justify-content: center;
-        font-size: 1.05em;
-        padding: 14px 25px;
-    }
-
-    .cancel-dialog {
-        padding: 30px;
-    }
-
-    .cancel-dialog p {
-        font-size: 1.1em;
-        margin-bottom: 25px;
-    }
-
-    .dialog-buttons {
-        gap: 15px;
-    }
+  .payment-page-container { margin-top: 90px; padding: 0 12px; }
+  .header-section h1 { font-size: 1.55rem; }
+  .order-details-card,
+  .customer-info-card { padding: 20px; border-radius: 14px; }
+  .action-buttons-footer { flex-direction: column; align-items: center; }
+  .go-home-button,
+  .cancel-order-button { width: 100%; max-width: 320px; justify-content: center; }
 }
 
 @media (max-width: 480px) {
-    .payment-page-container {
-        padding: 15px;
-        margin: 100px auto 65px auto; /* Changed margin-left to auto for centering */
-        width: 85%; /* Ensure it's not too wide */
-    }
-
-    .header-section {
-        width: 75%; /* Reset to 100% within the 85% container */
-    }
-
-    .content-wrapper {
-        width: 75%; /* Reset to 100% within the 85% container */
-        margin-right: 30px;
-    }
-
-    .action-buttons-footer {
-        width: 75%; /* Reset to 100% within the 85% container */
-    }
-
-    .header-section h1 {
-        font-size: 1.8em;
-        gap: 8px;
-    }
-
-    .header-section .subtitle,
-    .header-section .tagline {
-        font-size: 0.9em;
-    }
-
-    .order-details-card,
-    .customer-info-card {
-        padding: 20px;
-        min-width: unset; /* Remove min-width for very small screens */
-    }
-
-    .order-details-card h2,
-    .customer-info-card h2 {
-        font-size: 1.6em;
-        padding-bottom: 12px;
-        margin-bottom: 15px;
-    }
-
-    .order-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-        padding-bottom: 15px;
-        margin-bottom: 15px;
-    }
-
-    .order-item img {
-        width: 60px;
-        height: 60px;
-    }
-
-    .item-info h3 {
-        font-size: 1em;
-    }
-
-    .item-total {
-        align-self: flex-end; /* Align total to the right in column layout */
-        margin-top: -30px; /* Adjust position */
-        font-size: 1em;
-    }
-
-
-    .summary-section {
-        padding-top: 15px;
-    }
-
-    .summary-line {
-        font-size: 0.95em;
-        padding: 8px 0;
-    }
-
-    .total-amount-final {
-        font-size: 1.2em;
-        padding-top: 12px;
-        margin-top: 12px;
-    }
-
-    .customer-info-card .payment-instruction,
-    .customer-info-card .payment-note {
-        font-size: 0.9em;
-        margin-bottom: 15px;
-    }
-
-    .customer-details-block {
-        padding: 15px;
-        margin-top: 25px;
-    }
-
-    .customer-details-block h3 {
-        font-size: 1.2em;
-    }
-
-    .customer-details-block p {
-        font-size: 0.9em;
-    }
-
-    .paystack-pay-button {
-        font-size: 1.1em;
-        padding: 14px 25px;
-        max-width: 250px;
-    }
-
-    .secure-info {
-        font-size: 0.85em;
-        margin-top: 20px;
-    }
-
-    .action-buttons-footer {
-        gap: 15px;
-        margin-top: 30px;
-    }
-
-    .go-home-button,
-    .cancel-order-button {
-        font-size: 1em;
-        padding: 12px 20px;
-        max-width: 280px;
-    }
-
-    .cancel-dialog {
-        padding: 25px;
-    }
-
-    .cancel-dialog p {
-        font-size: 1em;
-        margin-bottom: 20px;
-    }
-
-    .dialog-buttons {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .dialog-confirm-button,
-    .dialog-cancel-button {
-        font-size: 0.95em;
-        padding: 10px 15px;
-    }
+  .payment-page-container { margin-top: 80px; }
+  .header-section h1 { font-size: 1.3rem; gap: 8px; }
+  .order-item { flex-direction: column; align-items: flex-start; }
+  .order-item img { width: 56px; height: 56px; }
+  .cancel-dialog { padding: 24px 18px; }
+  .dialog-buttons { flex-direction: column; align-items: center; }
+  .dialog-confirm-button,
+  .dialog-cancel-button { width: 100%; }
+  .paystack-pay-button { max-width: 100% !important; }
 }

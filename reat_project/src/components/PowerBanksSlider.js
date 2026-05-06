@@ -14,7 +14,7 @@ const PowerBankDisplay = ({ onLoaded }) => {
   const hoverIntervals = useRef({});
   const rotateInterval = useRef(null);
 
-  const CATEGORY_ID = 7; // Powerbanks category id
+  const CATEGORY_ID = 7;
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -74,19 +74,11 @@ const PowerBankDisplay = ({ onLoaded }) => {
 
   const handleMouseEnter = (id, images) => {
     if (!images || images.length < 2) return;
-
     let currentIndex = 0;
-
-    if (hoverIntervals.current[id]) {
-      clearInterval(hoverIntervals.current[id]);
-    }
-
+    if (hoverIntervals.current[id]) clearInterval(hoverIntervals.current[id]);
     hoverIntervals.current[id] = setInterval(() => {
       currentIndex = (currentIndex + 1) % images.length;
-      setHoverImageIndexes((prev) => ({
-        ...prev,
-        [id]: currentIndex,
-      }));
+      setHoverImageIndexes((prev) => ({ ...prev, [id]: currentIndex }));
     }, 1000);
   };
 
@@ -95,11 +87,7 @@ const PowerBankDisplay = ({ onLoaded }) => {
       clearInterval(hoverIntervals.current[id]);
       hoverIntervals.current[id] = null;
     }
-
-    setHoverImageIndexes((prev) => ({
-      ...prev,
-      [id]: 0,
-    }));
+    setHoverImageIndexes((prev) => ({ ...prev, [id]: 0 }));
   };
 
   if (loading) return null;
@@ -126,9 +114,7 @@ const PowerBankDisplay = ({ onLoaded }) => {
               ].filter(Boolean);
 
               const currentImg =
-                images[hoverImageIndexes[pb.product_id] || 0] ||
-                images[0] ||
-                '/placeholder.jpg';
+                images[hoverImageIndexes[pb.product_id] || 0] || images[0] || '/placeholder.jpg';
 
               return (
                 <div
@@ -142,9 +128,7 @@ const PowerBankDisplay = ({ onLoaded }) => {
                     src={currentImg}
                     alt={pb.name || 'Power Bank'}
                     className="powerbank-image"
-                    onError={(e) => {
-                      e.target.src = '/placeholder.jpg';
-                    }}
+                    onError={(e) => { e.target.src = '/placeholder.jpg'; }}
                     loading="lazy"
                   />
                   <h3 className="powerbank-name">{pb.name}</h3>

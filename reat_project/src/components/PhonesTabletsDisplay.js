@@ -14,7 +14,6 @@ const PhonesTabletsDisplay = ({ onLoaded }) => {
   const hoverIntervals = useRef({});
   const [hoverImageIndexes, setHoverImageIndexes] = useState({});
 
-  // Category ID for Phones & Tablets
   const CATEGORY_ID = 2;
 
   const shuffleArray = (array) => {
@@ -34,7 +33,6 @@ const PhonesTabletsDisplay = ({ onLoaded }) => {
         const data = Array.isArray(response.data) ? response.data : [];
 
         if (isMounted) {
-          // Filter to ensure only products from category_id = 2
           const filtered = data.filter((p) => {
             const idFromProduct = p.category_id ?? p.category?.category_id ?? p.category?.id ?? null;
             return idFromProduct === CATEGORY_ID;
@@ -56,7 +54,6 @@ const PhonesTabletsDisplay = ({ onLoaded }) => {
 
     fetchPhonesAndTablets();
 
-    // Auto slider every 12 seconds
     const interval = setInterval(() => {
       setProducts((prev) => {
         if (prev.length === 0) return prev;
@@ -78,19 +75,11 @@ const PhonesTabletsDisplay = ({ onLoaded }) => {
 
   const handleMouseEnter = (productId, images) => {
     if (!images || images.length < 2) return;
-
     let currentImgIndex = 0;
-
-    if (hoverIntervals.current[productId]) {
-      clearInterval(hoverIntervals.current[productId]);
-    }
-
+    if (hoverIntervals.current[productId]) clearInterval(hoverIntervals.current[productId]);
     hoverIntervals.current[productId] = setInterval(() => {
       currentImgIndex = (currentImgIndex + 1) % images.length;
-      setHoverImageIndexes((prev) => ({
-        ...prev,
-        [productId]: currentImgIndex,
-      }));
+      setHoverImageIndexes((prev) => ({ ...prev, [productId]: currentImgIndex }));
     }, 1000);
   };
 
@@ -99,11 +88,7 @@ const PhonesTabletsDisplay = ({ onLoaded }) => {
       clearInterval(hoverIntervals.current[productId]);
       hoverIntervals.current[productId] = null;
     }
-
-    setHoverImageIndexes((prev) => ({
-      ...prev,
-      [productId]: 0,
-    }));
+    setHoverImageIndexes((prev) => ({ ...prev, [productId]: 0 }));
   };
 
   if (loading) return null;
@@ -111,7 +96,6 @@ const PhonesTabletsDisplay = ({ onLoaded }) => {
   return (
     <div className="phones-tablets-container">
       <h2>Featured Phones & Tablets</h2>
-
       <div className="phones-tablets-display">
         {products.length === 0 ? (
           <p>No phones or tablets available at the moment.</p>
@@ -148,9 +132,7 @@ const PhonesTabletsDisplay = ({ onLoaded }) => {
                     onError={(e) => { e.target.src = '/placeholder.jpg'; }}
                     loading="lazy"
                   />
-
                   <h3 className="phones-tablets-name">{product.name}</h3>
-
                   <p className="phones-tablets-price">
                     {new Intl.NumberFormat('en-NG', {
                       style: 'currency',

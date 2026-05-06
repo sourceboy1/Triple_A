@@ -64,7 +64,6 @@ const DealsOfTheDay = () => {
     });
   };
 
-  // 🔥 FIXED: Use universal helper
   const handleProductClick = (deal) => {
     navigate(getProductDetailsPath(deal));
   };
@@ -99,7 +98,13 @@ const DealsOfTheDay = () => {
 
   return (
     <div className="deals-container">
-      <h2>Deals of the Day</h2>
+      {/* Header */}
+      <div className="deals-header">
+        <h2>Deals of the <span>Day</span></h2>
+        <span className="deals-badge">Live Offers</span>
+      </div>
+
+      {/* Slider */}
       <div className="deals-slider">
         <div className="arrow-container left-arrow" onClick={slideLeft}>
           <img src={arrowLeft} alt="Left Arrow" className="deal-arrow" />
@@ -120,23 +125,33 @@ const DealsOfTheDay = () => {
               key={index}
               className="deal-item"
               onClick={() => handleProductClick(deal)}
-              onMouseEnter={(e) => {
-                const imgEl = e.currentTarget.querySelector('img');
-                if (deal.secondary_image_urls?.medium) {
-                  imgEl.src = deal.secondary_image_urls.medium;
-                }
-              }}
-              onMouseLeave={(e) => {
-                const imgEl = e.currentTarget.querySelector('img');
-                imgEl.src = deal.image_urls?.medium || '';
-              }}
             >
-              <img src={deal.image_urls?.medium || ''} alt={deal.name} />
+              {/* Discount badge */}
+              {deal.discount && (
+                <span className="deal-discount-tag">
+                  {Math.floor(deal.discount)}% OFF
+                </span>
+              )}
 
+              {/* Product image */}
+              <img
+                src={deal.image_urls?.medium || ''}
+                alt={deal.name}
+                onMouseEnter={(e) => {
+                  if (deal.secondary_image_urls?.medium) {
+                    e.currentTarget.src = deal.secondary_image_urls.medium;
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.src = deal.image_urls?.medium || '';
+                }}
+              />
+
+              {/* Wishlist & Cart icons */}
               <div className="icon-container">
                 <img
                   src={isInWishlist(deal.product_id) ? wishlistActiveIcon : wishlistIcon}
-                  alt="Wishlist Icon"
+                  alt="Wishlist"
                   onClick={(e) => {
                     e.stopPropagation();
                     toggleWishlist(deal);
@@ -144,7 +159,7 @@ const DealsOfTheDay = () => {
                 />
                 <img
                   src={cartIcon}
-                  alt="Cart Icon"
+                  alt="Add to Cart"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleAddToCart(deal);
@@ -152,22 +167,14 @@ const DealsOfTheDay = () => {
                 />
               </div>
 
-              <h4>{deal.name}</h4>
-              <p>
-                <strong>Price: </strong>
-                <span className="deal_price">{formatPrice(deal.price)}</span>
-                <br />
-                <span style={{ textDecoration: 'line-through', marginRight: '5px' }}>
-                  {formatPrice(deal.original_price)}
-                </span>
-              </p>
-
-              {deal.discount && (
-                <p>
-                  <strong>Discount: </strong>
-                  {Math.floor(deal.discount)}% off
-                </p>
-              )}
+              {/* Card info */}
+              <div className="deal-info">
+                <h4>{deal.name}</h4>
+                <div className="deal-pricing">
+                  <span className="deal_price">{formatPrice(deal.price)}</span>
+                  <span className="deal-original-price">{formatPrice(deal.original_price)}</span>
+                </div>
+              </div>
             </div>
           ))}
         </div>

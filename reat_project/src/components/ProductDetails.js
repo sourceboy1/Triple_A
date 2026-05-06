@@ -10,279 +10,321 @@ import './ProductDetails.css';
 import wishlistImg from '../pictures/wishlist.jpg';
 import wishlistActiveImg from '../pictures/wishlist-active.jpg';
 
+const formatNaira = (n) => new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 0 }).format(n);
+
 const ProductDetails = () => {
-  const { slug } = useParams();
-  const productId = slug;   // re-use same variable so rest of your code works
-  const navigate = useNavigate();
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(null);
+  const { slug }     = useParams();
+  const productId    = slug;
+  const navigate     = useNavigate();
+
+  const [product, setProduct]           = useState(null);
+  const [loading, setLoading]           = useState(true);
+  const [error, setError]               = useState(null);
   const [selectedImage, setSelectedImage] = useState('');
-  const [quantity, setQuantity] = useState(1);
-  const { addItemToCart } = useCart();
+  const [quantity, setQuantity]         = useState(1);
+  const [stockMsg, setStockMsg]         = useState('');
+  const [isZoomed, setIsZoomed]         = useState(false);
+  const [showAlert, setShowAlert]       = useState(false);
+  const [activeTab, setActiveTab]       = useState('description');
+
+  const { addItemToCart }                          = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
-  const [stockMessage, setStockMessage] = useState('');
-  const [isZoomed, setIsZoomed] = useState(false);
-  const [showPriceAlert, setShowPriceAlert] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
-      if (!productId) {
-        setError("Product ID is missing from the URL.");
-        setLoading(false);
-        return;
-      }
-
+      if (!productId) { setError('Product ID missing.'); setLoading(false); return; }
       setLoading(true);
       setError(null);
       try {
-        const response = await api.get(`products/${productId}/`);
-        const productData = response.data;
-
-        // normalize image fields (robust)
-        const mainImage =
-          productData.image_urls?.large ||
-          productData.secondary_image_urls?.large ||
-          (productData.additional_images?.[0]?.image_url) ||
+        const res     = await api.get(`products/${productId}/`);
+        const data    = res.data;
+        const mainImg =
+          data.image_urls?.large ||
+          data.secondary_image_urls?.large ||
+          data.additional_images?.[0]?.image_url ||
           '/media/default.jpg';
-
-        setSelectedImage(mainImage);
-        setProduct(productData);
-        saveToRecentlyViewed(productData, mainImage);
-
-        // If the API returned product.slug but the URL used productId numeric, optionally redirect to slug URL
-        // (Keeps canonical URLs consistent)
-        if (productData.slug && !isNaN(Number(productId))) {
-          // redirect to slug URL
-          navigate(`/product/${productData.slug}`, { replace: true });
+        setSelectedImage(mainImg);
+        setProduct(data);
+        saveRecentlyViewed(data, mainImg);
+        if (data.slug && !isNaN(Number(productId))) {
+          navigate(`/product/${data.slug}`, { replace: true });
         }
       } catch (err) {
-        console.error('Error fetching product:', err.response?.data || err.message || err);
-        setProduct(null);
-        setError('Failed to load product details. Please try again.');
+        setError('Failed to load product. Please try again.');
       } finally {
         setLoading(false);
       }
     };
-
     fetchProduct();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [productId]);
 
-  const saveToRecentlyViewed = (productData, mainImage) => {
-    let viewedProducts = JSON.parse(localStorage.getItem('viewedProducts')) || [];
-    viewedProducts = viewedProducts.filter(p => p.product_id !== productData.product_id);
-
-    viewedProducts.unshift({
-      product_id: productData.product_id,
-      slug: productData.slug,
-      name: productData.name,
-      image_url: mainImage || '/media/default.jpg',
-      price: productData.price
-    });
-
-    if (viewedProducts.length > 20) viewedProducts = viewedProducts.slice(0, 20);
-    localStorage.setItem('viewedProducts', JSON.stringify(viewedProducts));
+  const saveRecentlyViewed = (data, img) => {
+    let viewed = JSON.parse(localStorage.getItem('viewedProducts')) || [];
+    viewed     = viewed.filter((p) => p.product_id !== data.product_id);
+    viewed.unshift({ product_id: data.product_id, slug: data.slug, name: data.name, image_url: img, price: data.price });
+    if (viewed.length > 20) viewed = viewed.slice(0, 20);
+    localStorage.setItem('viewedProducts', JSON.stringify(viewed));
   };
 
   const handleIncrease = () => {
-    if (product && quantity < product.stock) {
-      setQuantity(q => q + 1);
-      setStockMessage('');
-    } else if (product && quantity >= product.stock) {
-      setStockMessage(`Cannot add more than available stock (${product.stock}).`);
-    }
+    if (product && quantity < product.stock) { setQuantity((q) => q + 1); setStockMsg(''); }
+    else setStockMsg(`Max stock: ${product?.stock}`);
   };
 
-  const handleDecrease = () => {
-    if (quantity > 1) {
-      setQuantity(q => q - 1);
-      setStockMessage('');
-    }
-  };
+  const handleDecrease = () => { if (quantity > 1) { setQuantity((q) => q - 1); setStockMsg(''); } };
 
   const handleAddToCart = () => {
     if (!product) return;
     if (quantity > 0 && quantity <= product.stock) {
-      const cartProduct = {
-        product_id: product.product_id,
-        name: product.name,
-        image_url: selectedImage || '/media/default.jpg',
-        price: product.price,
-        stock: product.stock,
-        quantity,
-        is_abroad_order: product.is_abroad_order,
-        abroad_delivery_days: product.abroad_delivery_days
-      };
-      addItemToCart(cartProduct);
-      setStockMessage('');
-      setShowPriceAlert(true);
+      addItemToCart({ product_id: product.product_id, name: product.name, image_url: selectedImage, price: product.price, stock: product.stock, quantity, is_abroad_order: product.is_abroad_order, abroad_delivery_days: product.abroad_delivery_days });
+      setStockMsg('');
+      setShowAlert(true);
     } else if (product.stock === 0) {
-      setStockMessage('This item is currently out of stock.');
-    } else {
-      setStockMessage(`Cannot add more than available stock (${product.stock}).`);
+      setStockMsg('This item is currently out of stock.');
     }
   };
 
   const toggleWishlist = () => {
     if (!product) return;
-    if (isInWishlist(product.product_id)) removeFromWishlist(product.product_id);
-    else addToWishlist(product);
+    isInWishlist(product.product_id) ? removeFromWishlist(product.product_id) : addToWishlist(product);
   };
 
-  const handleBuyNowOnWhatsApp = () => {
+  const handleWhatsApp = () => {
     if (!product) return;
-    const deliveryDays = product.abroad_delivery_days === 14 ? '7-14' : (product.abroad_delivery_days ? `${product.abroad_delivery_days}` : '7-14');
-    let message = `Hello, I'm interested in buying ${product.name}.`;
-    if (product.is_abroad_order) {
-      message += ` This is an abroad order item with an estimated delivery of ${deliveryDays} business days.`;
-    }
-    message += ` Please provide more details.`;
-    const whatsappUrl = `https://wa.me/2348034593459?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    const days = product.abroad_delivery_days === 14 ? '7-14' : (product.abroad_delivery_days || '7-14');
+    let msg    = `Hello, I'm interested in buying ${product.name}.`;
+    if (product.is_abroad_order) msg += ` This is an abroad order item with estimated delivery of ${days} business days.`;
+    msg += ` Please provide more details.`;
+    window.open(`https://wa.me/2348034593459?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
-  if (loading) return <div className="loading-product-details">Loading product details...</div>;
-  if (error) return <div className="error-product-details" style={{ color: 'red', textAlign: 'center', padding: '20px' }}>{error}</div>;
-  if (!product) return <div className="error-product-details" style={{ color: 'orange', textAlign: 'center', padding: '20px' }}>Product not found.</div>;
+  /* ── States ── */
+  if (loading) return (
+    <div className="pd-state-screen">
+      <div className="pd-spinner" />
+      <p>Loading product…</p>
+    </div>
+  );
 
-  // build thumbnails
-  const thumbnails = [];
-  if (product.image_urls?.large) thumbnails.push(product.image_urls.large);
-  if (product.secondary_image_urls?.large) thumbnails.push(product.secondary_image_urls.large);
-  product.additional_images?.forEach(img => {
-    if (img.image_url) thumbnails.push(img.image_url);
-    if (img.secondary_image) thumbnails.push(img.secondary_image);
+  if (error) return (
+    <div className="pd-state-screen pd-state-screen--error">
+      <span>⚠️</span><p>{error}</p>
+    </div>
+  );
+
+  if (!product) return (
+    <div className="pd-state-screen">
+      <span>📦</span><p>Product not found.</p>
+    </div>
+  );
+
+  /* ── Thumbnails ── */
+  const thumbs = [];
+  if (product.image_urls?.large)           thumbs.push(product.image_urls.large);
+  if (product.secondary_image_urls?.large) thumbs.push(product.secondary_image_urls.large);
+  product.additional_images?.forEach((img) => {
+    if (img.image_url)       thumbs.push(img.image_url);
+    if (img.secondary_image) thumbs.push(img.secondary_image);
   });
-  if (thumbnails.length === 0) thumbnails.push('/media/default.jpg');
-  const uniqueThumbnails = [...new Set(thumbnails)];
+  if (!thumbs.length) thumbs.push('/media/default.jpg');
+  const uniqueThumbs = [...new Set(thumbs)];
 
-  const formattedPrice = product.price !== undefined ? new Intl.NumberFormat().format(product.price) : 'N/A';
-  const formattedOriginalPrice = product.original_price !== undefined ? new Intl.NumberFormat().format(product.original_price) : null;
-  const deliveryDisplayDetail = product.abroad_delivery_days === 14 ? '7-14 business days' : `${product.abroad_delivery_days || '7-14'} business days`;
+  const discount  = product.original_price && product.price < product.original_price
+    ? Math.round(((product.original_price - product.price) / product.original_price) * 100)
+    : null;
 
-  const canonicalUrl = product.slug ? `https://tripleastechng.com/product/${product.slug}` : `https://tripleastechng.com/product-details/${product.product_id}`;
+  const inWishlist     = isInWishlist(product.product_id);
+  const deliveryDays   = product.abroad_delivery_days === 14 ? '7–14' : (product.abroad_delivery_days || '7–14');
+  const canonicalUrl   = product.slug
+    ? `https://tripleastechng.com/product/${product.slug}`
+    : `https://tripleastechng.com/product-details/${product.product_id}`;
 
   const productJsonLd = {
     "@context": "https://schema.org/",
     "@type": "Product",
-    "name": product.name,
-    "image": product.image_urls?.large || product.secondary_image_urls?.large || (product.additional_images?.[0]?.image_url) || "https://tripleastechng.com/media/default.jpg",
-    "description": product.description || '',
-    "sku": String(product.product_id),
-    "brand": product.brand || undefined,
-    "offers": {
+    name: product.name,
+    image: product.image_urls?.large || '/media/default.jpg',
+    description: product.description || '',
+    sku: String(product.product_id),
+    brand: product.brand || undefined,
+    offers: {
       "@type": "Offer",
-      "url": canonicalUrl,
-      "priceCurrency": "NGN",
-      "price": product.price || 0,
-      "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
-    }
+      url: canonicalUrl,
+      priceCurrency: "NGN",
+      price: product.price || 0,
+      availability: product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+    },
   };
 
   return (
     <>
       <Helmet>
         <title>{product.name} | Best Price in Nigeria | Triple A Tech</title>
-        <meta name="description" content={`Buy ${product.name} at the best price in Nigeria. Fast delivery and original quality from Triple A Tech.`} />
-        <meta name="keywords" content={`Buy ${product.name} Nigeria, ${product.name} price, tech gadgets Nigeria`} />
+        <meta name="description" content={`Buy ${product.name} at the best price in Nigeria.`} />
         <link rel="canonical" href={canonicalUrl} />
-
-        {/* Open Graph */}
-        <meta property="og:title" content={`${product.name} | Triple A Tech`} />
+        <meta property="og:title"       content={`${product.name} | Triple A Tech`} />
         <meta property="og:description" content={`Buy ${product.name} at the best price in Nigeria.`} />
-        <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:type" content="product" />
-        <meta property="og:image" content={productJsonLd.image} />
-
-        {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`${product.name} | Triple A Tech`} />
-        <meta name="twitter:description" content={`Buy ${product.name} at the best price in Nigeria. Fast delivery.`} />
-        <meta name="twitter:image" content={productJsonLd.image} />
-
-        {/* JSON-LD */}
+        <meta property="og:url"         content={canonicalUrl} />
+        <meta property="og:type"        content="product" />
+        <meta property="og:image"       content={productJsonLd.image} />
+        <meta name="twitter:card"       content="summary_large_image" />
         <script type="application/ld+json">{JSON.stringify(productJsonLd)}</script>
       </Helmet>
 
-      <div className="product-detail-page-wrapper">
-        <div className="product-detail">
-          <div className="product-detail-header">
-            <div className="klb-single-stock">
-              {product.stock > 0 ? (
-                <div className="product-stock in-stock"><span>In Stock</span></div>
-              ) : (
-                <div className="product-stock out-of-stock"><span>Out of Stock</span></div>
-              )}
+      <div className="pd-page">
+
+        {/* ── Back button ── */}
+        <button className="pd-back-btn" onClick={() => navigate(-1)}>
+          ← Back
+        </button>
+
+        <div className="pd-container">
+
+          {/* ══════════ LEFT — Images ══════════ */}
+          <div className="pd-images-col">
+
+            {/* Main image */}
+            <div className={`pd-main-img-wrap ${isZoomed ? 'pd-main-img-wrap--zoomed' : ''}`}
+                 onClick={() => setIsZoomed((z) => !z)}>
+              {product.stock === 0 && <div className="pd-sold-out-ribbon">Sold Out</div>}
+              {discount && <div className="pd-discount-badge">-{discount}%</div>}
+              <img
+                src={selectedImage}
+                alt={product.name}
+                className="pd-main-img"
+                onError={(e) => { e.target.src = '/media/default.jpg'; }}
+              />
+              <span className="pd-zoom-hint">{isZoomed ? 'Click to zoom out' : '🔍 Click to zoom'}</span>
             </div>
 
-            <div className="wishlist-icon1" onClick={toggleWishlist} style={{ cursor: 'pointer' }}>
-              <img src={isInWishlist(product.product_id) ? wishlistActiveImg : wishlistImg} alt="Wishlist" className="wishlist-image2" />
-            </div>
-          </div>
-
-          <div className="product-detail-content">
-            <div className="product-detail-images">
-              {selectedImage && (
-                <img src={selectedImage} alt={product.name} className={`product-detail-image ${isZoomed ? 'zoomed' : ''}`} onClick={() => setIsZoomed(!isZoomed)} />
-              )}
-
-              <div className="product-detail-controls">
-                {uniqueThumbnails.map((url, i) => (
-                  <img
+            {/* Thumbnails */}
+            {uniqueThumbs.length > 1 && (
+              <div className="pd-thumbs">
+                {uniqueThumbs.map((url, i) => (
+                  <button
                     key={i}
-                    src={url || '/media/default.jpg'}
-                    alt={`Thumbnail ${i + 1}`}
-                    className={`product-detail-controls-img ${selectedImage === url ? 'active' : ''}`}
-                    onClick={() => { setSelectedImage(url || '/media/default.jpg'); setIsZoomed(false); }}
-                    style={{ cursor: 'pointer' }}
-                  />
+                    className={`pd-thumb ${selectedImage === url ? 'pd-thumb--active' : ''}`}
+                    onClick={() => { setSelectedImage(url); setIsZoomed(false); }}
+                  >
+                    <img src={url} alt={`View ${i + 1}`} onError={(e) => { e.target.src = '/media/default.jpg'; }} />
+                  </button>
                 ))}
               </div>
+            )}
+          </div>
+
+          {/* ══════════ RIGHT — Info ══════════ */}
+          <div className="pd-info-col">
+
+            {/* Top row: stock + wishlist */}
+            <div className="pd-top-row">
+              <span className={`pd-stock-tag ${product.stock > 0 ? 'pd-stock-tag--in' : 'pd-stock-tag--out'}`}>
+                {product.stock > 0 ? `✓ In Stock (${product.stock} left)` : '✕ Out of Stock'}
+              </span>
+              <button className="pd-wishlist-btn" onClick={toggleWishlist} aria-label="Toggle wishlist">
+                <img src={inWishlist ? wishlistActiveImg : wishlistImg} alt="Wishlist" />
+              </button>
             </div>
 
-            <div className="product-detail-info">
-              <h2 className="product-title">{product.name}</h2>
-              <p className="product-description">{product.description}</p>
+            {/* Name */}
+            <h1 className="pd-product-name">{product.name}</h1>
 
-              {product.is_abroad_order && (
-                <div className="abroad-order-detail-message">
-                  <p><span role="img" aria-label="airplane">✈️</span> This item is ordered from abroad. Estimated delivery: {deliveryDisplayDetail}.</p>
-                </div>
+            {/* Rating placeholder */}
+            <div className="pd-rating">
+              {'★★★★★'.split('').map((s, i) => <span key={i}>{s}</span>)}
+              <span className="pd-rating-count">Featured Product</span>
+            </div>
+
+            {/* Price */}
+            <div className="pd-price-block">
+              <span className="pd-price">{formatNaira(product.price)}</span>
+              {product.original_price && product.price < product.original_price && (
+                <>
+                  <span className="pd-original-price">{formatNaira(product.original_price)}</span>
+                  <span className="pd-you-save">You save {formatNaira(product.original_price - product.price)}</span>
+                </>
               )}
+            </div>
 
-              <div className="product-price">
-                {product.discount ? (
-                  <>
-                    <span className="discounted-price">₦{formattedPrice}</span>
-                    {formattedOriginalPrice && <span className="original-price">₦{formattedOriginalPrice}</span>}
-                  </>
-                ) : (
-                  <p>Price: ₦{formattedPrice}</p>
+            {/* Abroad tag */}
+            {product.is_abroad_order && (
+              <div className="pd-abroad-tag">
+                <span>✈️</span>
+                <p>Abroad order — estimated delivery <strong>{deliveryDays} business days</strong></p>
+              </div>
+            )}
+
+            {/* Quantity */}
+            <div className="pd-quantity-row">
+              <span className="pd-quantity-label">Quantity</span>
+              <div className="pd-quantity-ctrl">
+                <button onClick={handleDecrease} aria-label="Decrease">−</button>
+                <span>{quantity}</span>
+                <button onClick={handleIncrease} aria-label="Increase">+</button>
+              </div>
+            </div>
+
+            {stockMsg && <p className="pd-stock-msg">{stockMsg}</p>}
+
+            {/* Actions */}
+            <div className="pd-actions">
+              <button
+                className="pd-btn pd-btn--cart"
+                onClick={handleAddToCart}
+                disabled={product.stock === 0}
+              >
+                {product.stock > 0 ? '🛒 Add to Cart' : 'Out of Stock'}
+              </button>
+              <button className="pd-btn pd-btn--whatsapp" onClick={handleWhatsApp}>
+                <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                Buy on WhatsApp
+              </button>
+            </div>
+
+            {/* Tabs */}
+            <div className="pd-tabs">
+              <div className="pd-tab-nav">
+                {['description', 'details'].map((tab) => (
+                  <button
+                    key={tab}
+                    className={`pd-tab-btn ${activeTab === tab ? 'pd-tab-btn--active' : ''}`}
+                    onClick={() => setActiveTab(tab)}
+                  >
+                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  </button>
+                ))}
+              </div>
+              <div className="pd-tab-content">
+                {activeTab === 'description' && (
+                  <p className="pd-description">
+                    {product.description || 'No description available for this product.'}
+                  </p>
+                )}
+                {activeTab === 'details' && (
+                  <ul className="pd-details-list">
+                    <li><span>Product ID</span><span>{product.product_id}</span></li>
+                    {product.brand && <li><span>Brand</span><span>{product.brand}</span></li>}
+                    <li><span>Stock</span><span>{product.stock} units</span></li>
+                    {product.is_abroad_order && (
+                      <li><span>Delivery</span><span>{deliveryDays} business days</span></li>
+                    )}
+                  </ul>
                 )}
               </div>
-
-              <div className="quantity-control">
-                <button onClick={handleDecrease} aria-label="Decrease quantity">-</button>
-                <span>{quantity}</span>
-                <button onClick={handleIncrease} aria-label="Increase quantity">+</button>
-              </div>
-
-              {stockMessage && <p className="stock-message" style={{ color: 'red' }}>{stockMessage}</p>}
-
-              <button onClick={handleAddToCart} className="button is-primary" disabled={product.stock === 0}>
-                {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
-              </button>
-
-              <button onClick={handleBuyNowOnWhatsApp} className="button is-primary" style={{ marginTop: 10 }}>
-                Buy Now on WhatsApp
-              </button>
             </div>
           </div>
         </div>
-
-        <PriceAlertModal show={showPriceAlert} onClose={() => setShowPriceAlert(false)} product={product ? { name: product.name } : null} type="price" />
       </div>
+
+      <PriceAlertModal
+        show={showAlert}
+        onClose={() => setShowAlert(false)}
+        product={product ? { name: product.name } : null}
+        type="price"
+      />
     </>
   );
 };

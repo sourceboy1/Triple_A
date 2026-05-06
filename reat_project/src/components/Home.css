@@ -1,319 +1,537 @@
-/* components/Home.css */
+/* ============================================================
+   Home.css  —  Triple A's Technology  (Redesign)
+   ============================================================ */
 
-.home {
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-    padding: 0;
-    background-color: white;
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --font: 'Plus Jakarta Sans', sans-serif;
+  --accent: #16a34a;
+  --accent-dark: #15803d;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --surface: #f8fafc;
+  --card-bg: #ffffff;
+  --card-border: rgba(0, 0, 0, 0.07);
+  --card-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+  --card-radius: 20px;
+  --nav-height: 68px; /* matches .navbar height on desktop */
 }
 
-/* --- Hero Video Section --- */
+/* ── Reset ────────────────────────────────────────────── */
+.home {
+  width: 100%;
+  background: var(--surface);
+  font-family: var(--font);
+  padding-top: var(--nav-height);
+  overflow-x: hidden;
+  margin-top: 8px;
+}
+
+/* ============================================================
+   HERO LAYOUT  —  left video + right cards
+   ============================================================ */
+.hero-section {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  grid-template-rows: auto;
+  gap: 16px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 24px 0;
+}
+
+/* ── Hero Video Card ──────────────────────────────────── */
 .hero-video-container {
-    position: relative;
-    width: 100vw;
-    height: 0;
-    overflow: hidden;
-    box-sizing: border-box;
-    padding-bottom: 56.25%; /* maintains 16:9 aspect ratio */
-    margin-top: 0;
+  position: relative;
+  width: 100%;
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  background: #0a0a0a;
+  /* 16:9 minimum, but let grid control width */
+  aspect-ratio: 16 / 9;
+  min-height: 340px;
+  max-height: 540px;
+  box-shadow: var(--card-shadow);
 }
 
 .hero-video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%; /* ← Change from 150% to 100% */
-    object-fit: contain; /* ← Change from 'cover' to 'contain' */
-    filter: brightness(1.0);
-    z-index: 0;
-    background-color: black; /* optional: fills letterbox bars */
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
+/* Dark gradient so text is readable */
+.hero-video-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0,0,0,0.62) 0%,
+    rgba(0,0,0,0.25) 55%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Hero Overlay Content ─────────────────────────────── */
 .hero-content-overlay {
-    position: absolute;
-    /* z-index: 1;  <-- REMOVE or set to a lower value if issues persist. The play button needs a higher z-index. */
-    color: white;
-    text-align: left;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-end; /* Push content to the bottom */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* Default padding for all screens, adjusted by media queries */
-    padding-left: 5%;
-    padding-bottom: 8vh; /* Start with a generous bottom padding */
-    padding-right: 5%;
-    max-width: 800px;
-    /* Added: Ensure it doesn't block events for elements with higher z-index */
-    pointer-events: none; /* This is crucial. It allows clicks to pass through this overlay to elements underneath unless a child has pointer-events: auto; */
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 36px 40px;
+  pointer-events: none;
 }
 
-/* Added: Re-enable pointer events for interactive children */
-.hero-content-overlay > * {
-    pointer-events: auto;
-}
+.hero-content-overlay > * { pointer-events: auto; }
 
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(22, 163, 74, 0.85);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+  width: fit-content;
+  backdrop-filter: blur(6px);
+}
 
 .hero-title {
-    font-size: 2.8rem;
-    font-weight: bold;
-    margin-bottom: 12px;
-    line-height: 1.1;
-    text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
-    color: white;
+  font-size: 2.4rem;
+  font-weight: 800;
+  line-height: 1.15;
+  color: #fff;
+  margin: 0 0 10px;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+  max-width: 520px;
 }
 
 .hero-subtitle {
-    font-size: 1.3rem;
-    margin-bottom: 25px;
-    text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
-    color: #e0e0e0;
+  font-size: 1rem;
+  color: rgba(255,255,255,0.82);
+  margin: 0 0 24px;
+  max-width: 420px;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.4);
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .shop-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    border-radius: 50px;
-    transition: background-color 0.3s, transform 0.3s;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 13px 28px;
+  font-size: 0.9rem;
+  font-family: var(--font);
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 999px;
+  transition: background 0.18s, transform 0.15s;
+  letter-spacing: 0.3px;
 }
 
 .shop-button:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
+  background: var(--accent-dark);
+  transform: scale(1.04);
 }
 
-/* Added: Play Button Styles */
+/* Play / Pause button */
 .play-button {
-    position: absolute; /* Kept absolute, but now relative to .hero-video-container */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.6);
-    border: 2px solid white;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-    z-index: 10; /* Increased z-index significantly to ensure it's on top */
-    padding: 0; /* Remove default button padding */
-    pointer-events: auto; /* Re-enable pointer events for the button itself */
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.7);
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.15s;
+  backdrop-filter: blur(6px);
 }
 
 .play-button:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-    transform: translate(-50%, -50%) scale(1.1);
+  background: rgba(0,0,0,0.7);
+  transform: scale(1.1);
 }
 
-.play-button svg {
-    fill: white;
-    width: 24px;
-    height: 24px;
-    /* Adjust position of the triangle to be visually centered */
-    transform: translateX(2px);
+.play-button svg { transform: translateX(2px); }
+
+/* ── Right Sidebar Cards ──────────────────────────────── */
+.hero-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
-
-/* --- Responsive Adjustments for Hero Section --- */
-
-/* Small Mobile (up to 480px, covers your 320px/375px) */
-@media (max-width: 480px) {
-    .hero-video-container {
-        width: 100vw; /* Full viewport width */
-        height: 70vh; /* Specific height for mobile */
-        padding-bottom: 0; /* Override aspect ratio hack if height is fixed */
-        margin-top: 110px; /* Pushed down from navbar */
-    }
-    .hero-video {
-        object-fit: cover; /* Ensures video fills 40vh container, may crop */
-    }
-    .hero-content-overlay {
-        padding-left: 3%;
-        padding-bottom: 8vh; /* Adjusted for new container height */
-        padding-right: 3%;
-        max-width: 100%;
-    }
-    .hero-title {
-        font-size: 1.1rem;
-        margin-bottom: 3px;
-    }
-    .hero-subtitle {
-        font-size: 0.65rem;
-        margin-bottom: 6px;
-    }
-    .shop-button {
-        padding: 7px 12px;
-        font-size: 0.65rem;
-    }
-    /* Adjust play button size for smaller screens */
-    .play-button {
-        width: 45px;
-        height: 45px;
-    }
-    .play-button svg {
-        width: 18px;
-        height: 18px;
-    }
+.sidebar-card {
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.18s, box-shadow 0.18s;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
-/* Medium Mobile/Small Tablet (481px to 768px, covers your 425px) */
-@media (min-width: 425px) and (max-width: 768px) {
-    .hero-video-container {
-        width: 100vw;
-        height: 75vh; /* Specific height for tablets */
-        padding-bottom: 0; /* Override aspect ratio hack */
-        margin-top: 80px; /* Pushed down from navbar */
-    }
-    .hero-video {
-        object-fit: cover; /* Ensures video fills 55vh container, may crop */
-    }
-    .hero-content-overlay {
-        padding-left: 5%;
-        padding-bottom: 10vh; /* Adjusted for new container height */
-        padding-right: 5%;
-        max-width: 100%;
-    }
-    .hero-title {
-        font-size: 1.4rem;
-        margin-bottom: 5px;
-    }
-    .hero-subtitle {
-        font-size: 0.75rem;
-        margin-bottom: 10px;
-    }
-    .shop-button {
-        padding: 9px 16px;
-        font-size: 0.75rem;
-    }
-    /* Adjust play button size for medium screens */
-    .play-button {
-        width: 50px;
-        height: 50px;
-    }
-    .play-button svg {
-        width: 20px;
-        height: 20px;
-    }
+.sidebar-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.1);
 }
 
-/* Large Tablet/Small Laptop (769px to 1024px, covers your 1024px) */
-@media (min-width: 768px) and (max-width: 1024px) {
-    .hero-video-container {
-        width: 100vw;
-        height: 85vh; /* Specific height for 1024px range */
-        padding-bottom: 0; /* Override aspect ratio hack */
-        margin-top: 100px; /* Pushed down from navbar */
-    }
-    .hero-video {
-        object-fit: cover; /* Ensures video fills 70vh container, may crop */
-    }
-    .hero-content-overlay {
-        padding-left: 4%;
-        padding-bottom: 5vh;
-        padding-right: 4%;
-        max-width: calc(800px + 8%);
-    }
-    .hero-title {
-        font-size: 2.2rem;
-    }
-    .hero-subtitle {
-        font-size: 1.0rem;
-    }
-    .shop-button {
-        padding: 12px 24px;
-        font-size: 0.95rem;
-    }
+.sidebar-card-img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  display: block;
+  background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
 }
 
-/* Laptop (1025px to 1440px) */
-@media (min-width: 1024px) and (max-width: 1440px) {
-    .hero-video-container {
-        width: 100vw;
-        height: 95vh; /* Default height for larger screens */
-        padding-bottom: 0; /* Override aspect ratio hack */
-        margin-top: 73px; /* Pushed down from navbar */
-    }
-    .hero-video {
-        object-fit: cover;
-    }
-    .hero-content-overlay {
-        padding-left: 5%;
-        padding-bottom: 6vh;
-        padding-right: 5%;
-        max-width: calc(800px + 10%);
-    }
-    .hero-title {
-        font-size: 2.5rem;
-    }
-    .hero-subtitle {
-        font-size: 1.2rem;
-    }
-    .shop-button {
-        padding: 14px 28px;
-        font-size: 1.0rem;
-    }
+/* placeholder when no image */
+.sidebar-card-img-placeholder {
+  width: 100%;
+  height: 120px;
+  background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #94a3b8;
 }
 
-/* Large Desktop (1441px and up) */
-@media (min-width: 1441px) {
-    .hero-video-container {
-        width: 100vw;
-        height: 85vh; /* Default height for very large screens */
-        padding-bottom: 0; /* Override aspect ratio hack */
-        margin-top: 90px; /* Pushed down from navbar */
-    }
-    .hero-video {
-        object-fit: cover;
-    }
-    .hero-content-overlay {
-        padding-left: 6%;
-        padding-bottom: 7vh;
-        padding-right: 6%;
-        max-width: calc(800px + 12%);
-    }
-    .hero-title {
-        font-size: 2.8rem;
-    }
-    .hero-subtitle {
-        font-size: 1.3rem;
-    }
-    .shop-button {
-        padding: 15px 30px;
-        font-size: 1.1rem;
-    }
+.sidebar-card-body {
+  padding: 14px 16px;
 }
 
+.sidebar-card-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  margin-bottom: 4px;
+}
 
-/* --- Spacing for other sections --- */
+.sidebar-card-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+  margin: 0 0 4px;
+}
+
+.sidebar-card-sub {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.sidebar-card-arrow {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  background: var(--surface);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  border: 1px solid var(--card-border);
+}
+
+/* ============================================================
+   BENTO GRID  —  below the hero
+   ============================================================ */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  max-width: 1400px;
+  margin: 16px auto 0;
+  padding: 0 24px;
+}
+
+.bento-card {
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.18s, box-shadow 0.18s;
+  position: relative;
+}
+
+.bento-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 32px rgba(0,0,0,0.1);
+}
+
+/* Wide card spans 2 columns */
+.bento-card--wide { grid-column: span 2; }
+
+/* Tall card placeholder */
+.bento-card--tall { grid-row: span 2; }
+
+.bento-card-img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+.bento-card-img-placeholder {
+  width: 100%;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: #94a3b8;
+}
+
+/* Colour tints for visual variety */
+.bento-card:nth-child(1) .bento-card-img-placeholder { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+.bento-card:nth-child(2) .bento-card-img-placeholder { background: linear-gradient(135deg, #dcfce7, #bbf7d0); }
+.bento-card:nth-child(3) .bento-card-img-placeholder { background: linear-gradient(135deg, #fef9c3, #fde68a); }
+.bento-card:nth-child(4) .bento-card-img-placeholder { background: linear-gradient(135deg, #fce7f3, #fbcfe8); }
+.bento-card:nth-child(5) .bento-card-img-placeholder { background: linear-gradient(135deg, #ede9fe, #ddd6fe); }
+.bento-card:nth-child(6) .bento-card-img-placeholder { background: linear-gradient(135deg, #ffedd5, #fed7aa); }
+
+.bento-card-body { padding: 16px 18px 18px; }
+
+.bento-card-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  margin-bottom: 5px;
+}
+
+.bento-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 5px;
+  line-height: 1.3;
+}
+
+.bento-card-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.bento-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+  transition: gap 0.15s;
+}
+
+.bento-card-cta:hover { gap: 8px; }
+
+/* ============================================================
+   EXISTING SECTION WRAPPERS  (FeatureDisplay, Deals, etc.)
+   ============================================================ */
+.home-sections {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px 40px;
+}
+
+/* Spacing between each sub-component */
+.home-sections > * {
+  margin-top: 32px;
+}
+
+/* ── FeatureDisplay ──────────────────────────────────── */
 .feature-display-container {
-    margin-top: 40px;
-    padding: 40px 20px;
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  padding: 28px 24px;
 }
 
-.deals-of-the-day-container, .category-display-container,
-.power-bank-display-container, .laptop-display-container, .phones-tablets-display-container,
+/* ── Shared section card wrapper ──────────────────────── */
+.deals-of-the-day-container,
+.category-display-container,
+.power-bank-display-container,
+.laptop-display-container,
+.phones-tablets-display-container,
 .viewed-products-container {
-    padding: 40px 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    color: green;
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  padding: 28px 24px;
+  color: var(--text-primary);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+/* Laptop */
+@media (min-width: 1025px) and (max-width: 1280px) {
+  .hero-section { grid-template-columns: 1fr 300px; }
+  .hero-title   { font-size: 2rem; }
+  .bento-grid   { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Tablet landscape */
+@media (min-width: 769px) and (max-width: 1024px) {
+  :root { --nav-height: 68px; }
+
+  .hero-section {
+    grid-template-columns: 1fr;
+    padding: 16px 16px 0;
+  }
+
+  .hero-sidebar {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .sidebar-card { flex: 1 1 calc(50% - 8px); min-width: 200px; }
+
+  .hero-title    { font-size: 1.8rem; }
+  .hero-subtitle { font-size: 0.9rem; }
+
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0 16px;
+  }
+
+  .bento-card--wide { grid-column: span 2; }
+
+  .home-sections { padding: 0 16px 32px; }
+}
+
+/* Tablet portrait / large mobile */
+@media (min-width: 481px) and (max-width: 768px) {
+  :root { --nav-height: 60px; }
+
+  .hero-section {
+    grid-template-columns: 1fr;
+    padding: 12px 12px 0;
+  }
+
+  .hero-video-container {
+    max-height: 380px;
+    min-height: 280px;
+    border-radius: 16px;
+  }
+
+  .hero-content-overlay { padding: 24px 24px; }
+  .hero-title    { font-size: 1.5rem; }
+  .hero-subtitle { font-size: 0.85rem; margin-bottom: 16px; }
+  .shop-button   { padding: 11px 22px; font-size: 0.85rem; }
+
+  .hero-sidebar { flex-direction: row; flex-wrap: wrap; gap: 10px; }
+  .sidebar-card { flex: 1 1 calc(50% - 5px); }
+  .sidebar-card-img, .sidebar-card-img-placeholder { height: 90px; }
+
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 0 12px;
+  }
+
+  .bento-card--wide { grid-column: span 2; }
+  .bento-card-img, .bento-card-img-placeholder { height: 130px; }
+
+  .home-sections { padding: 0 12px 28px; }
+  .home-sections > * { margin-top: 20px; }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  :root { --nav-height: 110px; } /* taller navbar when stacked */
+
+  .hero-section {
+    grid-template-columns: 1fr;
+    padding: 10px 10px 0;
+    gap: 10px;
+  }
+
+  .hero-video-container {
+    max-height: 300px;
+    min-height: 220px;
+    border-radius: 14px;
+  }
+
+  .hero-content-overlay { padding: 18px 18px; }
+  .hero-badge    { font-size: 0.65rem; padding: 4px 10px; margin-bottom: 10px; }
+  .hero-title    { font-size: 1.25rem; margin-bottom: 6px; }
+  .hero-subtitle { font-size: 0.78rem; margin-bottom: 14px; }
+  .shop-button   { padding: 10px 20px; font-size: 0.8rem; }
+  .play-button   { width: 38px; height: 38px; }
+
+  .hero-sidebar { flex-direction: row; flex-wrap: nowrap; overflow-x: auto; gap: 10px; padding-bottom: 4px; }
+  .sidebar-card { flex: 0 0 160px; min-width: 160px; }
+  .sidebar-card-img, .sidebar-card-img-placeholder { height: 80px; }
+  .sidebar-card-body  { padding: 10px 12px; }
+  .sidebar-card-title { font-size: 0.82rem; }
+
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 0 10px;
+    margin-top: 10px;
+  }
+
+  .bento-card--wide { grid-column: span 2; }
+  .bento-card-img, .bento-card-img-placeholder { height: 110px; }
+  .bento-card-body  { padding: 12px 14px 14px; }
+  .bento-card-title { font-size: 0.88rem; }
+  .bento-card-desc  { display: none; }
+
+  .home-sections { padding: 0 10px 24px; }
+  .home-sections > * { margin-top: 16px; }
+
+  .deals-of-the-day-container,
+  .category-display-container,
+  .power-bank-display-container,
+  .laptop-display-container,
+  .phones-tablets-display-container,
+  .viewed-products-container,
+  .feature-display-container {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
 }

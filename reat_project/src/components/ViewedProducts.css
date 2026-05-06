@@ -1,106 +1,183 @@
-.viewed-products-container {
-    padding-top: 30px;
-    text-align: center;
-    /* margin-bottom: 10px; */
+/* ============================================================
+   ViewedProducts.css — Triple A's Technology
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --font:          'DM Sans', sans-serif;
+  --font-head:     'Syne', sans-serif;
+  --accent:        #16a34a;
+  --accent-dark:   #15803d;
+  --accent-light:  #dcfce7;
+  --accent-xlight: #f0fdf4;
+  --text-primary:  #0f172a;
+  --text-secondary:#475569;
+  --text-muted:    #94a3b8;
+  --surface:       #f8fafc;
+  --card-bg:       #ffffff;
+  --border:        rgba(0,0,0,0.07);
+  --shadow-sm:     0 2px 12px rgba(0,0,0,0.06);
+  --shadow-md:     0 6px 24px rgba(0,0,0,0.09);
+  --shadow-lg:     0 14px 40px rgba(0,0,0,0.12);
+  --radius:        16px;
+  --radius-sm:     10px;
 }
 
-.viewed-products-container h2 {
-    color: green;
-    margin-bottom: 20px;
-    text-decoration: none;
+/* ── Wrapper ── */
+.vp-wrapper {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  padding: 32px 32px 36px;
+  font-family: var(--font);
 }
 
-.viewed-products-container p {
-    color: black;
-    text-decoration: none;
+/* ── Header ── */
+.vp-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
-/* Viewed Products List - Now horizontally scrollable */
-.viewed-products-list {
-    display: flex; /* Use flex to lay out items */
-    overflow-x: auto; /* Enable horizontal scrolling */
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-    scroll-snap-type: x mandatory; /* Optional: for snapping to items */
-    padding-bottom: 15px; /* Space for scrollbar */
-    gap: 20px; /* Space between items */
-    justify-content: flex-start; /* Align items to the start */
+.vp-header-tag {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 5px;
 }
 
-/* Hide scrollbar for a cleaner look (optional, but common for carousels) */
-.viewed-products-list::-webkit-scrollbar {
-    display: none; /* Hide scrollbar for Chrome, Safari, Opera */
-}
-.viewed-products-list {
-    -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
-    scrollbar-width: none; /* Hide scrollbar for Firefox */
-}
-
-
-/* Viewed Product Item Styling */
-.viewed-product-item {
-    flex: 0 0 auto; /* Prevent items from growing/shrinking, allow scroll */
-    width: calc(16.67% - 20px); /* Default for 6 items per row (desktop) */
-    background-color: white;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-    scroll-snap-align: start; /* Optional: for snapping to items */
-    text-align: center; /* Center text below image */
+.vp-header-title {
+  font-family: var(--font-head);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0;
 }
 
-.viewed-product-item:hover {
-    transform: scale(1.05); /* Slightly reduced hover effect */
-    text-decoration: none;
+.vp-count {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 5px 13px;
+  border-radius: 999px;
+  white-space: nowrap;
 }
 
-.viewed-product-image {
-    width: 100%;
-    height: 150px; /* Fixed height for consistency */
-    object-fit: contain; /* Ensure the whole image is visible */
-    border-radius: 5px;
-    margin-bottom: 10px;
+/* ── Scrollable track ── */
+.vp-track {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  /* hide scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
 }
 
-.viewed-product-item p {
-    color: black;
-    font-size: 0.9em;
-    white-space: normal; /* Allow text to wrap within the item */
-    margin: 0;
+.vp-track::-webkit-scrollbar { display: none; }
+
+/* ── Card ── */
+.vp-card {
+  flex: 0 0 auto;
+  width: 160px;
+  background: var(--card-bg);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  scroll-snap-align: start;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
 }
 
-/* Removed pagination-controls, arrow-btn, arrow-icon styles */
-
-
-/* Responsive Breakpoints - Adjusted for scrolling */
-@media (max-width: 375px) {
-    .viewed-product-item {
-        width: calc(50% - 20px); /* 2 items per row visible, scroll for more */
-    }
+.vp-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--accent-light);
 }
 
-@media (min-width: 376px) and (max-width: 768px) {
-    .viewed-product-item {
-        width: calc(33.33% - 20px); /* 3 items per row visible, scroll for more */
-    }
+/* Image */
+.vp-img-wrap {
+  width: 100%;
+  height: 130px;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
 }
 
-/* For larger tablets and small desktops, let's aim for 4 items */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .viewed-product-item {
-        width: calc(25% - 20px); /* 4 items per row visible, scroll for more */
-    }
+.vp-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 12px;
+  transition: transform 0.35s ease;
 }
 
-/* For larger desktops, keep it at 5 or 6 */
-@media (min-width: 1025px) and (max-width: 1200px) {
-    .viewed-product-item {
-        width: calc(20% - 20px); /* 5 items per row visible */
-    }
+.vp-card:hover .vp-img { transform: scale(1.07); }
+
+/* Info */
+.vp-info {
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
 }
 
-@media (min-width: 1201px) {
-    .viewed-product-item {
-        width: calc(16.67% - 20px); /* 6 items per row visible */
-    }
+.vp-name {
+  font-family: var(--font-head);
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+}
+
+.vp-price {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent-dark);
+  margin: 0;
+}
+
+/* ══════════════════════════════
+   RESPONSIVE
+══════════════════════════════ */
+@media (max-width: 768px) {
+  .vp-wrapper { padding: 22px 18px 26px; }
+  .vp-header-title { font-size: 1.3rem; }
+  .vp-card { width: 140px; }
+  .vp-img-wrap { height: 110px; }
+}
+
+@media (max-width: 480px) {
+  .vp-wrapper { padding: 16px 14px 20px; }
+  .vp-header-title { font-size: 1.15rem; }
+  .vp-card { width: 130px; }
+  .vp-img-wrap { height: 95px; }
+  .vp-name { font-size: 0.7rem; }
+  .vp-price { font-size: 0.72rem; }
 }

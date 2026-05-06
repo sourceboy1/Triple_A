@@ -15,7 +15,6 @@ const LaptopDisplay = ({ onLoaded }) => {
   const hoverIntervals = useRef({});
   const rotateInterval = useRef(null);
 
-  // Category ID for Laptops & Computers
   const CATEGORY_ID = 4;
 
   const shuffleArray = (array) => {
@@ -35,7 +34,6 @@ const LaptopDisplay = ({ onLoaded }) => {
         const data = Array.isArray(response.data) ? response.data : [];
 
         if (isMounted) {
-          // Filter by category_id to be safe
           const filtered = data.filter((p) => {
             const idFromProduct = p.category_id ?? p.category?.category_id ?? p.category?.id ?? null;
             return idFromProduct === CATEGORY_ID;
@@ -57,7 +55,6 @@ const LaptopDisplay = ({ onLoaded }) => {
 
     fetchLaptops();
 
-    // auto-rotate items every 12s
     rotateInterval.current = setInterval(() => {
       setProducts((prev) => {
         if (!prev || prev.length === 0) return prev;
@@ -79,19 +76,11 @@ const LaptopDisplay = ({ onLoaded }) => {
 
   const handleMouseEnter = (id, images) => {
     if (!images || images.length < 2) return;
-
     let currentIndex = 0;
-
-    if (hoverIntervals.current[id]) {
-      clearInterval(hoverIntervals.current[id]);
-    }
-
+    if (hoverIntervals.current[id]) clearInterval(hoverIntervals.current[id]);
     hoverIntervals.current[id] = setInterval(() => {
       currentIndex = (currentIndex + 1) % images.length;
-      setHoverImageIndexes((prev) => ({
-        ...prev,
-        [id]: currentIndex,
-      }));
+      setHoverImageIndexes((prev) => ({ ...prev, [id]: currentIndex }));
     }, 1000);
   };
 
@@ -100,11 +89,7 @@ const LaptopDisplay = ({ onLoaded }) => {
       clearInterval(hoverIntervals.current[id]);
       hoverIntervals.current[id] = null;
     }
-
-    setHoverImageIndexes((prev) => ({
-      ...prev,
-      [id]: 0,
-    }));
+    setHoverImageIndexes((prev) => ({ ...prev, [id]: 0 }));
   };
 
   if (loading) return null;
@@ -145,9 +130,7 @@ const LaptopDisplay = ({ onLoaded }) => {
                     src={currentImg || '/placeholder.jpg'}
                     alt={laptop.name || 'Laptop'}
                     className="laptop-image"
-                    onError={(e) => {
-                      e.target.src = '/placeholder.jpg';
-                    }}
+                    onError={(e) => { e.target.src = '/placeholder.jpg'; }}
                     loading="lazy"
                   />
                   <h3 className="laptop-name">{laptop.name}</h3>

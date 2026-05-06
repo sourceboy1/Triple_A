@@ -5,11 +5,12 @@
     justify-content: space-between; /* Space between text and image */
     align-items: center; /* Center align items vertically */
     margin-top: 20px; /* Space above the footer section */
+    padding-bottom: 10px;
 }
 
 .footer-section-container p {
     margin: 0; /* Remove default margin */
-    color: black; /* Text color */
+    color: #ffffff; /* Text color */
 }
 
 .footer-debit-card {

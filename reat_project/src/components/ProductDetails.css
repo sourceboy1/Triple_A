@@ -1,509 +1,572 @@
-/* General Styling */
-.product-detail-page-wrapper {
-  padding: 1rem; /* Add some padding around the whole page wrapper */
+/* ============================================================
+   ProductDetails.css — Triple A's Technology
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --green:       #16a34a;
+  --green-dark:  #15803d;
+  --green-light: #dcfce7;
+  --green-xlight:#f0fdf4;
+  --wa-green:    #25d366;
+  --wa-dark:     #1da851;
+  --text-1:      #0f172a;
+  --text-2:      #475569;
+  --text-3:      #94a3b8;
+  --surface:     #f8fafc;
+  --card-bg:     #ffffff;
+  --border:      rgba(0,0,0,0.07);
+  --shadow-sm:   0 2px 12px rgba(0,0,0,0.06);
+  --shadow-md:   0 6px 24px rgba(0,0,0,0.09);
+  --shadow-lg:   0 16px 48px rgba(0,0,0,0.12);
+  --radius:      20px;
+  --font-head:   'Syne', sans-serif;
+  --font-body:   'DM Sans', sans-serif;
 }
 
-.product-detail {
-  max-width: 1200px; /* Increased max-width for larger screens */
-  margin: 80px auto;
-  padding: 20px;
-  background-color: #fffefe;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column; /* Stack content vertically by default */
-  position: relative; /* For absolute positioning of header elements */
+/* ── Page wrapper ── */
+.pd-page {
+  min-height: 100vh;
+  background: var(--surface);
+  font-family: var(--font-body);
+  padding: 100px 24px 60px;
 }
 
-.product-detail-header {
-  display: flex;
-  justify-content: flex-end; /* Align items to the end initially */
-  align-items: center; /* Vertically center items */
-  width: 100%;
-  margin-bottom: 20px; /* Space below header */
-  position: absolute; /* Position the header elements within the product-detail */
-  top: 20px;
-  left: 0;
-  right: 20px; /* Push to the right */
-  padding: 0 20px; /* Add padding to match the product-detail padding */
-  z-index: 10; /* Ensure it's above other content */
-}
-
-.klb-single-stock {
-  margin-right: 15px; /* Space between stock and wishlist icon */
-  flex-shrink: 0; /* Prevent it from shrinking */
-}
-
-.product-stock {
-  display: inline-flex; /* Use inline-flex for better alignment in small spaces */
-  align-items: center;
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 4px;
-}
-
-.product-stock.in-stock {
-  border: 1px solid green;
-  color: green;
-  background-color: #f9f9f9;
-}
-
-.product-stock.out-of-stock {
-  border: 1px solid red;
-  color: red;
-  background-color: #f9f9f9;
-}
-
-.stock-image {
-  width: 20px;
-  height: 20px;
-  margin-right: 5px;
-}
-
-.wishlist-icon1 {
-  cursor: pointer;
-  flex-shrink: 0; /* Prevent it from shrinking */
-}
-
-.wishlist-image2 {
-  width: 35px;
-  height: 35px;
-  object-fit: cover;
-}
-
-.product-detail-content {
-  display: flex;
-  flex-direction: column; /* Stack images and info vertically on small screens */
-  align-items: center;
-  position: relative;
-  padding-top: 60px; /* Add padding to clear the absolute header */
-}
-
-.product-detail-images {
+/* ── State screens ── */
+.pd-state-screen {
+  min-height: 60vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
-  width: 100%; /* Take full width on small screens */
+  justify-content: center;
+  gap: 14px;
+  font-family: var(--font-body);
+  color: var(--text-2);
+  font-size: 1rem;
 }
 
-.product-detail-image {
-  max-width: 80%; /* Ensure image doesn't overflow */
-  height: 305px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease; /* Smooth transition for zoom */
+.pd-state-screen span { font-size: 3rem; }
+.pd-state-screen--error p { color: #ef4444; }
+
+.pd-spinner {
+  width: 42px;
+  height: 42px;
+  border: 3px solid var(--green-light);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: pd-spin 0.8s linear infinite;
+}
+
+@keyframes pd-spin { to { transform: rotate(360deg); } }
+
+/* ── Back button ── */
+.pd-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: pointer;
+  margin-bottom: 28px;
+  transition: background 0.18s, color 0.18s;
+  box-shadow: var(--shadow-sm);
+  max-width: 1300px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+}
+
+.pd-back-btn:hover {
+  background: var(--green-xlight);
+  color: var(--green-dark);
+  border-color: var(--green-light);
+}
+
+/* ── Container ── */
+.pd-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  max-width: 1300px;
+  margin: 0 auto;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  padding: 40px;
+}
+
+/* ══════════ LEFT — Images ══════════ */
+.pd-images-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Main image */
+.pd-main-img-wrap {
+  position: relative;
+  background: var(--surface);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
   cursor: zoom-in;
-}
-
-.product-detail-image.zoomed {
-  transform: scale(1.2); /* Zoom level, adjust as needed */
-  cursor: zoom-out;
-}
-
-.product-detail-controls {
-  display: flex;
-  flex-wrap: wrap; /* Allow thumbnails to wrap to the next line */
-  justify-content: center;
-  margin-top: 10px;
-  max-width: 100%; /* Ensure controls don't overflow */
-}
-
-.product-detail-controls-img {
-  width: 60px;
-  height: 60px;
-  margin: 5px; /* Adjust margin for better spacing on wrap */
-  cursor: pointer;
-  border: 2px solid transparent;
-  transition: border-color 0.3s, transform 0.3s;
-  object-fit: cover; /* Ensure thumbnails look good */
-}
-
-.product-detail-controls-img.active {
-  border: 2px solid green;
-  transform: scale(1.05); /* Slightly enlarge active thumbnail */
-}
-
-.product-detail-info {
-  text-align: center;
-  width: 100%; /* Take full width on small screens */
-  padding: 0 10px; /* Add some horizontal padding */
-}
-
-.product-title {
-  font-size: 28px; /* Slightly larger for better readability */
-  color: #1E2019;
-  margin: 15px 0;
-}
-
-.product-description {
-  font-size: 16px;
-  color: #666;
-  margin: 10px 0 20px 0; /* More space below description */
-  line-height: 1.6; /* Improve readability */
-}
-
-.product-price {
-  font-size: 22px;
-  margin: 15px 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: baseline;
-}
-
-.discounted-price {
-  color: green;
-  font-weight: bold;
-  margin-right: 10px;
-  font-size: 1.1em; /* Make discounted price slightly larger */
-}
-
-.original-price {
-  text-decoration: line-through;
-  color: #999;
-  font-size: 0.9em; /* Make original price slightly smaller */
-}
-
-.quantity-control {
+  aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 20px 0;
 }
 
-.quantity-control button {
-  background-color: green;
-  border: none;
-  color: white;
-  padding: 8px 15px; /* Larger padding for easier tapping */
-  cursor: pointer;
-  font-size: 18px; /* Larger font size for buttons */
-  border-radius: 4px;
-  transition: background-color 0.3s;
+.pd-main-img-wrap--zoomed { cursor: zoom-out; }
+
+.pd-main-img-wrap--zoomed .pd-main-img {
+  transform: scale(1.35);
 }
 
-.quantity-control button:hover {
-  background-color: darkgreen;
+.pd-main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 28px;
+  transition: transform 0.4s ease;
+  display: block;
 }
 
-.quantity-control span {
-  margin: 0 15px; /* More space around quantity number */
-  font-size: 1.4em; /* Larger quantity number */
-  min-width: 30px; /* Ensure consistent width */
-  text-align: center;
+.pd-sold-out-ribbon {
+  position: absolute;
+  top: 20px;
+  left: -28px;
+  background: #ef4444;
+  color: #fff;
+  font-family: var(--font-head);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 6px 36px;
+  transform: rotate(-45deg);
+  z-index: 3;
 }
 
-.button.is-primary {
-  background-color: green;
-  color: white;
-  border: none;
-  padding: 12px 25px; /* Larger buttons */
-  border-radius: 4px;
-  font-size: 18px; /* Larger font for buttons */
-  cursor: pointer;
-  transition: background-color 0.3s;
-  width: 100%; /* Full width buttons on small screens */
-  max-width: 300px; /* Limit max width for desktop */
-  margin-bottom: 10px; /* Space between buttons */
+.pd-discount-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 999px;
+  z-index: 3;
 }
 
-.button.is-primary:hover:not(:disabled) {
-  background-color: darkgreen;
+.pd-zoom-hint {
+  position: absolute;
+  bottom: 12px;
+  right: 14px;
+  font-size: 0.7rem;
+  color: var(--text-3);
+  background: rgba(255,255,255,0.85);
+  padding: 3px 9px;
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+  pointer-events: none;
 }
 
-.button.is-primary:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
-
-.stock-message {
-  margin-top: 10px;
-  font-weight: bold;
-}
-
-/* Styling.css or ProductDetails.css */
-
-/* Style for the abroad order tag on product cards */
-.abroad-order-tag {
-  background-color: #f0f8ff; /* Light blue background */
-  color: #007bff; /* Blue text */
-  border: 1px solid #b0e0e6;
-  padding: 5px 8px;
-  border-radius: 4px;
-  font-size: 0.85em;
-  margin-top: 5px;
-  margin-bottom: 10px;
-  display: inline-block; /* Make it fit its content */
-  font-weight: bold;
-  white-space: nowrap; /* Prevent breaking on small screens */
-}
-
-/* Style for the abroad order message on the product details page */
-.abroad-order-detail-message {
-  background-color: #fff3cd; /* Light yellow background */
-  color: #856404; /* Dark yellow/brown text */
-  border: 1px solid #ffeeba;
-  padding: 15px;
-  border-radius: 8px;
-  margin-top: 15px;
-  margin-bottom: 15px;
-  font-size: 1em;
-  line-height: 1.5;
+/* Thumbnails */
+.pd-thumbs {
   display: flex;
-  align-items: center;
   gap: 10px;
-  flex-wrap: wrap; /* ✅ allow wrapping on smaller screens */
+  flex-wrap: wrap;
 }
 
-.abroad-order-detail-message p {
-  margin: 0; /* Remove default paragraph margin */
+.pd-thumb {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0;
+  background: var(--surface);
+  transition: border-color 0.18s, transform 0.18s;
+  flex-shrink: 0;
 }
 
-/* ---------------------------- */
-/* ✅ Mobile Responsiveness */
-/* ---------------------------- */
+.pd-thumb:hover { transform: scale(1.06); }
 
-/* Small devices (phones < 480px) */
-@media (max-width: 480px) {
-  .product-detail-page-wrapper{
-    margin-top: 80px;
-  }
-  .abroad-order-tag {
-    font-size: 0.75em; /* Slightly smaller */
-    padding: 4px 6px;
-  }
+.pd-thumb--active {
+  border-color: var(--green);
+  box-shadow: 0 0 0 2px var(--green-light);
+}
 
-  .abroad-order-detail-message {
-    font-size: 0.9em;
-    padding: 12px;
-    gap: 6px;
-    flex-direction: column; /* Stack content vertically */
-    align-items: flex-start;
+.pd-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 6px;
+}
+
+/* ══════════ RIGHT — Info ══════════ */
+.pd-info-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Top row */
+.pd-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.pd-stock-tag {
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 999px;
+  letter-spacing: 0.2px;
+}
+
+.pd-stock-tag--in  { background: var(--green-xlight); color: var(--green-dark); border: 1px solid var(--green-light); }
+.pd-stock-tag--out { background: #fef2f2; color: #ef4444; border: 1px solid #fecaca; }
+
+.pd-wishlist-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s;
+  box-shadow: var(--shadow-sm);
+  padding: 0;
+}
+
+.pd-wishlist-btn:hover { background: #fff0f0; border-color: #fecaca; }
+
+.pd-wishlist-btn img {
+  width: 22px;
+  height: 22px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* Product name */
+.pd-product-name {
+  font-family: var(--font-head);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 800;
+  color: var(--text-1);
+  line-height: 1.2;
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+/* Rating */
+.pd-rating {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-bottom: 20px;
+}
+
+.pd-rating span { color: #f59e0b; font-size: 0.9rem; }
+.pd-rating-count {
+  font-size: 0.78rem;
+  color: var(--text-3);
+  margin-left: 6px;
+  font-weight: 500;
+}
+
+/* Price */
+.pd-price-block {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  padding: 16px 20px;
+  background: var(--green-xlight);
+  border-radius: 14px;
+  border: 1px solid var(--green-light);
+}
+
+.pd-price {
+  font-family: var(--font-head);
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--green-dark);
+}
+
+.pd-original-price {
+  font-size: 1rem;
+  color: var(--text-3);
+  text-decoration: line-through;
+  font-weight: 500;
+}
+
+.pd-you-save {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--green);
+  background: var(--green-light);
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-left: auto;
+}
+
+/* Abroad tag */
+.pd-abroad-tag {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 0.85rem;
+  color: #92400e;
+  line-height: 1.5;
+}
+
+.pd-abroad-tag span { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
+
+/* Quantity */
+.pd-quantity-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.pd-quantity-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-2);
+  min-width: 64px;
+}
+
+.pd-quantity-ctrl {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--card-bg);
+  box-shadow: var(--shadow-sm);
+}
+
+.pd-quantity-ctrl button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: none;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: var(--text-1);
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pd-quantity-ctrl button:hover { background: var(--green-xlight); color: var(--green-dark); }
+
+.pd-quantity-ctrl span {
+  min-width: 44px;
+  text-align: center;
+  font-family: var(--font-head);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-1);
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+
+/* Stock message */
+.pd-stock-msg {
+  font-size: 0.82rem;
+  color: #ef4444;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+/* Actions */
+.pd-actions {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0 28px;
+  flex-wrap: wrap;
+}
+
+.pd-btn {
+  flex: 1;
+  min-width: 140px;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 14px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.18s, transform 0.15s, box-shadow 0.18s;
+  letter-spacing: 0.2px;
+}
+
+.pd-btn--cart {
+  background: var(--green);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(22,163,74,0.3);
+}
+
+.pd-btn--cart:hover:not(:disabled) {
+  background: var(--green-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(22,163,74,0.35);
+}
+
+.pd-btn--cart:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.pd-btn--whatsapp {
+  background: var(--wa-green);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(37,211,102,0.3);
+}
+
+.pd-btn--whatsapp:hover {
+  background: var(--wa-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(37,211,102,0.35);
+}
+
+/* Tabs */
+.pd-tabs {
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+}
+
+.pd-tab-nav {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 4px;
+  width: fit-content;
+}
+
+.pd-tab-btn {
+  padding: 8px 20px;
+  border: none;
+  background: transparent;
+  border-radius: 9px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  text-transform: capitalize;
+}
+
+.pd-tab-btn--active {
+  background: var(--card-bg);
+  color: var(--green-dark);
+  box-shadow: var(--shadow-sm);
+}
+
+.pd-description {
+  font-size: 0.9rem;
+  color: var(--text-2);
+  line-height: 1.75;
+}
+
+.pd-details-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.pd-details-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 16px;
+  font-size: 0.85rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.pd-details-list li:last-child { border-bottom: none; }
+.pd-details-list li:nth-child(even) { background: var(--surface); }
+.pd-details-list li span:first-child { color: var(--text-2); font-weight: 500; }
+.pd-details-list li span:last-child  { color: var(--text-1); font-weight: 600; }
+
+/* ══════════════════════════════
+   RESPONSIVE
+══════════════════════════════ */
+@media (max-width: 1024px) {
+  .pd-container {
+    gap: 32px;
+    padding: 28px;
   }
 }
 
-/* Medium devices (tablets < 768px) */
 @media (max-width: 768px) {
-  .abroad-order-tag {
-    font-size: 0.8em;
-    padding: 5px 7px;
+  .pd-page { padding: 80px 16px 48px; }
+
+  .pd-container {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 20px;
   }
 
-  .abroad-order-detail-message {
-    font-size: 0.95em;
-    padding: 14px;
-  }
+  .pd-product-name { font-size: 1.5rem; }
+  .pd-price { font-size: 1.5rem; }
+
+  .pd-actions { gap: 10px; }
+  .pd-btn { font-size: 0.84rem; padding: 12px 16px; }
 }
 
-
-/* Ensure icons within the message are styled */
-.abroad-order-detail-message span[role="img"] {
-  font-size: 1.2em; /* Make the emoji slightly larger */
-}
-
-/* Other existing styles for product cards and details should remain */
-/* ... (your existing .product-card, .product-image, .product-title, etc.) */
-
-/* --- Media Queries --- */
-
-/* For screens larger than 768px (Desktop/Tablet landscape) */
-@media (min-width: 769px) {
-  .product-detail {
-    flex-direction: row; /* Layout side-by-side on larger screens */
-    align-items: flex-start; /* Align content to the top */
-    margin-top: 100px; /* Adjust top margin for desktop */
-  }
-
-  .product-detail-header {
-    justify-content: space-between; /* Space out wishlist and stock */
-    padding: 0 20px;
-    width: auto;
-    left: 0;
-    right: 0;
-    top: 20px;
-  }
-
-  .klb-single-stock {
-    order: 1; /* Stock comes first visually */
-    margin-right: 0; /* Reset margin */
-  }
-
-  .wishlist-icon1 {
-    order: 2; /* Wishlist comes second visually */
-  }
-
-  .product-detail-content {
-    flex-direction: row; /* Layout side-by-side for images and info */
-    gap: 30px; /* Space between image and info sections */
-    padding-top: 0; /* No padding needed here, handled by product-detail margin */
-    margin-top: 50px; /* Adjust content top margin to clear header */
-  }
-
-  .product-detail-images {
-    flex: 1; /* Allow image section to grow */
-    max-width: 50%; /* Control image section width */
-    margin-bottom: 0; /* Reset margin */
-  }
-
-  .product-detail-image {
-    max-width: 500px; /* Max width for the main image on desktop */
-  }
-
-  .product-detail-controls {
-    flex-direction: row;
-    flex-wrap: nowrap; /* Prevent wrapping on desktop if enough space */
-    justify-content: flex-start; /* Align thumbnails to the start */
-  }
-
-  .product-detail-info {
-    flex: 1; /* Allow info section to grow */
-    text-align: left; /* Align text to the left on desktop */
-    padding: 0; /* Reset padding */
-  }
-
-  .product-price {
-    justify-content: flex-start; /* Align prices to the left */
-  }
-
-  .quantity-control {
-    justify-content: flex-start; /* Align quantity control to the left */
-  }
-
-  .button.is-primary {
-    width: auto; /* Auto width for buttons on desktop */
-    max-width: 250px; /* A reasonable max width for desktop buttons */
-  }
-}
-
-/* For smaller screens (Mobile and Tablet Portrait) */
-@media (max-width: 768px) {
-  .product-detail-page-wrapper {
-    padding: 0.5rem; /* Less padding on very small screens */
-  }
-
-  .product-detail {
-    margin-top: 120px; /* Adjusted margin for mobile */
-    padding: 15px;
-  }
-
-  .product-detail-header {
-    justify-content: space-between; /* Keep them spaced on one line */
-    align-items: center; /* Vertically center */
-    position: static; /* Make it static within the flow on mobile */
-    padding: 0; /* Remove horizontal padding as it's handled by product-detail */
-    margin-bottom: 10px; /* Space below header */
-    top: auto;
-    left: auto;
-    right: auto;
-    width: 100%;
-  }
-
-  .klb-single-stock {
-    order: 1; /* Ensure stock comes first */
-    margin-right: 10px; /* Smaller margin for mobile */
-  }
-
-  .product-stock {
-    font-size: 13px; /* Smaller font for stock on mobile */
-    padding: 3px 6px; /* Smaller padding */
-  }
-  .product-stock span {
-    font-size: 13px; /* Ensure span font also smaller */
-  }
-
-  .wishlist-icon1 {
-    order: 2; /* Ensure wishlist comes second */
-  }
-
-  .wishlist-image2 {
-    width: 30px; /* Slightly smaller wishlist icon */
-    height: 30px;
-  }
-
-  .product-detail-content {
-    padding-top: 0; /* No need for padding-top here as header is static */
-  }
-
-  .product-title {
-    font-size: 24px; /* Adjusted title size for mobile */
-    margin: 10px 0;
-  }
-
-  .product-description {
-    font-size: 15px;
-    margin: 10px 0;
-  }
-
-  .product-price {
-    font-size: 20px;
-    margin: 10px 0;
-  }
-
-  .discounted-price {
-    font-size: 1em;
-  }
-
-  .original-price {
-    font-size: 0.85em;
-  }
-
-  .quantity-control {
-    margin: 15px 0;
-  }
-
-  .quantity-control button {
-    padding: 6px 12px;
-    font-size: 16px;
-  }
-
-  .quantity-control span {
-    margin: 0 10px;
-    font-size: 1.2em;
-  }
-
-  .button.is-primary {
-    padding: 10px 20px;
-    font-size: 16px;
-  }
-
-  /* Adjust zoom for very small screens if needed */
-  .product-detail-image.zoomed {
-    transform: scale(1.2); /* Less aggressive zoom on smaller screens */
-  }
-}
-
-/* For even smaller screens (e.g., iPhone 5/SE) */
 @media (max-width: 480px) {
-  .product-detail {
-    padding: 10px;
-    margin-top: 105px;
-  }
+  .pd-page { padding: 72px 10px 40px; }
 
-  .product-detail-header {
-    justify-content: space-around; /* Distribute space more evenly */
-  }
+  .pd-container { padding: 16px; border-radius: 14px; }
 
-  .product-stock {
-    font-size: 12px;
-    padding: 2px 5px;
-  }
-  .product-stock span {
-    font-size: 12px;
-  }
+  .pd-product-name { font-size: 1.25rem; }
 
-  .wishlist-image2 {
-    width: 25px;
-    height: 25px;
-  }
+  .pd-thumb { width: 58px; height: 58px; }
 
-  .product-title {
-    font-size: 22px;
-  }
+  .pd-price { font-size: 1.35rem; }
 
-  .product-detail-controls-img {
-    width: 50px;
-    height: 50px;
-    margin: 3px;
-  }
+  .pd-actions { flex-direction: column; }
+  .pd-btn { min-width: 100%; }
+
+  .pd-quantity-ctrl button { width: 36px; height: 36px; }
 }

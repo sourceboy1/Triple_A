@@ -1,3 +1,4 @@
+// src/components/Navbar.jsx
 import React, { useState, useRef, useEffect, forwardRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
@@ -12,46 +13,44 @@ import wishlistIcon from '../pictures/wishlisticon17.jpg';
 import api from '../Api';
 
 const Navbar = forwardRef((props, ref) => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [searchQuery, setSearchQuery]               = useState('');
+  const [suggestions, setSuggestions]               = useState([]);
+  const [showSuggestions, setShowSuggestions]       = useState(false);
   const [focusedSuggestionIndex, setFocusedSuggestionIndex] = useState(-1);
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen]     = useState(false);
 
-  const searchInputRef = useRef(null);
-  const searchWrapperRef = useRef(null);
-  const debounceTimerRef = useRef(null);
-  const controllerRef = useRef(null);
-  const suppressShowRef = useRef(false); // prevent immediate reopen after pick
-  const navigate = useNavigate();
+  const searchInputRef    = useRef(null);
+  const searchWrapperRef  = useRef(null);
+  const debounceTimerRef  = useRef(null);
+  const controllerRef     = useRef(null);
+  const suppressShowRef   = useRef(false);
+  const navigate          = useNavigate();
 
   const { getCartItemCount } = useCart();
-  const cartCount = getCartItemCount();
+  const cartCount            = getCartItemCount();
   const { isLoggedIn, username } = useUser();
-  const { wishlist } = useWishlist();
+  const { wishlist }         = useWishlist();
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   const fetchSuggestionsFromBackend = useCallback(async (query, signal) => {
     if (!query || !query.trim()) return [];
-
     try {
       const response = await api.get('products-suggestions/', {
         params: { query: query.trim() },
         signal,
       });
-
       const data = Array.isArray(response.data) ? response.data : [];
       return data.map(item => ({
         id: item.id,
         name: item.name,
         category: item.category_name || 'Others',
         categoryId: item.category_id ?? null,
-        image: item.image_url || 'https://via.placeholder.com/72?text=No+Image'
+        image: item.image_url || 'https://via.placeholder.com/72?text=No+Image',
       }));
     } catch (err) {
       if (err?.name === 'CanceledError' || err?.message === 'canceled') return [];
-      console.error('Error fetching product suggestions:', err);
       return [];
     }
   }, []);
@@ -68,14 +67,11 @@ const Navbar = forwardRef((props, ref) => {
       setShowSuggestions(false);
       setLoadingSuggestions(false);
       setFocusedSuggestionIndex(-1);
-      // clear suppression when query emptied
       suppressShowRef.current = false;
       return;
     }
 
-    // If we've just selected a suggestion, suppress reopening once
     if (suppressShowRef.current) {
-      // don't fetch or show — just clear suppression
       setLoadingSuggestions(false);
       setShowSuggestions(false);
       suppressShowRef.current = false;
@@ -88,7 +84,6 @@ const Navbar = forwardRef((props, ref) => {
     debounceTimerRef.current = setTimeout(async () => {
       const controller = new AbortController();
       controllerRef.current = controller;
-
       const results = await fetchSuggestionsFromBackend(searchQuery, controller.signal);
       setSuggestions(results);
       setLoadingSuggestions(false);
@@ -99,7 +94,6 @@ const Navbar = forwardRef((props, ref) => {
     return () => clearTimeout(debounceTimerRef.current);
   }, [searchQuery, fetchSuggestionsFromBackend]);
 
-  // close dropdown if clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchWrapperRef.current && !searchWrapperRef.current.contains(event.target)) {
@@ -133,7 +127,6 @@ const Navbar = forwardRef((props, ref) => {
   };
 
   const handleSearchInputChange = (e) => {
-    // user typed — cancel any suppression so dropdown can re-open normally
     suppressShowRef.current = false;
     const value = e.target.value;
     setSearchQuery(value);
@@ -145,20 +138,21 @@ const Navbar = forwardRef((props, ref) => {
     navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
     scrollToTop();
     setShowSuggestions(false);
+    setMobileSearchOpen(false);
   };
 
+  // ── KEY CHANGE: clicking a suggestion now searches by that product's name
+  // so SearchResults lists all related/matching products — just like Amazon.
   const handleSuggestionPick = (product) => {
     if (!product) return;
-    // prevent the effect from re-opening the dropdown when searchQuery updates
     suppressShowRef.current = true;
-    // set the input text to the product name (optional)
     setSearchQuery(product.name);
-    // hide immediately and blur input to avoid focus reopening
     setShowSuggestions(false);
     searchInputRef.current?.blur();
-    // navigate to product details
-    navigate(`/product-details/${product.id}/`);
+    // Navigate to search results page with the product name as query
+    navigate(`/search?query=${encodeURIComponent(product.name)}`);
     scrollToTop();
+    setMobileSearchOpen(false);
   };
 
   const handleLogoClick = (e) => {
@@ -173,103 +167,60 @@ const Navbar = forwardRef((props, ref) => {
     scrollToTop();
   };
 
-  const handleWishlistClick = () => {
-    navigate('/wishlist');
-    scrollToTop();
-  };
-
-  const handleCartClick = () => {
-    navigate('/cart');
-    scrollToTop();
-  };
+  const handleWishlistClick = () => { navigate('/wishlist'); scrollToTop(); };
+  const handleCartClick     = () => { navigate('/cart');     scrollToTop(); };
 
   return (
-    <nav className="navbar" role="navigation" aria-label="Main navigation">
-      <div className="navbar-inner">
-        <div className="navbar-left">
-          {/* Only the logo area is clickable now.
-              The company name is plain text (no underline). */}
-          <a
-            href="/"
-            onClick={handleLogoClick}
-            className="company-logo-link"
-            aria-label="Homepage"
-            title="Go to homepage"
-          >
-            <img src={companyLogo} alt="Triple A's Technology logo" className="company-logo" />
-          </a>
+    <nav className="nb-nav" role="navigation" aria-label="Main navigation">
+      <div className="nb-inner">
 
-          <span className="company-name_name">Triple A's Technology</span>
-        </div>
+        {/* ── Logo ── */}
+        <a href="/" onClick={handleLogoClick} className="nb-logo-link" aria-label="Homepage">
+          <img src={companyLogo} alt="Triple A's Technology" className="nb-logo-img" />
+          <span className="nb-brand">Triple A's Technology</span>
+        </a>
 
-        <div className="navbar-right">
-          <button className="icon-btn user-btn" onClick={handleAccountClick}>
-            <img src={userIcon} alt="user" className="user-icon" />
-            <div className="greeting">
-              <span className="greet-small">{isLoggedIn ? 'Hello,' : 'Sign in'}</span>
-              <span className="greet-name">{isLoggedIn ? username : 'Account'}</span>
-            </div>
-          </button>
+        {/* ── Search bar (desktop) ── */}
+        <div className="nb-search-wrap" ref={searchWrapperRef} role="search">
+          <div className="nb-search-pill">
+            <input
+              ref={searchInputRef}
+              type="text"
+              className="nb-search-input"
+              value={searchQuery}
+              onChange={handleSearchInputChange}
+              onFocus={() => {
+                suppressShowRef.current = false;
+                if (searchQuery.length > 0 && suggestions.length > 0) setShowSuggestions(true);
+              }}
+              onKeyDown={handleKeyDown}
+              placeholder="Search products…"
+              aria-label="Search products"
+              aria-controls="nb-suggestions"
+              aria-autocomplete="list"
+              aria-expanded={showSuggestions}
+              role="combobox"
+            />
+            <button className="nb-search-btn" onClick={(e) => { e.preventDefault(); handleSearch(); }} aria-label="Search">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
+              </svg>
+            </button>
+          </div>
 
-          <button className="icon-btn wishlist-btn" onClick={handleWishlistClick}>
-            <img src={wishlistIcon} alt="wishlist" className="wishlist-icon" />
-            {Array.isArray(wishlist) && wishlist.length > 0 && (
-              <span className="badge wishlist-badge">{wishlist.length}</span>
-            )}
-          </button>
-
-          <button className="icon-btn cart-btn" onClick={handleCartClick} ref={ref}>
-            <img src={cartIcon} alt="cart" className="cart-icon" />
-            {cartCount > 0 && (
-              <span className="badge cart-badge">{cartCount}</span>
-            )}
-          </button>
-        </div>
-      </div>
-
-      <div className="search-row" role="search">
-        <div className="search-input-wrapper" ref={searchWrapperRef}>
-          <input
-            ref={searchInputRef}
-            type="text"
-            className="search-input"
-            value={searchQuery}
-            onChange={handleSearchInputChange}
-            onFocus={() => {
-              // clicking the input clears suppression and opens suggestions if there is text
-              suppressShowRef.current = false;
-              if (searchQuery.length > 0 && suggestions.length > 0) {
-                setShowSuggestions(true);
-              }
-            }}
-            onKeyDown={handleKeyDown}
-            placeholder="Search for products..."
-            aria-label="Search products"
-            aria-controls="product-suggestions"
-            aria-autocomplete="list"
-            aria-expanded={showSuggestions}
-            role="combobox"
-          />
-          <button
-            className="search-button"
-            onClick={(e) => { e.preventDefault(); handleSearch(); }}
-            aria-label="Search"
-          >
-            <img src={searchIcon} alt="search" />
-          </button>
-
+          {/* Suggestions dropdown */}
           {showSuggestions && (
-            <ul className="suggestions-dropdown" id="product-suggestions" role="listbox">
+            <ul className="nb-suggestions" id="nb-suggestions" role="listbox">
               {loadingSuggestions ? (
-                <li className="suggestion-item loading-item">
-                  <span className="loading-spinner" aria-hidden="true"></span>
-                  <span>Searching...</span>
+                <li className="nb-suggestion-item nb-suggestion-item--loading">
+                  <span className="nb-loading-dot" /><span className="nb-loading-dot" /><span className="nb-loading-dot" />
+                  <span>Searching…</span>
                 </li>
               ) : suggestions.length > 0 ? (
                 suggestions.map((product, index) => (
                   <li
                     key={product.id}
-                    className={`suggestion-item ${index === focusedSuggestionIndex ? 'focused' : ''}`}
+                    className={`nb-suggestion-item ${index === focusedSuggestionIndex ? 'nb-suggestion-item--focused' : ''}`}
                     onClick={() => handleSuggestionPick(product)}
                     onMouseEnter={() => setFocusedSuggestionIndex(index)}
                     onMouseLeave={() => setFocusedSuggestionIndex(-1)}
@@ -277,25 +228,120 @@ const Navbar = forwardRef((props, ref) => {
                     aria-selected={index === focusedSuggestionIndex}
                     tabIndex={-1}
                   >
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="suggestion-image"
-                      onError={(e) => { e.target.onerror = null; e.target.src = 'https://via.placeholder.com/72?text=No+Image'; }}
-                    />
-                    <div className="suggestion-text">
-                      <span className="suggestion-name">{product.name}</span>
-                      <span className="suggestion-category">{product.category}</span>
+                    <div className="nb-suggestion-img-wrap">
+                      <img src={product.image} alt={product.name} className="nb-suggestion-img"
+                        onError={(e) => { e.target.src = 'https://via.placeholder.com/72?text=No+Image'; }} />
                     </div>
+                    <div className="nb-suggestion-text">
+                      <span className="nb-suggestion-name">{product.name}</span>
+                      <span className="nb-suggestion-cat">{product.category}</span>
+                    </div>
+                    <svg className="nb-suggestion-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
                   </li>
                 ))
               ) : (
-                <li className="suggestion-item no-results">No products found.</li>
+                <li className="nb-suggestion-item nb-suggestion-item--empty">
+                  <span>No products found for "<strong>{searchQuery}</strong>"</span>
+                </li>
               )}
             </ul>
           )}
         </div>
+
+        {/* ── Right icons ── */}
+        <div className="nb-actions">
+
+          {/* Mobile search toggle */}
+          <button className="nb-icon-btn nb-mobile-search-btn" onClick={() => setMobileSearchOpen(o => !o)} aria-label="Search">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
+            </svg>
+          </button>
+
+          {/* Account */}
+          <button className="nb-icon-btn nb-account-btn" onClick={handleAccountClick} aria-label="Account">
+            <img src={userIcon} alt="account" className="nb-icon-img" />
+            <div className="nb-greeting">
+              <span className="nb-greeting-small">{isLoggedIn ? 'Hello,' : 'Sign in'}</span>
+              <span className="nb-greeting-name">{isLoggedIn ? username : 'Account'}</span>
+            </div>
+          </button>
+
+          {/* Wishlist */}
+          <button className="nb-icon-btn nb-wishlist-btn" onClick={handleWishlistClick} aria-label="Wishlist">
+            <div className="nb-icon-wrap">
+              <img src={wishlistIcon} alt="wishlist" className="nb-icon-img" />
+              {Array.isArray(wishlist) && wishlist.length > 0 && (
+                <span className="nb-badge">{wishlist.length}</span>
+              )}
+            </div>
+          </button>
+
+          {/* Cart */}
+          <button className="nb-icon-btn nb-cart-btn" onClick={handleCartClick} ref={ref} aria-label="Cart">
+            <div className="nb-icon-wrap">
+              <img src={cartIcon} alt="cart" className="nb-icon-img" />
+              {cartCount > 0 && <span className="nb-badge">{cartCount}</span>}
+            </div>
+          </button>
+        </div>
       </div>
+
+      {/* ── Mobile search bar (slides down) ── */}
+      {mobileSearchOpen && (
+        <div className="nb-mobile-search" ref={searchWrapperRef}>
+          <div className="nb-search-pill nb-search-pill--mobile">
+            <input
+              type="text"
+              className="nb-search-input"
+              value={searchQuery}
+              onChange={handleSearchInputChange}
+              onKeyDown={handleKeyDown}
+              placeholder="Search products…"
+              autoFocus
+              aria-label="Search products"
+            />
+            <button className="nb-search-btn" onClick={(e) => { e.preventDefault(); handleSearch(); }} aria-label="Search">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
+              </svg>
+            </button>
+          </div>
+
+          {showSuggestions && (
+            <ul className="nb-suggestions nb-suggestions--mobile" role="listbox">
+              {loadingSuggestions ? (
+                <li className="nb-suggestion-item nb-suggestion-item--loading">
+                  <span className="nb-loading-dot" /><span className="nb-loading-dot" /><span className="nb-loading-dot" />
+                  <span>Searching…</span>
+                </li>
+              ) : suggestions.length > 0 ? (
+                suggestions.map((product, index) => (
+                  <li key={product.id}
+                    className={`nb-suggestion-item ${index === focusedSuggestionIndex ? 'nb-suggestion-item--focused' : ''}`}
+                    onClick={() => handleSuggestionPick(product)}
+                    onMouseEnter={() => setFocusedSuggestionIndex(index)}
+                    onMouseLeave={() => setFocusedSuggestionIndex(-1)}
+                    role="option" tabIndex={-1}>
+                    <div className="nb-suggestion-img-wrap">
+                      <img src={product.image} alt={product.name} className="nb-suggestion-img"
+                        onError={(e) => { e.target.src = 'https://via.placeholder.com/72?text=No+Image'; }} />
+                    </div>
+                    <div className="nb-suggestion-text">
+                      <span className="nb-suggestion-name">{product.name}</span>
+                      <span className="nb-suggestion-cat">{product.category}</span>
+                    </div>
+                  </li>
+                ))
+              ) : (
+                <li className="nb-suggestion-item nb-suggestion-item--empty">No products found.</li>
+              )}
+            </ul>
+          )}
+        </div>
+      )}
     </nav>
   );
 });

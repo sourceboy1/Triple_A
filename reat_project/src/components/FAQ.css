@@ -1,70 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap');
+
+:root {
+  --faq-green:        #16a34a;
+  --faq-green-dark:   #15803d;
+  --faq-green-light:  #dcfce7;
+  --faq-green-xlight: #f0fdf4;
+  --faq-text:         #0f172a;
+  --faq-muted:        #64748b;
+  --faq-border:       #e2e8f0;
+  --faq-surface:      #f8fafc;
+  --faq-card:         #ffffff;
+  --faq-font:         'DM Sans', sans-serif;
+  --faq-font-head:    'Syne', sans-serif;
+  --faq-shadow:       0 1px 3px rgba(0,0,0,0.05), 0 4px 14px rgba(0,0,0,0.05);
+  --faq-shadow-hover: 0 6px 24px rgba(22,163,74,0.12);
+}
+
+/* ── Page ── */
 .faq-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    margin-top: 80px;
+  font-family: var(--faq-font);
+  max-width: 760px;
+  margin: 100px auto 60px;
+  padding: 0 20px;
+  animation: faq-fadein 0.3s ease;
 }
 
-.faq-container h1{
-    color: black;
+@keyframes faq-fadein {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.faq-container h2{
-    color: black;
+/* ── Page heading ── */
+.faq-container > h1 {
+  font-family: var(--faq-font-head);
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--faq-text);
+  letter-spacing: -0.03em;
+  margin: 0 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
+.faq-container > h1::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 26px;
+  background: var(--faq-green);
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.faq-container > p {
+  font-size: 0.9rem;
+  color: var(--faq-muted);
+  margin: 0 0 32px;
+}
+
+/* ── Section headings (Order & Payment / Track & Shipping) ── */
+.faq-container > h2 {
+  font-family: var(--faq-font-head);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--faq-green);
+  margin: 32px 0 12px;
+  padding: 6px 14px;
+  background: var(--faq-green-xlight);
+  border-left: 3px solid var(--faq-green);
+  border-radius: 0 6px 6px 0;
+  display: inline-block;
+}
+
+/* ── FAQ item card ── */
 .faq-item {
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 15px;
-    background-color: #f9f9f9;
+  background: var(--faq-card);
+  border: 1px solid var(--faq-border);
+  border-radius: 12px;
+  margin-bottom: 10px;
+  box-shadow: var(--faq-shadow);
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.faq-item.open {
+  border-color: var(--faq-green-light);
+  box-shadow: var(--faq-shadow-hover);
+}
+
+/* ── Question row ── */
 .faq-item h3 {
-    cursor: pointer;
-    position: relative;
-    padding-right: 30px;
-    margin: 0;
-    font-size: 1.2em;
+  font-family: var(--faq-font);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--faq-text);
+  cursor: pointer;
+  margin: 0;
+  padding: 16px 48px 16px 18px;
+  position: relative;
+  user-select: none;
+  transition: color 0.15s, background 0.15s;
+  line-height: 1.4;
 }
 
+.faq-item h3:hover {
+  color: var(--faq-green);
+  background: var(--faq-green-xlight);
+}
+
+.faq-item.open h3 {
+  color: var(--faq-green);
+  background: var(--faq-green-xlight);
+}
+
+/* Chevron icon */
 .faq-item h3::after {
-    content: '\25BC'; /* Down arrow */
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: transform 0.3s ease-in-out;
+  content: '';
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
 }
 
 .faq-item.open h3::after {
-    transform: translateX(10px) rotate(90deg); /* Arrow moves to the side */
+  transform: translateY(-50%) rotate(180deg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2316a34a' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
 
+/* ── Answer body ── */
 .faq-item p,
 .faq-item div {
-    margin-top: 15px;
-    font-size: 1em;
-    line-height: 1.5;
-    color: #333;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--faq-muted);
+  margin: 0;
+  padding: 14px 18px 18px;
+  border-top: 1px solid var(--faq-border);
+  animation: faq-reveal 0.22s ease;
 }
 
-.faq-item.open p,
-.faq-item.open div {
-    padding-top: 10px;
-    border-top: 1px solid #ddd;
+@keyframes faq-reveal {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
+.faq-item ol {
+  padding-left: 20px;
+  margin: 10px 0 0;
+}
+
+.faq-item ol li {
+  font-size: 0.88rem;
+  color: var(--faq-muted);
+  line-height: 1.7;
+  margin-bottom: 4px;
+}
+
+/* ── Responsive ── */
 @media (max-width: 768px) {
-    .faq-container{
-        margin-top: 120px;
-    }
+  .faq-container { margin-top: 90px; padding: 0 14px; }
+  .faq-container > h1 { font-size: 1.4rem; }
+  .faq-item h3 { font-size: 0.88rem; padding: 14px 44px 14px 16px; }
+  .faq-item p,
+  .faq-item div { padding: 12px 16px 16px; }
 }
 
-@media (max-width: 1024px) {
-    .faq-container{
-        margin-top: 120px;
-    }
+@media (max-width: 480px) {
+  .faq-container { margin-top: 80px; padding: 0 12px; }
+  .faq-container > h1 { font-size: 1.2rem; }
+  .faq-item { border-radius: 10px; }
+  .faq-item h3 { font-size: 0.84rem; }
 }

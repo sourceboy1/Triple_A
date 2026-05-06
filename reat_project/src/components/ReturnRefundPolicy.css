@@ -1,49 +1,159 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap');
+
+:root {
+  --rr-green:        #16a34a;
+  --rr-green-dark:   #15803d;
+  --rr-green-light:  #dcfce7;
+  --rr-green-xlight: #f0fdf4;
+  --rr-text:         #0f172a;
+  --rr-muted:        #64748b;
+  --rr-border:       #e2e8f0;
+  --rr-surface:      #f8fafc;
+  --rr-card:         #ffffff;
+  --rr-font:         'DM Sans', sans-serif;
+  --rr-font-head:    'Syne', sans-serif;
+  --rr-shadow:       0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.05);
+}
+
+/* ── Page ── */
 .return-refund-container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
-    color: #333;
-    margin-top: 100px;
+  font-family: var(--rr-font);
+  max-width: 800px;
+  margin: 100px auto 60px;
+  padding: 0 20px;
+  animation: rr-fadein 0.3s ease;
 }
 
+@keyframes rr-fadein {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Page title ── */
 .return-refund-container h1 {
-    font-size: 2em;
-    margin-bottom: 20px;
-    color: #1E2019;
+  font-family: var(--rr-font-head);
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--rr-text);
+  letter-spacing: -0.03em;
+  margin: 0 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1.2;
 }
 
+.return-refund-container h1::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 26px;
+  background: var(--rr-green);
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* ── Intro paragraph ── */
+.return-refund-container > p:first-of-type {
+  font-size: 0.92rem;
+  color: var(--rr-muted);
+  line-height: 1.75;
+  background: var(--rr-green-xlight);
+  border-left: 3px solid var(--rr-green);
+  border-radius: 0 10px 10px 0;
+  padding: 16px 20px;
+  margin-bottom: 32px;
+}
+
+/* ── Section headings ── */
 .return-refund-container h2 {
-    font-size: 1.5em;
-    margin-top: 20px;
-    color: green;
+  font-family: var(--rr-font-head);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--rr-text);
+  letter-spacing: -0.01em;
+  margin: 32px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
+.return-refund-container h2::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 18px;
+  background: var(--rr-green);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ── Body paragraphs ── */
 .return-refund-container p {
-    line-height: 1.6;
-    margin-bottom: 15px;
+  font-size: 0.9rem;
+  color: var(--rr-muted);
+  line-height: 1.75;
+  margin: 0 0 14px;
 }
 
+/* ── Note (strong) highlight ── */
+.return-refund-container p strong {
+  color: var(--rr-text);
+  font-weight: 700;
+}
+
+/* ── Link ── */
 .return-refund-container a {
-    color: green;
-    text-decoration: none;
+  color: var(--rr-green);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--rr-green-light);
+  transition: border-color 0.15s, color 0.15s;
 }
 
 .return-refund-container a:hover {
-    text-decoration: underline;
+  color: var(--rr-green-dark);
+  border-color: var(--rr-green);
+}
+
+/* ── Info cards for key policy points ── */
+.return-refund-container h2 + p {
+  background: var(--rr-card);
+  border: 1px solid var(--rr-border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: var(--rr-shadow);
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+/* ── Closing note ── */
+.return-refund-container > p:last-of-type {
+  font-family: var(--rr-font-head);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--rr-green);
+  text-align: center;
+  margin-top: 36px;
+  padding: 16px;
+  background: var(--rr-green-xlight);
+  border: 1px solid var(--rr-green-light);
+  border-radius: 12px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .return-refund-container { margin-top: 110px; }
 }
 
 @media (max-width: 768px) {
-    .return-refund-container{
-        margin-top: 75px;
-    }
+  .return-refund-container { margin-top: 90px; padding: 0 14px; }
+  .return-refund-container h1 { font-size: 1.4rem; }
+  .return-refund-container h2 { font-size: 0.92rem; }
 }
 
-@media (max-width: 1024px) {
-    .return-refund-container{
-        margin-top: 125px;
-    }
+@media (max-width: 480px) {
+  .return-refund-container { margin-top: 80px; padding: 0 12px; }
+  .return-refund-container h1 { font-size: 1.2rem; }
+  .return-refund-container h2 + p { padding: 14px 16px; }
 }
