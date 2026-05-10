@@ -1,4 +1,4 @@
-// src/components/PhonesTabletsDisplay.js
+// src/components/PhonesTabletsDisplay.jsx
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Api from '../Api';
@@ -6,15 +6,14 @@ import { getProductDetailsPath } from '../helpers/navigation';
 import './PhonesTabletsDisplay.css';
 
 const PhonesTabletsDisplay = ({ onLoaded }) => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const displayCount = 6;
-  const fetchCount = 30;
-  const navigate = useNavigate();
-  const hoverIntervals = useRef({});
+  const [products, setProducts]           = useState([]);
+  const [loading, setLoading]             = useState(true);
   const [hoverImageIndexes, setHoverImageIndexes] = useState({});
-
-  const CATEGORY_ID = 2;
+  const displayCount   = 6;
+  const fetchCount     = 30;
+  const navigate       = useNavigate();
+  const hoverIntervals = useRef({});
+  const CATEGORY_ID    = 2;
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -30,19 +29,15 @@ const PhonesTabletsDisplay = ({ onLoaded }) => {
     const fetchPhonesAndTablets = async () => {
       try {
         const response = await Api.get(`products/?category_id=${CATEGORY_ID}`);
-        const data = Array.isArray(response.data) ? response.data : [];
-
+        const data     = Array.isArray(response.data) ? response.data : [];
         if (isMounted) {
           const filtered = data.filter((p) => {
-            const idFromProduct = p.category_id ?? p.category?.category_id ?? p.category?.id ?? null;
-            return idFromProduct === CATEGORY_ID;
+            const id = p.category_id ?? p.category?.category_id ?? p.category?.id ?? null;
+            return id === CATEGORY_ID;
           });
-
-          const shuffled = shuffleArray(filtered.slice(0, fetchCount));
-          setProducts(shuffled);
+          setProducts(shuffleArray(filtered.slice(0, fetchCount)));
         }
-      } catch (error) {
-        console.error('Error fetching phones & tablets:', error);
+      } catch {
         if (isMounted) setProducts([]);
       } finally {
         if (isMounted) {
@@ -57,8 +52,7 @@ const PhonesTabletsDisplay = ({ onLoaded }) => {
     const interval = setInterval(() => {
       setProducts((prev) => {
         if (prev.length === 0) return prev;
-        const firstItem = prev[0];
-        return [...prev.slice(1), firstItem];
+        return [...prev.slice(1), prev[0]];
       });
     }, 12000);
 
@@ -69,26 +63,24 @@ const PhonesTabletsDisplay = ({ onLoaded }) => {
     };
   }, [onLoaded]);
 
-  const handleProductClick = (product) => {
-    navigate(getProductDetailsPath(product));
-  };
+  const handleProductClick = (product) => navigate(getProductDetailsPath(product));
 
-  const handleMouseEnter = (productId, images) => {
+  const handleMouseEnter = (id, images) => {
     if (!images || images.length < 2) return;
-    let currentImgIndex = 0;
-    if (hoverIntervals.current[productId]) clearInterval(hoverIntervals.current[productId]);
-    hoverIntervals.current[productId] = setInterval(() => {
-      currentImgIndex = (currentImgIndex + 1) % images.length;
-      setHoverImageIndexes((prev) => ({ ...prev, [productId]: currentImgIndex }));
+    let idx = 0;
+    if (hoverIntervals.current[id]) clearInterval(hoverIntervals.current[id]);
+    hoverIntervals.current[id] = setInterval(() => {
+      idx = (idx + 1) % images.length;
+      setHoverImageIndexes((prev) => ({ ...prev, [id]: idx }));
     }, 1000);
   };
 
-  const handleMouseLeave = (productId) => {
-    if (hoverIntervals.current[productId]) {
-      clearInterval(hoverIntervals.current[productId]);
-      hoverIntervals.current[productId] = null;
+  const handleMouseLeave = (id) => {
+    if (hoverIntervals.current[id]) {
+      clearInterval(hoverIntervals.current[id]);
+      hoverIntervals.current[id] = null;
     }
-    setHoverImageIndexes((prev) => ({ ...prev, [productId]: 0 }));
+    setHoverImageIndexes((prev) => ({ ...prev, [id]: 0 }));
   };
 
   if (loading) return null;
@@ -100,27 +92,22 @@ const PhonesTabletsDisplay = ({ onLoaded }) => {
         {products.length === 0 ? (
           <p>No phones or tablets available at the moment.</p>
         ) : (
-          <div
-            className="phones-tablets-slider"
-            style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}
-          >
+          /* ✅ NO inline style — CSS handles all scroll behaviour */
+          <div className="phones-tablets-slider">
             {products.slice(0, displayCount).map((product) => {
               if (!product) return null;
-
               const images = [
                 product.image_urls?.medium,
                 product.secondary_image_urls?.medium,
                 product.tertiary_image_urls?.medium,
                 product.quaternary_image_urls?.medium,
               ].filter(Boolean);
-
-              const currentImg =
-                images[hoverImageIndexes[product.product_id] || 0] || images[0] || '/placeholder.jpg';
+              const currentImg = images[hoverImageIndexes[product.product_id] || 0] || images[0] || '/placeholder.jpg';
 
               return (
                 <div
-                  className="phones-tablets-item"
                   key={product.product_id}
+                  className="phones-tablets-item"
                   onClick={() => handleProductClick(product)}
                   onMouseEnter={() => handleMouseEnter(product.product_id, images)}
                   onMouseLeave={() => handleMouseLeave(product.product_id)}
@@ -134,11 +121,7 @@ const PhonesTabletsDisplay = ({ onLoaded }) => {
                   />
                   <h3 className="phones-tablets-name">{product.name}</h3>
                   <p className="phones-tablets-price">
-                    {new Intl.NumberFormat('en-NG', {
-                      style: 'currency',
-                      currency: 'NGN',
-                      minimumFractionDigits: 2,
-                    }).format(parseFloat(product.price) || 0)}
+                    {new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2 }).format(parseFloat(product.price) || 0)}
                   </p>
                 </div>
               );

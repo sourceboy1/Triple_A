@@ -7,8 +7,6 @@
   --accent-light: #dcfce7;
   --accent-xlight: #f0fdf4;
   --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --surface: #f8fafc;
   --card-bg: #ffffff;
   --border: #e2e8f0;
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
@@ -26,7 +24,6 @@
 
 /* ─── Heading ─── */
 .phones-tablets-container h2 {
-  font-family: var(--font);
   font-size: 1.4rem;
   font-weight: 800;
   color: var(--text-primary);
@@ -49,6 +46,9 @@
 
 /* ─── Scroll wrapper ─── */
 .phones-tablets-display {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
@@ -66,13 +66,12 @@
   display: flex;
   flex-wrap: nowrap;
   gap: 14px;
-  padding: 4px 4px 8px;
-  width: max-content;
+  width: fit-content;
+  padding: 4px 16px 8px 4px;
 }
 
 /* ─── Card ─── */
 .phones-tablets-item {
-  font-family: var(--font);
   flex: 0 0 210px;
   display: flex;
   flex-direction: column;
@@ -101,12 +100,7 @@
   border-radius: 0 0 16px 16px;
 }
 
-.phones-tablets-item:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-hover);
-  border-color: var(--accent);
-}
-
+.phones-tablets-item:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); border-color: var(--accent); }
 .phones-tablets-item:hover::after { transform: scaleX(1); }
 
 /* ─── Image ─── */
@@ -125,7 +119,6 @@
 
 /* ─── Text ─── */
 .phones-tablets-name {
-  font-family: var(--font);
   margin: 12px 0 6px;
   font-size: 0.85rem;
   font-weight: 600;
@@ -140,7 +133,6 @@
 }
 
 .phones-tablets-price {
-  font-family: var(--font);
   font-size: 0.95rem;
   font-weight: 800;
   color: var(--accent);

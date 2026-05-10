@@ -7,8 +7,6 @@
   --accent-light: #dcfce7;
   --accent-xlight: #f0fdf4;
   --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --surface: #f8fafc;
   --card-bg: #ffffff;
   --border: #e2e8f0;
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
@@ -26,7 +24,6 @@
 
 /* ─── Heading ─── */
 .laptop-container h2 {
-  font-family: var(--font);
   font-size: 1.4rem;
   font-weight: 800;
   color: var(--text-primary);
@@ -49,6 +46,10 @@
 
 /* ─── Scroll wrapper ─── */
 .laptop-display {
+  /* KEY FIX: constrain to parent width so iOS can't scroll past last card */
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
@@ -61,18 +62,18 @@
 .laptop-display::-webkit-scrollbar-track { background: transparent; }
 .laptop-display::-webkit-scrollbar-thumb { background: var(--accent-light); border-radius: 4px; }
 
-/* ─── Slider row (desktop default) ─── */
+/* ─── Slider row ─── */
 .laptop-slider {
   display: flex;
   flex-wrap: nowrap;
   gap: 14px;
-  padding: 4px 4px 8px;
-  width: max-content; /* desktop: let it grow freely */
+  /* KEY FIX: fit-content stops iOS momentum scroll into empty whitespace */
+  width: fit-content;
+  padding: 4px 16px 8px 4px;
 }
 
 /* ─── Card ─── */
 .laptop-item {
-  font-family: var(--font);
   flex: 0 0 210px;
   display: flex;
   flex-direction: column;
@@ -101,12 +102,7 @@
   border-radius: 0 0 16px 16px;
 }
 
-.laptop-item:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-hover);
-  border-color: var(--accent);
-}
-
+.laptop-item:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); border-color: var(--accent); }
 .laptop-item:hover::after { transform: scaleX(1); }
 
 /* ─── Image ─── */
@@ -125,7 +121,6 @@
 
 /* ─── Text ─── */
 .laptop-name {
-  font-family: var(--font);
   margin: 12px 0 6px;
   font-size: 0.85rem;
   font-weight: 600;
@@ -140,7 +135,6 @@
 }
 
 .laptop-price {
-  font-family: var(--font);
   font-size: 0.95rem;
   font-weight: 800;
   color: var(--accent);
@@ -148,60 +142,18 @@
   letter-spacing: -0.01em;
 }
 
-/* ══════════════════════════════════════
-   MOBILE FIX — stop scroll after 6 cards
-   Switch from flex (max-content width) to
-   a fixed-width grid of exactly 6 columns.
-   The wrapper clips at its own width so
-   there is no empty space to scroll into.
-══════════════════════════════════════ */
-
-/* ── small phones ≤ 480px — card width 155px ── */
+/* ─── Responsive ─── */
 @media (max-width: 480px) {
-  .laptop-container h2 { font-size: 1.15rem; }
-
-  .laptop-display {
-    /* clip to exactly 6 cards + 5 gaps */
-    /* 6 × 155px + 5 × 14px = 930px + 70px = 1000px */
-    max-width: calc(6 * 155px + 5 * 14px + 8px); /* +8px for side padding */
-  }
-
-  .laptop-slider {
-    display: grid;
-    grid-template-columns: repeat(6, 155px);
-    width: calc(6 * 155px + 5 * 14px); /* exact total, no trailing space */
-  }
-
-  .laptop-item {
-    flex: unset;
-    width: 155px;
-  }
-
+  .laptop-item { flex: 0 0 155px; }
   .laptop-image { height: 125px; }
+  .laptop-container h2 { font-size: 1.15rem; }
 }
 
-/* ── tablets 481–768px — card width 185px ── */
 @media (min-width: 481px) and (max-width: 768px) {
-  .laptop-display {
-    /* 6 × 185px + 5 × 14px = 1110 + 70 = 1180px */
-    max-width: calc(6 * 185px + 5 * 14px + 8px);
-  }
-
-  .laptop-slider {
-    display: grid;
-    grid-template-columns: repeat(6, 185px);
-    width: calc(6 * 185px + 5 * 14px);
-  }
-
-  .laptop-item {
-    flex: unset;
-    width: 185px;
-  }
-
+  .laptop-item { flex: 0 0 185px; }
   .laptop-image { height: 145px; }
 }
 
-/* ── desktop ≥ 769px — keep original flex behaviour ── */
 @media (min-width: 769px) {
   .laptop-item { flex: 0 0 210px; }
 }

@@ -1,4 +1,4 @@
-// src/components/LaptopDisplay.js
+// src/components/LaptopSlider.jsx
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Api from '../Api';
@@ -6,16 +6,15 @@ import { getProductDetailsPath } from '../helpers/navigation';
 import './LaptopSlider.css';
 
 const LaptopDisplay = ({ onLoaded }) => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [products, setProducts]           = useState([]);
+  const [loading, setLoading]             = useState(true);
   const [hoverImageIndexes, setHoverImageIndexes] = useState({});
-  const displayCount = 6;
-  const fetchCount = 30;
-  const navigate = useNavigate();
+  const displayCount   = 6;
+  const fetchCount     = 30;
+  const navigate       = useNavigate();
   const hoverIntervals = useRef({});
   const rotateInterval = useRef(null);
-
-  const CATEGORY_ID = 4;
+  const CATEGORY_ID    = 4;
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -31,19 +30,15 @@ const LaptopDisplay = ({ onLoaded }) => {
     const fetchLaptops = async () => {
       try {
         const response = await Api.get(`products/?category_id=${CATEGORY_ID}`);
-        const data = Array.isArray(response.data) ? response.data : [];
-
+        const data     = Array.isArray(response.data) ? response.data : [];
         if (isMounted) {
           const filtered = data.filter((p) => {
-            const idFromProduct = p.category_id ?? p.category?.category_id ?? p.category?.id ?? null;
-            return idFromProduct === CATEGORY_ID;
+            const id = p.category_id ?? p.category?.category_id ?? p.category?.id ?? null;
+            return id === CATEGORY_ID;
           });
-
-          const shuffled = shuffleArray(filtered.slice(0, fetchCount));
-          setProducts(shuffled);
+          setProducts(shuffleArray(filtered.slice(0, fetchCount)));
         }
-      } catch (error) {
-        console.error('Error fetching laptops:', error);
+      } catch {
         if (isMounted) setProducts([]);
       } finally {
         if (isMounted) {
@@ -58,8 +53,7 @@ const LaptopDisplay = ({ onLoaded }) => {
     rotateInterval.current = setInterval(() => {
       setProducts((prev) => {
         if (!prev || prev.length === 0) return prev;
-        const first = prev[0];
-        return [...prev.slice(1), first];
+        return [...prev.slice(1), prev[0]];
       });
     }, 12000);
 
@@ -70,17 +64,15 @@ const LaptopDisplay = ({ onLoaded }) => {
     };
   }, [onLoaded]);
 
-  const handleProductClick = (product) => {
-    navigate(getProductDetailsPath(product));
-  };
+  const handleProductClick = (product) => navigate(getProductDetailsPath(product));
 
   const handleMouseEnter = (id, images) => {
     if (!images || images.length < 2) return;
-    let currentIndex = 0;
+    let idx = 0;
     if (hoverIntervals.current[id]) clearInterval(hoverIntervals.current[id]);
     hoverIntervals.current[id] = setInterval(() => {
-      currentIndex = (currentIndex + 1) % images.length;
-      setHoverImageIndexes((prev) => ({ ...prev, [id]: currentIndex }));
+      idx = (idx + 1) % images.length;
+      setHoverImageIndexes((prev) => ({ ...prev, [id]: idx }));
     }, 1000);
   };
 
@@ -101,33 +93,28 @@ const LaptopDisplay = ({ onLoaded }) => {
         {products.length === 0 ? (
           <p>No laptops available at the moment.</p>
         ) : (
-          <div
-            className="laptop-slider"
-            style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}
-          >
+          /* ✅ NO inline style here — CSS handles all scroll behaviour */
+          <div className="laptop-slider">
             {products.slice(0, displayCount).map((laptop) => {
               if (!laptop) return null;
-
               const images = [
                 laptop.image_urls?.medium,
                 laptop.secondary_image_urls?.medium,
                 laptop.tertiary_image_urls?.medium,
                 laptop.quaternary_image_urls?.medium,
               ].filter(Boolean);
-
-              const currentImg =
-                images[hoverImageIndexes[laptop.product_id] || 0] || images[0] || '/placeholder.jpg';
+              const currentImg = images[hoverImageIndexes[laptop.product_id] || 0] || images[0] || '/placeholder.jpg';
 
               return (
                 <div
-                  className="laptop-item"
                   key={laptop.product_id}
+                  className="laptop-item"
                   onClick={() => handleProductClick(laptop)}
                   onMouseEnter={() => handleMouseEnter(laptop.product_id, images)}
                   onMouseLeave={() => handleMouseLeave(laptop.product_id)}
                 >
                   <img
-                    src={currentImg || '/placeholder.jpg'}
+                    src={currentImg}
                     alt={laptop.name || 'Laptop'}
                     className="laptop-image"
                     onError={(e) => { e.target.src = '/placeholder.jpg'; }}
@@ -135,10 +122,7 @@ const LaptopDisplay = ({ onLoaded }) => {
                   />
                   <h3 className="laptop-name">{laptop.name}</h3>
                   <p className="laptop-price">
-                    {new Intl.NumberFormat('en-NG', {
-                      style: 'currency',
-                      currency: 'NGN',
-                    }).format(parseFloat(laptop.price) || 0)}
+                    {new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(parseFloat(laptop.price) || 0)}
                   </p>
                 </div>
               );
