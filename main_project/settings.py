@@ -26,39 +26,31 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 FRONTEND_DIR = BASE_DIR / 'reat_project' / 'build'
 
 # --- IMPORTANT: Load .env.local first, then .env for local development only ---
-# This block ensures .env.local overrides .env for local testing.
-# Railway will handle environment variables directly, which take ultimate precedence
-# over files loaded by `dotenv`.
 if os.path.exists(BASE_DIR / ".env.local"):
-    # Load .env.local and override any existing environment variables
     load_dotenv(BASE_DIR / ".env.local", override=True)
 elif os.path.exists(BASE_DIR / ".env"):
-    # If .env.local doesn't exist, load .env
     load_dotenv(BASE_DIR / ".env")
 
 
-# SECRET_KEY is crucial. For production, set it as an env var on Railway.
-# The default is for local development if not set.
 SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key-for-local-dev-please-change-me")
 
-# DEBUG should be False in production. Railway will set this via environment variables.
-# Using os.getenv here allows environment variables to override values from .env files.
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
-# Paystack keys from environment variables
 PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY")
 PAYSTACK_PUBLIC_KEY = os.getenv("PAYSTACK_PUBLIC_KEY")
 
-# Maintenance mode from environment variable
 MAINTENANCE_MODE = os.getenv("MAINTENANCE_MODE", "off").lower() == "on"
 
-# CORS settings
-CORS_ALLOW_CREDENTIALS = True
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# CLOUDINARY — must be configured BEFORE DEFAULT_FILE_STORAGE
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+if CLOUDINARY_URL := os.environ.get("CLOUDINARY_URL"):
+    cloudinary.config(cloudinary_url=CLOUDINARY_URL, secure=True)
 
-# Dynamically fetch ALLOWED_HOSTS, CSRF_TRUSTED_ORIGINS, CORS_ALLOWED_ORIGINS
-# from environment variables, falling back to safe defaults for local development.
-# On Railway, you should set DJANGO_ALLOWED_HOSTS, DJANGO_CSRF_TRUSTED_ORIGINS,
-# and DJANGO_CORS_ALLOWED_ORIGINS as environment variables.
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CORS_ALLOW_CREDENTIALS = True
 
 ALLOWED_HOSTS_STR = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(',')
 ALLOWED_HOSTS = [h.strip() for h in ALLOWED_HOSTS_STR if h.strip()]
@@ -70,26 +62,25 @@ CORS_ALLOWED_ORIGINS_STR = os.getenv("DJANGO_CORS_ALLOWED_ORIGINS", "http://loca
 CORS_ALLOWED_ORIGINS = [o.strip() for o in CORS_ALLOWED_ORIGINS_STR if o.strip()]
 
 
-# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',        # must come before django.contrib.staticfiles
     'django.contrib.staticfiles',
+    'cloudinary',
     'main_app',
     'corsheaders',
     'rest_framework',
-    'cloudinary_storage',
-    'cloudinary',
     'products',
     "django.contrib.humanize",
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Ensure this is high up
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -103,8 +94,8 @@ MIDDLEWARE = [
 AUTH_USER_MODEL = "main_app.CustomUser"
 
 AUTHENTICATION_BACKENDS = [
-    "main_app.backends.UsernameOrEmailBackend",  # custom backend
-    "django.contrib.auth.backends.ModelBackend", # fallback
+    "main_app.backends.UsernameOrEmailBackend",
+    "django.contrib.auth.backends.ModelBackend",
 ]
 
 REST_FRAMEWORK = {
@@ -119,15 +110,7 @@ REST_FRAMEWORK = {
     )
 }
 
-# Cloudinary configuration
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-if CLOUDINARY_URL := os.environ.get("CLOUDINARY_URL"):
-    cloudinary.config(cloudinary_url=CLOUDINARY_URL, secure=True)
-
-# Where to redirect when a login is required
-LOGIN_URL = '/login/'  # Change this to your React login URL if needed
-
-# Where to go after login (optional)
+LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
 ROOT_URLCONF = 'main_project.urls'
@@ -135,7 +118,7 @@ ROOT_URLCONF = 'main_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [FRONTEND_DIR] if FRONTEND_DIR.exists() else [], # Serve React's index.html
+        'DIRS': [FRONTEND_DIR] if FRONTEND_DIR.exists() else [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -150,31 +133,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'main_project.wsgi.application'
 
-# Email Configuration - Fetch credentials from environment variables
-# Keep this since Zoho API needs it
 DEFAULT_FROM_EMAIL = os.getenv(
     "DEFAULT_FROM_EMAIL", "Triple A's Technology <tripleastech@tripleastechng.com>"
 )
 
-# Add a fallback domain (used in email_helpers.py if request is None)
 SITE_DOMAIN = os.getenv("SITE_DOMAIN", "tripleastechng.com")
 
 
 # Database
-# Use dj_database_url to parse the DATABASE_URL environment variable.
-# The `os.environ.get("DATABASE_URL")` will fetch from environment variables first.
-# If running locally, this will be the value loaded from .env.local (or .env).
-# If on Railway, it will be the actual Railway environment variable.
 raw_database_url = os.environ.get("DATABASE_URL")
 
-# Treat obvious garbage values as "not provided"
 if not raw_database_url or raw_database_url.strip() in ("", "://"):
     USE_SQLITE_FALLBACK = True
 else:
     USE_SQLITE_FALLBACK = False
 
 if USE_SQLITE_FALLBACK:
-    # Fallback for build-time operations (collectstatic) or missing DB env
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -182,14 +156,11 @@ if USE_SQLITE_FALLBACK:
         }
     }
 else:
-    # Try to parse the url; if parsing fails, fallback to sqlite
     try:
         DATABASES = {
             "default": dj_database_url.parse(raw_database_url, conn_max_age=600) # type: ignore
         }
     except Exception as e:
-        # Log the exception if you have logging available, then fallback
-        # (This prevents dj_database_url.UnknownSchemeError from crashing builds)
         print("WARNING: dj_database_url.parse failed, falling back to sqlite. error:", e)
         DATABASES = {
             "default": {
@@ -199,24 +170,13 @@ else:
         }
 
 
-
-# Password validation
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
@@ -225,28 +185,20 @@ USE_TZ = True
 DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800  # 50 MB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800
 
-# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Static files (CSS, JavaScript, Images)
-# Static files configuration for production with WhiteNoise
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / "staticfiles" # Django collects static files here
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Point to your React build's static directory
 FRONTEND_STATIC_DIR = BASE_DIR / "reat_project" / "build" / "static"
 STATICFILES_DIRS = [
     FRONTEND_STATIC_DIR,
 ]
 
-# WhiteNoise for serving static files in production
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Media files (user-uploaded content)
 MEDIA_URL = '/media/'
-# DEFAULT_FILE_STORAGE is already set to 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# Logging config
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -267,13 +219,13 @@ LOGGING = {
         },
         'file': {
             'class': 'logging.FileHandler',
-            'filename': 'django_debug.log', # Or 'django_errors.log' for errors only
+            'filename': 'django_debug.log',
             'formatter': 'verbose',
         },
     },
     'root': {
-        'handlers': ['console', 'file'], # Direct logs to both console and file
-        'level': 'INFO', # Set minimum level to log
+        'handlers': ['console', 'file'],
+        'level': 'INFO',
     },
     'loggers': {
         'django': {
@@ -281,12 +233,11 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False,
         },
-        'main_app': { # Replace 'your_app_name' with the actual name of your Django app
+        'main_app': {
             'handlers': ['console', 'file'],
             'level': 'INFO',
             'propagate': False,
         },
-        # You can also add a logger for your utils if it's in a separate module
         'main_app.utils.email_helpers': {
             'handlers': ['console', 'file'],
             'level': 'INFO',

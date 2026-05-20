@@ -7,18 +7,18 @@ const Transfer = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isCanceling, setIsCanceling] = useState(false);
+  const [canceling, setCanceling] = useState(false);
   const { state } = location;
-  const token = localStorage.getItem('token');
 
   const {
-    orderId = 'N/A',
-    email = 'N/A',
-    phone = 'N/A',
-    address = 'N/A',
-    subtotal = 0,
+    orderId    = 'N/A',
+    email      = 'N/A',
+    phone      = 'N/A',
+    address    = 'N/A',
+    subtotal   = 0,
     shippingCost = 0,
-    total = 0,
-    products = [],
+    total      = 0,
+    products   = [],
   } = state || {};
 
   const formatPrice = (amount) =>
@@ -27,17 +27,20 @@ const Transfer = () => {
   const handleCancelOrder = () => setIsCanceling(true);
 
   const confirmCancelOrder = async () => {
+    setCanceling(true);
     try {
-      await api.post(`/orders/${orderId}/cancel/`, {}, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Token ${token}`,
-        }
-      });
+      // ✅ Uses cancel-auth — interceptor attaches JWT automatically
+      await api.post(`/orders/${orderId}/cancel-auth/`);
       navigate('/');
     } catch (error) {
       console.error('Error canceling order:', error);
-      alert('Failed to cancel order. Please try again.');
+      const msg =
+        error.response?.data?.error ||
+        error.response?.data?.detail ||
+        'Failed to cancel order. Please try again.';
+      alert(msg);
+    } finally {
+      setCanceling(false);
     }
   };
 
@@ -105,8 +108,20 @@ const Transfer = () => {
             <div className="cancel-dialog">
               <p>Are you sure you want to cancel this order?</p>
               <div className="dialog-buttons">
-                <button onClick={confirmCancelOrder} className="dialog-confirm-button">Yes, Cancel</button>
-                <button onClick={() => setIsCanceling(false)} className="dialog-cancel-button">No, Keep</button>
+                <button
+                  onClick={confirmCancelOrder}
+                  className="dialog-confirm-button"
+                  disabled={canceling}
+                >
+                  {canceling ? 'Canceling…' : 'Yes, Cancel'}
+                </button>
+                <button
+                  onClick={() => setIsCanceling(false)}
+                  className="dialog-cancel-button"
+                  disabled={canceling}
+                >
+                  No, Keep
+                </button>
               </div>
             </div>
           </div>

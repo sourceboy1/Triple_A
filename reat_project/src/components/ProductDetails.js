@@ -10,25 +10,26 @@ import './ProductDetails.css';
 import wishlistImg from '../pictures/wishlist.jpg';
 import wishlistActiveImg from '../pictures/wishlist-active.jpg';
 
-const formatNaira = (n) => new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 0 }).format(n);
+const formatNaira = (n) =>
+  new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 0 }).format(n);
 
 const ProductDetails = () => {
-  const { slug }     = useParams();
-  const productId    = slug;
-  const navigate     = useNavigate();
+  const { slug }   = useParams();
+  const productId  = slug;
+  const navigate   = useNavigate();
 
-  const [product, setProduct]           = useState(null);
-  const [loading, setLoading]           = useState(true);
-  const [error, setError]               = useState(null);
+  const [product, setProduct]             = useState(null);
+  const [loading, setLoading]             = useState(true);
+  const [error, setError]                 = useState(null);
   const [selectedImage, setSelectedImage] = useState('');
-  const [quantity, setQuantity]         = useState(1);
-  const [stockMsg, setStockMsg]         = useState('');
-  const [isZoomed, setIsZoomed]         = useState(false);
-  const [showAlert, setShowAlert]       = useState(false);
-  const [activeTab, setActiveTab]       = useState('description');
+  const [quantity, setQuantity]           = useState(1);
+  const [stockMsg, setStockMsg]           = useState('');
+  const [isZoomed, setIsZoomed]           = useState(false);
+  const [showAlert, setShowAlert]         = useState(false);
+  const [activeTab, setActiveTab]         = useState('description');
 
-  const { addItemToCart }                          = useCart();
-  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const { addItemToCart }                                      = useCart();
+  const { addToWishlist, removeFromWishlist, isInWishlist }    = useWishlist();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -36,12 +37,12 @@ const ProductDetails = () => {
       setLoading(true);
       setError(null);
       try {
-        const res     = await api.get(`products/${productId}/`);
-        const data    = res.data;
+        const res  = await api.get(`products/${productId}/`);
+        const data = res.data;
         const mainImg =
           data.image_urls?.large ||
           data.secondary_image_urls?.large ||
-          data.additional_images?.[0]?.image_url ||
+          data.additional_images?.[0]?.image_urls?.large ||
           '/media/default.jpg';
         setSelectedImage(mainImg);
         setProduct(data);
@@ -77,7 +78,16 @@ const ProductDetails = () => {
   const handleAddToCart = () => {
     if (!product) return;
     if (quantity > 0 && quantity <= product.stock) {
-      addItemToCart({ product_id: product.product_id, name: product.name, image_url: selectedImage, price: product.price, stock: product.stock, quantity, is_abroad_order: product.is_abroad_order, abroad_delivery_days: product.abroad_delivery_days });
+      addItemToCart({
+        product_id: product.product_id,
+        name: product.name,
+        image_url: selectedImage,
+        price: product.price,
+        stock: product.stock,
+        quantity,
+        is_abroad_order: product.is_abroad_order,
+        abroad_delivery_days: product.abroad_delivery_days,
+      });
       setStockMsg('');
       setShowAlert(true);
     } else if (product.stock === 0) {
@@ -123,20 +133,25 @@ const ProductDetails = () => {
   const thumbs = [];
   if (product.image_urls?.large)           thumbs.push(product.image_urls.large);
   if (product.secondary_image_urls?.large) thumbs.push(product.secondary_image_urls.large);
+
+  // ✅ FIXED: use correct serializer field names for all 4 image slots
   product.additional_images?.forEach((img) => {
-    if (img.image_url)       thumbs.push(img.image_url);
-    if (img.secondary_image) thumbs.push(img.secondary_image);
+    if (img.image_urls?.large)            thumbs.push(img.image_urls.large);
+    if (img.secondary_image_urls?.large)  thumbs.push(img.secondary_image_urls.large);
+    if (img.tertiary_image_urls?.large)   thumbs.push(img.tertiary_image_urls.large);
+    if (img.quaternary_image_urls?.large) thumbs.push(img.quaternary_image_urls.large);
   });
+
   if (!thumbs.length) thumbs.push('/media/default.jpg');
   const uniqueThumbs = [...new Set(thumbs)];
 
-  const discount  = product.original_price && product.price < product.original_price
+  const discount = product.original_price && product.price < product.original_price
     ? Math.round(((product.original_price - product.price) / product.original_price) * 100)
     : null;
 
-  const inWishlist     = isInWishlist(product.product_id);
-  const deliveryDays   = product.abroad_delivery_days === 14 ? '7–14' : (product.abroad_delivery_days || '7–14');
-  const canonicalUrl   = product.slug
+  const inWishlist   = isInWishlist(product.product_id);
+  const deliveryDays = product.abroad_delivery_days === 14 ? '7–14' : (product.abroad_delivery_days || '7–14');
+  const canonicalUrl = product.slug
     ? `https://tripleastechng.com/product/${product.slug}`
     : `https://tripleastechng.com/product-details/${product.product_id}`;
 
@@ -185,8 +200,10 @@ const ProductDetails = () => {
           <div className="pd-images-col">
 
             {/* Main image */}
-            <div className={`pd-main-img-wrap ${isZoomed ? 'pd-main-img-wrap--zoomed' : ''}`}
-                 onClick={() => setIsZoomed((z) => !z)}>
+            <div
+              className={`pd-main-img-wrap ${isZoomed ? 'pd-main-img-wrap--zoomed' : ''}`}
+              onClick={() => setIsZoomed((z) => !z)}
+            >
               {product.stock === 0 && <div className="pd-sold-out-ribbon">Sold Out</div>}
               {discount && <div className="pd-discount-badge">-{discount}%</div>}
               <img
@@ -207,7 +224,11 @@ const ProductDetails = () => {
                     className={`pd-thumb ${selectedImage === url ? 'pd-thumb--active' : ''}`}
                     onClick={() => { setSelectedImage(url); setIsZoomed(false); }}
                   >
-                    <img src={url} alt={`View ${i + 1}`} onError={(e) => { e.target.src = '/media/default.jpg'; }} />
+                    <img
+                      src={url}
+                      alt={`View ${i + 1}`}
+                      onError={(e) => { e.target.src = '/media/default.jpg'; }}
+                    />
                   </button>
                 ))}
               </div>

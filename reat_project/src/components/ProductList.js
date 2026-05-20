@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import api from '../Api'; // ✅ Centralized API import
+import api from '../Api';
 import Product from './Product';
-import { useCart } from '../contexts/CartContext';
 
 const ProductList = ({ category, searchQuery }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { addItemToCart } = useCart();
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await api.get('api/products/', {
-          params: { category, searchQuery },
+        const response = await api.get('products/', {
+          params: {
+            category,
+            query: searchQuery, // ✅ matches Django view's request.GET.get('query')
+          },
         });
         setProducts(response.data);
         setLoading(false);
@@ -38,11 +39,14 @@ const ProductList = ({ category, searchQuery }) => {
           <Product
             key={product.product_id}
             product_id={product.product_id}
+            slug={product.slug}
             name={product.name}
             description={product.description}
             price={product.price}
-            image_url={product.image_url}
-            addItemToCart={addItemToCart}
+            image_urls={product.image_urls}         // ✅ correct prop name (plural, object)
+            stock={product.stock}                   // ✅ was missing
+            is_abroad_order={product.is_abroad_order}
+            abroad_delivery_days={product.abroad_delivery_days}
           />
         ))}
       </div>

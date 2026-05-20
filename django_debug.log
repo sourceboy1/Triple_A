@@ -19397,3 +19397,1030 @@ INFO 2026-05-06 08:10:59,114 basehttp 22432 2772 "GET /api/products/?category_id
 INFO 2026-05-06 08:10:59,142 basehttp 22432 2544 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
 INFO 2026-05-06 08:10:59,159 basehttp 22432 26360 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
 INFO 2026-05-06 08:10:59,164 basehttp 22432 20368 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-10 15:20:46,814 basehttp 22432 9076 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-10 15:20:46,829 basehttp 22432 18392 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-10 15:20:46,834 basehttp 22432 24244 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-10 15:20:46,892 basehttp 22432 21944 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-10 15:20:46,903 basehttp 22432 13860 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-10 15:20:46,922 basehttp 22432 22168 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-10 15:20:46,969 basehttp 22432 13860 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-10 15:20:46,972 basehttp 22432 21944 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-10 15:20:46,972 basehttp 22432 24244 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-10 15:20:46,978 basehttp 22432 9076 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-10 15:20:46,991 basehttp 22432 22168 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-10 15:20:46,992 basehttp 22432 18392 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-10 15:20:47,007 basehttp 22432 9076 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-10 15:20:47,026 basehttp 22432 24244 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-10 15:20:47,026 basehttp 22432 18392 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-10 15:20:47,039 basehttp 22432 13860 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-10 15:23:29,160 autoreload 22432 14756 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-10 15:23:33,576 autoreload 20864 27324 Watching for file changes with StatReloader
+INFO 2026-05-10 15:23:36,902 autoreload 20864 27324 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-10 15:23:38,464 autoreload 5520 24152 Watching for file changes with StatReloader
+INFO 2026-05-10 15:23:49,540 autoreload 5520 24152 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-10 15:23:51,414 autoreload 8040 10844 Watching for file changes with StatReloader
+INFO 2026-05-10 15:24:00,277 autoreload 8040 10844 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-10 15:24:02,125 autoreload 3024 22360 Watching for file changes with StatReloader
+INFO 2026-05-10 15:24:05,551 autoreload 3024 22360 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-10 15:24:06,718 autoreload 21780 25500 Watching for file changes with StatReloader
+INFO 2026-05-10 15:26:03,547 basehttp 21780 8672 "OPTIONS /api/login/ HTTP/1.1" 200 0
+INFO 2026-05-10 15:26:05,545 basehttp 21780 8672 "POST /api/login/ HTTP/1.1" 200 641
+INFO 2026-05-10 15:26:08,131 basehttp 21780 8672 "OPTIONS /api/deals_of_the_day/ HTTP/1.1" 200 0
+INFO 2026-05-10 15:26:08,132 basehttp 21780 21896 "OPTIONS /api/products/?category_id=1 HTTP/1.1" 200 0
+INFO 2026-05-10 15:26:08,151 basehttp 21780 8672 "OPTIONS /api/products/?category_id=9 HTTP/1.1" 200 0
+INFO 2026-05-10 15:26:08,151 basehttp 21780 21896 "OPTIONS /api/products/?category_id=3 HTTP/1.1" 200 0
+INFO 2026-05-10 15:26:08,212 basehttp 21780 8672 "OPTIONS /api/products/?category_id=8 HTTP/1.1" 200 0
+INFO 2026-05-10 15:26:08,221 basehttp 21780 21896 "OPTIONS /api/products/?category_id=7 HTTP/1.1" 200 0
+INFO 2026-05-10 15:26:08,223 basehttp 21780 8672 "OPTIONS /api/products/?category_id=4 HTTP/1.1" 200 0
+INFO 2026-05-10 15:26:08,225 basehttp 21780 21896 "OPTIONS /api/products/?category_id=2 HTTP/1.1" 200 0
+INFO 2026-05-10 15:26:08,228 basehttp 21780 8672 "OPTIONS /api/products/?category_id=9 HTTP/1.1" 200 0
+INFO 2026-05-10 15:26:08,231 basehttp 21780 21896 "OPTIONS /api/products/?category_id=3 HTTP/1.1" 200 0
+INFO 2026-05-10 15:26:08,235 basehttp 21780 8672 "OPTIONS /api/products/?category_id=8 HTTP/1.1" 200 0
+INFO 2026-05-10 15:26:08,241 basehttp 21780 21896 "OPTIONS /api/products/?category_id=7 HTTP/1.1" 200 0
+INFO 2026-05-10 15:26:08,242 basehttp 21780 8672 "OPTIONS /api/products/?category_id=4 HTTP/1.1" 200 0
+INFO 2026-05-10 15:26:08,252 basehttp 21780 8672 "OPTIONS /api/products/?category_id=2 HTTP/1.1" 200 0
+INFO 2026-05-10 15:26:08,309 basehttp 21780 21896 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-10 15:26:08,310 basehttp 21780 8672 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-10 15:26:08,322 basehttp 21780 21896 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-10 15:26:08,324 basehttp 21780 8672 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-10 15:26:08,338 basehttp 21780 21896 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-10 15:26:08,339 basehttp 21780 8672 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-10 15:26:08,354 basehttp 21780 21896 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-10 15:26:08,368 basehttp 21780 8672 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-10 15:26:08,387 basehttp 21780 21896 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-10 15:26:08,393 basehttp 21780 8672 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-10 15:26:08,399 basehttp 21780 21896 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-10 15:26:08,401 basehttp 21780 8672 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-10 15:26:08,409 basehttp 21780 21896 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-10 15:26:08,416 basehttp 21780 8672 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-10 15:26:08,419 basehttp 21780 21896 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-10 15:26:08,447 basehttp 21780 8672 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-10 15:26:10,873 basehttp 21780 21896 "OPTIONS /api/user/orders/ HTTP/1.1" 200 0
+INFO 2026-05-10 15:26:10,873 basehttp 21780 8672 "OPTIONS /api/user/orders/ HTTP/1.1" 200 0
+INFO 2026-05-10 15:26:10,919 basehttp 21780 8672 "GET /api/user/orders/ HTTP/1.1" 200 1239
+INFO 2026-05-10 15:26:10,951 basehttp 21780 8672 "GET /api/user/orders/ HTTP/1.1" 200 1239
+INFO 2026-05-10 15:26:14,725 basehttp 21780 8672 "OPTIONS /api/orders/33/cancel-auth/ HTTP/1.1" 200 0
+ERROR 2026-05-10 15:26:18,922 email_helpers 21780 8672 Zoho Mail API error: {"status":{"code":500,"description":"Internal Error"},"data":{"moreInfo":"Unable to send message;Reason:550 5.4.6 Unusual sending activity detected. <a href=https://www.zoho.com/mail/help/usage-policy.html target=_blank>Learn more.</a> To unblock <a href=https://mail.zoho.com/UnblockMe target=_blank>Click here.</a>"}}
+ERROR 2026-05-10 15:26:18,924 email_helpers 21780 8672 Failed to send order status email to akannioluwaseun416@gmail.com: Zoho Mail API error: {"status":{"code":500,"description":"Internal Error"},"data":{"moreInfo":"Unable to send message;Reason:550 5.4.6 Unusual sending activity detected. <a href=https://www.zoho.com/mail/help/usage-policy.html target=_blank>Learn more.</a> To unblock <a href=https://mail.zoho.com/UnblockMe target=_blank>Click here.</a>"}}
+Traceback (most recent call last):
+  File "C:\Users\YOU\Documents\Triple_A\main_app\utils\email_helpers.py", line 264, in send_order_status_email
+    send_zoho_mail(user_email, subject, plain_message, html_message)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\main_app\utils\email_helpers.py", line 96, in send_zoho_mail
+    raise Exception(f"Zoho Mail API error: {resp.text}")
+Exception: Zoho Mail API error: {"status":{"code":500,"description":"Internal Error"},"data":{"moreInfo":"Unable to send message;Reason:550 5.4.6 Unusual sending activity detected. <a href=https://www.zoho.com/mail/help/usage-policy.html target=_blank>Learn more.</a> To unblock <a href=https://mail.zoho.com/UnblockMe target=_blank>Click here.</a>"}}
+ERROR 2026-05-10 15:26:18,939 models 21780 8672 Failed to send status update email for order 33: Zoho Mail API error: {"status":{"code":500,"description":"Internal Error"},"data":{"moreInfo":"Unable to send message;Reason:550 5.4.6 Unusual sending activity detected. <a href=https://www.zoho.com/mail/help/usage-policy.html target=_blank>Learn more.</a> To unblock <a href=https://mail.zoho.com/UnblockMe target=_blank>Click here.</a>"}}
+INFO 2026-05-10 15:26:18,957 basehttp 21780 8672 "POST /api/orders/33/cancel-auth/ HTTP/1.1" 200 56
+INFO 2026-05-10 15:26:19,041 basehttp 21780 8672 "GET /api/user/orders/ HTTP/1.1" 200 1241
+INFO 2026-05-10 15:26:42,103 basehttp 21780 13004 "GET /admin/main_app/order/ HTTP/1.1" 200 62814
+INFO 2026-05-10 15:26:42,181 basehttp 21780 23512 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-05-10 15:26:42,306 basehttp 21780 13004 "GET /static/admin/css/forms.css HTTP/1.1" 200 8794
+INFO 2026-05-10 15:26:42,312 basehttp 21780 13004 "GET /static/admin/css/widgets.css HTTP/1.1" 200 11564
+INFO 2026-05-10 15:26:42,542 basehttp 21780 13004 "GET /favicon.ico HTTP/1.1" 200 692
+ERROR 2026-05-10 15:27:05,148 email_helpers 21780 13004 Zoho Mail API error: {"status":{"code":500,"description":"Internal Error"},"data":{"moreInfo":"Unable to send message;Reason:550 5.4.6 Unusual sending activity detected. <a href=https://www.zoho.com/mail/help/usage-policy.html target=_blank>Learn more.</a> To unblock <a href=https://mail.zoho.com/UnblockMe target=_blank>Click here.</a>"}}
+ERROR 2026-05-10 15:27:05,149 email_helpers 21780 13004 Failed to send order status email to akannioluwaseun416@gmail.com: Zoho Mail API error: {"status":{"code":500,"description":"Internal Error"},"data":{"moreInfo":"Unable to send message;Reason:550 5.4.6 Unusual sending activity detected. <a href=https://www.zoho.com/mail/help/usage-policy.html target=_blank>Learn more.</a> To unblock <a href=https://mail.zoho.com/UnblockMe target=_blank>Click here.</a>"}}
+Traceback (most recent call last):
+  File "C:\Users\YOU\Documents\Triple_A\main_app\utils\email_helpers.py", line 264, in send_order_status_email
+    send_zoho_mail(user_email, subject, plain_message, html_message)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\main_app\utils\email_helpers.py", line 96, in send_zoho_mail
+    raise Exception(f"Zoho Mail API error: {resp.text}")
+Exception: Zoho Mail API error: {"status":{"code":500,"description":"Internal Error"},"data":{"moreInfo":"Unable to send message;Reason:550 5.4.6 Unusual sending activity detected. <a href=https://www.zoho.com/mail/help/usage-policy.html target=_blank>Learn more.</a> To unblock <a href=https://mail.zoho.com/UnblockMe target=_blank>Click here.</a>"}}
+ERROR 2026-05-10 15:27:05,159 models 21780 13004 Failed to send status update email for order 33: Zoho Mail API error: {"status":{"code":500,"description":"Internal Error"},"data":{"moreInfo":"Unable to send message;Reason:550 5.4.6 Unusual sending activity detected. <a href=https://www.zoho.com/mail/help/usage-policy.html target=_blank>Learn more.</a> To unblock <a href=https://mail.zoho.com/UnblockMe target=_blank>Click here.</a>"}}
+INFO 2026-05-10 15:27:05,206 basehttp 21780 13004 "POST /admin/main_app/order/ HTTP/1.1" 302 0
+INFO 2026-05-10 15:27:05,491 basehttp 21780 13004 "GET /admin/main_app/order/ HTTP/1.1" 200 62953
+INFO 2026-05-10 15:27:05,549 basehttp 21780 13004 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-05-10 15:27:05,611 basehttp 21780 13004 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-10 15:27:10,430 basehttp 21780 8672 "GET /api/user/orders/ HTTP/1.1" 200 1239
+INFO 2026-05-10 15:27:10,463 basehttp 21780 8672 "GET /api/user/orders/ HTTP/1.1" 200 1239
+ERROR 2026-05-10 15:27:20,921 email_helpers 21780 8672 Zoho Mail API error: {"status":{"code":500,"description":"Internal Error"},"data":{"moreInfo":"Unable to send message;Reason:550 5.4.6 Unusual sending activity detected. <a href=https://www.zoho.com/mail/help/usage-policy.html target=_blank>Learn more.</a> To unblock <a href=https://mail.zoho.com/UnblockMe target=_blank>Click here.</a>"}}
+ERROR 2026-05-10 15:27:20,923 email_helpers 21780 8672 Failed to send order status email to akannioluwaseun416@gmail.com: Zoho Mail API error: {"status":{"code":500,"description":"Internal Error"},"data":{"moreInfo":"Unable to send message;Reason:550 5.4.6 Unusual sending activity detected. <a href=https://www.zoho.com/mail/help/usage-policy.html target=_blank>Learn more.</a> To unblock <a href=https://mail.zoho.com/UnblockMe target=_blank>Click here.</a>"}}
+Traceback (most recent call last):
+  File "C:\Users\YOU\Documents\Triple_A\main_app\utils\email_helpers.py", line 264, in send_order_status_email
+    send_zoho_mail(user_email, subject, plain_message, html_message)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\main_app\utils\email_helpers.py", line 96, in send_zoho_mail
+    raise Exception(f"Zoho Mail API error: {resp.text}")
+Exception: Zoho Mail API error: {"status":{"code":500,"description":"Internal Error"},"data":{"moreInfo":"Unable to send message;Reason:550 5.4.6 Unusual sending activity detected. <a href=https://www.zoho.com/mail/help/usage-policy.html target=_blank>Learn more.</a> To unblock <a href=https://mail.zoho.com/UnblockMe target=_blank>Click here.</a>"}}
+ERROR 2026-05-10 15:27:20,927 models 21780 8672 Failed to send status update email for order 33: Zoho Mail API error: {"status":{"code":500,"description":"Internal Error"},"data":{"moreInfo":"Unable to send message;Reason:550 5.4.6 Unusual sending activity detected. <a href=https://www.zoho.com/mail/help/usage-policy.html target=_blank>Learn more.</a> To unblock <a href=https://mail.zoho.com/UnblockMe target=_blank>Click here.</a>"}}
+INFO 2026-05-10 15:27:20,941 basehttp 21780 8672 "POST /api/orders/33/cancel-auth/ HTTP/1.1" 200 56
+INFO 2026-05-10 15:27:21,008 basehttp 21780 8672 "GET /api/user/orders/ HTTP/1.1" 200 1241
+INFO 2026-05-10 15:28:05,626 basehttp 21780 8672 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-10 15:28:05,628 basehttp 21780 21896 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-10 15:28:05,649 basehttp 21780 21896 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-10 15:28:05,651 basehttp 21780 8672 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-10 15:28:05,667 basehttp 21780 21896 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-10 15:28:05,672 basehttp 21780 8672 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-10 15:28:05,726 basehttp 21780 21896 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-10 15:28:05,738 basehttp 21780 21896 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-10 15:28:05,759 basehttp 21780 8672 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-10 15:28:05,779 basehttp 21780 8672 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-10 15:28:05,787 basehttp 21780 21896 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-10 15:28:05,804 basehttp 21780 8672 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-10 15:28:05,806 basehttp 21780 21896 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-10 15:28:05,852 basehttp 21780 21896 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-10 15:28:05,855 basehttp 21780 8672 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-10 15:28:05,883 basehttp 21780 21896 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-10 15:33:15,502 basehttp 21780 24364 "OPTIONS /api/products-suggestions/?query=a HTTP/1.1" 200 0
+WARNING 2026-05-10 15:33:15,508 log 21780 24364 Unauthorized: /api/products-suggestions/
+WARNING 2026-05-10 15:33:15,510 basehttp 21780 24364 "GET /api/products-suggestions/?query=a HTTP/1.1" 401 172
+INFO 2026-05-10 15:33:15,526 basehttp 21780 24364 "OPTIONS /api/token/refresh/ HTTP/1.1" 200 0
+INFO 2026-05-10 15:33:15,559 basehttp 21780 24364 "POST /api/token/refresh/ HTTP/1.1" 200 381
+INFO 2026-05-10 15:33:15,591 basehttp 21780 24364 "GET /api/products-suggestions/?query=a HTTP/1.1" 200 353
+WARNING 2026-05-10 15:33:15,935 log 21780 10820 Not Found: /media/media/products/airpod_wvezc0
+WARNING 2026-05-10 15:33:15,936 log 21780 22724 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-10 15:33:15,937 basehttp 21780 10820 "GET /media/media/products/airpod_wvezc0 HTTP/1.1" 404 3142
+WARNING 2026-05-10 15:33:15,937 basehttp 21780 22724 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+INFO 2026-05-10 15:33:19,733 basehttp 21780 24364 "GET /api/products-suggestions/?query=a HTTP/1.1" 200 353
+WARNING 2026-05-10 15:33:19,791 log 21780 26416 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-10 15:33:19,791 basehttp 21780 26416 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+WARNING 2026-05-10 15:33:20,087 log 21780 22964 Not Found: /media/media/products/airpod_wvezc0
+WARNING 2026-05-10 15:33:20,088 basehttp 21780 22964 "GET /media/media/products/airpod_wvezc0 HTTP/1.1" 404 3142
+INFO 2026-05-10 15:33:20,159 basehttp 21780 24364 "OPTIONS /api/products-suggestions/?query=ap HTTP/1.1" 200 0
+INFO 2026-05-10 15:33:20,189 basehttp 21780 24364 "GET /api/products-suggestions/?query=ap HTTP/1.1" 200 353
+WARNING 2026-05-10 15:33:20,553 log 21780 23432 Not Found: /media/media/products/airpod_wvezc0
+WARNING 2026-05-10 15:33:20,592 log 21780 13696 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-10 15:33:20,593 basehttp 21780 23432 "GET /media/media/products/airpod_wvezc0 HTTP/1.1" 404 3142
+WARNING 2026-05-10 15:33:20,600 basehttp 21780 13696 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+WARNING 2026-05-10 15:41:48,598 log 21780 9992 Unauthorized: /api/products-suggestions/
+WARNING 2026-05-10 15:41:48,599 basehttp 21780 9992 "GET /api/products-suggestions/?query=a HTTP/1.1" 401 172
+INFO 2026-05-10 15:41:48,631 basehttp 21780 9992 "POST /api/token/refresh/ HTTP/1.1" 200 381
+INFO 2026-05-10 15:41:48,647 basehttp 21780 9992 "GET /api/products-suggestions/?query=a HTTP/1.1" 200 353
+WARNING 2026-05-10 15:41:48,975 log 21780 23972 Not Found: /media/media/products/airpod_wvezc0
+WARNING 2026-05-10 15:41:48,981 log 21780 9812 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-10 15:41:48,982 basehttp 21780 23972 "GET /media/media/products/airpod_wvezc0 HTTP/1.1" 404 3142
+WARNING 2026-05-10 15:41:48,982 basehttp 21780 9812 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+WARNING 2026-05-10 15:53:17,093 log 21780 27172 Unauthorized: /api/products-suggestions/
+WARNING 2026-05-10 15:53:17,094 basehttp 21780 27172 "GET /api/products-suggestions/?query=a HTTP/1.1" 401 172
+INFO 2026-05-10 15:53:17,139 basehttp 21780 27172 "POST /api/token/refresh/ HTTP/1.1" 200 381
+INFO 2026-05-10 15:53:17,154 basehttp 21780 27172 "GET /api/products-suggestions/?query=a HTTP/1.1" 200 353
+WARNING 2026-05-10 15:53:17,581 log 21780 26784 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-10 15:53:17,586 log 21780 12140 Not Found: /media/media/products/airpod_wvezc0
+WARNING 2026-05-10 15:53:17,587 basehttp 21780 12140 "GET /media/media/products/airpod_wvezc0 HTTP/1.1" 404 3142
+WARNING 2026-05-10 15:53:17,587 basehttp 21780 26784 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+INFO 2026-05-10 15:53:22,395 basehttp 21780 27172 "GET /api/products-suggestions/?query=a HTTP/1.1" 200 353
+WARNING 2026-05-10 15:53:22,411 log 21780 25388 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-10 15:53:22,412 basehttp 21780 25388 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+WARNING 2026-05-10 15:53:22,740 log 21780 16396 Not Found: /media/media/products/airpod_wvezc0
+WARNING 2026-05-10 15:53:22,741 basehttp 21780 16396 "GET /media/media/products/airpod_wvezc0 HTTP/1.1" 404 3142
+INFO 2026-05-10 15:53:23,470 basehttp 21780 27172 "OPTIONS /api/products-suggestions/?query=as HTTP/1.1" 200 0
+INFO 2026-05-10 15:53:23,484 basehttp 21780 27172 "GET /api/products-suggestions/?query=as HTTP/1.1" 200 2
+INFO 2026-05-10 16:00:02,911 autoreload 21780 25500 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-10 16:00:07,592 autoreload 2772 26112 Watching for file changes with StatReloader
+INFO 2026-05-10 16:00:25,632 autoreload 16532 23124 Watching for file changes with StatReloader
+INFO 2026-05-10 16:00:46,646 autoreload 16532 23124 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-10 16:00:49,764 autoreload 20664 25424 Watching for file changes with StatReloader
+INFO 2026-05-10 16:00:51,900 basehttp 20664 6184 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-10 16:00:51,920 basehttp 20664 23540 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-10 16:00:51,920 basehttp 20664 25828 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-10 16:00:51,951 basehttp 20664 20908 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-10 16:00:51,952 basehttp 20664 26456 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-10 16:00:52,001 basehttp 20664 20908 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-10 16:00:52,012 basehttp 20664 26456 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-10 16:00:52,020 basehttp 20664 23540 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-10 16:00:52,037 basehttp 20664 25828 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-10 16:00:52,184 basehttp 20664 25828 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-10 16:00:52,195 basehttp 20664 23540 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-10 16:00:52,215 basehttp 20664 23540 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-10 16:00:52,231 basehttp 20664 25828 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-10 16:00:52,251 basehttp 20664 25828 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-10 16:00:52,253 basehttp 20664 23540 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-10 16:00:52,272 basehttp 20664 26456 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-10 16:00:57,095 basehttp 20664 10056 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-10 16:00:57,111 basehttp 20664 24772 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-10 16:00:57,111 basehttp 20664 10264 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-10 16:00:57,136 basehttp 20664 23724 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-10 16:00:57,136 basehttp 20664 24772 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-10 16:00:57,137 basehttp 20664 10056 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-10 16:00:57,144 basehttp 20664 18056 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-10 16:00:57,144 basehttp 20664 10264 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-10 16:00:57,175 basehttp 20664 18056 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-10 16:00:57,181 basehttp 20664 10056 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-10 16:00:57,181 basehttp 20664 23724 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-10 16:00:57,215 basehttp 20664 21836 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-10 16:00:57,215 basehttp 20664 24772 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-10 16:00:57,218 basehttp 20664 18056 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-10 16:00:57,241 basehttp 20664 10264 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-10 16:00:57,262 basehttp 20664 21836 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+WARNING 2026-05-10 16:00:59,050 log 20664 21836 Unauthorized: /api/products-suggestions/
+WARNING 2026-05-10 16:00:59,051 basehttp 20664 21836 "GET /api/products-suggestions/?query=a HTTP/1.1" 401 172
+INFO 2026-05-10 16:00:59,064 basehttp 20664 21836 "POST /api/token/refresh/ HTTP/1.1" 200 381
+INFO 2026-05-10 16:00:59,080 basehttp 20664 21836 "GET /api/products-suggestions/?query=a HTTP/1.1" 200 359
+WARNING 2026-05-10 16:00:59,415 log 20664 6376 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-10 16:00:59,421 log 20664 24872 Not Found: /media/media/products/airpod_wvezc0
+WARNING 2026-05-10 16:00:59,421 basehttp 20664 6376 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+WARNING 2026-05-10 16:00:59,422 basehttp 20664 24872 "GET /media/media/products/airpod_wvezc0 HTTP/1.1" 404 3142
+INFO 2026-05-10 16:05:38,868 autoreload 20664 25424 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-10 16:05:41,807 autoreload 5796 8040 Watching for file changes with StatReloader
+INFO 2026-05-10 16:05:51,457 autoreload 5796 8040 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-10 16:05:54,247 autoreload 27148 10488 Watching for file changes with StatReloader
+INFO 2026-05-10 16:05:58,806 autoreload 27148 10488 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-10 16:06:01,130 autoreload 25636 12568 Watching for file changes with StatReloader
+WARNING 2026-05-10 16:06:59,664 log 25636 25776 Unauthorized: /api/products-suggestions/
+WARNING 2026-05-10 16:06:59,666 basehttp 25636 25776 "GET /api/products-suggestions/?query=a HTTP/1.1" 401 172
+INFO 2026-05-10 16:06:59,691 basehttp 25636 25776 "POST /api/token/refresh/ HTTP/1.1" 200 381
+INFO 2026-05-10 16:06:59,716 basehttp 25636 25776 "GET /api/products-suggestions/?query=a HTTP/1.1" 200 383
+WARNING 2026-05-10 16:07:00,048 log 25636 21900 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-10 16:07:00,054 log 25636 14676 Not Found: /media/media/products/airpod_wvezc0
+WARNING 2026-05-10 16:07:00,055 basehttp 25636 21900 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+WARNING 2026-05-10 16:07:00,055 basehttp 25636 14676 "GET /media/media/products/airpod_wvezc0 HTTP/1.1" 404 3142
+INFO 2026-05-10 16:07:04,498 basehttp 25636 25776 "GET /api/products-suggestions/?query=a HTTP/1.1" 200 383
+WARNING 2026-05-10 16:07:04,517 log 25636 2960 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-10 16:07:04,518 basehttp 25636 2960 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+WARNING 2026-05-10 16:07:04,818 log 25636 1260 Not Found: /media/media/products/airpod_wvezc0
+WARNING 2026-05-10 16:07:04,820 basehttp 25636 1260 "GET /media/media/products/airpod_wvezc0 HTTP/1.1" 404 3142
+INFO 2026-05-10 16:07:06,633 basehttp 25636 25776 "GET /api/products-suggestions/?query=a HTTP/1.1" 200 383
+WARNING 2026-05-10 16:07:06,956 log 25636 19620 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-10 16:07:06,961 log 25636 2440 Not Found: /media/media/products/airpod_wvezc0
+WARNING 2026-05-10 16:07:06,962 basehttp 25636 19620 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+WARNING 2026-05-10 16:07:06,962 basehttp 25636 2440 "GET /media/media/products/airpod_wvezc0 HTTP/1.1" 404 3142
+INFO 2026-05-10 16:07:08,116 basehttp 25636 25776 "GET /api/products-suggestions/?query=a HTTP/1.1" 200 383
+WARNING 2026-05-10 16:07:08,134 log 25636 6532 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-10 16:07:08,135 basehttp 25636 6532 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+WARNING 2026-05-10 16:07:08,451 log 25636 21260 Not Found: /media/media/products/airpod_wvezc0
+WARNING 2026-05-10 16:07:08,453 basehttp 25636 21260 "GET /media/media/products/airpod_wvezc0 HTTP/1.1" 404 3142
+INFO 2026-05-10 16:07:31,501 basehttp 25636 13556 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-10 16:07:31,525 basehttp 25636 27404 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-10 16:07:31,533 basehttp 25636 13556 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-10 16:07:31,542 basehttp 25636 25984 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-10 16:07:31,544 basehttp 25636 13556 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-10 16:07:31,560 basehttp 25636 5872 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-10 16:07:31,574 basehttp 25636 25984 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-10 16:07:31,574 basehttp 25636 15412 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-10 16:07:31,585 basehttp 25636 13556 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-10 16:07:31,597 basehttp 25636 27404 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-10 16:07:31,617 basehttp 25636 23268 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-10 16:07:31,617 basehttp 25636 5872 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-10 16:07:31,632 basehttp 25636 15412 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-10 16:07:31,633 basehttp 25636 25984 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-10 16:07:31,667 basehttp 25636 27404 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-10 16:07:31,691 basehttp 25636 23268 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-10 16:07:31,798 basehttp 25636 23268 "GET /api/products-suggestions/?query=aa HTTP/1.1" 200 2
+INFO 2026-05-10 16:07:33,867 basehttp 25636 23268 "GET /api/products-suggestions/?query=a HTTP/1.1" 200 383
+WARNING 2026-05-10 16:07:34,202 log 25636 23272 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-10 16:07:34,212 log 25636 2852 Not Found: /media/media/products/airpod_wvezc0
+WARNING 2026-05-10 16:07:34,213 basehttp 25636 23272 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+WARNING 2026-05-10 16:07:34,213 basehttp 25636 2852 "GET /media/media/products/airpod_wvezc0 HTTP/1.1" 404 3142
+INFO 2026-05-10 16:10:49,895 basehttp 25636 25776 "OPTIONS /api/products-suggestions/?query=d HTTP/1.1" 200 0
+INFO 2026-05-10 16:10:49,904 basehttp 25636 25776 "GET /api/products-suggestions/?query=d HTTP/1.1" 200 2
+INFO 2026-05-10 16:10:51,669 basehttp 25636 25776 "GET /api/products-suggestions/?query=a HTTP/1.1" 200 383
+WARNING 2026-05-10 16:10:52,001 log 25636 22908 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-10 16:10:52,010 log 25636 21788 Not Found: /media/media/products/airpod_wvezc0
+WARNING 2026-05-10 16:10:52,011 basehttp 25636 22908 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+WARNING 2026-05-10 16:10:52,011 basehttp 25636 21788 "GET /media/media/products/airpod_wvezc0 HTTP/1.1" 404 3142
+INFO 2026-05-10 16:17:14,799 autoreload 24324 23384 Watching for file changes with StatReloader
+INFO 2026-05-10 16:17:15,426 basehttp 24324 23308 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-10 16:17:15,430 basehttp 24324 26576 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-10 16:17:15,433 basehttp 24324 21108 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-10 16:17:15,462 basehttp 24324 19536 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-10 16:17:31,392 basehttp 24324 25948 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-10 16:17:31,397 basehttp 24324 23088 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-10 16:17:31,409 basehttp 24324 20780 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-10 16:17:31,419 basehttp 24324 16904 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-10 16:17:31,428 basehttp 24324 25676 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-10 16:17:31,436 basehttp 24324 23088 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-10 16:17:31,436 basehttp 24324 20780 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-10 16:17:31,436 basehttp 24324 16904 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-10 16:17:31,443 basehttp 24324 25676 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-10 16:17:31,456 basehttp 24324 25948 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-10 16:17:31,468 basehttp 24324 23088 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-10 16:17:31,474 basehttp 24324 16904 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-10 16:17:31,479 basehttp 24324 21672 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-10 16:17:31,519 basehttp 24324 25676 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-10 16:17:31,523 basehttp 24324 20780 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-10 16:17:31,564 basehttp 24324 21672 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+WARNING 2026-05-10 16:17:32,045 log 24324 21672 Unauthorized: /api/products-suggestions/
+WARNING 2026-05-10 16:17:32,046 basehttp 24324 21672 "GET /api/products-suggestions/?query=a HTTP/1.1" 401 172
+INFO 2026-05-10 16:17:32,062 basehttp 24324 21672 "POST /api/token/refresh/ HTTP/1.1" 200 381
+INFO 2026-05-10 16:17:32,082 basehttp 24324 21672 "GET /api/products-suggestions/?query=a HTTP/1.1" 200 383
+WARNING 2026-05-10 16:17:32,414 log 24324 7308 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-10 16:17:32,416 log 24324 21280 Not Found: /media/media/products/airpod_wvezc0
+WARNING 2026-05-10 16:17:32,417 basehttp 24324 7308 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+WARNING 2026-05-10 16:17:32,418 basehttp 24324 21280 "GET /media/media/products/airpod_wvezc0 HTTP/1.1" 404 3142
+INFO 2026-05-10 16:22:31,366 basehttp 24324 21672 - Broken pipe from ('127.0.0.1', 53811)
+WARNING 2026-05-10 16:22:35,403 log 24324 21312 Unauthorized: /api/products-suggestions/
+WARNING 2026-05-10 16:22:35,412 basehttp 24324 21312 "GET /api/products-suggestions/?query=a HTTP/1.1" 401 172
+INFO 2026-05-10 16:22:39,185 basehttp 24324 21312 "POST /api/token/refresh/ HTTP/1.1" 200 381
+INFO 2026-05-10 16:22:39,914 basehttp 24324 21312 "GET /api/products-suggestions/?query=a HTTP/1.1" 200 383
+WARNING 2026-05-10 16:24:05,221 log 24324 20044 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-10 16:24:16,229 basehttp 24324 20044 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+WARNING 2026-05-10 16:24:16,244 log 24324 19240 Not Found: /media/media/products/airpod_wvezc0
+INFO 2026-05-10 16:24:17,225 basehttp 24324 21312 "GET /api/products-suggestions/?query=a HTTP/1.1" 200 383
+WARNING 2026-05-10 16:24:18,929 basehttp 24324 19240 "GET /media/media/products/airpod_wvezc0 HTTP/1.1" 404 3142
+WARNING 2026-05-10 16:24:22,133 log 24324 20712 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-10 16:24:22,257 basehttp 24324 20712 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+INFO 2026-05-11 12:10:07,389 basehttp 24324 26820 "OPTIONS /api/products-suggestions/?query=a HTTP/1.1" 200 0
+WARNING 2026-05-11 12:10:07,469 log 24324 26820 Unauthorized: /api/products-suggestions/
+WARNING 2026-05-11 12:10:07,470 basehttp 24324 26820 "GET /api/products-suggestions/?query=a HTTP/1.1" 401 172
+INFO 2026-05-11 12:10:07,482 basehttp 24324 26820 "OPTIONS /api/token/refresh/ HTTP/1.1" 200 0
+INFO 2026-05-11 12:10:07,662 basehttp 24324 26820 "POST /api/token/refresh/ HTTP/1.1" 200 381
+INFO 2026-05-11 12:10:07,725 basehttp 24324 26820 "GET /api/products-suggestions/?query=a HTTP/1.1" 200 383
+WARNING 2026-05-11 12:10:08,410 log 24324 16080 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-11 12:10:08,430 log 24324 25644 Not Found: /media/media/products/airpod_wvezc0
+WARNING 2026-05-11 12:10:08,434 basehttp 24324 16080 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+WARNING 2026-05-11 12:10:08,441 basehttp 24324 25644 "GET /media/media/products/airpod_wvezc0 HTTP/1.1" 404 3142
+INFO 2026-05-11 12:13:54,367 basehttp 24324 26820 "GET /api/products-suggestions/?query=a HTTP/1.1" 200 383
+INFO 2026-05-11 12:14:09,308 autoreload 24324 23384 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-11 12:14:15,951 autoreload 20844 12476 Watching for file changes with StatReloader
+INFO 2026-05-11 12:14:19,393 basehttp 20844 14356 "GET /api/products-suggestions/?query=a HTTP/1.1" 200 383
+WARNING 2026-05-11 12:14:19,724 log 20844 9552 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-11 12:14:19,731 log 20844 27988 Not Found: /media/media/products/airpod_wvezc0
+WARNING 2026-05-11 12:14:19,732 basehttp 20844 9552 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+WARNING 2026-05-11 12:14:19,734 basehttp 20844 27988 "GET /media/media/products/airpod_wvezc0 HTTP/1.1" 404 3142
+INFO 2026-05-11 12:14:31,079 basehttp 20844 14356 "OPTIONS /api/deals_of_the_day/ HTTP/1.1" 200 0
+INFO 2026-05-11 12:14:31,079 basehttp 20844 24152 "OPTIONS /api/products/?category_id=1 HTTP/1.1" 200 0
+INFO 2026-05-11 12:14:31,109 basehttp 20844 14356 "OPTIONS /api/products/?category_id=3 HTTP/1.1" 200 0
+INFO 2026-05-11 12:14:31,113 basehttp 20844 24152 "OPTIONS /api/products/?category_id=9 HTTP/1.1" 200 0
+INFO 2026-05-11 12:14:31,127 basehttp 20844 14356 "OPTIONS /api/products/?category_id=8 HTTP/1.1" 200 0
+INFO 2026-05-11 12:14:31,192 basehttp 20844 24152 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-11 12:14:31,192 basehttp 20844 14356 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-11 12:14:31,207 basehttp 20844 24152 "OPTIONS /api/products/?category_id=7 HTTP/1.1" 200 0
+INFO 2026-05-11 12:14:31,211 basehttp 20844 14356 "OPTIONS /api/products/?category_id=4 HTTP/1.1" 200 0
+INFO 2026-05-11 12:14:31,218 basehttp 20844 14356 "OPTIONS /api/products/?category_id=9 HTTP/1.1" 200 0
+INFO 2026-05-11 12:14:31,218 basehttp 20844 24152 "OPTIONS /api/products/?category_id=2 HTTP/1.1" 200 0
+INFO 2026-05-11 12:14:31,224 basehttp 20844 14356 "OPTIONS /api/products/?category_id=8 HTTP/1.1" 200 0
+INFO 2026-05-11 12:14:31,227 basehttp 20844 24152 "OPTIONS /api/products/?category_id=3 HTTP/1.1" 200 0
+INFO 2026-05-11 12:14:31,230 basehttp 20844 14356 "OPTIONS /api/products/?category_id=7 HTTP/1.1" 200 0
+INFO 2026-05-11 12:14:31,235 basehttp 20844 24152 "OPTIONS /api/products/?category_id=4 HTTP/1.1" 200 0
+INFO 2026-05-11 12:14:31,237 basehttp 20844 14356 "OPTIONS /api/products/?category_id=2 HTTP/1.1" 200 0
+INFO 2026-05-11 12:14:31,266 basehttp 20844 24152 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-11 12:14:31,268 basehttp 20844 14356 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-11 12:14:31,282 basehttp 20844 24152 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-11 12:14:31,308 basehttp 20844 14356 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-11 12:14:31,348 basehttp 20844 14356 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-11 12:14:31,368 basehttp 20844 24152 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-11 12:14:31,370 basehttp 20844 14356 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-11 12:14:31,392 basehttp 20844 14356 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-11 12:14:31,409 basehttp 20844 24152 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-11 12:14:31,439 basehttp 20844 24152 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-11 12:14:31,440 basehttp 20844 22044 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-11 12:14:31,459 basehttp 20844 22212 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-11 12:14:31,492 basehttp 20844 6532 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-11 12:14:31,503 basehttp 20844 20672 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-11 12:14:33,925 basehttp 20844 20672 "GET /api/products-suggestions/?query=a HTTP/1.1" 200 383
+WARNING 2026-05-11 12:14:33,985 log 20844 12528 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-11 12:14:33,988 basehttp 20844 12528 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+WARNING 2026-05-11 12:14:34,301 log 20844 21052 Not Found: /media/media/products/airpod_wvezc0
+WARNING 2026-05-11 12:14:34,303 basehttp 20844 21052 "GET /media/media/products/airpod_wvezc0 HTTP/1.1" 404 3142
+INFO 2026-05-11 12:14:58,807 basehttp 20844 22044 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-11 12:14:58,807 basehttp 20844 22212 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-11 12:14:58,807 basehttp 20844 24152 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-11 12:14:58,812 basehttp 20844 14356 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-11 12:14:58,831 basehttp 20844 6532 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-11 12:14:58,863 basehttp 20844 22212 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-11 12:14:58,863 basehttp 20844 20672 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-11 12:14:58,872 basehttp 20844 22044 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-11 12:14:58,893 basehttp 20844 24152 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-11 12:14:58,901 basehttp 20844 14356 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-11 12:14:58,910 basehttp 20844 6532 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-11 12:14:58,915 basehttp 20844 22212 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-11 12:14:58,934 basehttp 20844 20672 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-11 12:14:58,975 basehttp 20844 22044 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-11 12:14:58,994 basehttp 20844 24152 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-11 12:14:59,013 basehttp 20844 14356 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-11 13:47:54,669 basehttp 20844 22436 "GET /api/products-suggestions/?query=a HTTP/1.1" 200 383
+WARNING 2026-05-11 13:47:55,025 log 20844 25988 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-11 13:47:55,031 log 20844 24756 Not Found: /media/media/products/airpod_wvezc0
+WARNING 2026-05-11 13:47:55,032 basehttp 20844 25988 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+WARNING 2026-05-11 13:47:55,032 basehttp 20844 24756 "GET /media/media/products/airpod_wvezc0 HTTP/1.1" 404 3142
+INFO 2026-05-11 13:49:20,370 basehttp 20844 22436 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-11 13:49:20,384 basehttp 20844 22436 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-11 13:49:20,392 basehttp 20844 22436 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-11 13:49:20,402 basehttp 20844 22436 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-11 13:49:20,409 basehttp 20844 22436 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-11 13:49:20,435 basehttp 20844 22436 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-11 13:49:20,444 basehttp 20844 22436 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-11 13:49:20,467 basehttp 20844 22436 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-11 13:49:20,488 basehttp 20844 22436 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-11 13:49:20,506 basehttp 20844 22436 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-11 13:49:20,516 basehttp 20844 22436 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-11 13:49:20,523 basehttp 20844 22436 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-11 13:49:20,534 basehttp 20844 22436 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-11 13:49:20,543 basehttp 20844 22436 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-11 13:49:20,552 basehttp 20844 22436 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-11 13:49:20,574 basehttp 20844 22436 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-11 13:55:55,975 autoreload 20844 12476 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-11 13:56:00,522 autoreload 5632 26912 Watching for file changes with StatReloader
+INFO 2026-05-11 13:56:21,225 autoreload 5632 26912 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-11 13:56:22,936 autoreload 28556 11988 Watching for file changes with StatReloader
+INFO 2026-05-11 13:56:33,582 autoreload 28556 11988 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-11 13:56:36,127 autoreload 21828 16460 Watching for file changes with StatReloader
+INFO 2026-05-11 13:56:39,675 autoreload 21828 16460 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-11 13:56:42,033 autoreload 7584 23732 Watching for file changes with StatReloader
+INFO 2026-05-11 13:57:03,277 autoreload 7584 23732 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-11 13:57:05,468 autoreload 23160 25620 Watching for file changes with StatReloader
+INFO 2026-05-11 13:57:13,824 autoreload 23160 25620 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-11 13:57:15,812 autoreload 21304 7600 Watching for file changes with StatReloader
+INFO 2026-05-11 13:57:27,697 autoreload 21304 7600 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-11 13:57:29,613 autoreload 20916 21972 Watching for file changes with StatReloader
+INFO 2026-05-11 13:57:35,487 autoreload 20916 21972 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-11 13:57:36,669 autoreload 8928 18028 Watching for file changes with StatReloader
+INFO 2026-05-11 13:58:34,315 autoreload 8928 18028 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-11 13:58:35,687 autoreload 17780 21080 Watching for file changes with StatReloader
+INFO 2026-05-11 13:58:46,015 autoreload 17780 21080 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-11 13:58:47,954 autoreload 15536 11708 Watching for file changes with StatReloader
+INFO 2026-05-11 13:58:54,371 autoreload 15536 11708 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-11 13:58:56,302 autoreload 25232 11988 Watching for file changes with StatReloader
+INFO 2026-05-11 13:59:10,007 basehttp 25232 22948 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-11 13:59:10,014 basehttp 25232 8336 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-11 13:59:10,029 basehttp 25232 28080 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-11 13:59:10,034 basehttp 25232 22948 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-11 13:59:10,044 basehttp 25232 8336 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-11 13:59:10,071 basehttp 25232 22948 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-11 13:59:10,072 basehttp 25232 28080 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-11 13:59:10,083 basehttp 25232 8336 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-11 13:59:10,088 basehttp 25232 22948 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-11 13:59:10,092 basehttp 25232 28080 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-11 13:59:10,101 basehttp 25232 26980 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-11 13:59:10,102 basehttp 25232 25236 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-11 13:59:10,102 basehttp 25232 18720 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-11 13:59:10,155 basehttp 25232 26980 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-11 13:59:10,163 basehttp 25232 25236 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-11 13:59:10,170 basehttp 25232 18720 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-11 14:03:54,515 basehttp 25232 28536 "OPTIONS /api/user/orders/ HTTP/1.1" 200 0
+INFO 2026-05-11 14:03:54,515 basehttp 25232 8040 "OPTIONS /api/user/orders/ HTTP/1.1" 200 0
+WARNING 2026-05-11 14:03:54,561 log 25232 8040 Unauthorized: /api/user/orders/
+WARNING 2026-05-11 14:03:54,562 basehttp 25232 8040 "GET /api/user/orders/ HTTP/1.1" 401 172
+WARNING 2026-05-11 14:03:54,568 log 25232 8040 Unauthorized: /api/user/orders/
+WARNING 2026-05-11 14:03:54,576 basehttp 25232 8040 "GET /api/user/orders/ HTTP/1.1" 401 172
+INFO 2026-05-11 14:03:54,605 basehttp 25232 28536 "POST /api/token/refresh/ HTTP/1.1" 200 381
+INFO 2026-05-11 14:03:54,605 basehttp 25232 8040 "POST /api/token/refresh/ HTTP/1.1" 200 381
+INFO 2026-05-11 14:03:54,640 basehttp 25232 8040 "GET /api/user/orders/ HTTP/1.1" 200 1241
+INFO 2026-05-11 14:03:54,662 basehttp 25232 8040 "GET /api/user/orders/ HTTP/1.1" 200 1241
+INFO 2026-05-11 14:03:59,585 basehttp 25232 23280 "GET /admin/main_app/order/ HTTP/1.1" 200 62814
+INFO 2026-05-11 14:03:59,975 basehttp 25232 23280 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-11 14:04:03,051 basehttp 25232 23280 "GET /admin/main_app/order/33/change/ HTTP/1.1" 200 30297
+INFO 2026-05-11 14:04:03,105 basehttp 25232 23280 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-05-11 14:04:03,290 basehttp 25232 14968 "GET /static/admin/js/inlines.js HTTP/1.1" 200 15526
+INFO 2026-05-11 14:04:03,292 basehttp 25232 8392 "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+INFO 2026-05-11 14:04:03,325 basehttp 25232 14968 "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+INFO 2026-05-11 14:04:03,446 basehttp 25232 14968 "GET /favicon.ico HTTP/1.1" 200 692
+ERROR 2026-05-11 14:04:15,587 email_helpers 25232 14968 Zoho Mail API error: {"status":{"code":500,"description":"Internal Error"},"data":{"moreInfo":"Unable to send message;Reason:550 5.4.6 Unusual sending activity detected. <a href=https://www.zoho.com/mail/help/usage-policy.html target=_blank>Learn more.</a> To unblock <a href=https://mail.zoho.com/UnblockMe target=_blank>Click here.</a>"}}
+ERROR 2026-05-11 14:04:15,589 email_helpers 25232 14968 Failed to send order status email to akannioluwaseun416@gmail.com: Zoho Mail API error: {"status":{"code":500,"description":"Internal Error"},"data":{"moreInfo":"Unable to send message;Reason:550 5.4.6 Unusual sending activity detected. <a href=https://www.zoho.com/mail/help/usage-policy.html target=_blank>Learn more.</a> To unblock <a href=https://mail.zoho.com/UnblockMe target=_blank>Click here.</a>"}}
+Traceback (most recent call last):
+  File "C:\Users\YOU\Documents\Triple_A\main_app\utils\email_helpers.py", line 264, in send_order_status_email
+    send_zoho_mail(user_email, subject, plain_message, html_message)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\main_app\utils\email_helpers.py", line 96, in send_zoho_mail
+    raise Exception(f"Zoho Mail API error: {resp.text}")
+Exception: Zoho Mail API error: {"status":{"code":500,"description":"Internal Error"},"data":{"moreInfo":"Unable to send message;Reason:550 5.4.6 Unusual sending activity detected. <a href=https://www.zoho.com/mail/help/usage-policy.html target=_blank>Learn more.</a> To unblock <a href=https://mail.zoho.com/UnblockMe target=_blank>Click here.</a>"}}
+ERROR 2026-05-11 14:04:15,596 models 25232 14968 Failed to send status update email for order 33: Zoho Mail API error: {"status":{"code":500,"description":"Internal Error"},"data":{"moreInfo":"Unable to send message;Reason:550 5.4.6 Unusual sending activity detected. <a href=https://www.zoho.com/mail/help/usage-policy.html target=_blank>Learn more.</a> To unblock <a href=https://mail.zoho.com/UnblockMe target=_blank>Click here.</a>"}}
+INFO 2026-05-11 14:04:15,635 basehttp 25232 14968 "POST /admin/main_app/order/33/change/ HTTP/1.1" 302 0
+INFO 2026-05-11 14:04:15,913 basehttp 25232 14968 "GET /admin/main_app/order/ HTTP/1.1" 200 63039
+INFO 2026-05-11 14:04:15,974 basehttp 25232 14968 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-05-11 14:04:16,112 basehttp 25232 14968 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-11 14:04:26,320 basehttp 25232 8040 "GET /api/user/orders/ HTTP/1.1" 200 1239
+INFO 2026-05-11 14:04:26,358 basehttp 25232 8040 "GET /api/user/orders/ HTTP/1.1" 200 1239
+INFO 2026-05-11 14:04:31,127 basehttp 25232 8040 "OPTIONS /api/orders/33/cancel-auth/ HTTP/1.1" 200 0
+ERROR 2026-05-11 14:04:35,344 email_helpers 25232 8040 Zoho Mail API error: {"status":{"code":500,"description":"Internal Error"},"data":{"moreInfo":"Unable to send message;Reason:550 5.4.6 Unusual sending activity detected. <a href=https://www.zoho.com/mail/help/usage-policy.html target=_blank>Learn more.</a> To unblock <a href=https://mail.zoho.com/UnblockMe target=_blank>Click here.</a>"}}
+ERROR 2026-05-11 14:04:35,347 email_helpers 25232 8040 Failed to send order status email to akannioluwaseun416@gmail.com: Zoho Mail API error: {"status":{"code":500,"description":"Internal Error"},"data":{"moreInfo":"Unable to send message;Reason:550 5.4.6 Unusual sending activity detected. <a href=https://www.zoho.com/mail/help/usage-policy.html target=_blank>Learn more.</a> To unblock <a href=https://mail.zoho.com/UnblockMe target=_blank>Click here.</a>"}}
+Traceback (most recent call last):
+  File "C:\Users\YOU\Documents\Triple_A\main_app\utils\email_helpers.py", line 264, in send_order_status_email
+    send_zoho_mail(user_email, subject, plain_message, html_message)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\main_app\utils\email_helpers.py", line 96, in send_zoho_mail
+    raise Exception(f"Zoho Mail API error: {resp.text}")
+Exception: Zoho Mail API error: {"status":{"code":500,"description":"Internal Error"},"data":{"moreInfo":"Unable to send message;Reason:550 5.4.6 Unusual sending activity detected. <a href=https://www.zoho.com/mail/help/usage-policy.html target=_blank>Learn more.</a> To unblock <a href=https://mail.zoho.com/UnblockMe target=_blank>Click here.</a>"}}
+ERROR 2026-05-11 14:04:35,354 models 25232 8040 Failed to send status update email for order 33: Zoho Mail API error: {"status":{"code":500,"description":"Internal Error"},"data":{"moreInfo":"Unable to send message;Reason:550 5.4.6 Unusual sending activity detected. <a href=https://www.zoho.com/mail/help/usage-policy.html target=_blank>Learn more.</a> To unblock <a href=https://mail.zoho.com/UnblockMe target=_blank>Click here.</a>"}}
+INFO 2026-05-11 14:04:35,379 basehttp 25232 8040 "POST /api/orders/33/cancel-auth/ HTTP/1.1" 200 56
+INFO 2026-05-11 14:04:35,443 basehttp 25232 8040 "GET /api/user/orders/ HTTP/1.1" 200 1241
+INFO 2026-05-11 14:04:42,355 basehttp 25232 28536 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-11 14:04:42,366 basehttp 25232 8040 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-11 14:04:42,372 basehttp 25232 28284 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-11 14:04:42,374 basehttp 25232 28536 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-11 14:04:42,383 basehttp 25232 8040 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-11 14:04:42,424 basehttp 25232 28284 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-11 14:04:42,492 basehttp 25232 28536 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-11 14:04:42,509 basehttp 25232 8040 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-11 14:04:42,509 basehttp 25232 28284 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-11 14:04:42,522 basehttp 25232 8040 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-11 14:04:42,529 basehttp 25232 28284 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-11 14:04:42,534 basehttp 25232 8040 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-11 14:04:42,545 basehttp 25232 28536 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-11 14:04:42,547 basehttp 25232 28284 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-11 14:04:42,549 basehttp 25232 8040 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-11 14:04:42,576 basehttp 25232 28536 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-12 13:40:00,026 basehttp 25232 13208 "GET /admin/main_app/order/ HTTP/1.1" 200 62814
+INFO 2026-05-12 13:40:00,527 basehttp 25232 13208 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-12 13:40:41,167 basehttp 25232 26552 "OPTIONS /api/deals_of_the_day/ HTTP/1.1" 200 0
+INFO 2026-05-12 13:40:41,174 basehttp 25232 26552 "OPTIONS /api/products/?category_id=1 HTTP/1.1" 200 0
+INFO 2026-05-12 13:40:41,174 basehttp 25232 21832 "OPTIONS /api/products/?category_id=9 HTTP/1.1" 200 0
+INFO 2026-05-12 13:40:41,174 basehttp 25232 23060 "OPTIONS /api/products/?category_id=3 HTTP/1.1" 200 0
+INFO 2026-05-12 13:40:41,180 basehttp 25232 26552 "OPTIONS /api/products/?category_id=8 HTTP/1.1" 200 0
+INFO 2026-05-12 13:40:41,183 basehttp 25232 21832 "OPTIONS /api/products/?category_id=4 HTTP/1.1" 200 0
+INFO 2026-05-12 13:40:41,186 basehttp 25232 23060 "OPTIONS /api/products/?category_id=7 HTTP/1.1" 200 0
+INFO 2026-05-12 13:40:41,211 basehttp 25232 23060 "OPTIONS /api/products/?category_id=1 HTTP/1.1" 200 0
+INFO 2026-05-12 13:40:41,212 basehttp 25232 26552 "OPTIONS /api/products/?category_id=2 HTTP/1.1" 200 0
+INFO 2026-05-12 13:40:41,212 basehttp 25232 21832 "OPTIONS /api/deals_of_the_day/ HTTP/1.1" 200 0
+INFO 2026-05-12 13:40:41,212 basehttp 25232 21176 "OPTIONS /api/products/?category_id=9 HTTP/1.1" 200 0
+INFO 2026-05-12 13:40:41,226 basehttp 25232 23060 "OPTIONS /api/products/?category_id=3 HTTP/1.1" 200 0
+INFO 2026-05-12 13:40:41,231 basehttp 25232 21176 "OPTIONS /api/products/?category_id=4 HTTP/1.1" 200 0
+INFO 2026-05-12 13:40:41,232 basehttp 25232 26552 "OPTIONS /api/products/?category_id=8 HTTP/1.1" 200 0
+INFO 2026-05-12 13:40:41,233 basehttp 25232 21832 "OPTIONS /api/products/?category_id=7 HTTP/1.1" 200 0
+INFO 2026-05-12 13:40:41,236 basehttp 25232 23060 "OPTIONS /api/products/?category_id=2 HTTP/1.1" 200 0
+INFO 2026-05-12 13:40:41,285 basehttp 25232 21176 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-12 13:40:41,318 basehttp 25232 20956 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-12 13:40:41,319 basehttp 25232 9552 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-12 13:40:41,322 basehttp 25232 21176 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-12 13:40:41,334 basehttp 25232 21832 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-12 13:40:41,340 basehttp 25232 23060 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-12 13:40:41,345 basehttp 25232 26552 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-12 13:40:41,427 basehttp 25232 21176 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-12 13:40:41,442 basehttp 25232 21832 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-12 13:40:41,460 basehttp 25232 20956 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-12 13:40:41,473 basehttp 25232 23060 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-12 13:40:41,473 basehttp 25232 26552 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-12 13:40:41,484 basehttp 25232 9552 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-12 13:40:41,534 basehttp 25232 21176 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-12 13:40:41,630 basehttp 25232 21832 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-12 13:40:41,717 basehttp 25232 23060 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-12 13:41:55,279 basehttp 25232 23060 "GET /api/products-suggestions/?query=a HTTP/1.1" 200 383
+WARNING 2026-05-12 13:41:55,747 log 25232 7520 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-12 13:41:55,752 log 25232 22644 Not Found: /media/media/products/airpod_wvezc0
+WARNING 2026-05-12 13:41:55,755 basehttp 25232 7520 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+WARNING 2026-05-12 13:41:55,759 basehttp 25232 22644 "GET /media/media/products/airpod_wvezc0 HTTP/1.1" 404 3142
+INFO 2026-05-12 13:59:59,743 autoreload 25232 11988 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-12 14:00:07,000 autoreload 16092 22140 Watching for file changes with StatReloader
+INFO 2026-05-12 14:00:16,479 autoreload 16092 22140 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-12 14:00:18,720 autoreload 18936 27072 Watching for file changes with StatReloader
+INFO 2026-05-12 14:00:25,060 autoreload 18936 27072 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-12 14:00:26,729 autoreload 9352 13528 Watching for file changes with StatReloader
+INFO 2026-05-12 14:00:33,698 autoreload 9352 13528 C:\Users\YOU\Documents\Triple_A\main_app\views.py changed, reloading.
+INFO 2026-05-12 14:00:35,532 autoreload 4896 27132 Watching for file changes with StatReloader
+WARNING 2026-05-14 13:23:30,015 log 4896 8788 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-14 13:23:30,016 log 4896 29408 Not Found: /media/media/products/airpod_wvezc0
+WARNING 2026-05-14 13:23:30,026 basehttp 4896 8788 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+WARNING 2026-05-14 13:23:30,029 basehttp 4896 29408 "GET /media/media/products/airpod_wvezc0 HTTP/1.1" 404 3142
+WARNING 2026-05-14 13:23:31,801 log 4896 27708 Not Found: /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar
+WARNING 2026-05-14 13:23:31,803 basehttp 4896 27708 "GET /media/media/products/41ovDgtEN3L._AC_SL1176__p7vlar HTTP/1.1" 404 3193
+WARNING 2026-05-14 13:23:32,129 log 4896 26308 Not Found: /media/media/products/airpod_wvezc0
+WARNING 2026-05-14 13:23:32,130 basehttp 4896 26308 "GET /media/media/products/airpod_wvezc0 HTTP/1.1" 404 3142
+INFO 2026-05-20 14:09:23,877 autoreload 5232 23524 Watching for file changes with StatReloader
+INFO 2026-05-20 14:10:06,618 basehttp 5232 16556 "OPTIONS /api/deals_of_the_day/ HTTP/1.1" 200 0
+INFO 2026-05-20 14:10:06,630 basehttp 5232 16556 "OPTIONS /api/products/?category_id=4 HTTP/1.1" 200 0
+INFO 2026-05-20 14:10:06,648 basehttp 5232 16556 "OPTIONS /api/products/?category_id=2 HTTP/1.1" 200 0
+INFO 2026-05-20 14:10:06,661 basehttp 5232 5580 "OPTIONS /api/products/?category_id=1 HTTP/1.1" 200 0
+INFO 2026-05-20 14:10:06,665 basehttp 5232 16556 "OPTIONS /api/deals_of_the_day/ HTTP/1.1" 200 0
+INFO 2026-05-20 14:10:06,677 basehttp 5232 16556 "OPTIONS /api/products/?category_id=9 HTTP/1.1" 200 0
+INFO 2026-05-20 14:10:06,677 basehttp 5232 5580 "OPTIONS /api/products/?category_id=1 HTTP/1.1" 200 0
+INFO 2026-05-20 14:10:06,686 basehttp 5232 30408 "OPTIONS /api/products/?category_id=9 HTTP/1.1" 200 0
+INFO 2026-05-20 14:10:06,688 basehttp 5232 16556 "OPTIONS /api/products/?category_id=8 HTTP/1.1" 200 0
+INFO 2026-05-20 14:10:06,693 basehttp 5232 5580 "OPTIONS /api/products/?category_id=3 HTTP/1.1" 200 0
+INFO 2026-05-20 14:10:06,703 basehttp 5232 30408 "OPTIONS /api/products/?category_id=7 HTTP/1.1" 200 0
+INFO 2026-05-20 14:10:06,709 basehttp 5232 2592 "OPTIONS /api/products/?category_id=3 HTTP/1.1" 200 0
+INFO 2026-05-20 14:10:06,712 basehttp 5232 16556 "OPTIONS /api/products/?category_id=4 HTTP/1.1" 200 0
+INFO 2026-05-20 14:10:06,725 basehttp 5232 21344 "OPTIONS /api/products/?category_id=8 HTTP/1.1" 200 0
+INFO 2026-05-20 14:10:06,728 basehttp 5232 5580 "OPTIONS /api/products/?category_id=2 HTTP/1.1" 200 0
+INFO 2026-05-20 14:10:06,749 basehttp 5232 14104 "OPTIONS /api/products/?category_id=7 HTTP/1.1" 200 0
+INFO 2026-05-20 14:10:06,840 basehttp 5232 21344 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-20 14:10:06,860 basehttp 5232 16556 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-20 14:10:06,939 basehttp 5232 5580 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-20 14:10:06,945 basehttp 5232 2592 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-20 14:10:06,971 basehttp 5232 30408 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-20 14:10:06,983 basehttp 5232 14104 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-20 14:10:06,994 basehttp 5232 21344 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-20 14:10:07,000 basehttp 5232 16556 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-20 14:10:07,000 basehttp 5232 5580 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-20 14:10:07,030 basehttp 5232 2592 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-20 14:10:07,054 basehttp 5232 30408 "GET /api/products/?category_id=2 HTTP/1.1" 200 2810
+INFO 2026-05-20 14:10:07,058 basehttp 5232 14104 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-20 14:10:07,084 basehttp 5232 16556 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-20 14:10:07,123 basehttp 5232 21344 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-20 14:10:07,129 basehttp 5232 5580 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-20 14:10:07,139 basehttp 5232 2592 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-20 14:10:16,500 basehttp 5232 25652 "GET /admin/main_app/order/ HTTP/1.1" 302 0
+INFO 2026-05-20 14:10:16,584 basehttp 5232 25652 "GET /admin/login/?next=/admin/main_app/order/ HTTP/1.1" 200 4187
+INFO 2026-05-20 14:10:16,774 basehttp 5232 25652 "GET /static/admin/css/login.css HTTP/1.1" 200 951
+INFO 2026-05-20 14:10:16,869 basehttp 5232 25652 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-20 14:10:32,149 basehttp 5232 25652 "POST /admin/login/?next=/admin/main_app/order/ HTTP/1.1" 200 4352
+INFO 2026-05-20 14:10:32,523 basehttp 5232 25652 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-20 14:10:57,022 basehttp 5232 25652 "POST /admin/login/?next=/admin/main_app/order/ HTTP/1.1" 200 4352
+INFO 2026-05-20 14:10:57,119 basehttp 5232 25652 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-20 14:11:15,817 basehttp 5232 10888 "POST /admin/login/?next=/admin/main_app/order/ HTTP/1.1" 200 4352
+INFO 2026-05-20 14:11:16,122 basehttp 5232 10888 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-20 14:11:34,309 basehttp 5232 10888 "POST /admin/login/?next=/admin/main_app/order/ HTTP/1.1" 302 0
+INFO 2026-05-20 14:11:34,778 basehttp 5232 10888 "GET /admin/main_app/order/ HTTP/1.1" 200 62814
+INFO 2026-05-20 14:11:34,858 basehttp 5232 10888 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-05-20 14:11:35,342 basehttp 5232 10888 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-20 14:11:41,095 basehttp 5232 10888 "GET /admin/main_app/product/ HTTP/1.1" 200 20028
+INFO 2026-05-20 14:11:41,145 basehttp 5232 10888 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-05-20 14:11:41,331 basehttp 5232 10888 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-20 14:11:55,240 basehttp 5232 25864 "OPTIONS /api/products/apple/ HTTP/1.1" 200 0
+INFO 2026-05-20 14:11:55,247 basehttp 5232 21540 "OPTIONS /api/products/apple/ HTTP/1.1" 200 0
+INFO 2026-05-20 14:11:55,270 basehttp 5232 25864 "GET /api/products/apple/ HTTP/1.1" 200 1176
+INFO 2026-05-20 14:11:55,310 basehttp 5232 25864 "GET /api/products/apple/ HTTP/1.1" 200 1176
+INFO 2026-05-20 14:11:55,483 basehttp 5232 25864 "GET /api/products/apple/ HTTP/1.1" 200 1176
+INFO 2026-05-20 14:11:55,506 basehttp 5232 25864 "GET /api/products/apple/ HTTP/1.1" 200 1176
+INFO 2026-05-20 14:12:07,543 basehttp 5232 10888 "GET /admin/main_app/product/add/ HTTP/1.1" 200 22773
+INFO 2026-05-20 14:12:07,601 basehttp 5232 10888 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-05-20 14:12:07,731 basehttp 5232 10888 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-20 14:13:10,485 basehttp 5232 8008 "POST /admin/main_app/product/add/ HTTP/1.1" 302 0
+INFO 2026-05-20 14:13:10,558 basehttp 5232 8008 "GET /admin/main_app/product/ HTTP/1.1" 200 21029
+INFO 2026-05-20 14:13:10,874 basehttp 5232 8008 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-05-20 14:13:11,174 basehttp 5232 8008 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-20 14:13:23,554 basehttp 5232 1064 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-20 14:13:23,570 basehttp 5232 1064 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-20 14:13:23,586 basehttp 5232 1064 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-20 14:13:23,599 basehttp 5232 3196 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-20 14:13:23,605 basehttp 5232 1064 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-20 14:13:23,633 basehttp 5232 3196 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-20 14:13:23,645 basehttp 5232 13860 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-20 14:13:23,646 basehttp 5232 8568 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-20 14:13:23,674 basehttp 5232 3196 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-20 14:13:23,674 basehttp 5232 13860 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-20 14:13:23,690 basehttp 5232 8568 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-20 14:13:23,697 basehttp 5232 20788 "GET /api/products/?category_id=2 HTTP/1.1" 200 3890
+INFO 2026-05-20 14:13:23,705 basehttp 5232 23496 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-20 14:13:23,708 basehttp 5232 1064 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-20 14:13:23,743 basehttp 5232 23496 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-20 14:13:23,764 basehttp 5232 20788 "GET /api/products/?category_id=2 HTTP/1.1" 200 3890
+INFO 2026-05-20 14:13:31,807 basehttp 5232 20788 "OPTIONS /api/products/iphone-17/ HTTP/1.1" 200 0
+INFO 2026-05-20 14:13:31,810 basehttp 5232 23496 "OPTIONS /api/products/iphone-17/ HTTP/1.1" 200 0
+INFO 2026-05-20 14:13:31,845 basehttp 5232 23496 "GET /api/products/iphone-17/ HTTP/1.1" 200 1079
+INFO 2026-05-20 14:13:31,881 basehttp 5232 23496 "GET /api/products/iphone-17/ HTTP/1.1" 200 1079
+INFO 2026-05-20 14:13:32,342 basehttp 5232 23496 "GET /api/products/iphone-17/ HTTP/1.1" 200 1079
+INFO 2026-05-20 14:13:32,395 basehttp 5232 23496 "GET /api/products/iphone-17/ HTTP/1.1" 200 1079
+INFO 2026-05-20 14:13:42,381 basehttp 5232 8568 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-20 14:13:42,387 basehttp 5232 13860 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-20 14:13:42,388 basehttp 5232 1064 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-20 14:13:42,390 basehttp 5232 3196 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-20 14:13:42,395 basehttp 5232 20788 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-20 14:13:42,410 basehttp 5232 8568 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-20 14:13:42,427 basehttp 5232 23496 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-20 14:13:42,488 basehttp 5232 13860 "GET /api/products/?category_id=2 HTTP/1.1" 200 3890
+INFO 2026-05-20 14:13:42,488 basehttp 5232 20788 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-20 14:13:42,492 basehttp 5232 1064 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-20 14:13:42,492 basehttp 5232 3196 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-20 14:13:42,500 basehttp 5232 8568 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-20 14:13:42,530 basehttp 5232 23496 "GET /api/products/?category_id=1 HTTP/1.1" 200 1178
+INFO 2026-05-20 14:13:42,537 basehttp 5232 20788 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-20 14:13:42,563 basehttp 5232 1064 "GET /api/products/?category_id=2 HTTP/1.1" 200 3890
+INFO 2026-05-20 14:13:42,604 basehttp 5232 3196 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-20 14:14:13,819 basehttp 5232 3196 "GET /api/products/iphone-17/ HTTP/1.1" 200 1079
+INFO 2026-05-20 14:14:13,843 basehttp 5232 3196 "GET /api/products/iphone-17/ HTTP/1.1" 200 1079
+INFO 2026-05-20 14:14:14,311 basehttp 5232 3196 "GET /api/products/iphone-17/ HTTP/1.1" 200 1079
+INFO 2026-05-20 14:14:14,328 basehttp 5232 3196 "GET /api/products/iphone-17/ HTTP/1.1" 200 1079
+INFO 2026-05-20 14:39:15,766 basehttp 5232 18656 "GET /api/products/iphone-17/ HTTP/1.1" 200 1079
+INFO 2026-05-20 14:39:15,788 basehttp 5232 18656 "GET /api/products/iphone-17/ HTTP/1.1" 200 1079
+INFO 2026-05-20 14:39:36,860 basehttp 5232 14248 "GET /admin/main_app/product/4/change/ HTTP/1.1" 200 23409
+INFO 2026-05-20 14:39:36,921 basehttp 5232 14248 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-05-20 14:39:36,997 basehttp 5232 14248 "GET /static/admin/img/tooltag-arrowright.svg HTTP/1.1" 200 280
+INFO 2026-05-20 14:39:37,104 basehttp 5232 14248 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-20 14:39:45,320 basehttp 5232 14248 "POST /admin/main_app/product/4/change/ HTTP/1.1" 302 0
+INFO 2026-05-20 14:39:45,387 basehttp 5232 14248 "GET /admin/main_app/product/ HTTP/1.1" 200 21027
+INFO 2026-05-20 14:39:45,446 basehttp 5232 14248 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-05-20 14:39:45,583 basehttp 5232 14248 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-20 14:39:50,291 basehttp 5232 18656 "GET /api/products/iphone-17/ HTTP/1.1" 200 1079
+INFO 2026-05-20 14:39:50,334 basehttp 5232 18656 "GET /api/products/iphone-17/ HTTP/1.1" 200 1079
+INFO 2026-05-20 14:39:51,025 basehttp 5232 18656 "GET /api/products/iphone-17/ HTTP/1.1" 200 1079
+INFO 2026-05-20 14:39:51,044 basehttp 5232 18656 "GET /api/products/iphone-17/ HTTP/1.1" 200 1079
+INFO 2026-05-20 14:41:11,568 basehttp 5232 18656 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-20 14:41:11,640 basehttp 5232 18656 "GET /api/products/?category_id=2 HTTP/1.1" 200 3890
+INFO 2026-05-20 14:41:11,652 basehttp 5232 18656 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-20 14:41:11,659 basehttp 5232 18656 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-20 14:41:11,668 basehttp 5232 18656 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-20 14:41:11,683 basehttp 5232 18656 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-20 14:41:11,698 basehttp 5232 18656 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-20 14:41:11,718 basehttp 5232 18656 "GET /api/products/?category_id=1 HTTP/1.1" 200 1124
+INFO 2026-05-20 14:41:11,745 basehttp 5232 18656 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2810
+INFO 2026-05-20 14:41:11,772 basehttp 5232 18656 "GET /api/products/?category_id=2 HTTP/1.1" 200 3890
+INFO 2026-05-20 14:41:11,779 basehttp 5232 18656 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-20 14:41:11,790 basehttp 5232 18656 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-20 14:41:11,801 basehttp 5232 18656 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-20 14:41:11,816 basehttp 5232 18656 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-20 14:41:11,826 basehttp 5232 18656 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-20 14:41:11,853 basehttp 5232 18656 "GET /api/products/?category_id=1 HTTP/1.1" 200 1124
+INFO 2026-05-20 14:44:45,862 autoreload 5232 23524 C:\Users\YOU\Documents\Triple_A\main_app\models.py changed, reloading.
+INFO 2026-05-20 14:44:49,726 autoreload 5976 24124 Watching for file changes with StatReloader
+INFO 2026-05-20 14:45:13,780 autoreload 5976 24124 C:\Users\YOU\Documents\Triple_A\main_app\models.py changed, reloading.
+INFO 2026-05-20 14:45:16,762 autoreload 15160 14656 Watching for file changes with StatReloader
+INFO 2026-05-20 14:48:42,276 autoreload 23360 6964 Watching for file changes with StatReloader
+INFO 2026-05-20 14:49:03,942 basehttp 23360 23400 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-20 14:49:03,959 basehttp 23360 8124 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-20 14:49:03,973 basehttp 23360 14556 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-20 14:49:03,974 basehttp 23360 24672 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-20 14:49:04,003 basehttp 23360 23400 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-20 14:49:04,032 basehttp 23360 14556 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-20 14:49:04,032 basehttp 23360 23400 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-20 14:49:04,034 basehttp 23360 24672 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-20 14:49:04,046 basehttp 23360 14556 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-20 14:49:04,047 basehttp 23360 23400 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-20 14:49:04,051 basehttp 23360 12880 "GET /api/products/?category_id=1 HTTP/1.1" 200 1032
+INFO 2026-05-20 14:49:04,060 basehttp 23360 8124 "GET /api/products/?category_id=2 HTTP/1.1" 200 3734
+INFO 2026-05-20 14:49:04,062 basehttp 23360 18160 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2746
+INFO 2026-05-20 14:49:04,119 basehttp 23360 12880 "GET /api/products/?category_id=1 HTTP/1.1" 200 1032
+INFO 2026-05-20 14:49:04,120 basehttp 23360 18160 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2746
+INFO 2026-05-20 14:49:04,141 basehttp 23360 23400 "GET /api/products/?category_id=2 HTTP/1.1" 200 3734
+INFO 2026-05-20 14:49:11,987 basehttp 23360 25528 "GET /admin/main_app/product/4/change/ HTTP/1.1" 200 23443
+INFO 2026-05-20 14:49:12,044 basehttp 23360 25528 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-05-20 14:49:12,174 basehttp 23360 25528 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-20 14:49:41,268 basehttp 23360 25528 "POST /admin/main_app/product/4/change/ HTTP/1.1" 302 0
+INFO 2026-05-20 14:49:41,377 basehttp 23360 25528 "GET /admin/main_app/product/ HTTP/1.1" 200 21027
+INFO 2026-05-20 14:49:41,436 basehttp 23360 25528 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-05-20 14:49:41,558 basehttp 23360 25528 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-20 14:49:57,626 basehttp 23360 7916 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-20 14:49:57,630 basehttp 23360 10992 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-20 14:49:57,631 basehttp 23360 10196 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-20 14:49:57,647 basehttp 23360 4880 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-20 14:49:57,663 basehttp 23360 10196 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-20 14:49:57,676 basehttp 23360 10992 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-20 14:49:57,687 basehttp 23360 4880 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-20 14:49:57,701 basehttp 23360 9848 "GET /api/products/?category_id=2 HTTP/1.1" 200 3734
+INFO 2026-05-20 14:49:57,720 basehttp 23360 10196 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-20 14:49:57,724 basehttp 23360 10920 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2746
+INFO 2026-05-20 14:49:57,724 basehttp 23360 7916 "GET /api/products/?category_id=1 HTTP/1.1" 200 1050
+INFO 2026-05-20 14:49:57,727 basehttp 23360 4880 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-20 14:49:57,728 basehttp 23360 10992 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-20 14:49:57,752 basehttp 23360 9848 "GET /api/products/?category_id=2 HTTP/1.1" 200 3734
+INFO 2026-05-20 14:49:57,793 basehttp 23360 7916 "GET /api/products/?category_id=1 HTTP/1.1" 200 1050
+INFO 2026-05-20 14:49:57,820 basehttp 23360 10920 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2746
+INFO 2026-05-20 14:50:01,516 basehttp 23360 10920 "GET /api/products/apple/ HTTP/1.1" 200 1048
+INFO 2026-05-20 14:50:01,543 basehttp 23360 10920 "GET /api/products/apple/ HTTP/1.1" 200 1048
+INFO 2026-05-20 14:50:02,070 basehttp 23360 10920 "GET /api/products/apple/ HTTP/1.1" 200 1048
+INFO 2026-05-20 14:50:02,117 basehttp 23360 10920 "GET /api/products/apple/ HTTP/1.1" 200 1048
+INFO 2026-05-20 14:50:10,033 basehttp 23360 10992 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-20 14:50:10,035 basehttp 23360 10196 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-20 14:50:10,043 basehttp 23360 4880 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-20 14:50:10,043 basehttp 23360 9848 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-20 14:50:10,063 basehttp 23360 7916 "GET /api/products/?category_id=1 HTTP/1.1" 200 1050
+INFO 2026-05-20 14:50:10,072 basehttp 23360 10920 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2746
+INFO 2026-05-20 14:50:10,095 basehttp 23360 10992 "GET /api/products/?category_id=2 HTTP/1.1" 200 3734
+INFO 2026-05-20 14:50:10,101 basehttp 23360 4880 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-20 14:50:10,113 basehttp 23360 9848 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-20 14:50:10,117 basehttp 23360 10196 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-20 14:50:10,210 basehttp 23360 10920 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-20 14:50:10,213 basehttp 23360 4880 "GET /api/products/?category_id=1 HTTP/1.1" 200 1050
+INFO 2026-05-20 14:50:10,217 basehttp 23360 10196 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-20 14:50:10,225 basehttp 23360 7916 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-20 14:50:10,249 basehttp 23360 9848 "GET /api/products/?category_id=2 HTTP/1.1" 200 3734
+INFO 2026-05-20 14:50:10,257 basehttp 23360 10992 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2746
+INFO 2026-05-20 14:50:28,923 basehttp 23360 10992 "GET /api/products/apple/ HTTP/1.1" 200 1048
+INFO 2026-05-20 14:50:28,940 basehttp 23360 10992 "GET /api/products/apple/ HTTP/1.1" 200 1048
+INFO 2026-05-20 14:50:29,459 basehttp 23360 10992 "GET /api/products/apple/ HTTP/1.1" 200 1048
+INFO 2026-05-20 14:50:29,500 basehttp 23360 10992 "GET /api/products/apple/ HTTP/1.1" 200 1048
+INFO 2026-05-20 14:52:04,586 basehttp 23360 25528 "GET /admin/main_app/productimage/ HTTP/1.1" 200 15788
+INFO 2026-05-20 14:52:04,629 basehttp 23360 25528 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-05-20 14:52:04,686 basehttp 23360 25528 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-20 14:52:10,396 basehttp 23360 25528 "GET /admin/main_app/productimage/add/ HTTP/1.1" 200 17741
+INFO 2026-05-20 14:52:10,454 basehttp 23360 25528 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-05-20 14:52:10,528 basehttp 23360 25528 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-20 14:52:34,399 basehttp 23360 25528 "POST /admin/main_app/productimage/add/ HTTP/1.1" 302 0
+INFO 2026-05-20 14:52:34,441 basehttp 23360 25528 "GET /admin/main_app/productimage/ HTTP/1.1" 200 16895
+INFO 2026-05-20 14:52:34,487 basehttp 23360 25528 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-05-20 14:52:34,541 basehttp 23360 25528 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-20 14:52:44,730 basehttp 23360 7916 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-20 14:52:44,734 basehttp 23360 4880 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-20 14:52:44,735 basehttp 23360 10196 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-20 14:52:44,743 basehttp 23360 10920 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-20 14:52:44,757 basehttp 23360 9848 "GET /api/products/?category_id=1 HTTP/1.1" 200 2799
+INFO 2026-05-20 14:52:44,808 basehttp 23360 4880 "GET /api/products/?category_id=2 HTTP/1.1" 200 3734
+INFO 2026-05-20 14:52:44,770 basehttp 23360 10992 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2746
+INFO 2026-05-20 14:52:44,827 basehttp 23360 7916 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-20 14:52:44,830 basehttp 23360 10196 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-20 14:52:44,848 basehttp 23360 9848 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-20 14:52:44,864 basehttp 23360 10920 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-20 14:52:44,865 basehttp 23360 4880 "GET /api/products/?category_id=1 HTTP/1.1" 200 2799
+INFO 2026-05-20 14:52:44,866 basehttp 23360 10992 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-20 14:52:44,892 basehttp 23360 10196 "GET /api/products/?category_id=2 HTTP/1.1" 200 3734
+INFO 2026-05-20 14:52:44,894 basehttp 23360 7916 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2746
+INFO 2026-05-20 14:52:44,897 basehttp 23360 9848 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-20 14:52:48,252 basehttp 23360 9848 "GET /api/products/apple/ HTTP/1.1" 200 2797
+INFO 2026-05-20 14:52:48,271 basehttp 23360 9848 "GET /api/products/apple/ HTTP/1.1" 200 2797
+INFO 2026-05-20 14:52:48,776 basehttp 23360 9848 "GET /api/products/apple/ HTTP/1.1" 200 2797
+INFO 2026-05-20 14:52:48,802 basehttp 23360 9848 "GET /api/products/apple/ HTTP/1.1" 200 2797
+INFO 2026-05-20 15:00:50,590 autoreload 23360 6964 C:\Users\YOU\Documents\Triple_A\main_app\models.py changed, reloading.
+INFO 2026-05-20 15:00:52,521 autoreload 29376 11852 Watching for file changes with StatReloader
+INFO 2026-05-20 15:01:24,208 autoreload 11744 4532 Watching for file changes with StatReloader
+INFO 2026-05-20 15:01:34,578 basehttp 11744 18656 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2426
+INFO 2026-05-20 15:01:34,586 basehttp 11744 14736 "GET /api/products/?category_id=1 HTTP/1.1" 200 2569
+INFO 2026-05-20 15:01:34,658 basehttp 11744 10768 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-20 15:01:34,661 basehttp 11744 18656 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-20 15:01:34,721 basehttp 11744 14736 "GET /api/products/?category_id=2 HTTP/1.1" 200 3414
+INFO 2026-05-20 15:01:34,757 basehttp 11744 19140 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-20 15:01:34,771 basehttp 11744 18656 "GET /api/products/?category_id=1 HTTP/1.1" 200 2569
+INFO 2026-05-20 15:01:34,788 basehttp 11744 10768 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2426
+INFO 2026-05-20 15:01:34,792 basehttp 11744 14368 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-20 15:01:34,808 basehttp 11744 29596 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-20 15:01:34,827 basehttp 11744 19140 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-20 15:01:34,845 basehttp 11744 14736 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-20 15:01:34,854 basehttp 11744 10768 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-20 15:01:34,855 basehttp 11744 29596 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-20 15:01:34,864 basehttp 11744 14368 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-20 15:01:34,868 basehttp 11744 18656 "GET /api/products/?category_id=2 HTTP/1.1" 200 3414
+INFO 2026-05-20 15:01:56,235 basehttp 11744 15828 "GET /admin/main_app/productimage/3/change/ HTTP/1.1" 200 19488
+INFO 2026-05-20 15:01:56,290 basehttp 11744 15828 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-05-20 15:01:56,371 basehttp 11744 15828 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-20 15:02:24,025 basehttp 11744 15828 "POST /admin/main_app/productimage/3/change/ HTTP/1.1" 302 0
+INFO 2026-05-20 15:02:24,161 basehttp 11744 15828 "GET /admin/main_app/productimage/ HTTP/1.1" 200 17381
+INFO 2026-05-20 15:02:24,221 basehttp 11744 15828 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-05-20 15:02:24,255 basehttp 11744 15828 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-20 15:03:08,342 basehttp 11744 25032 "GET /api/products/apple/ HTTP/1.1" 200 2666
+INFO 2026-05-20 15:03:08,373 basehttp 11744 25032 "GET /api/products/apple/ HTTP/1.1" 200 2666
+INFO 2026-05-20 15:03:08,674 basehttp 11744 25032 "GET /api/products/apple/ HTTP/1.1" 200 2666
+INFO 2026-05-20 15:03:08,695 basehttp 11744 25032 "GET /api/products/apple/ HTTP/1.1" 200 2666
+INFO 2026-05-20 15:53:13,561 basehttp 11744 11888 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-20 15:53:13,562 basehttp 11744 27808 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-20 15:53:13,568 basehttp 11744 7540 "GET /api/products/?category_id=1 HTTP/1.1" 200 2668
+INFO 2026-05-20 15:53:13,592 basehttp 11744 27808 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-20 15:53:13,599 basehttp 11744 2280 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-20 15:53:13,612 basehttp 11744 11888 "GET /api/products/?category_id=2 HTTP/1.1" 200 3414
+INFO 2026-05-20 15:53:13,649 basehttp 11744 27808 "GET /api/products/?category_id=3 HTTP/1.1" 200 2
+INFO 2026-05-20 15:53:13,656 basehttp 11744 26072 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2426
+INFO 2026-05-20 15:53:13,684 basehttp 11744 2280 "GET /api/products/?category_id=1 HTTP/1.1" 200 2668
+INFO 2026-05-20 15:53:13,685 basehttp 11744 7540 "GET /api/products/?category_id=9 HTTP/1.1" 200 2
+INFO 2026-05-20 15:53:13,699 basehttp 11744 27808 "GET /api/products/?category_id=7 HTTP/1.1" 200 2
+INFO 2026-05-20 15:53:13,701 basehttp 11744 21744 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-20 15:53:13,707 basehttp 11744 11888 "GET /api/products/?category_id=4 HTTP/1.1" 200 2
+INFO 2026-05-20 15:53:13,773 basehttp 11744 26072 "GET /api/products/?category_id=2 HTTP/1.1" 200 3414
+INFO 2026-05-20 15:53:13,785 basehttp 11744 21744 "GET /api/products/?category_id=8 HTTP/1.1" 200 2
+INFO 2026-05-20 15:53:13,805 basehttp 11744 7540 "GET /api/deals_of_the_day/ HTTP/1.1" 200 2426
+INFO 2026-05-20 15:54:12,042 basehttp 11744 22892 "GET /admin/main_app/product/ HTTP/1.1" 200 20824
+INFO 2026-05-20 15:54:12,161 basehttp 11744 22892 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-05-20 15:54:12,309 basehttp 11744 22892 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-20 15:54:15,443 basehttp 11744 22892 "GET /admin/main_app/product/5/change/ HTTP/1.1" 200 23456
+INFO 2026-05-20 15:54:15,492 basehttp 11744 22892 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+INFO 2026-05-20 15:54:15,623 basehttp 11744 22892 "GET /favicon.ico HTTP/1.1" 200 692
+WARNING 2026-05-20 15:54:27,378 connectionpool 11744 22892 Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x00000225F4BC17F0>: Failed to resolve 'api.cloudinary.com' ([Errno 11001] getaddrinfo failed)")': /v1_1/dqh4udhdb/image/upload
+WARNING 2026-05-20 15:54:27,380 connectionpool 11744 22892 Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x00000225F4B391D0>: Failed to resolve 'api.cloudinary.com' ([Errno 11001] getaddrinfo failed)")': /v1_1/dqh4udhdb/image/upload
+WARNING 2026-05-20 15:54:27,384 connectionpool 11744 22892 Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x00000225F4B39950>: Failed to resolve 'api.cloudinary.com' ([Errno 11001] getaddrinfo failed)")': /v1_1/dqh4udhdb/image/upload
+ERROR 2026-05-20 15:54:28,426 log 11744 22892 Internal Server Error: /admin/main_app/product/5/change/
+Traceback (most recent call last):
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\urllib3\connection.py", line 198, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\AppData\Local\Programs\Python\Python313\Lib\socket.py", line 977, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\cloudinary\api_client\tcp_keep_alive_manager.py", line 74, in _validate_conn
+    super(TCPKeepAliveHTTPSConnectionPool, self)._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\urllib3\connection.py", line 753, in connect
+    self.sock = sock = self._new_conn()
+                       ~~~~~~~~~~~~~~^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\urllib3\connection.py", line 205, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: <urllib3.connection.HTTPSConnection object at 0x00000225F4B39450>: Failed to resolve 'api.cloudinary.com' ([Errno 11001] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\cloudinary\uploader.py", line 903, in call_api
+    response = _http.request(method="POST", url=api_url, fields=param_list, headers=headers, **kw)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\urllib3\_request_methods.py", line 143, in request
+    return self.request_encode_body(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        method, url, fields=fields, headers=headers, **urlopen_kw
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\urllib3\_request_methods.py", line 278, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\urllib3\poolmanager.py", line 459, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\urllib3\connectionpool.py", line 871, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\urllib3\connectionpool.py", line 871, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\urllib3\connectionpool.py", line 871, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\urllib3\util\retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: TCPKeepAliveHTTPSConnectionPool(host='api.cloudinary.com', port=443): Max retries exceeded with url: /v1_1/dqh4udhdb/image/upload (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x00000225F4B39450>: Failed to resolve 'api.cloudinary.com' ([Errno 11001] getaddrinfo failed)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\options.py", line 718, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 188, in _view_wrapper
+    result = _process_exception(request, e)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 186, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\sites.py", line 241, in inner
+    return view(request, *args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\options.py", line 1962, in change_view
+    return self.changeform_view(request, object_id, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 188, in _view_wrapper
+    result = _process_exception(request, e)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\utils\decorators.py", line 186, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\options.py", line 1818, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\options.py", line 1869, in _changeform_view
+    self.save_model(request, new_object, form, not add)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\contrib\admin\options.py", line 1292, in save_model
+    obj.save()
+    ~~~~~~~~^^
+  File "C:\Users\YOU\Documents\Triple_A\main_app\models.py", line 186, in save
+    super().save(*args, **kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\models\base.py", line 892, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\models\base.py", line 998, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\models\base.py", line 1125, in _save_table
+    (getattr(self, f.attname) if raw else f.pre_save(self, False)),
+                                          ~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\models\fields\files.py", line 338, in pre_save
+    file.save(file.name, file.file, save=False)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\db\models\fields\files.py", line 99, in save
+    self.name = self.storage.save(name, content, max_length=self.field.max_length)
+                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\django\core\files\storage\base.py", line 49, in save
+    name = self._save(name, content)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\cloudinary_storage\storage.py", line 68, in _save
+    response = self._upload(name, content)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\cloudinary_storage\storage.py", line 62, in _upload
+    return cloudinary.uploader.upload(content, **options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\cloudinary\uploader.py", line 198, in upload
+    return call_cacheable_api("upload", params, file=file, **options)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\cloudinary\uploader.py", line 834, in call_cacheable_api
+    result = call_api(action, params, http_headers, return_error, unsigned, file, timeout, **options)
+  File "C:\Users\YOU\Documents\Triple_A\venv\Lib\site-packages\cloudinary\uploader.py", line 905, in call_api
+    raise Error("Unexpected error - {0!r}".format(e))
+cloudinary.exceptions.Error: Unexpected error - MaxRetryError('TCPKeepAliveHTTPSConnectionPool(host=\'api.cloudinary.com\', port=443): Max retries exceeded with url: /v1_1/dqh4udhdb/image/upload (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x00000225F4B39450>: Failed to resolve \'api.cloudinary.com\' ([Errno 11001] getaddrinfo failed)"))')
+ERROR 2026-05-20 15:54:28,489 basehttp 11744 22892 "POST /admin/main_app/product/5/change/ HTTP/1.1" 500 387047
+INFO 2026-05-20 15:54:29,240 basehttp 11744 22892 "GET /favicon.ico HTTP/1.1" 200 692
+INFO 2026-05-20 16:05:41,339 autoreload 11744 4532 C:\Users\YOU\Documents\Triple_A\main_project\settings.py changed, reloading.
+INFO 2026-05-20 16:05:48,791 autoreload 27364 19076 Watching for file changes with StatReloader
