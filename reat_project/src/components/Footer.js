@@ -59,7 +59,7 @@ const Footer = () => {
                     <p>Available 24/7 to assist you</p>
                     <p>+2348034593459</p>
                     <p>+2348023975782</p>
-                    <p>2 Oba Akran, Ikeja, Lagos.</p>
+                    <p>2 Oba Akran Avenue, Ikeja, Lagos.</p>
                     <p>tripleastech518@gmail.com</p>
                 </div>
 
