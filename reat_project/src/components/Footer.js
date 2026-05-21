@@ -100,7 +100,6 @@ const Footer = () => {
                     </a>
                 ))}
             </div>
-
             {/* Bottom bar */}
             <div className="footer-bottom">
                 <p>© {new Date().getFullYear()} Triple A's Technology. All rights reserved.</p>
