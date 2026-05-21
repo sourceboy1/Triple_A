@@ -1,38 +1,57 @@
 from django.db import migrations, connection
 
-def drop_transaction_reference(apps, schema_editor):
-    table_name = "main_app_order"  # adjust if your table is named differently
 
+def get_column_names(table_name):
+    """Returns a list of column names for the given table, works on any DB."""
     with connection.cursor() as cursor:
-        cursor.execute("""
-            SELECT COUNT(*)
-            FROM information_schema.COLUMNS
-            WHERE TABLE_SCHEMA = DATABASE()
-              AND TABLE_NAME = %s
-              AND COLUMN_NAME = 'transaction_reference';
-        """, [table_name])
-        (exists,) = cursor.fetchone() # type: ignore
+        cursor.execute(f"SELECT * FROM {table_name} LIMIT 0")
+        return [desc[0] for desc in cursor.description] # type: ignore
 
-        if exists:
+
+def drop_transaction_reference(apps, schema_editor):
+    table_name = "main_app_order"
+    db_vendor  = connection.vendor  # 'sqlite', 'mysql', 'postgresql', etc.
+
+    # Check if the table even exists first
+    if table_name not in connection.introspection.table_names():
+        return
+
+    columns = get_column_names(table_name)
+    if 'transaction_reference' not in columns:
+        return  # nothing to drop
+
+    if db_vendor == 'sqlite':
+        # SQLite doesn't support DROP COLUMN directly before SQLite 3.35
+        # Use Django's safe approach: recreate via schema_editor
+        with connection.cursor() as cursor:
+            cursor.execute(f"ALTER TABLE {table_name} DROP COLUMN transaction_reference;")
+    else:
+        # MySQL, PostgreSQL
+        with connection.cursor() as cursor:
             cursor.execute(f"ALTER TABLE {table_name} DROP COLUMN transaction_reference;")
 
+
 def add_transaction_reference(apps, schema_editor):
-    table_name = "main_app_order"  # adjust if needed
+    table_name = "main_app_order"
+    db_vendor  = connection.vendor
+
+    if table_name not in connection.introspection.table_names():
+        return
+
+    columns = get_column_names(table_name)
+    if 'transaction_reference' in columns:
+        return  # already exists, nothing to add
 
     with connection.cursor() as cursor:
-        cursor.execute("""
-            SELECT COUNT(*)
-            FROM information_schema.COLUMNS
-            WHERE TABLE_SCHEMA = DATABASE()
-              AND TABLE_NAME = %s
-              AND COLUMN_NAME = 'transaction_reference';
-        """, [table_name])
-        (exists,) = cursor.fetchone() # type: ignore
-
-        if not exists:
+        if db_vendor == 'sqlite':
             cursor.execute(
                 f"ALTER TABLE {table_name} ADD COLUMN transaction_reference VARCHAR(255) NULL;"
             )
+        else:
+            cursor.execute(
+                f"ALTER TABLE {table_name} ADD COLUMN transaction_reference VARCHAR(255) NULL;"
+            )
+
 
 class Migration(migrations.Migration):
 
