@@ -1,38 +1,31 @@
 from django.db import migrations, connection
 
-def drop_payment_confirmed(apps, schema_editor):
-    table_name = "main_app_order"  # adjust if your table is named differently
 
+def column_exists(table_name, column_name):
+    if table_name not in connection.introspection.table_names():
+        return False
     with connection.cursor() as cursor:
-        cursor.execute("""
-            SELECT COUNT(*)
-            FROM information_schema.COLUMNS
-            WHERE TABLE_SCHEMA = DATABASE()
-              AND TABLE_NAME = %s
-              AND COLUMN_NAME = 'payment_confirmed';
-        """, [table_name])
-        (exists,) = cursor.fetchone() # type: ignore
+        cursor.execute(f"SELECT * FROM {table_name} LIMIT 0")
+        return column_name in [desc[0] for desc in cursor.description] # type: ignore
 
-        if exists:
-            cursor.execute(f"ALTER TABLE {table_name} DROP COLUMN payment_confirmed;")
+
+def drop_payment_confirmed(apps, schema_editor):
+    table_name = "main_app_order"
+    if not column_exists(table_name, 'payment_confirmed'):
+        return
+    with connection.cursor() as cursor:
+        cursor.execute(f"ALTER TABLE {table_name} DROP COLUMN payment_confirmed;")
+
 
 def add_payment_confirmed(apps, schema_editor):
     table_name = "main_app_order"
-
+    if column_exists(table_name, 'payment_confirmed'):
+        return
     with connection.cursor() as cursor:
-        cursor.execute("""
-            SELECT COUNT(*)
-            FROM information_schema.COLUMNS
-            WHERE TABLE_SCHEMA = DATABASE()
-              AND TABLE_NAME = %s
-              AND COLUMN_NAME = 'payment_confirmed';
-        """, [table_name])
-        (exists,) = cursor.fetchone() # type: ignore
+        cursor.execute(
+            f"ALTER TABLE {table_name} ADD COLUMN payment_confirmed TINYINT(1) DEFAULT 0;"
+        )
 
-        if not exists:
-            cursor.execute(
-                f"ALTER TABLE {table_name} ADD COLUMN payment_confirmed TINYINT(1) DEFAULT 0;"
-            )
 
 class Migration(migrations.Migration):
 

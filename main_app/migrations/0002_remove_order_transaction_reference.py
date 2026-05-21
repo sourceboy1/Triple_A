@@ -2,7 +2,6 @@ from django.db import migrations, connection
 
 
 def column_exists(table_name, column_name):
-    """Works on SQLite, MySQL, and PostgreSQL."""
     if table_name not in connection.introspection.table_names():
         return False
     with connection.cursor() as cursor:
@@ -13,7 +12,7 @@ def column_exists(table_name, column_name):
 def drop_transaction_reference(apps, schema_editor):
     table_name = "main_app_order"
     if not column_exists(table_name, 'transaction_reference'):
-        return  # already gone, nothing to do
+        return
     with connection.cursor() as cursor:
         cursor.execute(f"ALTER TABLE {table_name} DROP COLUMN transaction_reference;")
 
@@ -21,7 +20,7 @@ def drop_transaction_reference(apps, schema_editor):
 def add_transaction_reference(apps, schema_editor):
     table_name = "main_app_order"
     if column_exists(table_name, 'transaction_reference'):
-        return  # already exists, nothing to do
+        return
     with connection.cursor() as cursor:
         cursor.execute(
             f"ALTER TABLE {table_name} ADD COLUMN transaction_reference VARCHAR(255) NULL;"
