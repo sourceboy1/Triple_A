@@ -31,18 +31,34 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . ./
 
-# ✅ Copy React build BEFORE collectstatic so the files actually exist
+# Copy React build BEFORE collectstatic
 COPY --from=frontend /app/frontend/build ./reat_project/build
 
-# ✅ Dummy values so collectstatic doesn't crash without real env vars
+# Dummy env vars for collectstatic only — no migrate here
 ENV SECRET_KEY=dummy-secret-key-for-build
 ENV DEBUG=False
 ENV DATABASE_URL=sqlite:///db.sqlite3
-# ✅ Dummy Cloudinary URL so django-cloudinary-storage doesn't crash during collectstatic
 ENV CLOUDINARY_URL=cloudinary://000000000000000:dummy@dummy
 
+# ✅ collectstatic only — no migrate at build time
 RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-CMD sh -c "python manage.py migrate --noinput && gunicorn main_project.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 2 --threads 2 --timeout 180 --max-requests 300 --max-requests-jitter 30"
+# ✅ migrate runs here at container startup against the REAL database
+CMD sh -c "python manage.py migrate --noinput && \
+    python manage.py shell -c '\
+from django.contrib.auth import get_user_model; \
+import os; \
+User = get_user_model(); \
+email = os.environ[\"DJANGO_SUPERUSER_EMAIL\"]; \
+password = os.environ[\"DJANGO_SUPERUSER_PASSWORD\"]; \
+username = os.environ.get(\"DJANGO_SUPERUSER_USERNAME\", \"admin\"); \
+User.objects.filter(email=email).exists() or User.objects.create_superuser(username=username, email=email, password=password)' && \
+    gunicorn main_project.wsgi:application \
+    --bind 0.0.0.0:${PORT:-8000} \
+    --workers 2 \
+    --threads 2 \
+    --timeout 180 \
+    --max-requests 300 \
+    --max-requests-jitter 30"
