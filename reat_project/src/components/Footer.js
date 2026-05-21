@@ -104,7 +104,7 @@ const Footer = () => {
             {/* Bottom bar */}
             <div className="footer-bottom">
                 <p>© {new Date().getFullYear()} Triple A's Technology. All rights reserved.</p>
-                <p>2 Oba Akran, Ikeja, Lagos.</p>
+                <p>2 Oba Akran Avenuex , Ikeja, Lagos.</p>
             </div>
 
             <FooterSection />
