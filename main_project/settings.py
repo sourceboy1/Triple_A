@@ -187,15 +187,20 @@ FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STATIC_URL = '/static/'
+STATIC_URL  = '/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 FRONTEND_STATIC_DIR = BASE_DIR / "reat_project" / "build" / "static"
-STATICFILES_DIRS = [
-    FRONTEND_STATIC_DIR,
-]
+
+# ✅ Only add to STATICFILES_DIRS if the folder actually exists
+# (avoids crash during collectstatic before React is built)
+STATICFILES_DIRS = [FRONTEND_STATIC_DIR] if FRONTEND_STATIC_DIR.exists() else []
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# ✅ Tells WhiteNoise to also serve files from the React build root
+# This covers manifest.json, favicon.ico, robots.txt etc.
+WHITENOISE_ROOT = BASE_DIR / "reat_project" / "build"
 
 MEDIA_URL = '/media/'
 
