@@ -5,7 +5,7 @@ const ReturnRefundPolicy = () => {
     return (
         <div className="return-refund-container">
             <h1>Return/Refund or Exchange Policy</h1>
-            <p>Nonsman Global appreciates your patronage. However, if you are not completely satisfied with the product purchased, feel free to read our return/refund or exchange policy below. All returned product(s) must be in new and unused condition, with all original tags, serial numbers, and labels attached.</p>
+            <p>Triple A's Technology appreciates your patronage. However, if you are not completely satisfied with the product purchased, feel free to read our return/refund or exchange policy below. All returned product(s) must be in new and unused condition, with all original tags, serial numbers, and labels attached.</p>
             
             <h2>Return Process</h2>
             <p>To return an item or items, please email customer service at <a href="">Tripleastechnology.com</a> or call the office line to obtain a Return Merchandise Authorization (RMA) number. Afterwards, keep the item safe from scratches and dirt.</p>
