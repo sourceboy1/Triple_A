@@ -28,3 +28,4 @@ const ReturnRefundPolicy = () => {
 };
 
 export default ReturnRefundPolicy;
+
