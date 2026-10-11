@@ -12,7 +12,6 @@ const api = axios.create({
   },
 });
 
-// Attach access token to requests
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("access_token");
@@ -27,7 +26,6 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Refresh access token after a 401 response
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -51,10 +49,15 @@ api.interceptors.response.use(
         const response = await axios.post(
           `${baseURL}token/refresh/`,
           { refresh: refreshToken },
-          { headers: { "Content-Type": "application/json" } }
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
         );
 
         const newAccessToken = response.data.access;
+
         localStorage.setItem("access_token", newAccessToken);
 
         originalRequest.headers = originalRequest.headers || {};
